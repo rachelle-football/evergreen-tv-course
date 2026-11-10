@@ -205,7 +205,7 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .howsave{margin-top:8px;font-size:15px}.howsave summary{cursor:pointer;font-weight:700;color:var(--green)}.howsave ol{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
 .bsec.need{border:2px solid var(--onair);background:var(--onair-soft);border-radius:12px;padding:10px 12px}
 .bsec .reqtag{color:var(--onair)!important;font-weight:700}
-.bsec.flash{animation:flash 1.4s}
+.bsec.flash,input.flash,textarea.flash{animation:flash 1.4s}
 @keyframes flash{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 4px var(--onair)}}
 .prompt.blocked{color:var(--onair);border-color:var(--onair);background:var(--onair-soft);font-weight:700}
 .newchat{margin:6px 0 0;font-size:14px;background:var(--gold-soft);border-radius:8px;padding:6px 10px}
@@ -702,7 +702,7 @@ drawPage(); drawPlan();
 const CHECKS = [
   ["works", "Every button works", "Click everything on the page."],
   ["clear", "Clear in 5 seconds", "Can you tell right away which part of the future this page is about?"],
-  ["media", "Pictures and videos show", "All 3 pictures, the podcast and the video. With sound."],
+  ["media", "Pictures and videos show", "All my pictures, the podcast and the video. With sound."],
   ["story", "The story and design make sense", "Read the design cards and the story. Anything confusing or impossible?"],
   ["phone", "Works on a small screen", "Make the window narrow. Does it still fit?"],
   ["safe", "Honest and safe", "Labelled Made with AI, first names only, no photos of real people."]
@@ -749,7 +749,7 @@ $("#nextFix").onclick = () => { store.set("fixes", (store.get("fixes") || 0) + 1
 drawFix();
 
 /* launch */
-const L = [["Every button works",""],["My 3 pictures show on the page",""],["My podcast clip and my video play with sound",""],["Every fact is checked",""],["Everything AI-made is labelled Made with AI",""],["First names only, no photos of real people",""],["It works on a phone",""],["My folder in the app has my pictures, podcast, video and page",""]];
+const L = [["Every button works",""],["All my pictures show on the page",""],["My podcast clip and my video play with sound",""],["Every fact is checked",""],["Everything AI-made is labelled Made with AI",""],["First names only, no photos of real people",""],["It works on a phone",""],["My folder in the app has my pictures, podcast, video and page",""]];
 checklist("launch", L);
 function ready(){ const n = [...document.querySelectorAll("#launch input")].filter(x => x.checked).length;
   $("#ready").replaceChildren(el("span", {class:"tag"}, "Status"), el("div", {class:"big-num"}, n + " / " + L.length), n === L.length ? el("p", {class:"lead", style:"margin:0;color:var(--green);font-weight:700"}, "Ready for launch! Your teacher downloads your folder from the teacher page.") : el("p", {class:"lead", style:"margin:0"}, "Tick every line before launch day.")); }

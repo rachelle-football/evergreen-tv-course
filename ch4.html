@@ -205,7 +205,7 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .howsave{margin-top:8px;font-size:15px}.howsave summary{cursor:pointer;font-weight:700;color:var(--green)}.howsave ol{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
 .bsec.need{border:2px solid var(--onair);background:var(--onair-soft);border-radius:12px;padding:10px 12px}
 .bsec .reqtag{color:var(--onair)!important;font-weight:700}
-.bsec.flash{animation:flash 1.4s}
+.bsec.flash,input.flash,textarea.flash{animation:flash 1.4s}
 @keyframes flash{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 4px var(--onair)}}
 .prompt.blocked{color:var(--onair);border-color:var(--onair);background:var(--onair-soft);font-weight:700}
 .newchat{margin:6px 0 0;font-size:14px;background:var(--gold-soft);border-radius:8px;padding:6px 10px}
@@ -325,12 +325,19 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
 <section class="seg" id="seg-4" data-min="5" data-title="Read aloud" hidden>
   <div class="lower"><div class="no">04</div><div class="name"><h2>Story time</h2><p>5 minutes · 2 readers from each team</p></div></div>
   <p class="big">Two students from each team read their story. The class listens for the 4 parts.</p>
-  <div class="grid g3">
-    <div class="card"><span class="tag">Listen for</span><p class="lead" style="margin:6px 0 0">Who is the character? What is the problem? How does the future help?</p></div>
-    <div class="card"><span class="tag">Ask</span><p class="lead" style="margin:6px 0 0">Which sentence did the writer change into their own words?</p></div>
+  <div class="card" style="border-color:var(--green);background:var(--green-soft)"><span class="tag">🎤 The reader says</span>
+    <ol class="lead" style="margin:6px 0 0;padding-left:22px;line-height:1.6">
+      <li><b>Hello:</b> <span id="rdHello">"My name is … My story is called … It happens in …, my design."</span></li>
+      <li><b>Read</b> your story slowly, loud and clear.</li>
+      <li><b>Ask the class:</b> "Who is my character? Where is it? What is the problem? How does my design help?"</li>
+      <li><b>Say:</b> "The sentence I changed into my own words is: …"</li>
+    </ol></div>
+  <div class="grid g3" style="margin-top:16px">
+    <div class="card"><span class="tag">The class listens for 4 parts</span><p class="lead" style="margin:6px 0 0">1 The character · 2 The place · 3 The problem · 4 How the design helps</p></div>
+    <div class="card"><span class="tag">The class asks</span><p class="lead" style="margin:6px 0 0">"Which sentence did you change into your own words?"</p></div>
     <div class="card"><span class="tag">The rule</span><p class="lead" style="margin:6px 0 0">AI writes fast. You make it true, kind and yours.</p></div>
   </div>
-  <div class="card" style="margin-top:16px;background:var(--gold-soft);border-color:transparent"><span class="tag">Next week</span><p class="lead" style="margin:6px 0 0">AI Images: you make 3 pictures of your design. Your story will tell you what to draw.</p></div>
+  <div class="card" style="margin-top:16px;background:var(--gold-soft);border-color:transparent"><span class="tag">Next week</span><p class="lead" style="margin:6px 0 0">AI Images: you choose 3 to 5 pictures of your design and make them. Your design card and your story tell you what to draw.</p></div>
 </section>
 
 </main>
@@ -734,6 +741,8 @@ function count(){ const w = ($("#story").value.match(/\S+/g) || []).length, s = 
   $("#wc").textContent = w + " words"; $("#secs").textContent = s + " seconds"; $("#fit").textContent = !w ? "" : w < 90 ? "(a bit short)" : w > 190 ? "(too long for the podcast: cut it)" : "(good length)"; return w; }
 $("#story").addEventListener("input", () => { S.text = $("#story").value; store.set("story", S); if (count() > 60) L1.tick(5); });
 $("#sTitle").addEventListener("input", () => { S.title = $("#sTitle").value; store.set("story", S); });
+function drawHello(){ try { const c = JSON.parse(localStorage.getItem("ch3-card")) || {}, a = JSON.parse(localStorage.getItem("ai-lab-session")) || {}, nm = a.display_name || a.name || "…"; $("#rdHello").textContent = "\u201CMy name is " + nm + ". My story is called " + (S.title || "…") + ". It happens in " + (c.name || "…") + ", my design.\u201D"; } catch(e){} }
+drawHello(); $("#sTitle").addEventListener("input", drawHello); addEventListener("hashchange", drawHello);
 count();
 checklist("hunt", [["It uses ideas from my design", ""], ["My character is the hero", ""], ["Invented names only, no real people", ""], ["Nothing scary, rude or untrue about real places", ""], ["I changed at least 3 sentences into my own words", ""]], true);
 const L1 = checklist("list1", [
