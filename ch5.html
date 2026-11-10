@@ -597,8 +597,13 @@ function PICS(k){ const d = KIND[k]; return {label:d.label, file:k + ".png", hel
 let pic = MY[0];
 function team(){ return P.me().team === "planet" ? "planet" : "school"; }
 function partKit(){ const m = P.me(); return m.part && window.PARTKIT[m.part] ? Object.assign({name:m.part}, window.PARTKIT[m.part]) : null; }
-function places(){ const k = partKit(), t = PLACES[team()]; return k ? k.places.concat(t.filter(x => !k.places.includes(x))) : t; }
-function cats(){ const k = partKit(), t = team(), base = CATS.filter(c => !c.team || c.team === t); return k ? [{id:"part", icon:k.icon, title:k.name + " · your part", kinds:k.things, looks:k.looks, mine:true}].concat(base) : base; }
+function card(){ return raw("ch3-card") || {}; }
+const short = x => x.replace(/^[^:]{2,30}:\s*/, "").replace(/[.!]+$/, "").trim();
+function places(){ const k = partKit(), t = PLACES[team()], d = card(), mine = d.name ? [d.name.replace(/[.!]+$/, "")] : []; const base = k ? k.places.concat(t.filter(x => !k.places.includes(x))) : t; return mine.concat(base.filter(x => !mine.includes(x))); }
+function cats(){ const k = partKit(), t = team(), d = card(), base = CATS.filter(c => !c.team || c.team === t);
+  const ideas = [d.i1, d.i2, d.i3, d.mine].filter(Boolean).map(short).filter(Boolean);
+  const mine = ideas.length ? [{id:"design", icon:"⭐", title:"My design" + (d.name ? ": " + d.name : "") + " (Chapter 3)", kinds:ideas, mine:true}] : [];
+  return mine.concat(k ? [{id:"part", icon:k.icon, title:k.name + " · your part", kinds:k.things, looks:k.looks, mine:true}] : [], base); }
 function blank(p){ return {place:"", pick:{}, look:{people:"a mix of boys and girls"}, style:"colourful 3D animation", light:"bright sunny day", camera:PICS(p).def.camera, mood:["magical"], colours:"bright rainbow colours", idea:"", wow:true, who:""}; }
 function state(){ const old = {big:"p1", close:"p2", char:"p3"}[pic]; const s = store.get("scene-" + pic) || (old && store.get("scene-" + old)); return s && s.pick ? s : blank(pic); }
 let S = state();

@@ -719,7 +719,7 @@ function storyText(){
     (C.more && Object.values(C.more).some(Boolean) ? " More about the hero: " + MORE.filter(([k]) => C.more[k]).map(([k, , label]) => label + ": " + C.more[k].trim().replace(/([^.!?"”])$/, "$1.")).join(" ") : "") +
     (S.prob ? " The problem: " + S.prob + "." : "") +
     (helps.length ? " What helps: " + J(helps) + "." : "") +
-    (S.helps.includes("my design ideas from Chapter 3") && ideas.length ? " Use these ideas from my design" + (d.name ? " \"" + d.name + "\"" : "") + ": " + ideas.join("; ") + "." : "") +
+    (S.helps.includes("my design ideas from Chapter 3") && ideas.length ? " Use these ideas from my design" + (d.name ? " \"" + d.name + "\"" : "") + ": " + ideas.map(x => x.trim().replace(/[.!]+$/, "")).join("; ") + "." : "") +
     ((S.idea || "").trim() ? " My own idea: " + S.idea.trim() + "." : "") +
     "\nFormat: A title, then " + (S.len || "about 150 words") + ". Beginning, problem, how the future helps, and " + (S.ending || "a happy ending") + "." + (S.talk ? " Include some dialogue." : "") + (S.joke ? " Add one funny moment." : "") + " Easy English for 12-year-olds. No real people's names, nothing scary or violent.";
 }
