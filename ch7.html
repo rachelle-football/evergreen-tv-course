@@ -680,7 +680,10 @@ function save(){ store.set("plan", plan); const t = plan.reduce((a, s) => a + (+
   $("#miniPlan").replaceChildren(...plan.map(s => el("li", null, el("b", null, (s.name || "Scene") + " (" + s.secs + " s): "), (s.file ? s.file + " · " : "") + s.what))); }
 
 const plan = (() => { const x = store.get("plan"); return oldPlan(x) ? DEF.map(y => Object.assign({}, y)) : x; })();
-if (window.F) window.F.ready().then(() => window.F.list()).then(fs => { (fs || []).forEach(f => MYF7[f.slot] = f); drawBoard(); }).catch(() => {});
+if (window.F) window.F.ready().then(() => window.F.list()).then(fs => { (fs || []).forEach(f => MYF7[f.slot] = f);
+  const real = n => { const k = (n || "").replace(/\.\w+$/, ""); return n && MYF7[k] ? window.F.fileName(MYF7[k]) : n; };
+  FILES7.forEach(e => { e[0] = real(e[0]); }); OKF.length = 0; OKF.push(...FILES7.map(e => e[0]));
+  plan.forEach(x => { x.file = real(x.file); }); drawBoard(); if (typeof drawVid === "function") drawVid(); }).catch(() => {});
 drawBoard();
 
 /* video plan builder: choose, the storyboard and the prompt build themselves */
@@ -695,11 +698,12 @@ const VSPEC = [
   {id:"idea", title:"✨ Your own idea", text:true, ph:"e.g. the video starts in 2026 and jumps to the future", hint:"makes it yours"}
 ];
 const V = Object.assign({type:"", open:"", music:"", caps:"", end:"", len:"30 seconds", idea:""}, store.get("vplan") || {});
+const nm7 = n => { const k = n.replace(/\.\w+$/, ""); return typeof MYF7 !== "undefined" && MYF7[k] && window.F ? window.F.fileName(MYF7[k]) : n; };
 function vidText(){
   const st = K.store.raw("ch4-story") || {};
   return "Role: You are a video director who makes short videos for kids.\n" +
     "Task: Plan " + (V.type || "a short video") + " of " + (V.len || "30 seconds") + " for " + TT.site + (card.name ? " about my design \"" + card.name + "\"" : "") + ".\n" +
-    "Context: My files are " + MYP.map(k => k + ".png (" + PK[k].label.toLowerCase() + ")").join(", ") + " and podcast.mp4 (my voice)." +
+    "Context: My files are " + MYP.map(k => nm7(k + ".png") + " (" + PK[k].label.toLowerCase() + ")").join(", ") + " and " + nm7("podcast.mp4") + " (my voice)." +
     (card.i1 ? " My big ideas: " + [card.i1, card.i2, card.i3].filter(Boolean).join("; ") + "." : "") + (st.title ? " My story is called \"" + st.title + "\"." : "") +
     (V.open ? " It starts with " + V.open + "." : "") + (V.music ? " Music: " + V.music + "." : "") + (V.caps ? " Captions: " + V.caps + "." : "") + (V.end ? " It ends with " + V.end + "." : "") +
     ((V.idea || "").trim() ? " My own idea: " + V.idea.trim() + "." : "") +
@@ -733,9 +737,9 @@ function applyPlan(){
   const total = parseInt(V.len) || 30, k = total / 30, r = x => Math.max(2, Math.round(x * k));
   const sl = slogans();
   plan.length = 0;
-  plan.push({name:"Opening", file:MYP[0] + ".png", what:(V.open || "a big title on my best picture") + " · " + (card.name || "my design"), secs:r(4)});
-  plan.push({name:"Voice", file:"podcast.mp4", what:"the best part of my podcast · " + (V.music || "quiet") + " music under it", secs:r(12)});
-  MYP.slice(1, 4).forEach((p, n) => plan.push({name:PK[p].label, file:p + ".png", what:capFor(p, n), secs:r(4)}));
+  plan.push({name:"Opening", file:nm7(MYP[0] + ".png"), what:(V.open || "a big title on my best picture") + " · " + (card.name || "my design"), secs:r(4)});
+  plan.push({name:"Voice", file:nm7("podcast.mp4"), what:"the best part of my podcast · " + (V.music || "quiet") + " music under it", secs:r(12)});
+  MYP.slice(1, 4).forEach((p, n) => plan.push({name:PK[p].label, file:nm7(p + ".png"), what:capFor(p, n), secs:r(4)}));
   plan.push({name:"Ending", file:"", what:(sl[0] ? "“" + sl[0] + "” · " : "") + TT.site + " · Made with AI · my first name", secs:r(3)});
   drawBoard(); drawSlogans(sl);
 }
@@ -770,7 +774,7 @@ function parseBoard(t){
     const secC = si >= 0 ? c[si] : [...c].reverse().find(x => /^\d+(\.\d+)?\s*(s|sec|secs|seconds)?$/i.test(x));
     let cap = ci >= 0 ? c[ci] : c.filter(x => x !== file && x !== secC && !/^(scene\s*)?\d+$/i.test(x)).pop();
     const fm = (file.match(/[\w-]+\.(png|jpe?g|webp|mp4|mov)/i) || [""])[0].toLowerCase();
-    return {file:OKF.includes(fm) ? fm : "", cap:(cap || "").replace(/^["“]|["”]$/g, ""), secs:Math.max(1, Math.min(30, Math.round(parseFloat(secC) || 4)))};
+    const sl = fm.replace(/\.\w+$/, ""); return {file:OKF.find(o => o && o.replace(/\.\w+$/, "") === sl) || "", cap:(cap || "").replace(/^["“]|["”]$/g, ""), secs:Math.max(1, Math.min(30, Math.round(parseFloat(secC) || 4)))};
   }).filter(x => x.cap || x.file);
   return {scenes, slog};
 }
@@ -780,9 +784,9 @@ $("#fillBoard").onclick = () => {
   const t = $("#vidPaste").value.trim(); if (!t){ K.toast("Paste Gemini's answer in the box first."); $("#vidPaste").focus(); return; }
   const r = parseBoard(t);
   if (r.scenes.length < 2){ K.toast("I could not find the table. Paste the answer to the video prompt (the table with Scene, File, Caption, Seconds)."); return; }
-  const names = {"podcast.mp4":"Voice"};
+  const names = {podcast:"Voice"};
   plan.length = 0;
-  r.scenes.slice(0, 8).forEach((x, i, a) => plan.push({name:i === 0 ? "Opening" : i === a.length - 1 && !x.file ? "Ending" : names[x.file] || (x.file && PK[x.file.replace(/\.\w+$/, "")] ? PK[x.file.replace(/\.\w+$/, "")].label : "Scene " + (i + 1)), file:x.file, what:x.cap, secs:x.secs}));
+  r.scenes.slice(0, 8).forEach((x, i, a) => plan.push({name:i === 0 ? "Opening" : i === a.length - 1 && !x.file ? "Ending" : names[x.file.replace(/\.\w+$/, "")] || (x.file && PK[x.file.replace(/\.\w+$/, "")] ? PK[x.file.replace(/\.\w+$/, "")].label : "Scene " + (i + 1)), file:x.file, what:x.cap, secs:x.secs}));
   if (plan.length < 3) plan.push({name:"Ending", file:"", what:TT.site + " · Made with AI · my first name", secs:3});
   const last = plan[plan.length - 1]; if (!/made with ai/i.test(last.what)) last.what += " · Made with AI";
   drawBoard();
