@@ -205,7 +205,7 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .howsave{margin-top:8px;font-size:15px}.howsave summary{cursor:pointer;font-weight:700;color:var(--green)}.howsave ol{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
 .bsec.need{border:2px solid var(--onair);background:var(--onair-soft);border-radius:12px;padding:10px 12px}
 .bsec .reqtag{color:var(--onair)!important;font-weight:700}
-.bsec.flash{animation:flash 1.4s}
+.bsec.flash,input.flash,textarea.flash{animation:flash 1.4s}
 @keyframes flash{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 4px var(--onair)}}
 .prompt.blocked{color:var(--onair);border-color:var(--onair);background:var(--onair-soft);font-weight:700}
 .newchat{margin:6px 0 0;font-size:14px;background:var(--gold-soft);border-radius:8px;padding:6px 10px}
@@ -701,21 +701,26 @@ function parseAnswer(t){
   out.name = nm ? nm.replace(/^(design )?name\s*[:\-–]\s*/i, "") : (lines[0] && lines[0].length < 70 ? lines[0] : "");
   out.name = out.name.replace(/^["“']|["”']$/g, "").replace(/[:.]$/, "");
   const ideas = lines.filter(l => /^(\d+[.)]|[-*•])\s+/.test(l)).map(l => l.replace(/^(\d+[.)]|[-*•])\s+/, ""));
-  [out.i1, out.i2, out.i3] = ideas.slice(0, 3);
   const di = lines.findIndex(l => /^(a day in it|a day in|day in|the tour|news report|comic|advert)/i.test(l));
+  const bi = lines.findIndex(l => /^big ideas?\b/i.test(l));
+  if (ideas.length < 3 && bi >= 0){ const head = lines[bi].replace(/^big ideas?\s*[:\-–]?\s*/i, ""); const sec = [head, ...lines.slice(bi + 1, di > bi ? di : bi + 4)].filter(x => x && x.length > 8).map(l => l.replace(/^(\d+[.)]|[-*•])\s+/, "")); if (sec.length > ideas.length) ideas.splice(0, ideas.length, ...sec); }
+  [out.i1, out.i2, out.i3] = ideas.slice(0, 3);
   if (di >= 0){ const head = lines[di].replace(/^[^:]*:\s*/, ""); out.day = [head, ...lines.slice(di + 1).filter(l => !/^(\d+[.)]|[-*•])\s+/.test(l))].filter(Boolean).join(" ").slice(0, 600); }
   else { const rest = lines.filter(l => l !== nm && l !== lines[0] && !/^(\d+[.)]|[-*•])\s+/.test(l) && !/^big ideas?/i.test(l)); out.day = rest.slice(-2).join(" ").slice(0, 600); }
   return out;
 }
-$("#fillCard").onclick = () => {
-  const t = $("#paste").value.trim(); if (!t){ K.toast("Paste Gemini's answer in the box first."); $("#paste").focus(); return; }
+function fillFrom(quiet){ try {
+  const t = $("#paste").value.trim(); if (!t){ if (!quiet){ K.toast("Paste Gemini's answer in the box first."); $("#paste").focus(); } return; }
   const charLike = (t.match(/^\W*(look|looks|personality|habit|secret|talk|how they talk|funny thing|fear)\W*\s*[:\-–]/gim) || []).length, designLike = /big ideas?|^\W*\d+[.)]\s/im.test(t);
   if (charLike >= 2 && !designLike){ K.toast("This looks like your CHARACTER (look, habit, secret…), not your design. Paste the answer to this chapter's prompt."); $("#paste").focus(); return; }
   const a = parseAnswer(t); let n = 0;
   [["dName","name"],["dI1","i1"],["dI2","i2"],["dI3","i3"],["dDay","day"]].forEach(([id, k]) => { if (a[k]){ D[k] = a[k]; $("#" + id).value = a[k]; n++; } });
   store.set("card", D); drawCard(); ticks();
   K.toast(n >= 4 ? "Your card is filled. Now check it, and add your own idea!" : "I filled what I could find. Fill the empty boxes yourself.");
-};
+  const v = $("#dName"); if (v){ v.closest(".card, section, div").scrollIntoView({behavior:"smooth", block:"start"}); ["dName","dI1","dI2","dI3","dDay"].forEach(id => { const x = $("#" + id); if (x && x.value){ x.classList.remove("flash"); void x.offsetWidth; x.classList.add("flash"); } }); }
+} catch(e){ K.toast("Something went wrong. Copy the boxes by hand, and tell your teacher."); console.error(e); } }
+$("#fillCard").onclick = () => fillFrom(false);
+$("#paste").addEventListener("paste", () => setTimeout(() => fillFrom(true), 60));
 const dmap = {dName:"name", dI1:"i1", dI2:"i2", dI3:"i3", dDay:"day", dMine:"mine"};
 Object.entries(dmap).forEach(([id, k]) => { $("#" + id).value = D[k] || ""; $("#" + id).addEventListener("input", () => { D[k] = $("#" + id).value; store.set("card", D); drawCard(); }); });
 function drawCard(){
