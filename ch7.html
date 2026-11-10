@@ -205,7 +205,7 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .howsave{margin-top:8px;font-size:15px}.howsave summary{cursor:pointer;font-weight:700;color:var(--green)}.howsave ol{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
 .bsec.need{border:2px solid var(--onair);background:var(--onair-soft);border-radius:12px;padding:10px 12px}
 .bsec .reqtag{color:var(--onair)!important;font-weight:700}
-.bsec.flash{animation:flash 1.4s}
+.bsec.flash,input.flash,textarea.flash{animation:flash 1.4s}
 @keyframes flash{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 4px var(--onair)}}
 .prompt.blocked{color:var(--onair);border-color:var(--onair);background:var(--onair-soft);font-weight:700}
 .newchat{margin:6px 0 0;font-size:14px;background:var(--gold-soft);border-radius:8px;padding:6px 10px}
@@ -652,6 +652,8 @@ const card = K.store.raw("ch3-card") || {}, M = K.me(), TT = M.T || K.TEAMS.scho
 $("#vidGoal").textContent = "Your " + (K.store.raw("ch7-vplan") && K.store.raw("ch7-vplan").len || "30 seconds") + " video about " + (card.name || "your design") + ". Choose below, press Make my storyboard, then change anything you want.";
 const PK = window.PICKINDS, MYP = (K.store.raw("ch5-pics") || ["big","close","char"]).filter(k => PK[k]);
 const FILES7 = MYP.map(k => [k + ".png", PK[k].label]).concat([["podcast.mp4", "my podcast clip"], ["", "text only (no file)"]]);
+const OKF = FILES7.map(f => f[0]), MYF7 = {};
+const oldPlan = x => !Array.isArray(x) || !x.length || x.some(y => (y.file && !OKF.includes(y.file)) || /\b(hero|detail|character|title|studio|logo)\.png\b/.test(y.what || ""));
 const DEF = [
   {name:"Opening", file:MYP[0] + ".png", what:"the title: " + (card.name || "the name of my design"), secs:3},
   {name:"Voice", file:"podcast.mp4", what:"the best 15 seconds of my podcast", secs:15},
@@ -662,7 +664,7 @@ function drawBoard(){
   $("#board").replaceChildren(...plan.map((s, i) => el("div", {class:"scene"},
     el("div", {class:"row", style:"justify-content:space-between"}, el("span", {class:"tag"}, "Scene " + (i + 1)), plan.length > 3 ? el("button", {class:"ghost", type:"button", "aria-label":"Remove scene " + (i + 1), onclick:() => { plan.splice(i, 1); drawBoard(); }}, "✕") : ""),
     (() => { const n = el("input", {"aria-label":"Scene name " + (i + 1), value:s.name || ""}); n.addEventListener("input", () => { s.name = n.value; save(); }); return n; })(),
-    el("div", {class:"frame"}, el("span", null, s.file || "text only")),
+    el("div", {class:"frame"}, (() => { const f = s.file && MYF7[s.file.replace(/\.\w+$/, "")]; return f && /^image\//.test(f.mime) ? el("img", {src:window.F.url(f.path), alt:s.file, style:"width:100%;height:100%;object-fit:cover;border-radius:inherit"}) : el("span", {style:"font-size:16px;padding:0 8px;text-align:center"}, s.file ? s.file + (window.F && window.F.on() && /\.png$/.test(s.file) ? " · not saved yet" : "") : "text only"); })()),
     el("label", {class:"tag", for:"file" + i}, "File"),
     (() => { const f = el("select", {id:"file" + i}, ...FILES7.map(([v, l]) => el("option", {value:v, selected: v === (s.file || "") ? "" : null}, v ? v + " · " + l : l))); f.addEventListener("change", () => { s.file = f.value; drawBoard(); }); return f; })(),
     el("label", {class:"tag", for:"what" + i}, "What we see and hear"),
@@ -676,7 +678,8 @@ function save(){ store.set("plan", plan); const t = plan.reduce((a, s) => a + (+
   $("#totalMsg").textContent = t > goal + 8 ? "· too long, cut something" : t < goal - 8 ? "· a bit short" : "· good length";
   $("#miniPlan").replaceChildren(...plan.map(s => el("li", null, el("b", null, (s.name || "Scene") + " (" + s.secs + " s): "), (s.file ? s.file + " · " : "") + s.what))); }
 
-const plan = store.get("plan") || DEF.map(x => Object.assign({}, x));
+const plan = (() => { const x = store.get("plan"); return oldPlan(x) ? DEF.map(y => Object.assign({}, y)) : x; })();
+if (window.F) window.F.ready().then(() => window.F.list()).then(fs => { (fs || []).forEach(f => MYF7[f.slot] = f); drawBoard(); }).catch(() => {});
 drawBoard();
 
 /* video plan builder: choose, the storyboard and the prompt build themselves */
