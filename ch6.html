@@ -515,7 +515,7 @@ function podText(){
     "Task: Turn my story into a " + (PS.len || "60 seconds").replace(" seconds", "-second") + " script for " + T.podcast + (PS.show ? ", made as " + PS.show : "") + ".\n" +
     "Context: My story" + (st.title ? " \"" + st.title + "\"" : "") + ": " + (st.text ? "\"" + st.text.trim() + "\"" : "(my story from Chapter 4)") + "\n" +
     (PS.open ? "Start with " + PS.open + ". " : "") + (PS.tone ? "The tone is " + PS.tone + ". " : "") +
-    (PS.voices ? "Who talks: " + PS.voices + (PS.voices.includes("character") && c.name ? " (" + c.name + ")" : "") + ". " : "") +
+    (PS.voices ? "Who talks: " + PS.voices + (PS.voices.includes("character") && c.name ? " (" + c.name + ")" : "") + ". " : "") + (PS.voices && PS.voices.includes("character") && c.more && c.more.talk ? "My character talks like this: " + c.more.talk + " " : "") +
     (PS.end ? "End with " + PS.end + ". " : "") + ((PS.idea || "").trim() ? "My own idea: " + PS.idea.trim() + ". " : "") +
     "\nFormat: About " + Math.round(secs * 2.3) + " words. Short lines with the speaker's name before each line, and sound effects in [brackets]. Easy English for 12-year-olds. No real people's names.";
 }

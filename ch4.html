@@ -207,6 +207,7 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .pt-c{background:rgba(224,165,38,.28)}.pt-p{background:rgba(217,65,42,.22)}.pt-f{background:rgba(30,160,100,.25)}.pt-e{background:rgba(120,90,200,.25)}
 .sp{border-left-width:6px}.sp1{border-left-color:#E0A526}.sp2{border-left-color:#D9412A}.sp3{border-left-color:#1EA064}.sp4{border-left-color:#785AC8}
 select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);width:100%;min-width:0}
+.more{display:grid;gap:4px;margin-top:8px}.more textarea{min-height:0;margin:0;font-size:15px}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -261,6 +262,10 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
       <span class="tag" style="display:block;margin-top:12px">Prompt: ask Gemini to bring your character to life</span>
       <pre class="prompt small" id="charOut"></pre>
       <div class="row"><button class="btn sm" id="copyChar" type="button">Copy prompt</button></div>
+      <span class="tag" style="display:block;margin-top:14px">2 · Paste Gemini's answer here</span>
+      <textarea id="charPaste" rows="4" placeholder="Copy Gemini's 5 lines (look, talk, habit, secret, funny thing) and paste them here…"></textarea>
+      <div class="row"><button class="btn sm" id="addMore" type="button">Add it to my character card</button></div>
+      <p class="muted" style="margin:0;font-size:14px">Keep the lines you love, change the rest. Your story, your picture and your podcast will use them.</p>
     </div>
     <aside class="card side">
       <span class="tag">Character card</span>
@@ -537,8 +542,22 @@ function drawChar(){
   $("#charOut").textContent = charText(); window.B.meter($("#charP"), CSPEC, C);
   $("#charCard").replaceChildren(el("h3", {style:"font-size:26px;margin:4px 0"}, C.name || "Name?"), el("p", {style:"margin:0"}, C.who || "Who?"),
     C.look.length ? el("p", {style:"margin:4px 0 0"}, "👀 ", C.look.join(", ")) : "", C.pers.length ? el("p", {style:"margin:4px 0 0"}, "💬 ", C.pers.join(", ")) : "",
-    C.power ? el("p", {style:"margin:4px 0 0"}, "⚡ ", C.power) : "", C.want ? el("p", {style:"margin:4px 0 0"}, "🎯 wants ", C.want) : "", C.fear ? el("p", {style:"margin:4px 0 0"}, "😨 afraid of ", C.fear) : "");
+    C.power ? el("p", {style:"margin:4px 0 0"}, "⚡ ", C.power) : "", C.want ? el("p", {style:"margin:4px 0 0"}, "🎯 wants ", C.want) : "", C.fear ? el("p", {style:"margin:4px 0 0"}, "😨 afraid of ", C.fear) : "",
+    ...MORE.filter(([k]) => C.more && C.more[k]).map(([k, icon, label]) => { const t = el("textarea", {rows:"2", "aria-label":label, class:"moreBox"}); t.value = C.more[k]; t.addEventListener("input", () => { C.more[k] = t.value; store.set("char", C); drawStory(); });
+      return el("label", {class:"more"}, el("span", {class:"tag"}, icon + " " + label + " (from Gemini, change it if you want)"), t); }));
 }
+const MORE = [["look","👀","Look"],["talk","🗣️","How they talk"],["habit","🔁","Habit"],["secret","🤫","Secret"],["funny","😂","Funny thing"]];
+function parseMore(t){ const out = {};
+  t.replace(/\*\*|__/g, "").split(/\n+/).map(x => x.trim().replace(/^([-*•○◦●]|\d+[.)])\s*/, "")).filter(Boolean).forEach(line => {
+    const m = line.match(/^(look|looks|how they look|appearance|talk|talks|how they talk|voice|habit|secret|funny( thing)?|fun fact)\s*[:\-–]\s*(.+)$/i);
+    if (!m) return; const k = m[1].toLowerCase(), v = m[3].trim();
+    const key = /look|appear/.test(k) ? "look" : /talk|voice/.test(k) ? "talk" : /habit/.test(k) ? "habit" : /secret/.test(k) ? "secret" : "funny";
+    if (!out[key]) out[key] = v; });
+  return out; }
+$("#addMore").onclick = () => { const t = $("#charPaste").value.trim(); if (!t){ K.toast("Paste Gemini's answer first."); $("#charPaste").focus(); return; }
+  const m = parseMore(t), n = Object.keys(m).length; if (!n){ K.toast("I could not find the 5 lines. Ask Gemini again with the prompt, then paste its answer."); return; }
+  C.more = Object.assign(C.more || {}, m); store.set("char", C); drawChar(); drawStory(); L1.tick(1);
+  K.toast(n + " lines added to your character card!"); };
 function onChar(redraw){ store.set("char", C); if (redraw) charUI.draw(); drawChar(); drawStory(); }
 charUI = window.B.make($("#charB"), CSPEC, C, onChar);
 $("#copyChar").onclick = () => { if (!C.who){ K.toast("Choose who your character is first."); return; } copy(charText(), $("#charOut"), "Gemini"); L1.tick(1); };
@@ -567,6 +586,7 @@ function storyText(){
   return "Role: You are a children's author who writes exciting stories about the future.\n" +
     "Task: Write " + (S.genre ? (/^[aeiou]/.test(S.genre) ? "an " : "a ") + S.genre + " story" : "a short story") + " set in " + world() + ".\n" +
     "Context: The hero is " + (C.name || "my character") + ", " + (C.who || "a kid from the future") + (C.pers.length ? ", who is " + J(C.pers) : "") + (C.power ? ", with " + C.power : "") + (C.want ? ", and wants " + C.want : "") + "." +
+    (C.more && Object.values(C.more).some(Boolean) ? " More about the hero: " + MORE.filter(([k]) => C.more[k]).map(([k, , label]) => label + ": " + C.more[k].trim().replace(/([^.!?"”])$/, "$1.")).join(" ") : "") +
     (S.prob ? " The problem: " + S.prob + "." : "") +
     (helps.length ? " What helps: " + J(helps) + "." : "") +
     (S.helps.includes("my design ideas from Chapter 3") && ideas.length ? " Use these ideas from my design" + (d.name ? " \"" + d.name + "\"" : "") + ": " + ideas.join("; ") + "." : "") +
@@ -588,7 +608,7 @@ count();
 checklist("hunt", [["It uses ideas from my design", ""], ["My character is the hero", ""], ["Invented names only, no real people", ""], ["Nothing scary, rude or untrue about real places", ""], ["I changed at least 3 sentences into my own words", ""]], true);
 const L1 = checklist("list1", [
   ["Pick your team", "In part 02, at the top. Some choices change with your team."],
-  ["Build your character", "Choose who they are, their look, personality, gadget, what they want and what they fear. Copy the prompt into Gemini."],
+  ["Build your character", "Choose who they are, their look, personality, gadget, what they want and what they fear. Copy the prompt into Gemini, then paste its answer back here."],
   ["Build your story", "Choose the kind of story, the problem, what helps, the ending. Aim for 5 stars."],
   ["Ask Gemini for the story", "Copy the story prompt into a new Gemini chat."],
   ["Make it better", "Use at least one follow-up prompt."],
