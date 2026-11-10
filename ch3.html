@@ -221,6 +221,8 @@ img.fprev{background:var(--paper)}
 .fpage{font-weight:700}
 .files2 a{color:inherit}
 .slots{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
+
+.files2 .fadd{padding:4px 10px;font-size:13px;min-height:0}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -466,11 +468,12 @@ function slotBox(box, s, onDone){
   inp.addEventListener("change", async () => {
     const file = inp.files[0]; if (!file) return;
     msg.textContent = "Saving " + file.name + "…"; msg.className = "fmsg";
-    try { await upload(file, s.slot, s.label); msg.textContent = "✓ Saved in your folder!"; msg.className = "fmsg ok"; await draw(); if (onDone) onDone(s.slot); }
+    try { await upload(file, s.slot, s.label); msg.textContent = "✓ Saved in your folder!"; msg.className = "fmsg ok"; await draw(); if (onDone) onDone(s.slot); document.dispatchEvent(new CustomEvent("evg-files", {detail:"slot"})); }
     catch(e){ msg.textContent = MSG[e.code] || ("Problem: " + (e.code || "unknown")); msg.className = "fmsg no"; }
   });
   box.classList.add("fslot");
   ready().then(draw);
+  document.addEventListener("evg-files", e => { if (e.detail !== "slot") draw(); });
   return {draw};
 }
 /* the kid's whole folder: what should be in it, and what is saved */
@@ -484,12 +487,21 @@ function folder(box, now){
     let files = []; let err = ""; try { files = await list(true); } catch(e){ err = MSG[e.code] || ""; }
     const P = plan(), have = s => files.find(f => f.slot === s.slot), n = P.filter(have).length;
     box.replaceChildren(...[el("span", {class:"tag"}, "📁 My folder · saved in the app"),
-      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), el("small", null, "Ch " + s.ch)); })),
+      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc()) ? addBtn(s) : el("small", null, "Ch " + s.ch)); })),
       el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, on() ? n + " of " + P.length + " saved. Your teacher can see your folder." : "Log in from the class link to save your files in the app."),
       err ? el("p", {class:"fmsg no"}, err) : null,
       on() && files.length ? el("div", {class:"row", style:"margin-top:6px"}, el("button", {class:"btn sm alt", type:"button", onclick:() => zip(files, (acc() && acc().username) || "my-folder")}, "⬇ Download my whole folder")) : null].filter(Boolean));
   }
+  function addBtn(s){
+    const inp = el("input", {type:"file", accept:s.accept, hidden:""});
+    const b = el("button", {class:"btn sm alt fadd", type:"button", title:"Add your " + s.label.toLowerCase() + " here (from Chapter " + s.ch + ")", onclick:() => inp.click()}, "⬆ Add");
+    inp.addEventListener("change", async () => { const file = inp.files[0]; if (!file) return; b.disabled = true; b.textContent = "Saving…";
+      try { await upload(file, s.slot, s.label); await draw(); document.dispatchEvent(new CustomEvent("evg-files")); }
+      catch(e){ b.disabled = false; b.textContent = "⬆ Add"; box.querySelector(".fmsg.no")?.remove(); box.append(el("p", {class:"fmsg no"}, MSG[e.code] || ("Problem: " + (e.code || "unknown")))); } });
+    return el("span", {class:"fadds"}, b, inp);
+  }
   ready().then(draw);
+  document.addEventListener("evg-files", () => draw());
   return {draw};
 }
 /* zip: same file names as the web page uses */
