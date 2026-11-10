@@ -251,7 +251,7 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
     <div class="card bad"><span class="tag">Weak prompt</span><p class="quote" id="weakQ">"Design a future classroom."</p><p style="margin:0">Gemini does not know your school, your age or your country. So it gives a boring, general answer that could be anywhere.</p></div>
     <div class="card good"><span class="tag">Recipe prompt</span><p class="quote">Role + Task + Context + Format</p><p style="margin:0">Tell it who to be, what to do, the facts it can't know, and how the answer should look. Now the answer is about YOUR project.</p></div>
   </div>
-  <p class="lead" style="margin-top:18px">Build a recipe prompt in 4 clicks. Choose one thing in each box and watch the prompt change. Then try a funny role: the answer changes completely!</p>
+  <p class="lead" style="margin-top:18px">Build your recipe in 4 clicks: one choice in each box. <b>This is the start of YOUR mission prompt:</b> in part 03 you add the details and send it to Gemini.</p>
   <div class="recipe" id="recB"></div>
   <span class="tag" style="display:block;margin-top:14px">Your recipe prompt</span>
   <pre class="prompt" id="recipeOut"></pre>
@@ -500,23 +500,7 @@ $("#botForm").addEventListener("submit", e => { e.preventDefault(); const q = $(
   const hit = RULES.find(([re]) => re.test(q));
   setTimeout(() => { if (hit) say("bot", hit[1]); else { fails++; $("#fails").textContent = fails; say("bot fail", "I don't understand. No one wrote a rule for that."); if (fails >= 2) $("#afterBot").hidden = false; } }, 350); });
 
-/* 2 recipe: 4 boxes, one click each */
 function team(){ return me().team || "school"; }
-const RSPEC = [
-  {id:"role", title:"Role · who is the AI?", one:true, opts:["a scientist","a robot engineer","an architect of the future","a famous chef","a football coach","a pirate captain 🏴‍☠️"]},
-  {id:"task", title:"Task · what should it do?", one:true, opts:() => team() === "planet" ? ["design a city for 2050","invent a machine that cleans the sea","plan transport with no traffic","design a farm of the future"] : ["design a classroom for 2040","invent a robot for our school","design a playground of the future","plan a healthy canteen"]},
-  {id:"ctx", title:"Context · facts it can't know", max:3, opts:["I am 12 years old","I live in Lebanon","it must be cheap","it must be good for the planet","it must be fun","it must work for everyone"]},
-  {id:"fmt", title:"Format · how should it look?", one:true, opts:["3 short bullet points","a name and 3 big ideas","a news headline and 2 sentences","a short poem","a table"]}
-];
-const R = Object.assign({role:"", task:"", ctx:[], fmt:""}, store.get("recipe2") || {});
-function recipeText(){ const j = window.B.join;
-  return "Role: You are " + (R.role ? R.role.replace(/ 🏴‍☠️$/, "") : "…") + ".\nTask: " + (R.task ? R.task.charAt(0).toUpperCase() + R.task.slice(1) : "…") + ".\nContext: " + (R.ctx.length ? R.ctx.map(c => c.charAt(0).toUpperCase() + c.slice(1)).join(". ") : "…") + ".\nFormat: " + (R.fmt ? R.fmt.charAt(0).toUpperCase() + R.fmt.slice(1) : "…") + ". Easy English."; }
-let recUI;
-function drawRecipe(){ $("#recipeOut").textContent = recipeText(); }
-function onRec(redraw){ store.set("recipe2", R); if (redraw) recUI.draw(); drawRecipe(); }
-recUI = window.B.make($("#recB"), RSPEC, R, onRec);
-function loadRecipe(){ recUI.draw(); drawRecipe(); const k = team() === "planet"; $("#weakQ").textContent = k ? "\"Design the future of transport.\"" : "\"Design a future classroom.\""; }
-$("#copyRecipe").onclick = () => copy($("#recipeOut").textContent, $("#recipeOut"), "Gemini");
 
 /* 3 design brief */
 const PLACE = {
@@ -529,20 +513,21 @@ const PROB = {
 };
 const MUST = ["robots that help","flying vehicles","holograms","plants everywhere","solar and wind power","AI assistants","games while learning","floating buildings","recycling machines","water from the air","furniture that moves","space for animals"];
 const BSPEC = [
-  {id:"role", icon:"🎭", title:"Role · who should the AI be?", one:true, opts:["an architect of the future","a scientist","an inventor","a robot engineer","a game designer","a nature expert"]},
+  {id:"role", icon:"🎭", title:"Role · who should the AI be?", one:true, opts:["an architect of the future","a scientist","an inventor","a robot engineer","a famous chef","a football coach","a pirate captain","a game designer","a nature expert"]},
   {id:"place", icon:"📍", title:"Task · what will you design?", one:true, opts:() => { const k = window.PARTKIT[me().part]; return k ? k.places.concat(PLACE[team()]) : PLACE[team()]; }},
+  {id:"ctx", icon:"📌", title:"Context · facts it can't know", max:3, opts:["I am 12 years old","I live in Lebanon","it must be cheap","it must be fun","it must work for everyone"]},
   {id:"prob", icon:"⚠️", title:"Context · what is wrong today?", max:2, opts:() => PROB[team()]},
   {id:"must", icon:"🚀", title:"Context · it must have…", max:4, opts:() => { const k = window.PARTKIT[me().part]; return (k ? k.things : []).concat(MUST); }, opts0:["robots that help","flying vehicles","holograms","plants everywhere","solar and wind power","AI assistants","games while learning","floating buildings","recycling machines","water from the air","furniture that moves","space for animals"]},
   {id:"feel", icon:"💛", title:"Context · people should feel…", max:2, opts:["excited","calm","safe","proud","curious","happy"]},
   {id:"format", icon:"📝", title:"Format · after the name and 3 big ideas, show it as…", one:true, opts:["a day in it, as a short story","a guided tour for a visitor","a news report from the future","a comic strip in 4 boxes, told in words","an advert on TV"]},
   {id:"idea", title:"✨ Your own crazy idea", text:true, ph:"e.g. the playground floats above the school", hint:"the AI never thought of it"}
 ];
-const B = Object.assign({role:"", place:"", prob:[], must:[], feel:[], format:"a day in it, as a short story", idea:""}, store.get("brief2") || {});
+const B = Object.assign({role:"", place:"", ctx:["I am 12 years old","I live in Lebanon"], prob:[], must:[], feel:[], format:"a day in it, as a short story", idea:""}, store.get("brief2") || {});
 function briefText(){
   const T = me().T || K.TEAMS.school, j = window.B.join, when = T.key === "planet" ? "in Lebanon in the year 2050" : "for our school, Evergreen in Lebanon, in the year 2040";
   return "Role: You are " + (B.role || "an expert designer of the future") + ".\n" +
     "Task: Design " + (B.place || "my idea") + " " + when + ", the way it could look in the future.\n" +
-    "Context: I am 12 years old, in the team \"" + T.name + "\"." +
+    "Context: " + (B.ctx && B.ctx.length ? B.ctx.map(c => c.charAt(0).toUpperCase() + c.slice(1)).join(". ") + ". " : "") + "I am in the team \"" + T.name + "\"." +
     (B.prob.length ? " Today the problem is that " + j(B.prob) + "." : "") +
     (B.must.length ? " It must have " + j(B.must) + "." : "") +
     (B.feel.length ? " People should feel " + j(B.feel) + " there." : "") +
@@ -552,8 +537,16 @@ function briefText(){
 }
 let briefUI;
 function drawBrief(){ $("#briefOut").textContent = briefText(); window.B.meter($("#briefP"), BSPEC, B); }
-function onBrief(redraw){ store.set("brief2", B); if (redraw) briefUI.draw(); drawBrief(); drawCard(); ticks(); }
+function onBrief(redraw){ store.set("brief2", B); if (redraw){ briefUI.draw(); if (typeof recUI !== "undefined" && recUI) recUI.draw(); } drawBrief(); drawRecipe(); drawCard(); ticks(); }
 briefUI = window.B.make($("#briefB"), BSPEC, B, onBrief);
+/* 2 recipe: the same choices, the first 4 ingredients */
+const RSPEC = BSPEC.filter(x => ["role","place","ctx","format"].includes(x.id));
+let recUI;
+function drawRecipe(){ $("#recipeOut").textContent = briefText(); }
+function onRec(redraw){ store.set("brief2", B); if (redraw){ recUI.draw(); briefUI.draw(); } drawRecipe(); drawBrief(); drawCard(); ticks(); }
+recUI = window.B.make($("#recB"), RSPEC, B, onRec);
+function loadRecipe(){ recUI.draw(); drawRecipe(); $("#weakQ").textContent = team() === "planet" ? "\"Design the future of transport.\"" : "\"Design a future classroom.\""; }
+$("#copyRecipe").onclick = () => copy($("#recipeOut").textContent, $("#recipeOut"), "Gemini");
 $("#copyBrief").onclick = () => { if (!B.place){ K.toast("Choose what you will design first (Task)."); return; } copy(briefText(), $("#briefOut"), "Gemini"); L1.tick(3); };
 const FOLLOW = [
   ["More surprising", "Make big idea 2 more surprising and creative, but still possible."],
