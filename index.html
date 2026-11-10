@@ -288,7 +288,7 @@ function renderHome(){
       el("div", null, el("span", {class:"tag"}, "13 sessions · 9 chapters"), el("h1", null, ACC ? "Hi " + ACC.name + "!" : "AI Creators"),
         el("p", {class:"lead"}, seg ? "Your project: " + seg + ". Every chapter adds one piece to your page of the team website." : "Two teams, two websites: School 2040 and Planet 2050. Pick your team and your part in Chapter 1.")),
       el("div", {class:"card total"}, el("span", {class:"tag"}, "Your course"), el("b", null, all + "%"), el("div", {class:"bar"}, el("i", {style:"width:" + all + "%"})),
-        el("a", {class:"btn", href:next.f}, (all ? "Continue: " : "Start: ") + "Chapter " + next.n))),
+        el("a", {class:"btn", href:next.f}, (all === 100 ? "All done! Review Chapter " : all ? "Continue: Chapter " : "Start: Chapter ") + next.n))),
     el("div", {class:"chapters"}, ...CH.map((c, i) => el("a", {class:"ch" + (pr[i] === 100 ? " done" : ""), href:c.f},
       el("span", {class:"num"}, pr[i] === 100 ? "✓" : String(c.n)),
       el("span", {class:"body"}, el("span", {class:"tag"}, "Session " + c.s), el("b", null, c.t), el("span", {class:"learn"}, c.learn), el("span", {class:"bar sm"}, el("i", {style:"width:" + pr[i] + "%"}))),

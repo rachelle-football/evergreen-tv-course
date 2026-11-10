@@ -205,6 +205,8 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .power{display:grid;gap:2px;background:var(--gold-soft);border-radius:12px;padding:10px 12px}
 .power b{font-size:28px;color:var(--gold);letter-spacing:2px}
 .power .muted{font-size:14px}
+.cat.mine{border:2px solid var(--green);background:var(--green-soft)}
+.cat.mine.on{background:var(--green-soft)}
 </style>
 <header class="top">
   <div class="wrap">
@@ -340,6 +342,30 @@ function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{p
 return {TEAMS, me, picker, fill, rawSet};
 })();
 
+/* options that fit each part: places, things and looks */
+window.PARTKIT = {
+  "The classroom": {icon:"🏫", places:["a futuristic classroom","a classroom in the clouds","a glass classroom in a forest","a classroom under the sea"], things:["glowing glass desks with holograms","giant interactive screens on the walls","a holographic robot teacher","desks that float","VR headsets on every desk","walls that turn into any place in the world","plants growing from the ceiling","a robot that hands out snacks"], looks:["blue and glowing","white and clean","full of plants","colourful and fun"]},
+  "The library": {icon:"📚", places:["a giant library of the future","a library inside a huge tree","a floating library","a library in a cave of crystals"], things:["books that glow and talk","flying bookshelves","glowing reading pods","a robot librarian","holograms that act out stories","a slide between the floors","floating bean bags"], looks:["warm and cosy","magical and glowing","wood and plants","space-themed"]},
+  "The canteen": {icon:"🍽️", places:["a futuristic school canteen","a canteen on the roof","a canteen inside a greenhouse"], things:["robot chefs","food printers making healthy meals","vegetables growing on the walls","plates you can eat","a smoothie robot","tables that clean themselves","a conveyor belt of fruit"], looks:["bright and fresh","green and natural","shiny and modern","colourful and fun"]},
+  "Playground and sports": {icon:"⚽", places:["a playground of the future","a floating sports field","a sky playground on the roof","a giant dome stadium"], things:["anti-gravity football","robot goalkeepers","trampolines that bounce you high","climbing walls that move","a giant slide from the roof","hoverboards","a glowing football pitch","fountains to cool down"], looks:["bright colours","glowing neon","green and natural","shiny and modern"]},
+  "The science lab": {icon:"🔬", places:["a futuristic science lab","a lab on a space station","an underwater lab"], things:["robot arms helping students","hologram planets and atoms","glowing test tubes","a 3D printer making inventions","microscopes that project on the wall","a robot dinosaur skeleton","a tiny weather machine"], looks:["blue and glowing","white and clean","colourful and fun"]},
+  "Art and music studio": {icon:"🎨", places:["an art and music studio of the future","a studio full of light","an open-air stage in the sky"], things:["walls you can paint with light","instruments that glow when played","a hologram orchestra","a dancing robot","3D-pen sculptures","a recording booth in a bubble"], looks:["rainbow colours","glowing neon","warm and cosy"]},
+  "Getting to school": {icon:"🚌", places:["a school bus stop of the future","the road to school in 2040","the sky above the school"], things:["flying school buses","solar bikes","moving walkways","a cable car to school","self-driving pods","glowing safe crossings","robot crossing guards"], looks:["bright yellow","glass and white","glowing neon"]},
+  "The school day": {icon:"🕒", places:["a school morning in 2040","a learning garden","a school with no walls"], things:["a hologram timetable in the air","lessons on virtual trips around the world","nap pods","a friendly AI study coach","long breaks outside","robots that help with homework (but don't cheat!)"], looks:["calm and bright","colourful and fun","full of plants"]},
+  "Wellbeing corner": {icon:"💚", places:["a calm wellbeing corner","a quiet garden room","a room with a view of the sea"], things:["lights that change colour with your mood","a robot friend to talk to","soft floating chairs","a little waterfall","plants and fish tanks","music bubbles"], looks:["soft and calm","green and natural","pastel colours"]},
+  "The school garden": {icon:"🌱", places:["a school garden of the future","a garden tower","a garden on the roof"], things:["gardening drones","robot bees","giant vegetables","a greenhouse dome","a pond with fish","an outdoor classroom under the trees","flowers that catch the rain"], looks:["green and natural","colourful flowers","glowing at night"]},
+  "Clean energy": {icon:"⚡", places:["a city powered by the sun","wind farms on the mountains","solar islands in the sea"], things:["solar panels on every roof","giant wind turbines","glowing energy towers","streets that make electricity when you walk","solar trees","energy from ocean waves","a battery as big as a building"], looks:["shiny and modern","glowing blue","green and natural"]},
+  "Water": {icon:"💧", places:["a city that saves every drop","a clean lake in the mountains","a city that catches the rain"], things:["rain-catching roofs","machines that make water from the air","clean fountains everywhere","smart taps","a robot that cleans rivers","floating water gardens"], looks:["blue and sparkling","glass and white","green and natural"]},
+  "Waste and recycling": {icon:"♻️", places:["a recycling city","a zero-waste market","a beach with no rubbish"], things:["recycling robots","bins that sort by themselves","buildings made of recycled plastic","a machine that turns rubbish into energy","repair shops for everything","compost gardens"], looks:["colourful recycled materials","shiny and new","green and natural"]},
+  "Clean air": {icon:"🌬️", places:["a city with clean air","a mountain town","a city full of trees"], things:["air-cleaning towers","trees on every building","electric buses","flowers that clean the air","a sky full of birds","no smoke anywhere"], looks:["fresh blue sky","green and natural","white and clean"]},
+  "Transport": {icon:"🚆", places:["a transport station of the future","a city with flying traffic","a road in the sky","a train crossing Lebanon"], things:["flying cars","a magnetic floating train","solar buses","hover bikes","self-driving pods","cable cars over the city","a tube train under the sea","sky bridges for bikes"], looks:["glass and white","bright colours","shaped like animals","glowing neon"]},
+  "Cities and homes": {icon:"🏙️", places:["a green city of the future","a neighbourhood of eco-houses","a city of floating buildings"], things:["towers covered in gardens","round eco-houses","floating buildings","parks on every roof","homes that grow their own food","streets with no cars"], looks:["white and green","rainbow coloured","shiny glass","made of wood"]},
+  "Food and farming": {icon:"🌾", places:["a smart farm","a farm tower in the city","a farm under a glass dome"], things:["farming robots","vegetables growing in towers","gardening drones","fish and plant gardens","a robot that picks fruit","a market with no plastic"], looks:["green and fresh","colourful fruit","shiny and modern"]},
+  "Oceans and beaches": {icon:"🌊", places:["a clean beach on the Mediterranean","an underwater city","a coral reef"], things:["ocean-cleaning boats","robot fish that eat plastic","glowing coral","dolphins and sea turtles","underwater gardens","a floating beach park"], looks:["turquoise and sparkling","glowing at night","colourful sea life"]},
+  "Forests and animals": {icon:"🌲", places:["a forest of cedar trees","the mountains with cedar trees","a wildlife park"], things:["cedar trees","forest-guard drones","bridges for animals over the roads","birds and butterflies","a hospital for trees","eagles in the sky"], looks:["green and natural","misty and magical","sunny and golden"]},
+  "Weather and climate": {icon:"🌦️", places:["a city ready for storms","a cool city in a heat wave","a weather station on the mountain"], things:["weather robots","shade trees on every street","cooling mist towers","storm shields","a giant weather screen","rainbows after the rain"], looks:["dramatic sky","bright and safe","glowing blue"]}
+};
+
 </script>
 <script>
 (function(){
@@ -439,6 +465,9 @@ const PICS = {
 };
 let pic = "p1";
 function team(){ return P.me().team === "planet" ? "planet" : "school"; }
+function partKit(){ const m = P.me(); return m.part && window.PARTKIT[m.part] ? Object.assign({name:m.part}, window.PARTKIT[m.part]) : null; }
+function places(){ const k = partKit(), t = PLACES[team()]; return k ? k.places.concat(t.filter(x => !k.places.includes(x))) : t; }
+function cats(){ const k = partKit(), t = team(), base = CATS.filter(c => !c.team || c.team === t); return k ? [{id:"part", icon:k.icon, title:k.name + " · your part", kinds:k.things, looks:k.looks, mine:true}].concat(base) : base; }
 function blank(p){ return {place:"", pick:{}, look:{people:"a mix of boys and girls"}, style:"colourful 3D animation", light:"bright sunny day", camera:PICS[p].def.camera, mood:["magical"], colours:"bright rainbow colours", idea:"", wow:true, who:""}; }
 function state(){ const s = store.get("scene-" + pic); return s && s.pick ? s : blank(pic); }
 let S = state();
@@ -447,7 +476,7 @@ const chip = (txt, on, fn, cls) => el("button", {class:"chip" + (cls ? " " + cls
 const join = a => a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
 function prompt(){
   const t = team(), when = t === "planet" ? "in Lebanon in the year 2050" : "at a school in Lebanon in the year 2040";
-  const things = CATS.filter(c => !c.team || c.team === t).map(c => { const k = S.pick[c.id] || []; if (!k.length) return null; const l = S.look[c.id]; return join(k) + (l ? " (" + l + ")" : ""); }).filter(Boolean);
+  const things = cats().map(c => { const k = (S.pick[c.id] || []).filter(x => c.kinds.includes(x)); if (!k.length) return null; const l = S.look[c.id]; return join(k) + (l ? " (" + l + ")" : ""); }).filter(Boolean);
   const who = pic === "p3" ? (S.who || "a friendly cartoon kid from the future") : "";
   const lines = [];
   lines.push(pic === "p3" ? `A cartoon character: ${who}, in ${S.place || "a futuristic place"} ${when}.` : `A stunning picture of ${S.place || "a futuristic place"} ${when}.`);
@@ -460,16 +489,16 @@ function prompt(){
 }
 function power(){ const n = Object.values(S.pick).reduce((a, k) => a + k.length, 0) + Object.keys(S.look).filter(k => S.look[k] && (S.pick[k] || []).length).length + (S.place ? 1 : 0) + (S.idea.trim() ? 2 : 0) + (S.mood.length ? 1 : 0); return Math.min(5, Math.floor(n / 2)); }
 function draw(){
-  const t = team(), cats = CATS.filter(c => !c.team || c.team === t);
-  if (S.place && !PLACES[t].includes(S.place)) S.place = "";
+  const t = team(), cl = cats(), pl = places();
+  if (S.place && !pl.includes(S.place)) S.place = "";
   const box = $("#builder");
   const sec = (title, body, extra) => el("div", {class:"bsec"}, el("h4", null, title, extra ? el("small", null, extra) : ""), body);
   const parts = [];
-  parts.push(sec("1 · Where is it?", el("div", {class:"chips"}, ...PLACES[t].map(p => chip(p, S.place === p, () => { S.place = S.place === p ? "" : p; save(); }))), t === "planet" ? "Planet 2050" : "School 2040"));
+  parts.push(sec("1 · Where is it?", el("div", {class:"chips"}, ...pl.map(p => chip(p, S.place === p, () => { S.place = S.place === p ? "" : p; save(); }))), (partKit() ? partKit().icon + " " + partKit().name + " first, then " : "") + (t === "planet" ? "Planet 2050" : "School 2040")));
   if (pic === "p3"){ const inp = el("input", {placeholder:"e.g. a curious girl with a robot backpack", value:S.who}); inp.addEventListener("input", () => { S.who = inp.value; store.set("scene-" + pic, S); $("#picOut").textContent = prompt(); }); parts.push(sec("Your character", inp, "from your Chapter 4 story")); }
   parts.push(el("h4", {class:"bhead"}, "2 · What's in it? ", el("small", null, pic === "p2" ? "pick only 1 or 2 things for a close-up" : "pick as many as you like")));
-  parts.push(el("div", {class:"cats"}, ...cats.map(c => { const k = S.pick[c.id] || [], on = k.length > 0;
-    return el("div", {class:"cat" + (on ? " on" : "")}, el("b", null, c.icon + " " + c.title),
+  parts.push(el("div", {class:"cats"}, ...cl.map(c => { const k = (S.pick[c.id] = (S.pick[c.id] || []).filter(x => c.kinds.includes(x))), on = k.length > 0;
+    return el("div", {class:"cat" + (on ? " on" : "") + (c.mine ? " mine" : "")}, el("b", null, c.icon + " " + c.title),
       el("div", {class:"chips"}, ...c.kinds.map(x => chip(x, k.includes(x), () => { const a = S.pick[c.id] || []; S.pick[c.id] = a.includes(x) ? a.filter(y => y !== x) : a.concat(x); save(); }))),
       on && c.looks ? el("div", {class:"chips looks"}, el("span", {class:"muted"}, "Look:"), ...c.looks.map(l => chip(l, S.look[c.id] === l, () => { S.look[c.id] = S.look[c.id] === l ? "" : l; save(); }, "lk"))) : "");
   })));
@@ -486,7 +515,7 @@ function draw(){
   drawPower();
 }
 function drawPower(){ const p = power(); $("#power").replaceChildren(el("span", {class:"tag"}, "Prompt power"), el("b", null, "★".repeat(p) + "☆".repeat(5 - p)), el("span", {class:"muted"}, p >= 4 ? "Strong prompt!" : p >= 2 ? "Good. Add more details." : "Pick a place and at least 3 things.")); }
-function tabs(){ $("#picTabs").replaceChildren(...Object.keys(PICS).map(k => el("button", {type:"button", role:"tab", "aria-selected": String(k === pic), class:"tab", onclick:() => { pic = k; S = state(); if (k === "p3" && !S.who){ const c = raw("ch4-char") || {}; if (c.who){ const pe = Array.isArray(c.pers) ? c.pers.join(" and ") : (c.pers || ""); S.who = (pe ? pe + " " : "") + c.who + (c.name ? " called " + c.name : "") + (Array.isArray(c.look) && c.look.length ? ", who " + c.look.join(" and ") : ""); } } tabs(); draw(); }}, PICS[k].label))); }
+function tabs(){ $("#picTabs").replaceChildren(...Object.keys(PICS).map(k => el("button", {type:"button", role:"tab", "aria-selected": String(k === pic), class:"tab", onclick:() => { pic = k; S = state(); if (k === "p3" && !S.who){ const c = raw("ch4-char") || {}; if (c.who){ const pe = Array.isArray(c.pers) ? c.pers.join(" and ") : (c.pers || ""); S.who = (pe ? c.who.replace(/^(an?) /, "a " + pe + " ") : c.who) + (c.name ? " called " + c.name : "") + (Array.isArray(c.look) && c.look.length ? ", who " + c.look.join(" and ") : ""); } } tabs(); draw(); }}, PICS[k].label))); }
 $("#resetPic").onclick = () => { S = blank(pic); store.set("scene-" + pic, S); draw(); };
 $("#copyPic").onclick = () => { if (!S.place){ toast("First choose where it is (step 1)."); return; } copyText($("#picOut").textContent, $("#picOut"), "Adobe Express"); };
 P.picker($("#proj"), () => { draw(); });

@@ -251,8 +251,8 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
   <div class="row"><button class="btn sm" id="copyRecipe" type="button">Copy prompt</button><span class="muted" style="font-size:15px">Teacher: paste it in Gemini on the board and compare it with the weak prompt.</span></div>
 </section>
 
-<section class="seg" id="seg-3" data-min="22" data-title="Mission: design card" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: design your part with Gemini</h2><p>22 minutes · gemini.google.com</p></div></div>
+<section class="seg" id="seg-3" data-min="27" data-title="Mission: design card" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: design your part with Gemini</h2><p>27 minutes · gemini.google.com</p></div></div>
   <div class="card myproj" id="proj"></div>
   <div class="mission">
     <div>
@@ -339,6 +339,30 @@ function picker(box, onChange){
 function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
 return {TEAMS, me, picker, fill, rawSet};
 })();
+
+/* options that fit each part: places, things and looks */
+window.PARTKIT = {
+  "The classroom": {icon:"🏫", places:["a futuristic classroom","a classroom in the clouds","a glass classroom in a forest","a classroom under the sea"], things:["glowing glass desks with holograms","giant interactive screens on the walls","a holographic robot teacher","desks that float","VR headsets on every desk","walls that turn into any place in the world","plants growing from the ceiling","a robot that hands out snacks"], looks:["blue and glowing","white and clean","full of plants","colourful and fun"]},
+  "The library": {icon:"📚", places:["a giant library of the future","a library inside a huge tree","a floating library","a library in a cave of crystals"], things:["books that glow and talk","flying bookshelves","glowing reading pods","a robot librarian","holograms that act out stories","a slide between the floors","floating bean bags"], looks:["warm and cosy","magical and glowing","wood and plants","space-themed"]},
+  "The canteen": {icon:"🍽️", places:["a futuristic school canteen","a canteen on the roof","a canteen inside a greenhouse"], things:["robot chefs","food printers making healthy meals","vegetables growing on the walls","plates you can eat","a smoothie robot","tables that clean themselves","a conveyor belt of fruit"], looks:["bright and fresh","green and natural","shiny and modern","colourful and fun"]},
+  "Playground and sports": {icon:"⚽", places:["a playground of the future","a floating sports field","a sky playground on the roof","a giant dome stadium"], things:["anti-gravity football","robot goalkeepers","trampolines that bounce you high","climbing walls that move","a giant slide from the roof","hoverboards","a glowing football pitch","fountains to cool down"], looks:["bright colours","glowing neon","green and natural","shiny and modern"]},
+  "The science lab": {icon:"🔬", places:["a futuristic science lab","a lab on a space station","an underwater lab"], things:["robot arms helping students","hologram planets and atoms","glowing test tubes","a 3D printer making inventions","microscopes that project on the wall","a robot dinosaur skeleton","a tiny weather machine"], looks:["blue and glowing","white and clean","colourful and fun"]},
+  "Art and music studio": {icon:"🎨", places:["an art and music studio of the future","a studio full of light","an open-air stage in the sky"], things:["walls you can paint with light","instruments that glow when played","a hologram orchestra","a dancing robot","3D-pen sculptures","a recording booth in a bubble"], looks:["rainbow colours","glowing neon","warm and cosy"]},
+  "Getting to school": {icon:"🚌", places:["a school bus stop of the future","the road to school in 2040","the sky above the school"], things:["flying school buses","solar bikes","moving walkways","a cable car to school","self-driving pods","glowing safe crossings","robot crossing guards"], looks:["bright yellow","glass and white","glowing neon"]},
+  "The school day": {icon:"🕒", places:["a school morning in 2040","a learning garden","a school with no walls"], things:["a hologram timetable in the air","lessons on virtual trips around the world","nap pods","a friendly AI study coach","long breaks outside","robots that help with homework (but don't cheat!)"], looks:["calm and bright","colourful and fun","full of plants"]},
+  "Wellbeing corner": {icon:"💚", places:["a calm wellbeing corner","a quiet garden room","a room with a view of the sea"], things:["lights that change colour with your mood","a robot friend to talk to","soft floating chairs","a little waterfall","plants and fish tanks","music bubbles"], looks:["soft and calm","green and natural","pastel colours"]},
+  "The school garden": {icon:"🌱", places:["a school garden of the future","a garden tower","a garden on the roof"], things:["gardening drones","robot bees","giant vegetables","a greenhouse dome","a pond with fish","an outdoor classroom under the trees","flowers that catch the rain"], looks:["green and natural","colourful flowers","glowing at night"]},
+  "Clean energy": {icon:"⚡", places:["a city powered by the sun","wind farms on the mountains","solar islands in the sea"], things:["solar panels on every roof","giant wind turbines","glowing energy towers","streets that make electricity when you walk","solar trees","energy from ocean waves","a battery as big as a building"], looks:["shiny and modern","glowing blue","green and natural"]},
+  "Water": {icon:"💧", places:["a city that saves every drop","a clean lake in the mountains","a city that catches the rain"], things:["rain-catching roofs","machines that make water from the air","clean fountains everywhere","smart taps","a robot that cleans rivers","floating water gardens"], looks:["blue and sparkling","glass and white","green and natural"]},
+  "Waste and recycling": {icon:"♻️", places:["a recycling city","a zero-waste market","a beach with no rubbish"], things:["recycling robots","bins that sort by themselves","buildings made of recycled plastic","a machine that turns rubbish into energy","repair shops for everything","compost gardens"], looks:["colourful recycled materials","shiny and new","green and natural"]},
+  "Clean air": {icon:"🌬️", places:["a city with clean air","a mountain town","a city full of trees"], things:["air-cleaning towers","trees on every building","electric buses","flowers that clean the air","a sky full of birds","no smoke anywhere"], looks:["fresh blue sky","green and natural","white and clean"]},
+  "Transport": {icon:"🚆", places:["a transport station of the future","a city with flying traffic","a road in the sky","a train crossing Lebanon"], things:["flying cars","a magnetic floating train","solar buses","hover bikes","self-driving pods","cable cars over the city","a tube train under the sea","sky bridges for bikes"], looks:["glass and white","bright colours","shaped like animals","glowing neon"]},
+  "Cities and homes": {icon:"🏙️", places:["a green city of the future","a neighbourhood of eco-houses","a city of floating buildings"], things:["towers covered in gardens","round eco-houses","floating buildings","parks on every roof","homes that grow their own food","streets with no cars"], looks:["white and green","rainbow coloured","shiny glass","made of wood"]},
+  "Food and farming": {icon:"🌾", places:["a smart farm","a farm tower in the city","a farm under a glass dome"], things:["farming robots","vegetables growing in towers","gardening drones","fish and plant gardens","a robot that picks fruit","a market with no plastic"], looks:["green and fresh","colourful fruit","shiny and modern"]},
+  "Oceans and beaches": {icon:"🌊", places:["a clean beach on the Mediterranean","an underwater city","a coral reef"], things:["ocean-cleaning boats","robot fish that eat plastic","glowing coral","dolphins and sea turtles","underwater gardens","a floating beach park"], looks:["turquoise and sparkling","glowing at night","colourful sea life"]},
+  "Forests and animals": {icon:"🌲", places:["a forest of cedar trees","the mountains with cedar trees","a wildlife park"], things:["cedar trees","forest-guard drones","bridges for animals over the roads","birds and butterflies","a hospital for trees","eagles in the sky"], looks:["green and natural","misty and magical","sunny and golden"]},
+  "Weather and climate": {icon:"🌦️", places:["a city ready for storms","a cool city in a heat wave","a weather station on the mountain"], things:["weather robots","shade trees on every street","cooling mist towers","storm shields","a giant weather screen","rainbows after the rain"], looks:["dramatic sky","bright and safe","glowing blue"]}
+};
 
 /* ---------- chip prompt builder: kids choose, the prompt builds itself ---------- */
 window.B = (function(){
@@ -467,11 +491,12 @@ const PROB = {
   school:["it is too hot or too cold","lessons are boring","school bags are too heavy","there is too much plastic and waste","there is no space to play","the traffic to school is long","it is noisy and crowded","students feel stressed"],
   planet:["there is plastic in the sea","the air is polluted","there are power cuts","there are traffic jams","forests catch fire","there is not enough clean water","there is too much rubbish","heat waves are getting worse"]
 };
+const MUST = ["robots that help","flying vehicles","holograms","plants everywhere","solar and wind power","AI assistants","games while learning","floating buildings","recycling machines","water from the air","furniture that moves","space for animals"];
 const BSPEC = [
   {id:"role", icon:"🎭", title:"Role · who should the AI be?", one:true, opts:["an architect of the future","a scientist","an inventor","a robot engineer","a game designer","a nature expert"]},
-  {id:"place", icon:"📍", title:"Task · what will you design?", one:true, opts:() => PLACE[team()]},
+  {id:"place", icon:"📍", title:"Task · what will you design?", one:true, opts:() => { const k = window.PARTKIT[me().part]; return k ? k.places.concat(PLACE[team()]) : PLACE[team()]; }},
   {id:"prob", icon:"⚠️", title:"Context · what is wrong today?", max:2, opts:() => PROB[team()]},
-  {id:"must", icon:"🚀", title:"Context · it must have…", max:4, opts:["robots that help","flying vehicles","holograms","plants everywhere","solar and wind power","AI assistants","games while learning","floating buildings","recycling machines","water from the air","furniture that moves","space for animals"]},
+  {id:"must", icon:"🚀", title:"Context · it must have…", max:4, opts:() => { const k = window.PARTKIT[me().part]; return (k ? k.things : []).concat(MUST); }, opts0:["robots that help","flying vehicles","holograms","plants everywhere","solar and wind power","AI assistants","games while learning","floating buildings","recycling machines","water from the air","furniture that moves","space for animals"]},
   {id:"feel", icon:"💛", title:"Context · people should feel…", max:2, opts:["excited","calm","safe","proud","curious","happy"]},
   {id:"format", icon:"📝", title:"Format · how should the answer look?", one:true, opts:["a design card: a name, 3 big ideas and a day in it","a top 5 list of inventions","a news report from the future","a guided tour for a visitor","a comic strip in 4 boxes, told in words"]},
   {id:"idea", title:"✨ Your own crazy idea", text:true, ph:"e.g. the playground floats above the school", hint:"the AI never thought of it"}
@@ -480,7 +505,7 @@ const B = Object.assign({role:"", place:"", prob:[], must:[], feel:[], format:"a
 function briefText(){
   const T = me().T || K.TEAMS.school, j = window.B.join, when = T.key === "planet" ? "in Lebanon in the year 2050" : "for our school, Evergreen in Lebanon, in the year 2040";
   return "Role: You are " + (B.role || "an expert designer of the future") + ".\n" +
-    "Task: Design the future of " + (B.place || "my idea") + " " + when + ".\n" +
+    "Task: Design " + (B.place || "my idea") + " " + when + ", the way it could look in the future.\n" +
     "Context: I am 12 years old, in the team \"" + T.name + "\"." +
     (B.prob.length ? " Today the problem is that " + j(B.prob) + "." : "") +
     (B.must.length ? " It must have " + j(B.must) + "." : "") +
