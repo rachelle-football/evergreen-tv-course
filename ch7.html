@@ -237,6 +237,7 @@ img.fprev{background:var(--paper)}
 .frow.head span{font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .okbox{display:flex;align-items:center;gap:6px;font-weight:700}.okbox input{width:22px;height:22px;accent-color:var(--green)}
 @media (max-width:760px){.frow{grid-template-columns:1fr}.frow.head{display:none}.frow{border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--panel)}}
+.gem{border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--paper)}.gem summary{cursor:pointer;font-weight:700;color:var(--green)}.gem[open] summary{margin-bottom:4px}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -296,7 +297,7 @@ img.fprev{background:var(--paper)}
 <section class="seg" id="seg-3" data-min="10" data-title="Storyboard" data-p="1" hidden>
   <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: plan your 30 seconds</h2><p>Period 1 · 10 minutes · on this page</p></div></div>
   <p class="big" id="vidGoal">Every film starts on paper. Plan your 5 scenes. Aim for 30 seconds in total.</p>
-  <div class="card" style="margin-bottom:16px"><span class="tag">1 · Build your video plan: choose, and it writes itself</span><div class="builder" id="vidB" style="margin-top:10px"></div><div class="power" id="vidP" style="margin-top:14px"></div><div class="row" style="margin-top:12px"><button class="btn sm" id="applyPlan" type="button">Make my storyboard</button></div><span class="tag" style="display:block;margin-top:12px">Prompt for Gemini: captions and a slogan</span><pre class="prompt small" id="vidOut"></pre><div class="row"><button class="btn sm alt" id="copyVid" type="button">Copy prompt</button></div><p class="newchat">🆕 Paste it in a <b>NEW</b> Gemini chat (press <b>New chat</b> first), so Gemini does not mix it with your other work.</p><span class="tag" style="display:block;margin-top:14px">Paste Gemini's answer here</span><textarea id="vidPaste" rows="5" placeholder="Paste the whole answer: the table and the slogans" style="width:100%;margin-top:6px"></textarea><div class="row" style="margin-top:8px"><button class="btn sm" id="fillBoard" type="button">Fill my storyboard from it</button></div><div id="slogans" style="margin-top:10px"></div></div>
+  <div class="card" style="margin-bottom:16px"><span class="tag">1 · Build your video plan: choose, and it writes itself</span><div class="builder" id="vidB" style="margin-top:10px"></div><div class="power" id="vidP" style="margin-top:14px"></div><div class="row" style="margin-top:12px"><button class="btn sm" id="applyPlan" type="button">Make my storyboard</button></div><div id="slogans" style="margin-top:12px"></div><details class="gem" style="margin-top:14px"><summary>✨ Optional: want different captions? Ask Gemini</summary><span class="tag" style="display:block;margin-top:12px">Prompt for Gemini: captions and a slogan</span><pre class="prompt small" id="vidOut"></pre><div class="row"><button class="btn sm alt" id="copyVid" type="button">Copy prompt</button></div><p class="newchat">🆕 Paste it in a <b>NEW</b> Gemini chat (press <b>New chat</b> first), so Gemini does not mix it with your other work.</p><span class="tag" style="display:block;margin-top:14px">Paste Gemini's answer here</span><textarea id="vidPaste" rows="5" placeholder="Paste the whole answer: the table and the slogans" style="width:100%;margin-top:6px"></textarea><div class="row" style="margin-top:8px"><button class="btn sm" id="fillBoard" type="button">Fill my storyboard from it</button></div></details></div>
   <span class="tag">2 · Your storyboard (change anything)</span>
   <div class="board" id="board"></div>
   <p class="lead" style="margin-top:14px">Total: <span class="score" id="total">0 s</span> <span class="muted" id="totalMsg"></span></p>
@@ -704,21 +705,45 @@ function vidText(){
     ((V.idea || "").trim() ? " My own idea: " + V.idea.trim() + "." : "") +
     "\nFormat: A table with " + Math.min(7, MYP.length + 2) + " scenes and 4 columns: Scene, File, Caption, Seconds. Use only my file names, or \"text only\". Captions have 6 words maximum. Then write \"Slogans:\" and 3 short slogan ideas, one per line. Easy English. The last scene says Made with AI.";
 }
+/* the app writes the captions and slogans itself, from the design card and the character */
+const STOP = /^(and|the|of|to|with|from|a|an|for|while|that|in|on|so|by|at|which)$/i;
+function six(t, n){ let w = (t || "").replace(/^[^:]{2,30}:\s*/, "").replace(/[.!?;]+$/, "").replace(/\s*\([^)]*\)/g, "").split(/\s+/).filter(Boolean);
+  let cut = w.findIndex((x, k) => k >= 2 && /[,;]$/.test(x)); if (cut >= 0) w = w.slice(0, cut + 1);
+  w = w.slice(0, n || 6).map(x => x.replace(/[,;:]+$/, "")); while (w.length > 2 && STOP.test(w[w.length - 1])) w.pop();
+  const r = w.join(" "); return r ? r[0].toUpperCase() + r.slice(1) : ""; }
+function capFor(kind, n){
+  const ch = K.store.raw("ch4-char") || {}, nm = card.name || "my design", ideas = [card.i1, card.i2, card.i3, card.mine].filter(Boolean);
+  const idea = ideas.length ? six(ideas[n % ideas.length]) : nm;
+  const base = {big:nm, close:idea, char:ch.name ? "Meet " + ch.name + (ch.who ? ", " + six(ch.who, 5).toLowerCase() : "") : "Meet our hero", robot:idea, poster:nm, before:"Today or " + (TT.key === "planet" ? "2050" : "2040") + "?", map:"Welcome to " + nm, inside:"Step inside " + nm}[kind] || idea;
+  if (V.caps === "no captions, only my voice") return "no caption, only my voice";
+  if (V.caps === "questions to the viewer") return kind === "before" ? base : kind === "char" ? (ch.name ? "Would you play with " + ch.name + "?" : "Would you join our hero?") : kind === "big" || kind === "poster" || kind === "map" || kind === "inside" ? "Would you come to " + nm + "?" : base + ". Would you try it?";
+  if (V.caps === "short facts") return kind === "char" || kind === "before" ? base : "Fact: " + base;
+  return base.toUpperCase() === base ? base : base + "!";
+}
+function slogans(){
+  const nm = card.name || TT.site, yr = TT.key === "planet" ? "2050" : "2040";
+  if (V.end === "a question to the viewer") return ["Would you live in " + nm + "?", "Are you ready for " + yr + "?", "What would YOU add to " + nm + "?"];
+  if (V.end === "a call to action") return ["Help us build " + nm + "!", "Share your idea for " + yr + "!", "Start the future today!"];
+  if (V.end === "only \"Made with AI\" and my name") return [];
+  return [nm + ": the future starts here.", "Imagine it. Build it. Live it.", "Our ideas, our " + (TT.key === "planet" ? "planet" : "school") + ", our future."];
+}
+function drawSlogans(list){ const now = (plan[plan.length - 1] || {}).what || "";
+  $("#slogans").replaceChildren(...(list.length ? [el("span", {class:"tag", style:"display:block;margin-bottom:6px"}, "Pick your slogan for the ending (or write your own in the last scene)"), el("div", {class:"chips"}, ...list.slice(0, 5).map(x => el("button", {class:"chip", type:"button", "aria-pressed":String(now.includes(x)), onclick:() => useSlogan(x)}, x)))] : [])); }
 function applyPlan(){
   const total = parseInt(V.len) || 30, k = total / 30, r = x => Math.max(2, Math.round(x * k));
-  const cap = V.caps === "questions to the viewer" ? "a question to the viewer" : V.caps === "short facts" ? "one fact" : V.caps === "no captions, only my voice" ? "no caption" : "big bold words";
+  const sl = slogans();
   plan.length = 0;
-  plan.push({name:"Opening", file:MYP[0] + ".png", what:(V.open || "a big title on my best picture") + " · title: " + (card.name || "my design"), secs:r(4)});
+  plan.push({name:"Opening", file:MYP[0] + ".png", what:(V.open || "a big title on my best picture") + " · " + (card.name || "my design"), secs:r(4)});
   plan.push({name:"Voice", file:"podcast.mp4", what:"the best part of my podcast · " + (V.music || "quiet") + " music under it", secs:r(12)});
-  MYP.slice(1, 4).forEach(p => plan.push({name:PK[p].label, file:p + ".png", what:cap, secs:r(4)}));
-  plan.push({name:"Ending", file:"", what:(V.end || "a slogan") + " · " + TT.site + " · Made with AI · my first name", secs:r(3)});
-  drawBoard();
+  MYP.slice(1, 4).forEach((p, n) => plan.push({name:PK[p].label, file:p + ".png", what:capFor(p, n), secs:r(4)}));
+  plan.push({name:"Ending", file:"", what:(sl[0] ? "“" + sl[0] + "” · " : "") + TT.site + " · Made with AI · my first name", secs:r(3)});
+  drawBoard(); drawSlogans(sl);
 }
 let vidUI;
 function drawVid(){ $("#vidGoal").textContent = "Your " + (V.len || "30 seconds") + " video about " + (card.name || "your design") + ". Choose below, press Make my storyboard, then change anything you want."; window.B.show($("#vidOut"), VSPEC, V, vidText()); window.B.meter($("#vidP"), VSPEC, V); window.B.lock($("#copyVid"), VSPEC, V); window.B.lock($("#applyPlan"), VSPEC, V); }
 function onVid(redraw){ store.set("vplan", V); if (redraw) vidUI.draw(); drawVid(); }
 vidUI = window.B.make($("#vidB"), VSPEC, V, onVid);
-$("#applyPlan").onclick = () => { if (!window.B.guard(VSPEC, V, $("#vidB"), K.toast)) return; applyPlan(); K.toast("Your storyboard is ready below. Change anything you want."); };
+$("#applyPlan").onclick = () => { if (!window.B.guard(VSPEC, V, $("#vidB"), K.toast)) return; applyPlan(); K.toast("Your storyboard is ready! The captions come from your design. Change any word to make it yours."); };
 $("#copyVid").onclick = () => { if (!window.B.guard(VSPEC, V, $("#vidB"), K.toast)) return; copy(vidText(), $("#vidOut"), "a NEW Gemini chat"); };
 drawVid();
 
@@ -761,7 +786,7 @@ $("#fillBoard").onclick = () => {
   if (plan.length < 3) plan.push({name:"Ending", file:"", what:TT.site + " · Made with AI · my first name", secs:3});
   const last = plan[plan.length - 1]; if (!/made with ai/i.test(last.what)) last.what += " · Made with AI";
   drawBoard();
-  $("#slogans").replaceChildren(...(r.slog.length ? [el("span", {class:"tag", style:"display:block;margin-bottom:6px"}, "Pick your slogan for the ending"), el("div", {class:"chips"}, ...r.slog.slice(0, 5).map(x => el("button", {class:"chip", type:"button", onclick:() => useSlogan(x)}, x)))] : []));
+  drawSlogans(r.slog);
   K.toast("Your storyboard is filled with Gemini's captions." + (r.slog.length ? " Now pick your slogan." : "") + " Change anything you want.");
   $("#board").scrollIntoView({behavior:"smooth", block:"start"});
 };
