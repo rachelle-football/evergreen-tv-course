@@ -808,6 +808,10 @@ $("#fillBoard").onclick = () => {
   $("#board").scrollIntoView({behavior:"smooth", block:"start"});
 };
 $("#vidPaste").addEventListener("paste", () => setTimeout(() => { if ($("#vidPaste").value.trim().length > 40) $("#fillBoard").click(); }, 60));
+/* first visit: replace the empty captions with ones written from the design */
+(() => { let n = 0, changed = false; plan.forEach(x => { const k = (x.file || "").replace(/\.\w+$/, ""); if (/^(one short caption|big bold words)$/i.test((x.what || "").trim()) && PK[k]){ x.what = capFor(k, n++); changed = true; } });
+  const e = plan[plan.length - 1]; if (e && !e.file && /^(School 2040|Planet 2050) · Made with AI · my first name$/.test(e.what)){ const sl = slogans(); if (sl[0]){ e.what = "“" + sl[0] + "” · " + e.what; changed = true; } }
+  if (changed) drawBoard(); drawSlogans(slogans()); })();
 
 checklist("list1", [
   ["Start a video", "In Adobe Express, click Create video, then start from scratch with a 16:9 (wide) size."],
