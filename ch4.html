@@ -178,6 +178,20 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .partlbl{display:grid;gap:4px;font-weight:700;font-size:15px}
 .partlbl select{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;max-width:560px}
 .partnow{margin:0;font-size:16px}
+.builder{display:grid;gap:14px}
+.bsec h4{margin:0 0 8px;font-family:var(--display);font-size:19px}
+.bsec h4 small{font-family:var(--body);font-weight:400;font-size:14px;color:var(--muted);margin-left:8px}
+.bsec textarea{margin-top:0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip{background:var(--panel);border:1.5px solid var(--line);border-radius:999px;padding:6px 12px;font-size:15px;line-height:1.25;text-align:left}
+.chip:hover{border-color:var(--green)}
+.chip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.wow{display:flex;gap:10px;align-items:center;font-weight:700}
+.wow input{width:22px;height:22px;accent-color:var(--green)}
+.power{display:grid;gap:2px;background:var(--gold-soft);border-radius:12px;padding:10px 12px}
+.power b{font-size:28px;color:var(--gold);letter-spacing:2px}
+.power .muted{font-size:14px}
+.bstep{font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin:4px 0 -6px}
 .story span.pt{border-radius:4px;padding:1px 2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 .pt-c{background:rgba(224,165,38,.28)}.pt-p{background:rgba(217,65,42,.22)}.pt-f{background:rgba(30,160,100,.25)}.pt-e{background:rgba(120,90,200,.25)}
 .sp{border-left-width:6px}.sp1{border-left-color:#E0A526}.sp2{border-left-color:#D9412A}.sp3{border-left-color:#1EA064}.sp4{border-left-color:#785AC8}
@@ -230,12 +244,9 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
   <div class="mission">
     <div class="card">
       <span class="tag">Your character</span>
-      <div class="recipe" style="margin-top:8px">
-        <label class="ing"><span class="tag">Name (invented)</span><input id="cName" placeholder="e.g. Lina, Karim, Robo-7"></label>
-        <label class="ing"><span class="tag">Who are they?</span><select id="cWho"></select></label>
-        <label class="ing"><span class="tag">Personality (2 words)</span><input id="cPers" placeholder="e.g. shy but curious"></label>
-        <label class="ing"><span class="tag">What do they want?</span><input id="cWant" placeholder="e.g. to win the science fair"></label>
-      </div>
+      <label class="ing" style="margin-top:8px"><span class="tag">Name (invented)</span><input id="cName" placeholder="e.g. Lina, Karim, Robo-7"></label>
+      <div class="builder" id="charB" style="margin-top:12px"></div>
+      <div class="power" id="charP" style="margin-top:14px"></div>
       <span class="tag" style="display:block;margin-top:12px">Prompt: ask Gemini to bring your character to life</span>
       <pre class="prompt small" id="charOut"></pre>
       <div class="row"><button class="btn sm" id="copyChar" type="button">Copy prompt</button></div>
@@ -252,8 +263,10 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
   <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: write your story from the future</h2><p>22 minutes · Gemini, then your own words</p></div></div>
   <div class="grid g2" style="align-items:start">
     <div class="card">
-      <span class="tag">1 · Your story prompt (made from your design card and your character)</span>
-      <label class="ing" style="margin-top:8px"><span class="tag">The problem in your story</span><input id="sProb" placeholder="e.g. Lina is late and lost on her first day"></label>
+      <span class="tag">1 · Build your story prompt: choose, and it writes itself</span>
+      <div class="builder" id="storyB" style="margin-top:10px"></div>
+      <div class="power" id="storyP" style="margin-top:14px"></div>
+      <span class="tag" style="display:block;margin-top:12px">Your prompt</span>
       <pre class="prompt small" id="storyOut"></pre>
       <div class="row"><button class="btn sm" id="copyStory" type="button">Copy story prompt</button></div>
       <p class="note" id="noCard"></p>
@@ -327,6 +340,46 @@ function picker(box, onChange){
 /* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
 function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
 return {TEAMS, me, picker, fill, rawSet};
+})();
+
+/* ---------- chip prompt builder: kids choose, the prompt builds itself ---------- */
+window.B = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
+const join = a => { a = (a || []).filter(Boolean); return a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; };
+/* spec: [{id, title, hint, one:true | max:n, opts:[..] or () => [..], icon}, {id, title, text:true, ph}, {id, label, toggle:true}] */
+function make(box, spec, S, onChange){
+  const opts = s => typeof s.opts === "function" ? s.opts() : s.opts;
+  function draw(){
+    box.replaceChildren(...spec.filter(s => !s.when || s.when(S)).map(s => {
+      if (s.text){ const i = el(s.long ? "textarea" : "input", {placeholder:s.ph || "", rows:s.long ? "3" : null, "aria-label":s.title}); i.value = S[s.id] || ""; i.addEventListener("input", () => { S[s.id] = i.value; onChange(false); });
+        return el("div", {class:"bsec"}, el("h4", null, s.title, s.hint ? el("small", null, s.hint) : null), i); }
+      if (s.toggle){ const c = el("input", {type:"checkbox"}); c.checked = !!S[s.id]; c.addEventListener("change", () => { S[s.id] = c.checked; onChange(true); });
+        return el("label", {class:"wow"}, c, el("span", null, s.label)); }
+      const list = opts(s), cur = S[s.id];
+      if (s.one && cur && !list.includes(cur) && !s.keep) S[s.id] = "";
+      if (!s.one && Array.isArray(cur)) S[s.id] = cur.filter(x => list.includes(x));
+      const on = x => s.one ? S[s.id] === x : (S[s.id] || []).includes(x);
+      return el("div", {class:"bsec"}, el("h4", null, (s.icon ? s.icon + " " : "") + s.title, s.hint || s.max ? el("small", null, s.hint || ("pick up to " + s.max)) : null),
+        el("div", {class:"chips"}, ...list.map(x => el("button", {class:"chip", type:"button", "aria-pressed":String(on(x)), onclick:() => {
+          if (s.one) S[s.id] = S[s.id] === x ? "" : x;
+          else { const a = S[s.id] || []; S[s.id] = a.includes(x) ? a.filter(y => y !== x) : (s.max && a.length >= s.max ? a.slice(1) : a).concat(x); }
+          onChange(true); }}, x))));
+    }));
+  }
+  draw();
+  return {draw};
+}
+/* how complete is the prompt: 0..5 stars */
+function power(spec, S){
+  let n = 0, t = 0;
+  spec.forEach(s => { if (s.toggle) return; t++; const v = S[s.id]; if (s.text ? (v || "").trim().length > 3 : s.one ? !!v : (v || []).length) n++; });
+  return t ? Math.round(n / t * 5) : 0;
+}
+function meter(box, spec, S){
+  const p = power(spec, S);
+  box.replaceChildren(el("span", {class:"tag"}, "Prompt power"), el("b", null, "★".repeat(p) + "☆".repeat(5 - p)), el("span", {class:"muted"}, p >= 5 ? "Super prompt!" : p >= 3 ? "Good. Choose a bit more." : "Choose more options to make it strong."));
+}
+return {make, power, meter, join};
 })();
 
 window.K = (function(){
@@ -403,38 +456,74 @@ function drawEx(){
 $("#showParts").onclick = () => { shown = !shown; drawEx(); };
 drawEx();
 
-/* 2 character */
-const WHO = ["a student in the future", "a new student, first day", "a teacher", "a robot helper", "a grandparent visiting from 2026", "a scientist", "an animal (yes!)"];
-$("#cWho").replaceChildren(...WHO.map(w => el("option", {value:w}, w)));
-const C = store.get("char") || {name:"", who:WHO[0], pers:"", want:""};
-const cmap = {cName:"name", cWho:"who", cPers:"pers", cWant:"want"};
-Object.entries(cmap).forEach(([id, k]) => { $("#" + id).value = C[k] || (id === "cWho" ? WHO[0] : ""); $("#" + id).addEventListener("input", () => { C[k] = $("#" + id).value; store.set("char", C); drawChar(); drawStory(); }); });
+/* 2 character: choose, and the prompt builds itself */
+const CSPEC = [
+  {id:"who", icon:"🧑‍🚀", title:"Who are they?", one:true, opts:["a student from the future","a new student on the first day","a robot who wants to be human","a grandparent who travelled from 2026","a young scientist","a talking animal","an alien visiting Lebanon","a teacher from the future"]},
+  {id:"look", icon:"👀", title:"What do they look like?", max:2, opts:["has robot arms","wears glowing shoes","has hair that changes colour","carries a tiny robot pet","wears smart glasses","floats instead of walking","has a cape made of solar panels","has a backpack full of gadgets"]},
+  {id:"pers", icon:"💬", title:"Personality", max:2, opts:["brave","shy","funny","curious","clumsy","clever","kind","grumpy","dreamy"]},
+  {id:"power", icon:"⚡", title:"Special gadget or power", one:true, opts:["a hoverboard","an AI watch that talks","can talk to animals","a backpack that flies","can pause time for 5 seconds","a robot best friend","can turn invisible for 1 minute a day"]},
+  {id:"want", icon:"🎯", title:"What do they want?", one:true, opts:["to win the science fair","to make a new friend","to save the sea","to fix a broken robot","to find the last real tree","to be the first kid on Mars","to get home before the storm"]},
+  {id:"fear", icon:"😨", title:"What are they afraid of?", one:true, opts:["the dark","being alone","robots that break","heights","losing","spiders, even robot ones"]}
+];
+const C = Object.assign({name:"", who:"", look:[], pers:[], power:"", want:"", fear:""}, store.get("char") || {});
+if (!Array.isArray(C.pers)) C.pers = C.pers ? [C.pers] : [];
+$("#cName").value = C.name || "";
+$("#cName").addEventListener("input", () => { C.name = $("#cName").value; onChar(false); });
 function world(){ const m = me(); return m.T ? m.T.world : "the future"; }
+const J = window.B.join;
 function charText(){
-  return "Help me invent a character for a short story set in " + world() + ". Name: " + (C.name || "(invent one)") + ". They are " + C.who + ". Personality: " + (C.pers || "you choose") + ". They want: " + (C.want || "you choose") + ".\nGive me 4 short lines: how they look, one habit, one fear, and one funny thing about them. Easy English. The character must be invented, not a real person.";
+  return "Role: You are a creative character designer for children's stories.\nTask: Bring my character to life for a story set in " + world() + ".\n" +
+    "Context: Name: " + (C.name || "(invent a fun name)") + ". They are " + (C.who || "a kid from the future") + "." +
+    (C.look.length ? " Look: " + J(C.look) + "." : "") + (C.pers.length ? " Personality: " + J(C.pers) + "." : "") +
+    (C.power ? " Special gadget or power: " + C.power + "." : "") + (C.want ? " They want " + C.want + "." : "") + (C.fear ? " They are afraid of " + C.fear + "." : "") +
+    "\nFormat: 5 short lines: how they look, how they talk (with one example sentence), one habit, one secret, and one funny thing about them. Easy English. The character is invented, not a real person.";
 }
+let charUI;
 function drawChar(){
-  $("#charOut").textContent = charText();
-  $("#charCard").replaceChildren(el("h3", {style:"font-size:26px;margin:4px 0"}, C.name || "Name?"), el("p", {style:"margin:0"}, C.who), C.pers ? el("p", {style:"margin:4px 0 0"}, el("b", null, "Personality: "), C.pers) : "", C.want ? el("p", {style:"margin:4px 0 0"}, el("b", null, "Wants: "), C.want) : "");
+  $("#charOut").textContent = charText(); window.B.meter($("#charP"), CSPEC, C);
+  $("#charCard").replaceChildren(el("h3", {style:"font-size:26px;margin:4px 0"}, C.name || "Name?"), el("p", {style:"margin:0"}, C.who || "Who?"),
+    C.look.length ? el("p", {style:"margin:4px 0 0"}, "👀 ", C.look.join(", ")) : "", C.pers.length ? el("p", {style:"margin:4px 0 0"}, "💬 ", C.pers.join(", ")) : "",
+    C.power ? el("p", {style:"margin:4px 0 0"}, "⚡ ", C.power) : "", C.want ? el("p", {style:"margin:4px 0 0"}, "🎯 wants ", C.want) : "", C.fear ? el("p", {style:"margin:4px 0 0"}, "😨 afraid of ", C.fear) : "");
 }
-$("#copyChar").onclick = () => { copy(charText(), $("#charOut"), "Gemini"); L1.tick(1); };
+function onChar(redraw){ store.set("char", C); if (redraw) charUI.draw(); drawChar(); drawStory(); }
+charUI = window.B.make($("#charB"), CSPEC, C, onChar);
+$("#copyChar").onclick = () => { if (!C.who){ K.toast("Choose who your character is first."); return; } copy(charText(), $("#charOut"), "Gemini"); L1.tick(1); };
 
-/* 3 story */
-const S = store.get("story") || {prob:"", title:"", text:""};
-$("#sProb").value = S.prob || ""; $("#sTitle").value = S.title || ""; $("#story").value = S.text || "";
+/* 3 story: choose, and the prompt builds itself */
+const PROBS = {
+  school:["the robot teacher breaks down before the big exam","the hero is lost on the first day","the school's power goes out","a hologram goes crazy and copies everyone","the class robot pet escapes","the flying school bus gets stuck in a cloud"],
+  planet:["a storm is coming to the city","the last cedar tree is sick","a giant wave of plastic is coming","the city's water machine stops","a family of sea turtles is in danger","the solar city loses all its power"]
+};
+const SSPEC = [
+  {id:"genre", icon:"🎬", title:"Kind of story", one:true, opts:["adventure","funny","mystery","science fiction","friendship story","race against time"]},
+  {id:"prob", icon:"⚠️", title:"The problem", one:true, opts:() => PROBS[team()]},
+  {id:"helps", icon:"🤝", title:"What helps the hero?", max:2, opts:["robots that help","a flying vehicle","an AI that solves problems","friends working together","nature and plants","my design ideas from Chapter 3"]},
+  {id:"ending", icon:"🏁", title:"The ending", one:true, opts:["a happy ending","a surprise twist","a funny ending","an ending with a message for the planet","a cliffhanger: to be continued…"]},
+  {id:"len", icon:"📏", title:"Length", one:true, opts:["about 100 words","about 150 words","about 200 words"]},
+  {id:"idea", title:"✨ Your own idea for the story", text:true, ph:"e.g. the robot can only speak in rhymes", hint:"makes it yours"},
+  {id:"talk", toggle:true, label:"Include dialogue (characters talking)"},
+  {id:"joke", toggle:true, label:"Add a funny moment"}
+];
+function team(){ return me().team === "planet" ? "planet" : "school"; }
+const S = Object.assign({genre:"", prob:"", helps:[], ending:"", len:"about 150 words", idea:"", talk:true, joke:false, title:"", text:""}, store.get("story") || {});
+$("#sTitle").value = S.title || ""; $("#story").value = S.text || "";
 function card(){ return store.raw("ch3-card") || {}; }
 function storyText(){
-  const m = me(), d = card(), ideas = [d.i1, d.i2, d.i3, d.mine].filter(Boolean);
-  return "Role: You are a children's author who writes about the future.\n" +
-    "Task: Write a short story set in " + world() + ". It happens in " + (m.team === "planet" ? "the world of " : "") + (m.part ? m.part.toLowerCase().replace(/^the /, "the ") : "my part of the project") + (d.name ? ", now called \"" + d.name + "\"" : "") + ".\n" +
-    "Context: The hero is " + (C.name || "my character") + ", " + C.who + (C.pers ? ", who is " + C.pers : "") + (C.want ? " and wants " + C.want : "") + ". " +
-    (S.prob ? "The problem: " + S.prob + ". " : "") +
-    (ideas.length ? "Use these ideas from my design: " + ideas.join("; ") + ". " : "") +
-    "\nFormat: A title, then about 150 words. Beginning, problem, how the future design helps, and an ending with a smile or a surprise. Include one line of dialogue. Easy English for 12-year-olds. No real people's names, nothing scary or violent.";
+  const d = card(), ideas = [d.i1, d.i2, d.i3, d.mine].filter(Boolean), helps = S.helps.filter(h => h !== "my design ideas from Chapter 3");
+  return "Role: You are a children's author who writes exciting stories about the future.\n" +
+    "Task: Write " + (S.genre ? (/^[aeiou]/.test(S.genre) ? "an " : "a ") + S.genre + " story" : "a short story") + " set in " + world() + ".\n" +
+    "Context: The hero is " + (C.name || "my character") + ", " + (C.who || "a kid from the future") + (C.pers.length ? ", who is " + J(C.pers) : "") + (C.power ? ", with " + C.power : "") + (C.want ? ", and wants " + C.want : "") + "." +
+    (S.prob ? " The problem: " + S.prob + "." : "") +
+    (helps.length ? " What helps: " + J(helps) + "." : "") +
+    (S.helps.includes("my design ideas from Chapter 3") && ideas.length ? " Use these ideas from my design" + (d.name ? " \"" + d.name + "\"" : "") + ": " + ideas.join("; ") + "." : "") +
+    ((S.idea || "").trim() ? " My own idea: " + S.idea.trim() + "." : "") +
+    "\nFormat: A title, then " + (S.len || "about 150 words") + ". Beginning, problem, how the future helps, and " + (S.ending || "a happy ending") + "." + (S.talk ? " Include some dialogue." : "") + (S.joke ? " Add one funny moment." : "") + " Easy English for 12-year-olds. No real people's names, nothing scary or violent.";
 }
-function drawStory(){ $("#storyOut").textContent = storyText(); const d = card(); $("#noCard").textContent = d.name ? "Using your design card: " + d.name + "." : "Tip: your prompt gets better if you fill your design card in Chapter 3."; }
-$("#sProb").addEventListener("input", () => { S.prob = $("#sProb").value; store.set("story", S); drawStory(); });
-$("#copyStory").onclick = () => { copy(storyText(), $("#storyOut"), "Gemini"); L1.tick(3); };
+let storyUI;
+function drawStory(){ $("#storyOut").textContent = storyText(); window.B.meter($("#storyP"), SSPEC, S); const d = card(); $("#noCard").textContent = d.name ? "Your design card from Chapter 3: " + d.name + "." : "Tip: fill your design card in Chapter 3, then choose \"my design ideas from Chapter 3\"."; }
+function onStory(redraw){ store.set("story", S); if (redraw) storyUI.draw(); drawStory(); if (S.prob) L1.tick(2); }
+storyUI = window.B.make($("#storyB"), SSPEC, S, onStory);
+$("#copyStory").onclick = () => { if (!S.prob){ K.toast("Choose the problem first."); return; } copy(storyText(), $("#storyOut"), "Gemini"); L1.tick(3); };
 const BETTER = [["Add a funny moment", "Add one funny moment to the story. Keep it under 160 words."], ["Surprise ending", "Make the ending more surprising, but still happy."], ["More of my design", "Show my design ideas more clearly in the middle of the story."], ["Shorter", "Make it shorter: about 120 words, so I can read it in 1 minute."]];
 $("#better").replaceChildren(...BETTER.map(([n, t]) => el("button", {class:"btn sm alt", type:"button", title:t, onclick:() => { copy(t, null, "the same Gemini chat"); L1.tick(4); }}, "Copy: " + n)));
 function count(){ const w = ($("#story").value.match(/\S+/g) || []).length, s = Math.round(w / 2.3);
@@ -444,16 +533,15 @@ $("#sTitle").addEventListener("input", () => { S.title = $("#sTitle").value; sto
 count();
 checklist("hunt", [["It uses ideas from my design", ""], ["My character is the hero", ""], ["Invented names only, no real people", ""], ["Nothing scary, rude or untrue about real places", ""], ["I changed at least 3 sentences into my own words", ""]], true);
 const L1 = checklist("list1", [
-  ["Pick your team and part", "In part 02, at the top."],
-  ["Bring your character to life", "Copy the character prompt into Gemini. Keep the best lines."],
-  ["Write the problem", "One sentence: what goes wrong in your story?"],
+  ["Pick your team", "In part 02, at the top. Some choices change with your team."],
+  ["Build your character", "Choose who they are, their look, personality, gadget, what they want and what they fear. Copy the prompt into Gemini."],
+  ["Build your story", "Choose the kind of story, the problem, what helps, the ending. Aim for 5 stars."],
   ["Ask Gemini for the story", "Copy the story prompt into a new Gemini chat."],
   ["Make it better", "Use at least one follow-up prompt."],
   ["Paste and make it yours", "Paste the story, give it a title, change 3 sentences into your own words."]
 ]);
-picker($("#proj"), () => { drawChar(); drawStory(); if (me().part) L1.tick(0); });
-if (me().part) L1.tick(0);
-document.addEventListener("input", () => { if ((S.prob || "").trim().length > 5) L1.tick(2); });
+picker($("#proj"), () => { storyUI.draw(); drawChar(); drawStory(); if (me().team) L1.tick(0); });
+if (me().team) L1.tick(0);
 drawChar(); drawStory();
 K.start();
 })();

@@ -178,6 +178,20 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .partlbl{display:grid;gap:4px;font-weight:700;font-size:15px}
 .partlbl select{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;max-width:560px}
 .partnow{margin:0;font-size:16px}
+.builder{display:grid;gap:14px}
+.bsec h4{margin:0 0 8px;font-family:var(--display);font-size:19px}
+.bsec h4 small{font-family:var(--body);font-weight:400;font-size:14px;color:var(--muted);margin-left:8px}
+.bsec textarea{margin-top:0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip{background:var(--panel);border:1.5px solid var(--line);border-radius:999px;padding:6px 12px;font-size:15px;line-height:1.25;text-align:left}
+.chip:hover{border-color:var(--green)}
+.chip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.wow{display:flex;gap:10px;align-items:center;font-weight:700}
+.wow input{width:22px;height:22px;accent-color:var(--green)}
+.power{display:grid;gap:2px;background:var(--gold-soft);border-radius:12px;padding:10px 12px}
+.power b{font-size:28px;color:var(--gold);letter-spacing:2px}
+.power .muted{font-size:14px}
+.bstep{font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin:4px 0 -6px}
 .chk{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px}
 .chk>div:first-child{display:flex;flex-direction:column;gap:2px;min-width:0}
 .chk b{font-family:var(--display);font-size:19px}.chk .muted{font-size:15px}
@@ -234,6 +248,10 @@ Bright colours, big fonts, works on a phone.</pre>
 <section class="seg" id="seg-3" data-min="25" data-title="Mission: build your page" hidden>
   <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: build your page with Gemini Canvas</h2><p>Period 1 · 25 minutes · gemini.google.com</p></div></div>
   <div class="card myproj" id="proj"></div>
+  <div class="card" style="margin-bottom:16px">
+    <span class="tag">1 · Design your page: choose, and the prompt writes itself</span>
+    <div class="builder" id="webB" style="margin-top:10px"></div>
+  </div>
   <div class="mission">
     <div>
       <ol class="checklist" id="list1"></ol>
@@ -243,10 +261,7 @@ Bright colours, big fonts, works on a phone.</pre>
       </div>
     </div>
     <aside class="card side">
-      <label class="tag" for="colours">Colours and mood</label>
-      <input id="colours">
-      <label class="tag" for="extra">One interactive thing</label>
-      <select id="extra"></select>
+      <div class="power" id="webP"></div>
       <span class="tag">Your director's prompt (made from all your work)</span>
       <pre class="prompt small" id="pageOut"></pre>
       <div class="row"><button class="btn sm" id="copyPage" type="button">Copy my prompt</button></div>
@@ -329,6 +344,46 @@ function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{p
 return {TEAMS, me, picker, fill, rawSet};
 })();
 
+/* ---------- chip prompt builder: kids choose, the prompt builds itself ---------- */
+window.B = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
+const join = a => { a = (a || []).filter(Boolean); return a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; };
+/* spec: [{id, title, hint, one:true | max:n, opts:[..] or () => [..], icon}, {id, title, text:true, ph}, {id, label, toggle:true}] */
+function make(box, spec, S, onChange){
+  const opts = s => typeof s.opts === "function" ? s.opts() : s.opts;
+  function draw(){
+    box.replaceChildren(...spec.filter(s => !s.when || s.when(S)).map(s => {
+      if (s.text){ const i = el(s.long ? "textarea" : "input", {placeholder:s.ph || "", rows:s.long ? "3" : null, "aria-label":s.title}); i.value = S[s.id] || ""; i.addEventListener("input", () => { S[s.id] = i.value; onChange(false); });
+        return el("div", {class:"bsec"}, el("h4", null, s.title, s.hint ? el("small", null, s.hint) : null), i); }
+      if (s.toggle){ const c = el("input", {type:"checkbox"}); c.checked = !!S[s.id]; c.addEventListener("change", () => { S[s.id] = c.checked; onChange(true); });
+        return el("label", {class:"wow"}, c, el("span", null, s.label)); }
+      const list = opts(s), cur = S[s.id];
+      if (s.one && cur && !list.includes(cur) && !s.keep) S[s.id] = "";
+      if (!s.one && Array.isArray(cur)) S[s.id] = cur.filter(x => list.includes(x));
+      const on = x => s.one ? S[s.id] === x : (S[s.id] || []).includes(x);
+      return el("div", {class:"bsec"}, el("h4", null, (s.icon ? s.icon + " " : "") + s.title, s.hint || s.max ? el("small", null, s.hint || ("pick up to " + s.max)) : null),
+        el("div", {class:"chips"}, ...list.map(x => el("button", {class:"chip", type:"button", "aria-pressed":String(on(x)), onclick:() => {
+          if (s.one) S[s.id] = S[s.id] === x ? "" : x;
+          else { const a = S[s.id] || []; S[s.id] = a.includes(x) ? a.filter(y => y !== x) : (s.max && a.length >= s.max ? a.slice(1) : a).concat(x); }
+          onChange(true); }}, x))));
+    }));
+  }
+  draw();
+  return {draw};
+}
+/* how complete is the prompt: 0..5 stars */
+function power(spec, S){
+  let n = 0, t = 0;
+  spec.forEach(s => { if (s.toggle) return; t++; const v = S[s.id]; if (s.text ? (v || "").trim().length > 3 : s.one ? !!v : (v || []).length) n++; });
+  return t ? Math.round(n / t * 5) : 0;
+}
+function meter(box, spec, S){
+  const p = power(spec, S);
+  box.replaceChildren(el("span", {class:"tag"}, "Prompt power"), el("b", null, "★".repeat(p) + "☆".repeat(5 - p)), el("span", {class:"muted"}, p >= 5 ? "Super prompt!" : p >= 3 ? "Good. Choose a bit more." : "Choose more options to make it strong."));
+}
+return {make, power, meter, join};
+})();
+
 window.K = (function(){
 const $ = s => document.querySelector(s);
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
@@ -399,41 +454,43 @@ function have(){
 function drawPlan(){ $("#plan").replaceChildren(...have().map(([n, d, ok]) => el("div", {class:"card " + (ok ? "good" : "")}, el("span", {class:"tag"}, ok ? "✓ Ready" : "To check"), el("h3", {style:"font-size:21px;margin:4px 0"}, n), el("p", {class:"muted", style:"margin:0"}, d)))); }
 
 /* director's prompt from all the work */
-const EXTRA = ["a quiz with 3 questions about my design", "a before/after slider: today vs the future", "a button that shows a random fun fact", "a poll: would you like this in real life?", "a mini game: match the problem to the solution"];
-$("#extra").replaceChildren(...EXTRA.map(x => el("option", {value:x}, x)));
-const O = store.get("opts") || {};
-function defCol(){ return me().team === "planet" ? "blue and green, fresh and hopeful" : "green and sunny yellow, bright and friendly"; }
+const WSPEC = [
+  {id:"theme", icon:"🎨", title:"Theme of my page", one:true, opts:["a magazine from the future","a video game world","a space mission","a nature adventure","a newspaper from 2050","a museum of the future"]},
+  {id:"colours", icon:"🌈", title:"Colours", one:true, opts:["blue and glowing neon","green and sunny yellow","white and gold","purple and pink","ocean blue and sand","rainbow colours"]},
+  {id:"font", icon:"🔤", title:"Letters", one:true, opts:["rounded and friendly","futuristic","handwritten","big and bold"]},
+  {id:"sections", icon:"🧩", title:"What goes on my page", opts:["my design ideas","my story","my 3 pictures","my podcast clip","my video"], hint:"pick everything you made"},
+  {id:"fun", icon:"🕹️", title:"Interactive things", max:2, opts:["a quiz with 3 questions","a before/after slider: today vs the future","a fun-fact button","a poll: would you like this?","a mini game: match problems and solutions","a countdown to the future","a day/night mode button"]},
+  {id:"anim", icon:"✨", title:"Animations", one:true, opts:["no animations","gentle animations","lots of animations"]},
+  {id:"idea", title:"✨ Your own idea", text:true, ph:"e.g. little robots walk along the bottom of the page", hint:"makes it yours"}
+];
+const W = Object.assign({theme:"", colours:"", font:"", sections:["my design ideas","my story","my 3 pictures","my podcast clip","my video"], fun:[], anim:"gentle animations", idea:""}, store.get("web") || {});
 function slug(s){ return (s || "").toLowerCase().replace(/^the /, "").split(/\s+/)[0].replace(/[^a-z0-9]/g, "") || "part"; }
 function pageText(){
-  const m = me(), T = m.T || K.TEAMS.school, d = raw("ch3-card") || {}, st = raw("ch4-story") || {}, c = raw("ch4-char") || {};
-  const ideas = [d.i1, d.i2, d.i3, d.mine].filter(Boolean);
-  return `Create a one-page website for "${T.site}: ${d.name || m.part || "my part"}", made by a 12-year-old student in the team "${T.name}".
-It is my part of our team website: ${m.part || "my part"} (${m.about || ""}).
-
-Put these sections on the page, in this order:
-1. A big title with the picture hero.png behind it.
-2. My design: ${ideas.length ? ideas.map(x => "\"" + x + "\"").join(", ") : "(3 big ideas)"}, each in its own card.${d.day ? `\n   A day in it: "${d.day}"` : ""}
-3. My story${st.title ? `, called "${st.title}"` : ""}, with the picture character.png next to it. Here is the story:
-"${(st.text || "(my story)").trim()}"
-4. The picture detail.png with a short caption.
-5. A video player for podcast.mp4 with the title "Listen: my podcast clip".
-6. A video player for video.mp4 with the title "Watch: my 30-second video".
-7. ${$("#extra").value}.
-8. A footer: "Made with AI by EB7 · ${T.site}". Under every picture and video, a small label: Made with AI.
-
-The pictures and videos will be in the same folder as the page, with exactly these file names.
-Look: ${$("#colours").value || defCol()}. Big fonts, easy to read, works well on a phone. Do not invent facts or real people's names.`;
+  const m = me(), T = m.T || K.TEAMS.school, d = raw("ch3-card") || {}, st = raw("ch4-story") || {}, has = x => W.sections.includes(x);
+  const ideas = [d.i1, d.i2, d.i3, d.mine].filter(Boolean), out = [];
+  out.push("A big title" + (has("my 3 pictures") ? " with the picture hero.png behind it" : "") + ".");
+  if (has("my design ideas")) out.push("My design: " + (ideas.length ? ideas.map(x => "\"" + x + "\"").join(", ") : "(my big ideas)") + ", each in its own card." + (d.day ? " A day in it: \"" + d.day + "\"" : ""));
+  if (has("my story")) out.push("My story" + (st.title ? ", called \"" + st.title + "\"" : "") + (has("my 3 pictures") ? ", with the picture character.png next to it" : "") + ". Here is the story: \"" + (st.text || "(my story)").trim() + "\"");
+  if (has("my 3 pictures")) out.push("The picture detail.png with a short caption.");
+  if (has("my podcast clip")) out.push("A video player for podcast.mp4 with the title \"Listen: my podcast clip\".");
+  if (has("my video")) out.push("A video player for video.mp4 with the title \"Watch: my video\".");
+  W.fun.forEach(f => out.push(f.charAt(0).toUpperCase() + f.slice(1) + "."));
+  out.push("A footer: \"Made with AI by EB7 · " + T.site + "\". Under every picture and video, a small label: Made with AI.");
+  return "Role: You are a web designer who builds amazing websites for kids.\n" +
+    "Task: Create a one-page website for \"" + T.site + ": " + (d.name || "my future design") + "\", made by a 12-year-old student in the team \"" + T.name + "\".\n" +
+    "Context: Put these sections on the page, in this order:\n" + out.map((x, i) => (i + 1) + ". " + x).join("\n") + "\n" +
+    "The pictures and videos will be in the same folder as the page, with exactly these file names." + ((W.idea || "").trim() ? "\nMy own idea: " + W.idea.trim() + "." : "") + "\n" +
+    "Format: The page looks like " + (W.theme || "a colourful page from the future") + ". Colours: " + (W.colours || "bright and friendly") + ". Letters: " + (W.font || "big and easy to read") + ". " + (W.anim || "gentle animations").replace(/^./, c => c.toUpperCase()) + ". Big fonts, easy to read, works well on a phone. Do not invent facts or real people's names.";
 }
-function drawPage(){ $("#pageOut").textContent = pageText(); $("#pageFile").textContent = slug(me().part) + "_" + "yourname.html"; }
-$("#colours").value = O.colours || defCol();
-if (O.extra) $("#extra").value = O.extra;
-$("#colours").addEventListener("input", () => { O.colours = $("#colours").value; store.set("opts", O); drawPage(); });
-$("#extra").addEventListener("change", () => { O.extra = $("#extra").value; store.set("opts", O); drawPage(); });
-$("#copyPage").onclick = () => { if (!me().part){ K.toast("Pick your team and your part first (at the top)."); return; } copy(pageText(), $("#pageOut"), "Gemini Canvas"); L1.tick(2); };
+let webUI;
+function drawPage(){ $("#pageOut").textContent = pageText(); window.B.meter($("#webP"), WSPEC, W); $("#pageFile").textContent = slug((raw("ch3-card") || {}).name || me().part) + "_yourname.html"; }
+function onWeb(redraw){ store.set("web", W); if (redraw) webUI.draw(); drawPage(); }
+webUI = window.B.make($("#webB"), WSPEC, W, onWeb);
+$("#copyPage").onclick = () => { if (!W.theme){ K.toast("Choose a theme for your page first."); return; } copy(pageText(), $("#pageOut"), "Gemini Canvas"); L1.tick(2); };
 const BETTER = [["Magazine look", "Make my page look like a colourful magazine page, but keep all my text the same."], ["Phone check", "Make sure the whole page fits a phone screen: nothing too wide, nothing overlapping."], ["Add animations", "Add gentle animations when the cards appear. Nothing flashing."], ["Easier to read", "Make all the text bigger and the colours stronger so it is easy to read."]];
 $("#better").replaceChildren(...BETTER.map(([n, t]) => el("button", {class:"btn sm alt", type:"button", title:t, onclick:() => { copy(t, null, "the same Gemini chat"); L1.tick(4); }}, "Copy: " + n)));
 const L1 = checklist("list1", [
-  ["Check your team and part", "At the top. Your prompt is made from your design card, your story and your file names."],
+  ["Design your page", "Choose a theme, colours, letters, what goes on it and 2 interactive things. Your design card and story are added by themselves."],
   ["Open Gemini with Canvas", "Go to gemini.google.com. Press the + next to the message box, then choose Canvas."],
   ["Paste your prompt", "Copy my prompt (on the right), paste it in Gemini and press Enter. Wait about 30 seconds."],
   ["Look at the preview", "Your pictures and videos will not show yet: they are on your computer, not in Gemini. That is normal."],
@@ -441,8 +498,8 @@ const L1 = checklist("list1", [
   ["Download the page", "In the Canvas panel, find Download (the arrow icon) and save the file in your AI Creators folder with the name shown on the right."],
   ["Open it from the folder", "Double-click the page in your folder. Now your pictures and videos appear. Do they all work?"]
 ]);
-picker($("#proj"), () => { drawPage(); drawPlan(); if (me().part) L1.tick(0); });
-if (me().part) L1.tick(0);
+picker($("#proj"), () => { drawPage(); drawPlan(); });
+document.addEventListener("click", () => { if (W.theme && W.colours) L1.tick(0); });
 drawPage(); drawPlan();
 
 /* tester */

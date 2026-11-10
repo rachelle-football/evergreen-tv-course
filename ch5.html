@@ -185,6 +185,26 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .partlbl{display:grid;gap:4px;font-weight:700;font-size:15px}
 .partlbl select{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;max-width:560px}
 .partnow{margin:0;font-size:16px}
+.builder{display:grid;gap:14px}
+.builder h4{margin:0 0 8px;font-family:var(--display);font-size:20px}
+.builder h4 small{font-family:var(--body);font-weight:400;font-size:14px;color:var(--muted);margin-left:8px}
+.bhead{margin:6px 0 -4px!important}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip{background:var(--panel);border:1.5px solid var(--line);border-radius:999px;padding:6px 12px;font-size:15px;line-height:1.25;text-align:left}
+.chip:hover{border-color:var(--green)}
+.chip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.chip.lk[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#fff}
+.cats{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.cat{border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;background:var(--paper);align-content:start}
+.cat.on{background:var(--panel)}
+.cat>b{font-family:var(--display);font-size:18px}
+.looks{border-top:1px dashed var(--line);padding-top:8px}
+.looks .muted{font-size:14px}
+.wow{display:flex;gap:10px;align-items:center;font-weight:700}
+.wow input{width:22px;height:22px;accent-color:var(--green)}
+.power{display:grid;gap:2px;background:var(--gold-soft);border-radius:12px;padding:10px 12px}
+.power b{font-size:28px;color:var(--gold);letter-spacing:2px}
+.power .muted{font-size:14px}
 </style>
 <header class="top">
   <div class="wrap">
@@ -242,25 +262,24 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 </section>
 
 <section class="seg" id="seg-3" data-min="28" data-title="Mission: your 3 pictures" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: 3 pictures of your design</h2><p>28 minutes · Adobe Express</p></div></div>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: build your future pictures</h2><p>28 minutes · you choose, the prompt builds itself, Adobe Express draws</p></div></div>
   <div class="card myproj" id="proj"></div>
   <div class="mission">
-    <div><ol class="checklist" id="list1"></ol></div>
-    <aside class="card side">
+    <div>
       <div class="tabs" role="tablist" id="picTabs"></div>
-      <p class="muted" id="kindHelp" style="margin:0;font-size:15px"></p>
-      <label class="tag" for="fSubject">Subject</label><input id="fSubject">
-      <label class="tag" for="fSetting">Setting</label><input id="fSetting">
-      <label class="tag" for="fStyle">Style</label><input id="fStyle">
-      <label class="tag" for="fLight">Light</label><input id="fLight">
-      <label class="tag" for="fCamera">Camera</label><input id="fCamera">
+      <p class="muted" id="kindHelp" style="margin:6px 0 10px;font-size:15px"></p>
+      <div class="card builder" id="builder"></div>
+    </div>
+    <aside class="card side">
+      <div class="power" id="power"></div>
       <span class="tag">Your prompt for Adobe Express</span>
       <pre class="prompt small" id="picOut"></pre>
-      <div class="row"><button class="btn sm" id="copyPic" type="button">Copy picture prompt</button><button class="ghost" id="resetPic" type="button">Start again from my design</button></div>
+      <div class="row"><button class="btn sm" id="copyPic" type="button">Copy picture prompt</button><button class="ghost" id="resetPic" type="button">Start this picture again</button></div>
       <p class="muted" style="margin:0;font-size:14px">Save it as <b id="fileName">hero.png</b> in your <b>AI Creators</b> folder</p>
     </aside>
   </div>
-  <div class="def warn"><span class="tag">Credits are limited</span><p>Each picture uses Adobe credits. Think before you press Enter: aim for 2 tries per picture.</p></div>
+  <ol class="checklist" id="list1" style="margin-top:16px"></ol>
+  <div class="def warn"><span class="tag">Credits are limited</span><p>Each picture uses Adobe credits. Build a strong prompt first: aim for 2 tries per picture.</p></div>
 </section>
 
 <section class="seg" id="seg-4" data-min="5" data-title="Bias check" hidden>
@@ -388,45 +407,98 @@ frame(0);
 let running = false;
 $("#denoise").onclick = () => { if (running) return; running = true; let k = 0; const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; const go2 = () => { k++; frame(k); if (k < 30) setTimeout(go2, reduce ? 0 : 120); else { running = false; $("#denoise").textContent = "Again"; } }; go2(); };
 
-/* 3 picture builder: made from your design card and your character */
+/* 3 future scene builder: the kid picks what goes in the picture, the prompt builds itself */
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
-const KINDS = {
-  hero: {label:"1 · Big picture", file:"hero.png", help:"The whole design, seen from far. It goes at the top of your web page."},
-  detail: {label:"2 · Close-up", file:"detail.png", help:"One of your big ideas, seen up close."},
-  character: {label:"3 · Your character", file:"character.png", help:"The hero of your story, inside your design. A cartoon, never a real person."}
+const PLACES = {
+  school: ["a futuristic classroom","a school library of the future","a school playground of the future","a science lab of the future","a school canteen of the future","a rooftop garden on our school","the whole school seen from outside","a school bus stop of the future"],
+  planet: ["a futuristic green city","a city by the sea","the mountains with cedar trees","a clean beach on the Mediterranean","an underwater city","floating islands in the sky","a smart farm","a space station above the Earth"]
 };
-let kind = "hero";
-const fields = ["Subject","Setting","Style","Light","Camera"];
-function defaults(){
-  const m = P.me(), T = m.T || P.TEAMS.school, d = raw("ch3-card") || {}, c = raw("ch4-char") || {}, part = (m.part || "my part").toLowerCase();
-  const place = (d.name ? d.name + ", " : "") + (T.key === "planet" ? "the future of " + part : part + " of a school") + (T.key === "planet" ? " in Lebanon in 2050" : " in 2040");
-  return {
-    hero: {Subject: place + (d.i1 ? ", " + d.i1.toLowerCase() : ""), Setting: T.look, Style: "colourful 3D cartoon", Light: "bright and sunny", Camera: "wide shot"},
-    detail: {Subject: d.i2 || d.i1 || m.about || part, Setting: "inside " + (d.name || place), Style: "colourful 3D cartoon", Light: "bright", Camera: "close-up"},
-    character: {Subject: "a cartoon character: " + (c.who || "a student in the future") + (c.pers ? ", looks " + c.pers : "") + ", friendly face", Setting: "inside " + (d.name || place), Style: "colourful 3D cartoon", Light: "warm and bright", Camera: "medium shot"}
-  }[kind];
+const CATS = [
+  {id:"school", team:"school", icon:"🏫", title:"School things", kinds:["glowing glass desks with holograms","giant interactive screens on the walls","a holographic robot teacher","reading pods that glow","desks that move and fold","a garden inside the classroom","a climbing wall","VR headsets on every desk"], looks:["blue and glowing","white and clean","full of plants","colourful and fun"]},
+  {id:"planet", team:"planet", icon:"♻️", title:"Saving the planet", kinds:["recycling stations","ocean-cleaning boats","air-cleaning towers","rain-catching roofs","a clean river full of fish","zero-waste markets"], looks:["shiny and new","made of recycled materials","covered in plants"]},
+  {id:"robots", icon:"🤖", title:"Robots and AI", kinds:["helper robots","a recycling robot","gardening drones","a robot dog","a giant friendly robot","tiny robot bees","a holographic AI assistant"], looks:["cute and round","shiny silver","colourful","made of wood and plants","glowing blue"]},
+  {id:"vehicles", icon:"🚗", title:"Vehicles", kinds:["flying cars","solar buses","a magnetic floating train","hover bikes","self-driving pods","cable cars over the city","solar boats","flying school buses"], looks:["glass and white","bright colours","shaped like animals","glowing neon"]},
+  {id:"buildings", icon:"🏙️", title:"Buildings", kinds:["tall towers covered in gardens","glass domes","round eco-houses","floating buildings","tree houses","buildings with solar roofs","buildings shaped like cedar trees"], looks:["white and green","rainbow coloured","shiny glass","made of wood"]},
+  {id:"people", icon:"🧒", title:"People", kinds:["kids playing","students learning","families walking","scientists at work","a crowd celebrating"], looks:["a mix of boys and girls","all ages, from kids to grandparents","kids only"], look0:"a mix of boys and girls"},
+  {id:"nature", icon:"🌲", title:"Nature", kinds:["cedar trees","vertical gardens","a clean river","flowers everywhere","birds and butterflies","animals living freely"]},
+  {id:"energy", icon:"⚡", title:"Energy", kinds:["solar panels","wind turbines","glowing energy towers","streets that make electricity","rain-catching roofs"]},
+  {id:"magic", icon:"✨", title:"Magic and fantasy", kinds:["glowing plants","holograms floating in the air","a rainbow bridge","floating gardens","giant butterflies","clouds you can sit on","a waterfall falling up"]},
+  {id:"streets", icon:"🛣️", title:"Streets and ground", kinds:["grass streets","glowing paths","water canals","moving walkways","no cars, only bikes"]}
+];
+const GLOBAL = [
+  {id:"style", title:"Style", one:true, opts:["colourful 3D animation","anime-style digital illustration","futuristic concept art","realistic photo","watercolour painting","pixel art","clay animation"]},
+  {id:"light", title:"Light", one:true, opts:["bright sunny day","sunlight through big windows","sunrise","golden sunset","night with neon lights","after the rain, with a rainbow"]},
+  {id:"camera", title:"Camera", one:true, opts:["wide view","from the sky, like a drone","from a student's eyes","close-up","from inside, looking out of a window"]},
+  {id:"mood", title:"Mood (pick up to 2)", max:2, opts:["magical","peaceful","busy and exciting","hopeful","epic"]},
+  {id:"colours", title:"Colours", one:true, opts:["bright rainbow colours","blue and glowing","green and blue","white and gold","purple and pink neon"]}
+];
+const PICS = {
+  p1: {label:"1 · Big picture", file:"hero.png", help:"Your whole future world. It goes at the top of your web page.", def:{camera:"wide view"}},
+  p2: {label:"2 · Close-up", file:"detail.png", help:"Zoom in on your best idea: pick just 1 or 2 things.", def:{camera:"close-up"}},
+  p3: {label:"3 · Character", file:"character.png", help:"The hero of your story in your future world. A cartoon, never a real person.", def:{camera:"from a student's eyes"}}
+};
+let pic = "p1";
+function team(){ return P.me().team === "planet" ? "planet" : "school"; }
+function blank(p){ return {place:"", pick:{}, look:{people:"a mix of boys and girls"}, style:"colourful 3D animation", light:"bright sunny day", camera:PICS[p].def.camera, mood:["magical"], colours:"bright rainbow colours", idea:"", wow:true, who:""}; }
+function state(){ const s = store.get("scene-" + pic); return s && s.pick ? s : blank(pic); }
+let S = state();
+function save(){ store.set("scene-" + pic, S); draw(); }
+const chip = (txt, on, fn, cls) => el("button", {class:"chip" + (cls ? " " + cls : ""), type:"button", "aria-pressed":String(!!on), onclick:fn}, txt);
+const join = a => a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
+function prompt(){
+  const t = team(), when = t === "planet" ? "in Lebanon in the year 2050" : "at a school in Lebanon in the year 2040";
+  const things = CATS.filter(c => !c.team || c.team === t).map(c => { const k = S.pick[c.id] || []; if (!k.length) return null; const l = S.look[c.id]; return join(k) + (l ? " (" + l + ")" : ""); }).filter(Boolean);
+  const who = pic === "p3" ? (S.who || "a friendly cartoon kid from the future") : "";
+  const lines = [];
+  lines.push(pic === "p3" ? `A cartoon character: ${who}, in ${S.place || "a futuristic place"} ${when}.` : `A stunning picture of ${S.place || "a futuristic place"} ${when}.`);
+  if (things.length) lines.push("In the picture: " + things.join("; ") + ".");
+  if (S.idea.trim()) lines.push("Special idea: " + S.idea.trim() + ".");
+  lines.push(`Style: ${S.style}. Light: ${S.light}. Camera: ${S.camera}.` + (S.mood.length ? ` Mood: ${join(S.mood)}.` : "") + ` Colours: ${S.colours}.`);
+  if (S.wow) lines.push("Highly detailed, cinematic, vibrant, beautiful.");
+  lines.push("No text, no letters, no logos, no real people.");
+  return lines.join("\n");
 }
-function load(){ const saved = store.get("pic-" + kind); const d = saved || defaults(); fields.forEach(f => $("#f" + f).value = d[f]); draw(); }
+function power(){ const n = Object.values(S.pick).reduce((a, k) => a + k.length, 0) + Object.keys(S.look).filter(k => S.look[k] && (S.pick[k] || []).length).length + (S.place ? 1 : 0) + (S.idea.trim() ? 2 : 0) + (S.mood.length ? 1 : 0); return Math.min(5, Math.floor(n / 2)); }
 function draw(){
-  const f = {}; fields.forEach(x => f[x.toLowerCase()] = $("#f" + x).value.trim());
-  $("#picOut").textContent = `Generate an image: ${f.subject}. Setting: ${f.setting}. Style: ${f.style}. Light: ${f.light}. Camera: ${f.camera}. For kids, no text, no letters, no real people.`;
-  $("#fileName").textContent = KINDS[kind].file; $("#kindHelp").textContent = KINDS[kind].help;
+  const t = team(), cats = CATS.filter(c => !c.team || c.team === t);
+  if (S.place && !PLACES[t].includes(S.place)) S.place = "";
+  const box = $("#builder");
+  const sec = (title, body, extra) => el("div", {class:"bsec"}, el("h4", null, title, extra ? el("small", null, extra) : ""), body);
+  const parts = [];
+  parts.push(sec("1 · Where is it?", el("div", {class:"chips"}, ...PLACES[t].map(p => chip(p, S.place === p, () => { S.place = S.place === p ? "" : p; save(); }))), t === "planet" ? "Planet 2050" : "School 2040"));
+  if (pic === "p3"){ const inp = el("input", {placeholder:"e.g. a curious girl with a robot backpack", value:S.who}); inp.addEventListener("input", () => { S.who = inp.value; store.set("scene-" + pic, S); $("#picOut").textContent = prompt(); }); parts.push(sec("Your character", inp, "from your Chapter 4 story")); }
+  parts.push(el("h4", {class:"bhead"}, "2 · What's in it? ", el("small", null, pic === "p2" ? "pick only 1 or 2 things for a close-up" : "pick as many as you like")));
+  parts.push(el("div", {class:"cats"}, ...cats.map(c => { const k = S.pick[c.id] || [], on = k.length > 0;
+    return el("div", {class:"cat" + (on ? " on" : "")}, el("b", null, c.icon + " " + c.title),
+      el("div", {class:"chips"}, ...c.kinds.map(x => chip(x, k.includes(x), () => { const a = S.pick[c.id] || []; S.pick[c.id] = a.includes(x) ? a.filter(y => y !== x) : a.concat(x); save(); }))),
+      on && c.looks ? el("div", {class:"chips looks"}, el("span", {class:"muted"}, "Look:"), ...c.looks.map(l => chip(l, S.look[c.id] === l, () => { S.look[c.id] = S.look[c.id] === l ? "" : l; save(); }, "lk"))) : "");
+  })));
+  parts.push(el("h4", {class:"bhead"}, "3 · How does it look?"));
+  parts.push(el("div", {class:"cats"}, ...GLOBAL.map(g => el("div", {class:"cat on"}, el("b", null, g.title), el("div", {class:"chips"}, ...g.opts.map(o => chip(o, g.one ? S[g.id] === o : S[g.id].includes(o), () => {
+    if (g.one) S[g.id] = o; else { const a = S[g.id]; S[g.id] = a.includes(o) ? a.filter(y => y !== o) : a.concat(o).slice(-g.max); } save(); })))))));
+  const idea = el("input", {placeholder:"e.g. the school has a slide from the roof to the playground", value:S.idea});
+  idea.addEventListener("input", () => { S.idea = idea.value; store.set("scene-" + pic, S); $("#picOut").textContent = prompt(); drawPower(); });
+  parts.push(sec("4 · Your own crazy idea ✨", idea, "the AI never thought of it"));
+  const wow = el("label", {class:"wow"}, (() => { const c = el("input", {type:"checkbox"}); c.checked = S.wow; c.addEventListener("change", () => { S.wow = c.checked; save(); }); return c; })(), el("span", null, "Wow boost: add \"highly detailed, cinematic\""));
+  parts.push(wow);
+  box.replaceChildren(...parts);
+  $("#picOut").textContent = prompt(); $("#fileName").textContent = PICS[pic].file; $("#kindHelp").textContent = PICS[pic].help;
+  drawPower();
 }
-function save(){ const o = {}; fields.forEach(x => o[x] = $("#f" + x).value); store.set("pic-" + kind, o); }
-function tabs(){ $("#picTabs").replaceChildren(...Object.keys(KINDS).map(k => el("button", {type:"button", role:"tab", "aria-selected": String(k === kind), class:"tab", onclick:() => { kind = k; tabs(); load(); }}, KINDS[k].label))); }
-fields.forEach(f => $("#f" + f).addEventListener("input", () => { draw(); save(); }));
-$("#resetPic").onclick = () => { store.set("pic-" + kind, null); load(); };
-P.picker($("#proj"), () => { load(); });
-tabs(); load();
-$("#copyPic").onclick = () => copyText($("#picOut").textContent, $("#picOut"), "Adobe Express");
+function drawPower(){ const p = power(); $("#power").replaceChildren(el("span", {class:"tag"}, "Prompt power"), el("b", null, "★".repeat(p) + "☆".repeat(5 - p)), el("span", {class:"muted"}, p >= 4 ? "Strong prompt!" : p >= 2 ? "Good. Add more details." : "Pick a place and at least 3 things.")); }
+function tabs(){ $("#picTabs").replaceChildren(...Object.keys(PICS).map(k => el("button", {type:"button", role:"tab", "aria-selected": String(k === pic), class:"tab", onclick:() => { pic = k; S = state(); if (k === "p3" && !S.who){ const c = raw("ch4-char") || {}; if (c.who){ const pe = Array.isArray(c.pers) ? c.pers.join(" and ") : (c.pers || ""); S.who = (pe ? pe + " " : "") + c.who + (c.name ? " called " + c.name : "") + (Array.isArray(c.look) && c.look.length ? ", who " + c.look.join(" and ") : ""); } } tabs(); draw(); }}, PICS[k].label))); }
+$("#resetPic").onclick = () => { S = blank(pic); store.set("scene-" + pic, S); draw(); };
+$("#copyPic").onclick = () => { if (!S.place){ toast("First choose where it is (step 1)."); return; } copyText($("#picOut").textContent, $("#picOut"), "Adobe Express"); };
+P.picker($("#proj"), () => { draw(); });
+tabs(); draw();
 checklist("list1", [
-  ["Check your team and part", "At the top. The prompts are made from your design card (Chapter 3) and your character (Chapter 4)."],
-  ["Open Adobe Express", "Go to new.express.adobe.com and sign in with your school account."],
-  ["Picture 1: the big picture", "On the right, choose 1 · Big picture. Change the ingredients if you want, press Copy picture prompt, paste it in the big box at the top of Adobe Express and press Enter."],
-  ["Be a detective", "Look at the 4 pictures. Did the AI add things you did not ask for? Only boys? Strange hands? Messy letters? Something impossible?"],
-  ["Fix it with words", "Change one ingredient to fix what is wrong, and try again. Two tries per picture."],
+  ["Check your team", "At the top: School 2040 or Planet 2050. The places change with your team."],
+  ["Build picture 1", "Choose where it is, then pick robots, vehicles, buildings, magic… and how they look. Add your own crazy idea. Aim for 4 stars or more."],
+  ["Open Adobe Express", "Go to new.express.adobe.com and sign in with your school account. Press Copy picture prompt, paste it in the big box at the top and press Enter."],
+  ["Be a detective", "Look at the 4 pictures. Did the AI add things you did not ask for? Only boys? Strange hands? Messy letters?"],
+  ["Fix it with your choices", "Change your choices to fix what is wrong, copy again and try again. Two tries per picture."],
   ["Download the best one", "Click your favourite, choose Download, and save it in a folder called AI Creators as hero.png."],
-  ["Pictures 2 and 3", "Do the same with 2 · Close-up (detail.png) and 3 · Your character (character.png)."],
+  ["Pictures 2 and 3", "Do the same with 2 · Close-up (detail.png) and 3 · Character (character.png)."],
   ["Label it", "Everything made by AI gets the label Made with AI on your website (Chapter 8)."]
 ]);
 

@@ -178,6 +178,20 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .partlbl{display:grid;gap:4px;font-weight:700;font-size:15px}
 .partlbl select{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;max-width:560px}
 .partnow{margin:0;font-size:16px}
+.builder{display:grid;gap:14px}
+.bsec h4{margin:0 0 8px;font-family:var(--display);font-size:19px}
+.bsec h4 small{font-family:var(--body);font-weight:400;font-size:14px;color:var(--muted);margin-left:8px}
+.bsec textarea{margin-top:0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip{background:var(--panel);border:1.5px solid var(--line);border-radius:999px;padding:6px 12px;font-size:15px;line-height:1.25;text-align:left}
+.chip:hover{border-color:var(--green)}
+.chip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.wow{display:flex;gap:10px;align-items:center;font-weight:700}
+.wow input{width:22px;height:22px;accent-color:var(--green)}
+.power{display:grid;gap:2px;background:var(--gold-soft);border-radius:12px;padding:10px 12px}
+.power b{font-size:28px;color:var(--gold);letter-spacing:2px}
+.power .muted{font-size:14px}
+.bstep{font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin:4px 0 -6px}
 .quote{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.3;margin:6px 0 14px}
 .verdict{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:16px}
 .verdict.h{background:var(--green-soft)}.verdict.a{background:var(--onair-soft)}
@@ -253,6 +267,8 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 <section class="seg" id="seg-3" data-min="10" data-title="Storyboard" data-p="1" hidden>
   <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: plan your 30 seconds</h2><p>Period 1 · 10 minutes · on this page</p></div></div>
   <p class="big" id="vidGoal">Every film starts on paper. Plan your 5 scenes. Aim for 30 seconds in total.</p>
+  <div class="card" style="margin-bottom:16px"><span class="tag">1 · Build your video plan: choose, and it writes itself</span><div class="builder" id="vidB" style="margin-top:10px"></div><div class="power" id="vidP" style="margin-top:14px"></div><div class="row" style="margin-top:12px"><button class="btn sm" id="applyPlan" type="button">Make my storyboard</button></div><span class="tag" style="display:block;margin-top:12px">Prompt for Gemini: captions and a slogan</span><pre class="prompt small" id="vidOut"></pre><div class="row"><button class="btn sm alt" id="copyVid" type="button">Copy prompt</button></div></div>
+  <span class="tag">2 · Your storyboard (change anything)</span>
   <div class="board" id="board"></div>
   <p class="lead" style="margin-top:14px">Total: <span class="score" id="total">0 s</span> <span class="muted" id="totalMsg"></span></p>
 </section>
@@ -341,6 +357,46 @@ function picker(box, onChange){
 /* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
 function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
 return {TEAMS, me, picker, fill, rawSet};
+})();
+
+/* ---------- chip prompt builder: kids choose, the prompt builds itself ---------- */
+window.B = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
+const join = a => { a = (a || []).filter(Boolean); return a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; };
+/* spec: [{id, title, hint, one:true | max:n, opts:[..] or () => [..], icon}, {id, title, text:true, ph}, {id, label, toggle:true}] */
+function make(box, spec, S, onChange){
+  const opts = s => typeof s.opts === "function" ? s.opts() : s.opts;
+  function draw(){
+    box.replaceChildren(...spec.filter(s => !s.when || s.when(S)).map(s => {
+      if (s.text){ const i = el(s.long ? "textarea" : "input", {placeholder:s.ph || "", rows:s.long ? "3" : null, "aria-label":s.title}); i.value = S[s.id] || ""; i.addEventListener("input", () => { S[s.id] = i.value; onChange(false); });
+        return el("div", {class:"bsec"}, el("h4", null, s.title, s.hint ? el("small", null, s.hint) : null), i); }
+      if (s.toggle){ const c = el("input", {type:"checkbox"}); c.checked = !!S[s.id]; c.addEventListener("change", () => { S[s.id] = c.checked; onChange(true); });
+        return el("label", {class:"wow"}, c, el("span", null, s.label)); }
+      const list = opts(s), cur = S[s.id];
+      if (s.one && cur && !list.includes(cur) && !s.keep) S[s.id] = "";
+      if (!s.one && Array.isArray(cur)) S[s.id] = cur.filter(x => list.includes(x));
+      const on = x => s.one ? S[s.id] === x : (S[s.id] || []).includes(x);
+      return el("div", {class:"bsec"}, el("h4", null, (s.icon ? s.icon + " " : "") + s.title, s.hint || s.max ? el("small", null, s.hint || ("pick up to " + s.max)) : null),
+        el("div", {class:"chips"}, ...list.map(x => el("button", {class:"chip", type:"button", "aria-pressed":String(on(x)), onclick:() => {
+          if (s.one) S[s.id] = S[s.id] === x ? "" : x;
+          else { const a = S[s.id] || []; S[s.id] = a.includes(x) ? a.filter(y => y !== x) : (s.max && a.length >= s.max ? a.slice(1) : a).concat(x); }
+          onChange(true); }}, x))));
+    }));
+  }
+  draw();
+  return {draw};
+}
+/* how complete is the prompt: 0..5 stars */
+function power(spec, S){
+  let n = 0, t = 0;
+  spec.forEach(s => { if (s.toggle) return; t++; const v = S[s.id]; if (s.text ? (v || "").trim().length > 3 : s.one ? !!v : (v || []).length) n++; });
+  return t ? Math.round(n / t * 5) : 0;
+}
+function meter(box, spec, S){
+  const p = power(spec, S);
+  box.replaceChildren(el("span", {class:"tag"}, "Prompt power"), el("b", null, "★".repeat(p) + "☆".repeat(5 - p)), el("span", {class:"muted"}, p >= 5 ? "Super prompt!" : p >= 3 ? "Good. Choose a bit more." : "Choose more options to make it strong."));
+}
+return {make, power, meter, join};
 })();
 
 window.K = (function(){
@@ -435,10 +491,51 @@ function save(){ store.set("plan", plan); const t = plan.reduce((a, s) => a + (+
   $("#miniPlan").replaceChildren(...plan.map(s => el("li", null, el("b", null, s.name + " (" + s.secs + " s): "), s.what))); }
 drawBoard();
 
+/* video plan builder: choose, the storyboard and the prompt build themselves */
+const J = window.B.join;
+const VSPEC = [
+  {id:"type", icon:"🎬", title:"Kind of video", one:true, opts:["a promo advert","a short documentary","a news report from the future","a movie trailer","a before-and-after video"]},
+  {id:"open", icon:"🚀", title:"How does it start?", one:true, opts:["a big title on my best picture","a question on a black screen","a countdown 3-2-1","a sound and a fast zoom"]},
+  {id:"music", icon:"🎵", title:"Music", one:true, opts:["epic","happy","calm","mysterious","electronic future beats"]},
+  {id:"caps", icon:"🔤", title:"Captions", one:true, opts:["big bold words","short facts","questions to the viewer","no captions, only my voice"]},
+  {id:"end", icon:"🏁", title:"How does it end?", one:true, opts:["a slogan","a question to the viewer","a call to action","only \"Made with AI\" and my name"]},
+  {id:"len", icon:"⏱️", title:"Length", one:true, opts:["20 seconds","30 seconds","40 seconds"]},
+  {id:"idea", title:"✨ Your own idea", text:true, ph:"e.g. the video starts in 2026 and jumps to the future", hint:"makes it yours"}
+];
+const V = Object.assign({type:"", open:"", music:"", caps:"", end:"", len:"30 seconds", idea:""}, store.get("vplan") || {});
+function vidText(){
+  const st = K.store.raw("ch4-story") || {};
+  return "Role: You are a video director who makes short videos for kids.\n" +
+    "Task: Plan " + (V.type || "a short video") + " of " + (V.len || "30 seconds") + " for " + TT.site + (card.name ? " about my design \"" + card.name + "\"" : "") + ".\n" +
+    "Context: My files are hero.png (the big picture), detail.png (a close-up), character.png (my character) and podcast.mp4 (my voice)." +
+    (card.i1 ? " My big ideas: " + [card.i1, card.i2, card.i3].filter(Boolean).join("; ") + "." : "") + (st.title ? " My story is called \"" + st.title + "\"." : "") +
+    (V.open ? " It starts with " + V.open + "." : "") + (V.music ? " Music: " + V.music + "." : "") + (V.caps ? " Captions: " + V.caps + "." : "") + (V.end ? " It ends with " + V.end + "." : "") +
+    ((V.idea || "").trim() ? " My own idea: " + V.idea.trim() + "." : "") +
+    "\nFormat: A table with 5 scenes: which file, the caption (6 words maximum), and the seconds. Then 3 ideas for a slogan. Easy English. The last scene says Made with AI.";
+}
+function applyPlan(){
+  const total = parseInt(V.len) || 30, k = total / 30, r = x => Math.max(2, Math.round(x * k));
+  const cap = V.caps === "questions to the viewer" ? "a question to the viewer" : V.caps === "short facts" ? "one fact" : V.caps === "no captions, only my voice" ? "no caption" : "big bold words";
+  plan.length = 0;
+  plan.push({name:"Opening", what:(V.open || "a big title on my best picture") + " · hero.png · title: " + (card.name || "my design"), secs:r(4)});
+  plan.push({name:"Voice", what:"the best part of podcast.mp4 · " + (V.music || "quiet") + " music under it", secs:r(13)});
+  plan.push({name:"Close-up", what:"detail.png · " + cap, secs:r(5)});
+  plan.push({name:"Character", what:"character.png · " + cap, secs:r(5)});
+  plan.push({name:"Ending", what:(V.end || "a slogan") + " · " + TT.site + " · Made with AI · my first name", secs:r(3)});
+  drawBoard();
+}
+let vidUI;
+function drawVid(){ $("#vidOut").textContent = vidText(); window.B.meter($("#vidP"), VSPEC, V); }
+function onVid(redraw){ store.set("vplan", V); if (redraw) vidUI.draw(); drawVid(); }
+vidUI = window.B.make($("#vidB"), VSPEC, V, onVid);
+$("#applyPlan").onclick = () => { if (!V.type){ K.toast("Choose the kind of video first."); return; } applyPlan(); K.toast("Your storyboard is ready below. Change anything you want."); };
+$("#copyVid").onclick = () => { if (!V.type){ K.toast("Choose the kind of video first."); return; } copy(vidText(), $("#vidOut"), "Gemini"); };
+drawVid();
+
 checklist("list1", [
   ["Start a video", "In Adobe Express, click Create video, then start from scratch with a 16:9 (wide) size."],
   ["Upload your files", "Click Upload (or Media, then Upload) and add hero.png, detail.png, character.png and podcast.mp4 from your AI Creators folder."],
-  ["Scene 1: title", "Put hero.png in the first scene. Add the name of your design as a big title. About 3 seconds."],
+  ["Scene 1: opening", "Put hero.png in the first scene and make your opening (title, question or countdown). Use your storyboard."],
   ["Scene 2: your voice", "Add a scene with the + button and put podcast.mp4 in it. Trim it to the best 15 seconds."],
   ["Scene 3: close-up", "Add detail.png and write one fact as a caption."],
   ["Scenes 4 and 5", "character.png with one short line, then the ending: your team site, Made with AI, your first name."],
@@ -448,7 +545,7 @@ checklist("list1", [
 /* fact check */
 const facts = store.get("facts") || [{c:"", s1:"", s2:"", ok:false},{c:"", s1:"", s2:"", ok:false},{c:"", s1:"", s2:"", ok:false}];
 function drawFacts(){
-  $("#facts").replaceChildren(el("div", {class:"frow head"}, el("span", null, "Fact in my video"), el("span", null, "Source 1"), el("span", null, "Source 2"), el("span", null, "Checked")),
+  $("#facts").replaceChildren(el("div", {class:"frow head"}, el("span", null, "Fact in my segment"), el("span", null, "Source 1"), el("span", null, "Source 2"), el("span", null, "Checked")),
     ...facts.map((f, i) => { const inp = (k, ph) => { const x = el("input", {placeholder:ph, "aria-label": k + " " + (i + 1)}); x.value = f[k]; x.addEventListener("input", () => { f[k] = x.value; sf(); }); return x; };
       const cb = el("input", {type:"checkbox", "aria-label":"Fact " + (i + 1) + " checked"}); cb.checked = f.ok; cb.addEventListener("change", () => { f.ok = cb.checked; sf(); });
       return el("div", {class:"frow"}, inp("c", TT.key === "planet" ? "e.g. Lebanon has about 300 sunny days a year" : "e.g. Students learn better with daylight"), inp("s1", "website or who told you"), inp("s2", "a second source"), el("label", {class:"okbox"}, cb, el("span", null, "OK"))); }));

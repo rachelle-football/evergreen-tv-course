@@ -178,6 +178,20 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .partlbl{display:grid;gap:4px;font-weight:700;font-size:15px}
 .partlbl select{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;max-width:560px}
 .partnow{margin:0;font-size:16px}
+.builder{display:grid;gap:14px}
+.bsec h4{margin:0 0 8px;font-family:var(--display);font-size:19px}
+.bsec h4 small{font-family:var(--body);font-weight:400;font-size:14px;color:var(--muted);margin-left:8px}
+.bsec textarea{margin-top:0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip{background:var(--panel);border:1.5px solid var(--line);border-radius:999px;padding:6px 12px;font-size:15px;line-height:1.25;text-align:left}
+.chip:hover{border-color:var(--green)}
+.chip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.wow{display:flex;gap:10px;align-items:center;font-weight:700}
+.wow input{width:22px;height:22px;accent-color:var(--green)}
+.power{display:grid;gap:2px;background:var(--gold-soft);border-radius:12px;padding:10px 12px}
+.power b{font-size:28px;color:var(--gold);letter-spacing:2px}
+.power .muted{font-size:14px}
+.bstep{font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin:4px 0 -6px}
 .q{margin-bottom:12px}.opts{display:flex;flex-wrap:wrap;gap:8px}
 .opt{background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:9px 14px;text-align:left}
 .opt.right{border-color:var(--green);background:var(--green-soft)}.opt.wrong{border-color:var(--onair);background:var(--onair-soft)}
@@ -240,15 +254,23 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 <section class="seg" id="seg-3" data-min="28" data-title="Mission: podcast clip" hidden>
   <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: your clip for the team podcast</h2><p>28 minutes · your voice, Adobe Express</p></div></div>
   <div class="card myproj" id="proj"></div>
+  <div class="card" style="margin-bottom:16px">
+    <span class="tag">1 · Build your podcast script prompt: choose, and it writes itself</span>
+    <div class="builder" id="podB" style="margin-top:10px"></div>
+    <div class="power" id="podP" style="margin-top:14px"></div>
+    <span class="tag" style="display:block;margin-top:12px">Your prompt (your Chapter 4 story is inside)</span>
+    <pre class="prompt small" id="podOut"></pre>
+    <div class="row"><button class="btn sm" id="copyPod" type="button">Copy my prompt</button></div>
+  </div>
   <div class="mission">
     <div><ol class="checklist" id="list1"></ol></div>
     <aside class="card side">
       <span class="tag">Your podcast host</span>
       <p id="charIdea" class="lead" style="margin:0;font-size:17px"></p>
-      <label class="tag" for="script">Your podcast script (from your Chapter 4 story)</label>
-      <textarea id="script" style="min-height:200px"></textarea>
-      <p class="muted" style="margin:0;font-size:15px"><span id="wc">0 words</span> · about <span id="secs">0</span> seconds. Aim for 40 to 70 seconds.</p>
-      <div class="row"><button class="btn sm" id="tpBtn" type="button">Practise with the teleprompter</button><button class="ghost" id="rebuild" type="button">Rebuild from my story</button></div>
+      <label class="tag" for="script">2 · Paste the script Gemini wrote</label>
+      <textarea id="script" style="min-height:200px" placeholder="Paste your podcast script here, then make it sound like you…"></textarea>
+      <p class="muted" style="margin:0;font-size:15px"><span id="wc">0 words</span> · about <span id="secs">0</span> seconds.</p>
+      <div class="row"><button class="btn sm" id="tpBtn" type="button">Practise with the teleprompter</button></div>
     </aside>
   </div>
   <p class="note">No microphone on your computer? In step 5, choose the upload option instead and use a recording your teacher made with you on a class device. Your voice stays in your Adobe project only.</p>
@@ -316,6 +338,46 @@ function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{p
 return {TEAMS, me, picker, fill, rawSet};
 })();
 
+/* ---------- chip prompt builder: kids choose, the prompt builds itself ---------- */
+window.B = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
+const join = a => { a = (a || []).filter(Boolean); return a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; };
+/* spec: [{id, title, hint, one:true | max:n, opts:[..] or () => [..], icon}, {id, title, text:true, ph}, {id, label, toggle:true}] */
+function make(box, spec, S, onChange){
+  const opts = s => typeof s.opts === "function" ? s.opts() : s.opts;
+  function draw(){
+    box.replaceChildren(...spec.filter(s => !s.when || s.when(S)).map(s => {
+      if (s.text){ const i = el(s.long ? "textarea" : "input", {placeholder:s.ph || "", rows:s.long ? "3" : null, "aria-label":s.title}); i.value = S[s.id] || ""; i.addEventListener("input", () => { S[s.id] = i.value; onChange(false); });
+        return el("div", {class:"bsec"}, el("h4", null, s.title, s.hint ? el("small", null, s.hint) : null), i); }
+      if (s.toggle){ const c = el("input", {type:"checkbox"}); c.checked = !!S[s.id]; c.addEventListener("change", () => { S[s.id] = c.checked; onChange(true); });
+        return el("label", {class:"wow"}, c, el("span", null, s.label)); }
+      const list = opts(s), cur = S[s.id];
+      if (s.one && cur && !list.includes(cur) && !s.keep) S[s.id] = "";
+      if (!s.one && Array.isArray(cur)) S[s.id] = cur.filter(x => list.includes(x));
+      const on = x => s.one ? S[s.id] === x : (S[s.id] || []).includes(x);
+      return el("div", {class:"bsec"}, el("h4", null, (s.icon ? s.icon + " " : "") + s.title, s.hint || s.max ? el("small", null, s.hint || ("pick up to " + s.max)) : null),
+        el("div", {class:"chips"}, ...list.map(x => el("button", {class:"chip", type:"button", "aria-pressed":String(on(x)), onclick:() => {
+          if (s.one) S[s.id] = S[s.id] === x ? "" : x;
+          else { const a = S[s.id] || []; S[s.id] = a.includes(x) ? a.filter(y => y !== x) : (s.max && a.length >= s.max ? a.slice(1) : a).concat(x); }
+          onChange(true); }}, x))));
+    }));
+  }
+  draw();
+  return {draw};
+}
+/* how complete is the prompt: 0..5 stars */
+function power(spec, S){
+  let n = 0, t = 0;
+  spec.forEach(s => { if (s.toggle) return; t++; const v = S[s.id]; if (s.text ? (v || "").trim().length > 3 : s.one ? !!v : (v || []).length) n++; });
+  return t ? Math.round(n / t * 5) : 0;
+}
+function meter(box, spec, S){
+  const p = power(spec, S);
+  box.replaceChildren(el("span", {class:"tag"}, "Prompt power"), el("b", null, "★".repeat(p) + "☆".repeat(5 - p)), el("span", {class:"muted"}, p >= 5 ? "Super prompt!" : p >= 3 ? "Good. Choose a bit more." : "Choose more options to make it strong."));
+}
+return {make, power, meter, join};
+})();
+
 window.K = (function(){
 const $ = s => document.querySelector(s);
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
@@ -381,26 +443,49 @@ $("#scen").replaceChildren(...SC.map(([q, opts, ok, why]) => { const w = el("p",
   return el("div", {class:"card q"}, el("p", {class:"lead", style:"margin:0 0 10px;font-weight:700"}, q), el("div", {class:"opts"}, bs), w); }));
 
 const raw = k => K.store.raw(k);
+const J = window.B.join;
+const PSPEC = [
+  {id:"show", icon:"🎙️", title:"Kind of show", one:true, opts:["a news show from the future","an interview with my character","a radio drama with sound effects","a \"did you know?\" facts show","a sports-commentator style show","a calm bedtime-story podcast"]},
+  {id:"open", icon:"👋", title:"How does it start?", one:true, opts:["a big welcome with the podcast name","a sound effect and a big hello","a question to the listeners","a countdown from 3"]},
+  {id:"tone", icon:"🎭", title:"Tone", one:true, opts:["excited","calm","funny","mysterious"]},
+  {id:"voices", icon:"🗣️", title:"Who talks?", one:true, opts:["only me","me and my story character","me and a robot co-host"]},
+  {id:"end", icon:"🏁", title:"How does it end?", one:true, opts:["a question for the listeners","a challenge: do one thing this week","a joke","\"See you in the future!\""]},
+  {id:"len", icon:"⏱️", title:"Length", one:true, opts:["40 seconds","60 seconds","90 seconds"]},
+  {id:"idea", title:"✨ Your own idea", text:true, ph:"e.g. the robot co-host keeps getting the facts wrong", hint:"makes it yours"}
+];
+const PS = Object.assign({show:"", open:"", tone:"", voices:"", end:"", len:"60 seconds", idea:""}, store.get("pod") || {});
+function podText(){
+  const m = K.me(), T = m.T || K.TEAMS.school, st = raw("ch4-story") || {}, c = raw("ch4-char") || {}, secs = parseInt(PS.len) || 60;
+  return "Role: You are a script writer for a kids' podcast.\n" +
+    "Task: Turn my story into a " + (PS.len || "60 seconds").replace(" seconds", "-second") + " script for " + T.podcast + (PS.show ? ", made as " + PS.show : "") + ".\n" +
+    "Context: My story" + (st.title ? " \"" + st.title + "\"" : "") + ": " + (st.text ? "\"" + st.text.trim() + "\"" : "(my story from Chapter 4)") + "\n" +
+    (PS.open ? "Start with " + PS.open + ". " : "") + (PS.tone ? "The tone is " + PS.tone + ". " : "") +
+    (PS.voices ? "Who talks: " + PS.voices + (PS.voices.includes("character") && c.name ? " (" + c.name + ")" : "") + ". " : "") +
+    (PS.end ? "End with " + PS.end + ". " : "") + ((PS.idea || "").trim() ? "My own idea: " + PS.idea.trim() + ". " : "") +
+    "\nFormat: About " + Math.round(secs * 2.3) + " words. Short lines with the speaker's name before each line, and sound effects in [brackets]. Easy English for 12-year-olds. No real people's names.";
+}
+let podUI;
+function drawPod(){ $("#podOut").textContent = podText(); window.B.meter($("#podP"), PSPEC, PS); }
+function onPod(redraw){ store.set("pod", PS); if (redraw) podUI.draw(); drawPod(); }
+podUI = window.B.make($("#podB"), PSPEC, PS, onPod);
+$("#copyPod").onclick = () => { if (!PS.show){ K.toast("Choose the kind of show first."); return; } copy(podText(), $("#podOut"), "Gemini"); };
 function hostIdea(){ const c = raw("ch4-char") || {}, m = K.me();
-  $("#charIdea").textContent = c.name ? "Your story character, " + c.name + " (" + (c.who || "") + "), can be your host. Or choose any Adobe character that fits " + (m.part || "your part") + "." : "Pick an Adobe character that fits " + (m.part || "your part") + ": a robot, an animal, a kid from the future…"; }
-function scriptFromStory(){ const m = K.me(), T = m.T || K.TEAMS.school, st = raw("ch4-story") || {};
-  return "Welcome to " + T.podcast + "! Today: " + (m.part || "my part") + (st.title ? ". Here is my story: " + st.title + "." : ".") + "\n\n" + (st.text || "(Paste your story from Chapter 4 here.)") + "\n\nThat was " + (m.part || "my part") + ", from " + T.site + ". See you in the future!"; }
+  $("#charIdea").textContent = c.name ? "Your story character, " + c.name + (c.who ? " (" + c.who + ")" : "") + ", can be your animated host. Or choose any Adobe character that fits your world." : "Pick an Adobe character that fits your world: a robot, an animal, a kid from the future…"; }
 const scr = $("#script");
-scr.value = store.get("script") || scriptFromStory();
+scr.value = store.get("script") || "";
 function wc(){ const w = (scr.value.match(/\S+/g) || []).length; $("#wc").textContent = w + " words"; $("#secs").textContent = Math.round(w / 2.3); }
 scr.addEventListener("input", () => { store.set("script", scr.value); wc(); });
-$("#rebuild").onclick = () => { scr.value = scriptFromStory(); store.set("script", scr.value); wc(); };
-K.picker($("#proj"), () => { hostIdea(); if (!store.get("script")){ scr.value = scriptFromStory(); wc(); } });
-hostIdea(); wc();
+K.picker($("#proj"), () => { hostIdea(); drawPod(); });
+hostIdea(); wc(); drawPod();
 
 checklist("list1", [
-  ["Check your script", "On the right: your story with a podcast welcome and goodbye. Cut it if it is longer than 70 seconds."],
+  ["Build your script prompt", "Choose the kind of show, the start, the tone, who talks and the ending. Copy the prompt into Gemini."],
+  ["Paste and make it yours", "Paste Gemini's script on the right. Change any line that does not sound like you."],
   ["Practise", "Press Practise with the teleprompter. Read it aloud twice, like a radio host: smile, clear, not too fast."],
   ["Open Animate from audio", "In Adobe Express, type Animate from audio in the big box at the top (or find it under Quick edits, View all)."],
-  ["Choose your host", "Pick a character that fits your part. Your story character is a great choice."],
+  ["Choose your host", "Pick a character that fits your world. Your story character is a great choice."],
   ["Add your picture", "Under Background, choose Upload and pick hero.png from your AI Creators folder (Chapter 5). No Upload option? Pick any background."],
-  ["Record your voice", "Press Record, allow the microphone, and read your script."],
-  ["Listen and redo", "Too fast? Too quiet? A mistake? Record again. Real podcasters do many takes."],
+  ["Record your voice", "Press Record, allow the microphone, and read your script. Too fast, too quiet, a mistake? Record again: real podcasters do many takes."],
   ["Download", "Save it in your AI Creators folder as podcast.mp4. It goes on your web page in Chapter 8."]
 ]);
 

@@ -178,6 +178,20 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .partlbl{display:grid;gap:4px;font-weight:700;font-size:15px}
 .partlbl select{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;max-width:560px}
 .partnow{margin:0;font-size:16px}
+.builder{display:grid;gap:14px}
+.bsec h4{margin:0 0 8px;font-family:var(--display);font-size:19px}
+.bsec h4 small{font-family:var(--body);font-weight:400;font-size:14px;color:var(--muted);margin-left:8px}
+.bsec textarea{margin-top:0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip{background:var(--panel);border:1.5px solid var(--line);border-radius:999px;padding:6px 12px;font-size:15px;line-height:1.25;text-align:left}
+.chip:hover{border-color:var(--green)}
+.chip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.wow{display:flex;gap:10px;align-items:center;font-weight:700}
+.wow input{width:22px;height:22px;accent-color:var(--green)}
+.power{display:grid;gap:2px;background:var(--gold-soft);border-radius:12px;padding:10px 12px}
+.power b{font-size:28px;color:var(--gold);letter-spacing:2px}
+.power .muted{font-size:14px}
+.bstep{font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin:4px 0 -6px}
 .pitchform{display:grid;gap:10px}
 .ing{display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
 .pitch{font-family:var(--display);font-size:21px;font-weight:600;line-height:1.4;margin:6px 0 10px}
@@ -233,6 +247,8 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 
 <section class="seg" id="seg-2" data-min="17" data-title="Mission: your pitch" hidden>
   <div class="lower"><div class="no">02</div><div class="name"><h2>Mission: write your 30-second pitch</h2><p>Period 1 · 17 minutes · on this page</p></div></div>
+  <div class="card" style="margin-bottom:16px"><span class="tag">1 · Build your pitch: choose, and it writes itself</span><div class="builder" id="pbB" style="margin-top:10px"></div><div class="power" id="pbP" style="margin-top:14px"></div><div class="row" style="margin-top:12px"><button class="btn" id="writePitch" type="button">Write my pitch</button></div></div>
+  <span class="tag">2 · Your pitch, line by line (change any words)</span>
   <div class="mission">
     <div class="pitchform">
       <label class="ing"><span class="tag">1 · My part</span><input id="p1" placeholder="e.g. I designed the library of School 2040: the Story Cave."></label>
@@ -342,6 +358,46 @@ function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{p
 return {TEAMS, me, picker, fill, rawSet};
 })();
 
+/* ---------- chip prompt builder: kids choose, the prompt builds itself ---------- */
+window.B = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
+const join = a => { a = (a || []).filter(Boolean); return a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; };
+/* spec: [{id, title, hint, one:true | max:n, opts:[..] or () => [..], icon}, {id, title, text:true, ph}, {id, label, toggle:true}] */
+function make(box, spec, S, onChange){
+  const opts = s => typeof s.opts === "function" ? s.opts() : s.opts;
+  function draw(){
+    box.replaceChildren(...spec.filter(s => !s.when || s.when(S)).map(s => {
+      if (s.text){ const i = el(s.long ? "textarea" : "input", {placeholder:s.ph || "", rows:s.long ? "3" : null, "aria-label":s.title}); i.value = S[s.id] || ""; i.addEventListener("input", () => { S[s.id] = i.value; onChange(false); });
+        return el("div", {class:"bsec"}, el("h4", null, s.title, s.hint ? el("small", null, s.hint) : null), i); }
+      if (s.toggle){ const c = el("input", {type:"checkbox"}); c.checked = !!S[s.id]; c.addEventListener("change", () => { S[s.id] = c.checked; onChange(true); });
+        return el("label", {class:"wow"}, c, el("span", null, s.label)); }
+      const list = opts(s), cur = S[s.id];
+      if (s.one && cur && !list.includes(cur) && !s.keep) S[s.id] = "";
+      if (!s.one && Array.isArray(cur)) S[s.id] = cur.filter(x => list.includes(x));
+      const on = x => s.one ? S[s.id] === x : (S[s.id] || []).includes(x);
+      return el("div", {class:"bsec"}, el("h4", null, (s.icon ? s.icon + " " : "") + s.title, s.hint || s.max ? el("small", null, s.hint || ("pick up to " + s.max)) : null),
+        el("div", {class:"chips"}, ...list.map(x => el("button", {class:"chip", type:"button", "aria-pressed":String(on(x)), onclick:() => {
+          if (s.one) S[s.id] = S[s.id] === x ? "" : x;
+          else { const a = S[s.id] || []; S[s.id] = a.includes(x) ? a.filter(y => y !== x) : (s.max && a.length >= s.max ? a.slice(1) : a).concat(x); }
+          onChange(true); }}, x))));
+    }));
+  }
+  draw();
+  return {draw};
+}
+/* how complete is the prompt: 0..5 stars */
+function power(spec, S){
+  let n = 0, t = 0;
+  spec.forEach(s => { if (s.toggle) return; t++; const v = S[s.id]; if (s.text ? (v || "").trim().length > 3 : s.one ? !!v : (v || []).length) n++; });
+  return t ? Math.round(n / t * 5) : 0;
+}
+function meter(box, spec, S){
+  const p = power(spec, S);
+  box.replaceChildren(el("span", {class:"tag"}, "Prompt power"), el("b", null, "★".repeat(p) + "☆".repeat(5 - p)), el("span", {class:"muted"}, p >= 5 ? "Super prompt!" : p >= 3 ? "Good. Choose a bit more." : "Choose more options to make it strong."));
+}
+return {make, power, meter, join};
+})();
+
 window.K = (function(){
 const $ = s => document.querySelector(s);
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
@@ -400,6 +456,28 @@ function drawPitch(){ const t = ["p1","p2","p3","p4","p5"].map(k => (P[k] || "")
   const n = (t.match(/\S+/g) || []).length, s = Math.round(n / 2.5); $("#pWords").textContent = n + " words"; $("#pSecs").textContent = s + " s" + (s > 35 ? " (too long)" : ""); }
 ["p1","p2","p3","p4","p5"].forEach(k => { $("#" + k).value = P[k] || ""; $("#" + k).addEventListener("input", () => { P[k] = $("#" + k).value; store.set("pitch", P); drawPitch(); }); });
 drawPitch();
+/* pitch builder: choose, and your pitch writes itself */
+const J = window.B.join, card = K.store.raw("ch3-card") || {}, ME = K.me(), TS = ME.T || K.TEAMS.school;
+const PSPEC = [
+  {id:"open", icon:"👋", title:"How do you start?", one:true, opts:["a question to the visitor","a surprising fact","\"Imagine…\"","a clap and a big welcome"]},
+  {id:"ai", icon:"🤖", title:"What did the AI do?", max:3, opts:["gave me ideas","drew my pictures","wrote a first story","moved my character with my voice","wrote the code of my page"]},
+  {id:"me", icon:"🧑", title:"What did YOU do?", max:3, opts:["chose the best ideas","added my own crazy idea","recorded my voice","fixed the AI's mistakes","checked the facts","made it fair for boys and girls"]},
+  {id:"wow", icon:"😮", title:"What surprised you?", one:true, opts:["the AI drew only boys at first","the AI invented a fact","the AI made strange hands","the AI did not know my idea until I explained it","the AI was fast, but my ideas were better"]},
+  {id:"try", icon:"👉", title:"What should visitors try?", one:true, opts:["watch my video","take my quiz","listen to my podcast","guess which picture is made by AI"]}
+];
+const PB = Object.assign({open:"", ai:[], me:[], wow:"", try:""}, store.get("pitchB") || {});
+let pbUI;
+function onPB(redraw){ store.set("pitchB", PB); if (redraw) pbUI.draw(); window.B.meter($("#pbP"), PSPEC, PB); }
+pbUI = window.B.make($("#pbB"), PSPEC, PB, onPB); window.B.meter($("#pbP"), PSPEC, PB);
+$("#writePitch").onclick = () => {
+  if (!PB.open){ K.toast("Choose how you start first."); return; }
+  const what = card.name || "my design", place = TS.key === "planet" ? "a planet" : "a school";
+  const start = {"a question to the visitor":"Have you ever imagined " + place + " like this?", "a surprising fact":"Here is something surprising: " + (card.i1 || "the future is closer than you think") + ".", "\"Imagine…\"":"Imagine " + what + ".", "a clap and a big welcome":"(clap) Welcome to the future!"}[PB.open];
+  const lines = {p1:start + " I designed " + what + " for " + TS.site + ".", p2:PB.ai.length ? "The AI " + J(PB.ai) + "." : "", p3:PB.me.length ? "But I " + J(PB.me) + "." : "", p4:PB.wow ? "What surprised me: " + PB.wow + "." : "", p5:PB.try ? "Now you try: " + PB.try + "!" : ""};
+  Object.entries(lines).forEach(([k, v]) => { P[k] = v; $("#" + k).value = v; });
+  store.set("pitch", P); drawPitch(); K.toast("Your pitch is ready. Change any words to make it sound like you.");
+};
+
 let pt = null;
 $("#pTimer").onclick = () => { if (pt){ clearInterval(pt); pt = null; $("#pTimer").textContent = "Practise: 30-second timer"; $("#pClock").textContent = "30"; return; }
   let s = 30; $("#pTimer").textContent = "Stop"; pt = setInterval(() => { s--; $("#pClock").textContent = s; if (s <= 0){ clearInterval(pt); pt = null; $("#pClock").textContent = "Time!"; $("#pTimer").textContent = "Practise again"; } }, 1000); };

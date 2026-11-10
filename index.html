@@ -339,7 +339,7 @@ function hub(tok){
   function work(s){ const d = s.course || {}, ch = pj(d["ch4-char"]) || {}, card = pj(d["ch3-card"]) || {}, st = pj(d["ch4-story"]) || {}, pitch = pj(d["ch9-pitch"]) || {}, t1 = pj(d["ch2-tally1"]), acc = Array.isArray(t1) && t1[0] && (t1[0].r + t1[0].w) ? Math.round(t1[0].r / (t1[0].r + t1[0].w) * 100) + "%" : "—";
     const item = (k, v) => v ? el("div", {class:"wk"}, el("span", {class:"tag"}, k), el("p", null, String(v))) : null;
     const items = [item("Team and part", segOf(d)), item("Chapter 1 idea", pj(d["meet-ai-idea"])), item("Chapter 2 AI accuracy", acc !== "—" ? acc : null),
-      item("Design card", card.name ? card.name + ": " + [card.i1, card.i2, card.i3, card.mine].filter(Boolean).join(" · ") : null), item("Character", ch.name ? ch.name + " (" + (ch.who || "") + ")" + (ch.pers ? ": " + ch.pers : "") : null),
+      item("Design card", card.name ? card.name + ": " + [card.i1, card.i2, card.i3, card.mine].filter(Boolean).join(" · ") : null), item("Character", ch.name ? ch.name + " (" + (ch.who || "") + ")" + (ch.pers && ch.pers.length ? ": " + [].concat(ch.pers).join(", ") : "") + (ch.power ? " · " + ch.power : "") : null),
       item("Story", st.text ? (st.title ? st.title + ": " : "") + st.text : null), item("Pitch", ["p1","p2","p3","p4","p5"].map(k => pitch[k]).filter(Boolean).join(" ")), item("Exhibition job", pj(d["ch9-job"]))].filter(Boolean);
     return el("div", {class:"work"}, ...(items.length ? items : [el("p", {class:"muted"}, "No work saved yet.")])); }
   function draw(){

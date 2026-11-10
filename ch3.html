@@ -178,6 +178,20 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .partlbl{display:grid;gap:4px;font-weight:700;font-size:15px}
 .partlbl select{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;max-width:560px}
 .partnow{margin:0;font-size:16px}
+.builder{display:grid;gap:14px}
+.bsec h4{margin:0 0 8px;font-family:var(--display);font-size:19px}
+.bsec h4 small{font-family:var(--body);font-weight:400;font-size:14px;color:var(--muted);margin-left:8px}
+.bsec textarea{margin-top:0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip{background:var(--panel);border:1.5px solid var(--line);border-radius:999px;padding:6px 12px;font-size:15px;line-height:1.25;text-align:left}
+.chip:hover{border-color:var(--green)}
+.chip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.wow{display:flex;gap:10px;align-items:center;font-weight:700}
+.wow input{width:22px;height:22px;accent-color:var(--green)}
+.power{display:grid;gap:2px;background:var(--gold-soft);border-radius:12px;padding:10px 12px}
+.power b{font-size:28px;color:var(--gold);letter-spacing:2px}
+.power .muted{font-size:14px}
+.bstep{font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin:4px 0 -6px}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -243,11 +257,10 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
   <div class="mission">
     <div>
       <div class="card">
-        <span class="tag">1 · Your design brief</span>
-        <label class="ing" style="margin-top:8px"><span class="tag">What is wrong or boring about it today?</span><textarea id="bProb" rows="2" placeholder="e.g. the classroom is hot and we sit all day"></textarea></label>
-        <label class="ing" style="margin-top:8px"><span class="tag">3 things it MUST have in the future</span><textarea id="bMust" rows="3" placeholder="e.g. plants, a reading corner, desks that move"></textarea></label>
-        <label class="ing" style="margin-top:8px"><span class="tag">The feeling: how should people feel there?</span><input id="bFeel" placeholder="e.g. calm and excited to learn"></label>
-        <span class="tag" style="display:block;margin-top:12px">Your prompt</span>
+        <span class="tag">1 · Build your prompt: choose, and it writes itself</span>
+        <div class="builder" id="briefB" style="margin-top:10px"></div>
+        <div class="power" id="briefP" style="margin-top:14px"></div>
+        <span class="tag" style="display:block;margin-top:12px">Your prompt (Role + Task + Context + Format)</span>
         <pre class="prompt small" id="briefOut"></pre>
         <div class="row"><button class="btn sm" id="copyBrief" type="button">Copy my prompt</button></div>
       </div>
@@ -325,6 +338,46 @@ function picker(box, onChange){
 /* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
 function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
 return {TEAMS, me, picker, fill, rawSet};
+})();
+
+/* ---------- chip prompt builder: kids choose, the prompt builds itself ---------- */
+window.B = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
+const join = a => { a = (a || []).filter(Boolean); return a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; };
+/* spec: [{id, title, hint, one:true | max:n, opts:[..] or () => [..], icon}, {id, title, text:true, ph}, {id, label, toggle:true}] */
+function make(box, spec, S, onChange){
+  const opts = s => typeof s.opts === "function" ? s.opts() : s.opts;
+  function draw(){
+    box.replaceChildren(...spec.filter(s => !s.when || s.when(S)).map(s => {
+      if (s.text){ const i = el(s.long ? "textarea" : "input", {placeholder:s.ph || "", rows:s.long ? "3" : null, "aria-label":s.title}); i.value = S[s.id] || ""; i.addEventListener("input", () => { S[s.id] = i.value; onChange(false); });
+        return el("div", {class:"bsec"}, el("h4", null, s.title, s.hint ? el("small", null, s.hint) : null), i); }
+      if (s.toggle){ const c = el("input", {type:"checkbox"}); c.checked = !!S[s.id]; c.addEventListener("change", () => { S[s.id] = c.checked; onChange(true); });
+        return el("label", {class:"wow"}, c, el("span", null, s.label)); }
+      const list = opts(s), cur = S[s.id];
+      if (s.one && cur && !list.includes(cur) && !s.keep) S[s.id] = "";
+      if (!s.one && Array.isArray(cur)) S[s.id] = cur.filter(x => list.includes(x));
+      const on = x => s.one ? S[s.id] === x : (S[s.id] || []).includes(x);
+      return el("div", {class:"bsec"}, el("h4", null, (s.icon ? s.icon + " " : "") + s.title, s.hint || s.max ? el("small", null, s.hint || ("pick up to " + s.max)) : null),
+        el("div", {class:"chips"}, ...list.map(x => el("button", {class:"chip", type:"button", "aria-pressed":String(on(x)), onclick:() => {
+          if (s.one) S[s.id] = S[s.id] === x ? "" : x;
+          else { const a = S[s.id] || []; S[s.id] = a.includes(x) ? a.filter(y => y !== x) : (s.max && a.length >= s.max ? a.slice(1) : a).concat(x); }
+          onChange(true); }}, x))));
+    }));
+  }
+  draw();
+  return {draw};
+}
+/* how complete is the prompt: 0..5 stars */
+function power(spec, S){
+  let n = 0, t = 0;
+  spec.forEach(s => { if (s.toggle) return; t++; const v = S[s.id]; if (s.text ? (v || "").trim().length > 3 : s.one ? !!v : (v || []).length) n++; });
+  return t ? Math.round(n / t * 5) : 0;
+}
+function meter(box, spec, S){
+  const p = power(spec, S);
+  box.replaceChildren(el("span", {class:"tag"}, "Prompt power"), el("b", null, "★".repeat(p) + "☆".repeat(5 - p)), el("span", {class:"muted"}, p >= 5 ? "Super prompt!" : p >= 3 ? "Good. Choose a bit more." : "Choose more options to make it strong."));
+}
+return {make, power, meter, join};
 })();
 
 window.K = (function(){
@@ -406,23 +459,41 @@ ids.forEach(id => $("#" + id).addEventListener("input", () => { drawRecipe(); st
 $("#copyRecipe").onclick = () => copy($("#recipeOut").textContent, $("#recipeOut"), "Gemini");
 
 /* 3 design brief */
-const B = store.get("brief") || {prob:"", must:"", feel:""};
-const bmap = {bProb:"prob", bMust:"must", bFeel:"feel"};
-Object.entries(bmap).forEach(([id, k]) => { $("#" + id).value = B[k] || ""; $("#" + id).addEventListener("input", () => { B[k] = $("#" + id).value; store.set("brief", B); drawBrief(); }); });
+const PLACE = {
+  school:["a classroom","the library","the canteen","the playground","the science lab","an art and music studio","the school garden","the way to school","the whole school"],
+  planet:["a city","the sea and beaches","the cedar mountains and forests","farms and food","energy for every home","transport","water for everyone","an underwater city","the sky above Lebanon"]
+};
+const PROB = {
+  school:["it is too hot or too cold","lessons are boring","school bags are too heavy","there is too much plastic and waste","there is no space to play","the traffic to school is long","it is noisy and crowded","students feel stressed"],
+  planet:["there is plastic in the sea","the air is polluted","there are power cuts","there are traffic jams","forests catch fire","there is not enough clean water","there is too much rubbish","heat waves are getting worse"]
+};
+const BSPEC = [
+  {id:"role", icon:"🎭", title:"Role · who should the AI be?", one:true, opts:["an architect of the future","a scientist","an inventor","a robot engineer","a game designer","a nature expert"]},
+  {id:"place", icon:"📍", title:"Task · what will you design?", one:true, opts:() => PLACE[team()]},
+  {id:"prob", icon:"⚠️", title:"Context · what is wrong today?", max:2, opts:() => PROB[team()]},
+  {id:"must", icon:"🚀", title:"Context · it must have…", max:4, opts:["robots that help","flying vehicles","holograms","plants everywhere","solar and wind power","AI assistants","games while learning","floating buildings","recycling machines","water from the air","furniture that moves","space for animals"]},
+  {id:"feel", icon:"💛", title:"Context · people should feel…", max:2, opts:["excited","calm","safe","proud","curious","happy"]},
+  {id:"format", icon:"📝", title:"Format · how should the answer look?", one:true, opts:["a design card: a name, 3 big ideas and a day in it","a top 5 list of inventions","a news report from the future","a guided tour for a visitor","a comic strip in 4 boxes, told in words"]},
+  {id:"idea", title:"✨ Your own crazy idea", text:true, ph:"e.g. the playground floats above the school", hint:"the AI never thought of it"}
+];
+const B = Object.assign({role:"", place:"", prob:[], must:[], feel:[], format:"a design card: a name, 3 big ideas and a day in it", idea:""}, store.get("brief2") || {});
 function briefText(){
-  const m = me(), T = m.T || K.TEAMS.school;
-  const role = T.key === "planet" ? "You are a scientist and city designer who plans a better future for the planet." : "You are an architect who designs schools of the future.";
-  const task = T.key === "planet" ? "Design the future of " + (m.part || "my part") + " (" + (m.about || "") + ") in Lebanon in the year 2050." : "Design " + (m.part ? m.part.replace(/^The /, "the ") : "my part of the school") + " (" + (m.about || "") + ") for our school, Evergreen in Lebanon, in the year 2040.";
-  return "Role: " + role + "\nTask: " + task +
-    "\nContext: I am 12 years old and I am in the team \"" + T.name + "\"." +
-    (B.prob ? " Today the problem is: " + B.prob + "." : "") +
-    (B.must ? " It must have: " + B.must + "." : "") +
-    (B.feel ? " People should feel " + B.feel + " there." : "") +
-    " It must be safe, possible to build, and good for people and the planet." +
-    "\nFormat: Give my design a catchy name, then 3 big ideas (one sentence each), then \"A day in it\": 3 sentences about a student visiting it. Easy English, under 150 words. Do not use real people's names.";
+  const T = me().T || K.TEAMS.school, j = window.B.join, when = T.key === "planet" ? "in Lebanon in the year 2050" : "for our school, Evergreen in Lebanon, in the year 2040";
+  return "Role: You are " + (B.role || "an expert designer of the future") + ".\n" +
+    "Task: Design the future of " + (B.place || "my idea") + " " + when + ".\n" +
+    "Context: I am 12 years old, in the team \"" + T.name + "\"." +
+    (B.prob.length ? " Today the problem is that " + j(B.prob) + "." : "") +
+    (B.must.length ? " It must have " + j(B.must) + "." : "") +
+    (B.feel.length ? " People should feel " + j(B.feel) + " there." : "") +
+    ((B.idea || "").trim() ? " My own idea: " + B.idea.trim() + "." : "") +
+    " Be creative and surprising, but it must be safe and good for people and the planet.\n" +
+    "Format: Write it as " + (B.format || "a design card: a name, 3 big ideas and a day in it") + ". Easy English, under 150 words. Do not use real people's names.";
 }
-function drawBrief(){ $("#briefOut").textContent = briefText(); }
-$("#copyBrief").onclick = () => { if (!me().part){ K.toast("Pick your team and your part first (at the top)."); return; } copy(briefText(), $("#briefOut"), "Gemini"); L1.tick(3); };
+let briefUI;
+function drawBrief(){ $("#briefOut").textContent = briefText(); window.B.meter($("#briefP"), BSPEC, B); }
+function onBrief(redraw){ store.set("brief2", B); if (redraw) briefUI.draw(); drawBrief(); ticks(); }
+briefUI = window.B.make($("#briefB"), BSPEC, B, onBrief);
+$("#copyBrief").onclick = () => { if (!B.place){ K.toast("Choose what you will design first (Task)."); return; } copy(briefText(), $("#briefOut"), "Gemini"); L1.tick(3); };
 const FOLLOW = [
   ["More surprising", "Make big idea 2 more surprising and creative, but still possible."],
   ["Possible in Lebanon", "Change anything that would be too expensive or impossible in Lebanon. Keep the best ideas."],
@@ -432,8 +503,8 @@ const FOLLOW = [
 ];
 $("#follow").replaceChildren(...FOLLOW.map(([n, t]) => el("button", {class:"btn sm alt", type:"button", title:t, onclick:() => copy(t, null, "the same Gemini chat")}, "Copy: " + n)));
 const L1 = checklist("list1", [
-  ["Pick your team and part", "At the top of this mission. Your prompt changes when you pick."],
-  ["Fill your brief", "The problem today, 3 must-haves and the feeling. Your own words."],
+  ["Pick your team", "At the top of this mission. Some choices change with your team."],
+  ["Build your prompt", "Choose a role, what you design, the problem, the must-haves, the feeling and the format. Add your crazy idea. Aim for 5 stars."],
   ["Open Gemini", "Go to gemini.google.com with your school account. Start a new chat."],
   ["Paste your prompt", "Copy my prompt, paste it in Gemini, press Enter."],
   ["Use 2 follow-ups", "Copy 2 follow-up prompts into the same chat. Which answer is best?"],
@@ -452,9 +523,9 @@ function drawCard(){
     D.day ? el("p", {style:"margin:8px 0 0;font-size:16px"}, D.day) : "",
     el("p", {class:"muted", style:"margin:8px 0 0;font-size:14px"}, filled + " of 6 filled · saved to your account")));
 }
-function ticks(){ if (me().part) L1.tick(0); if ((B.prob || "").trim() && (B.must || "").trim()) L1.tick(1); if (Object.values(dmap).filter(k => (D[k] || "").trim()).length >= 4) L1.tick(5); if ((D.mine || "").trim().length > 5) L1.tick(6); }
+function ticks(){ if (me().team) L1.tick(0); if (B.place && B.must.length) L1.tick(1); if (Object.values(dmap).filter(k => (D[k] || "").trim()).length >= 4) L1.tick(5); if ((D.mine || "").trim().length > 5) L1.tick(6); }
 document.addEventListener("input", ticks);
-function all(){ loadRecipe(); drawBrief(); drawCard(); ticks(); }
+function all(){ loadRecipe(); briefUI.draw(); drawBrief(); drawCard(); ticks(); }
 picker($("#proj"), all);
 all();
 K.start();
