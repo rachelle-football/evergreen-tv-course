@@ -356,28 +356,9 @@ function picker(box, onChange){
   }
   draw();
 }
-/* the kid's AI Creators folder in Google Drive: what is in it, made in which chapter */
-const FILES = [
-  ["hero.png", 5, "Big picture", () => (store.raw("ch5-list1") || [])[5]],
-  ["detail.png", 5, "Close-up picture", () => (store.raw("ch5-list1") || [])[6]],
-  ["character.png", 5, "Character picture", () => (store.raw("ch5-list1") || [])[6]],
-  ["podcast.mp4", 6, "Podcast clip", () => (store.raw("ch6-list1") || [])[7]],
-  ["video.mp4", 7, "30-second video", () => (store.raw("ch7-list2") || [])[4]],
-  ["my page (.html)", 8, "Web page", () => (store.raw("ch8-list1") || [])[5]]
-];
-function files(box, now){
-  const n = FILES.filter(f => f[3]()).length;
-  box.replaceChildren(el("span", {class:"tag"}, "📁 My AI Creators folder · Google Drive"),
-    el("ul", {class:"files2"}, ...FILES.map(([f, ch, what, ok]) => el("li", {class:(ok() ? "ok" : "") + (ch === now ? " now" : "")}, el("b", null, ok() ? "✓" : ch === now ? "→" : "○"), el("span", null, el("code", null, f), " ", what), el("small", null, "Ch " + ch)))),
-    el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, n + " of " + FILES.length + " files saved. Everything goes on your web page in Chapter 8."),
-    el("details", {class:"howsave"}, el("summary", null, "How do I save a file in my folder?"),
-      el("ol", null, el("li", null, "In Adobe Express, press Download. The file goes to your computer's Downloads."),
-        el("li", null, "Open Downloads and rename the file exactly as in the list (for example hero.png)."),
-        el("li", null, "Go to drive.google.com, open your AI Creators folder, press New, then File upload, and pick the file."))));
-}
 /* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
 function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
-return {TEAMS, me, picker, fill, rawSet, files, FILES};
+return {TEAMS, me, picker, fill, rawSet};
 })();
 
 </script>

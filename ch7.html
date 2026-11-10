@@ -203,6 +203,24 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .files2 code{font:700 14px var(--mono)}
 .files2 small{color:var(--muted);font-family:var(--mono);font-size:12px}
 .howsave{margin-top:8px;font-size:15px}.howsave summary{cursor:pointer;font-weight:700;color:var(--green)}.howsave ol{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
+.bsec.need{border:2px solid var(--onair);background:var(--onair-soft);border-radius:12px;padding:10px 12px}
+.bsec .reqtag{color:var(--onair)!important;font-weight:700}
+.bsec.flash{animation:flash 1.4s}
+@keyframes flash{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 4px var(--onair)}}
+.prompt.blocked{color:var(--onair);border-color:var(--onair);background:var(--onair-soft);font-weight:700}
+.newchat{margin:6px 0 0;font-size:14px;background:var(--gold-soft);border-radius:8px;padding:6px 10px}
+.btn.locked{opacity:.35;cursor:not-allowed}
+.btn.locked::after{content:" 🔒"}
+.fslot{border:1px solid var(--line);border-radius:12px;padding:10px;display:grid;gap:8px;background:var(--panel)}
+.fhead{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.fhead code{font:700 13px var(--mono);color:var(--muted)}
+.fprev{width:100%;max-height:220px;object-fit:contain;border-radius:8px;background:#000}
+img.fprev{background:var(--paper)}
+.faud{width:100%}
+.fempty{border:2px dashed var(--line);border-radius:8px;padding:18px;text-align:center;color:var(--muted);font-size:15px}
+.fmsg{margin:0;font-size:14px;min-height:0}.fmsg.ok{color:var(--green);font-weight:700}.fmsg.no{color:var(--onair);font-weight:700}
+.fpage{font-weight:700}
+.files2 a{color:inherit}
+.slots{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
 .quote{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.3;margin:6px 0 14px}
 .verdict{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:16px}
 .verdict.h{background:var(--green-soft)}.verdict.a{background:var(--onair-soft)}
@@ -278,7 +296,7 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 <section class="seg" id="seg-3" data-min="10" data-title="Storyboard" data-p="1" hidden>
   <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: plan your 30 seconds</h2><p>Period 1 · 10 minutes · on this page</p></div></div>
   <p class="big" id="vidGoal">Every film starts on paper. Plan your 5 scenes. Aim for 30 seconds in total.</p>
-  <div class="card" style="margin-bottom:16px"><span class="tag">1 · Build your video plan: choose, and it writes itself</span><div class="builder" id="vidB" style="margin-top:10px"></div><div class="power" id="vidP" style="margin-top:14px"></div><div class="row" style="margin-top:12px"><button class="btn sm" id="applyPlan" type="button">Make my storyboard</button></div><span class="tag" style="display:block;margin-top:12px">Prompt for Gemini: captions and a slogan</span><pre class="prompt small" id="vidOut"></pre><div class="row"><button class="btn sm alt" id="copyVid" type="button">Copy prompt</button></div></div>
+  <div class="card" style="margin-bottom:16px"><span class="tag">1 · Build your video plan: choose, and it writes itself</span><div class="builder" id="vidB" style="margin-top:10px"></div><div class="power" id="vidP" style="margin-top:14px"></div><div class="row" style="margin-top:12px"><button class="btn sm" id="applyPlan" type="button">Make my storyboard</button></div><span class="tag" style="display:block;margin-top:12px">Prompt for Gemini: captions and a slogan</span><pre class="prompt small" id="vidOut"></pre><div class="row"><button class="btn sm alt" id="copyVid" type="button">Copy prompt</button></div><p class="newchat">🆕 Paste it in a <b>NEW</b> Gemini chat (press <b>New chat</b> first), so Gemini does not mix it with your other work.</p></div>
   <span class="tag">2 · Your storyboard (change anything)</span>
   <div class="board" id="board"></div>
   <p class="lead" style="margin-top:14px">Total: <span class="score" id="total">0 s</span> <span class="muted" id="totalMsg"></span></p>
@@ -308,7 +326,9 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
   <div class="mission">
     <div><ol class="checklist" id="list2"></ol></div>
     <aside class="card side">
-      <span class="tag">Why we label</span>
+      <span class="tag">Save your video in your folder</span>
+      <div id="vidSlot"></div>
+      <span class="tag" style="margin-top:8px">Why we label</span>
       <p class="lead" style="margin:0;font-size:17px">You just learned how easy it is to fake a video. Honest creators always say what was made with AI. Your ending scene says it, and so does your website.</p>
     </aside>
   </div>
@@ -364,28 +384,9 @@ function picker(box, onChange){
   }
   draw();
 }
-/* the kid's AI Creators folder in Google Drive: what is in it, made in which chapter */
-const FILES = [
-  ["hero.png", 5, "Big picture", () => (store.raw("ch5-list1") || [])[5]],
-  ["detail.png", 5, "Close-up picture", () => (store.raw("ch5-list1") || [])[6]],
-  ["character.png", 5, "Character picture", () => (store.raw("ch5-list1") || [])[6]],
-  ["podcast.mp4", 6, "Podcast clip", () => (store.raw("ch6-list1") || [])[7]],
-  ["video.mp4", 7, "30-second video", () => (store.raw("ch7-list2") || [])[4]],
-  ["my page (.html)", 8, "Web page", () => (store.raw("ch8-list1") || [])[5]]
-];
-function files(box, now){
-  const n = FILES.filter(f => f[3]()).length;
-  box.replaceChildren(el("span", {class:"tag"}, "📁 My AI Creators folder · Google Drive"),
-    el("ul", {class:"files2"}, ...FILES.map(([f, ch, what, ok]) => el("li", {class:(ok() ? "ok" : "") + (ch === now ? " now" : "")}, el("b", null, ok() ? "✓" : ch === now ? "→" : "○"), el("span", null, el("code", null, f), " ", what), el("small", null, "Ch " + ch)))),
-    el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, n + " of " + FILES.length + " files saved. Everything goes on your web page in Chapter 8."),
-    el("details", {class:"howsave"}, el("summary", null, "How do I save a file in my folder?"),
-      el("ol", null, el("li", null, "In Adobe Express, press Download. The file goes to your computer's Downloads."),
-        el("li", null, "Open Downloads and rename the file exactly as in the list (for example hero.png)."),
-        el("li", null, "Go to drive.google.com, open your AI Creators folder, press New, then File upload, and pick the file."))));
-}
 /* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
 function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
-return {TEAMS, me, picker, fill, rawSet, files, FILES};
+return {TEAMS, me, picker, fill, rawSet};
 })();
 
 /* options that fit each part: places, things and looks */
@@ -412,11 +413,124 @@ window.PARTKIT = {
   "Weather and climate": {icon:"🌦️", places:["a city ready for storms","a cool city in a heat wave","a weather station on the mountain"], things:["weather robots","shade trees on every street","cooling mist towers","storm shields","a giant weather screen","rainbows after the rain"], looks:["dramatic sky","bright and safe","glowing blue"]}
 };
 
+/* ---------- My folder: every picture and video is saved in the app (Supabase storage) ---------- */
+window.PICKINDS = {
+  big:{label:"Big picture of my world", help:"Your whole future world, seen from far. It goes at the top of your web page.", camera:"wide view"},
+  close:{label:"Close-up of my best idea", help:"Zoom in on your best idea: pick only 1 or 2 things.", camera:"close-up"},
+  char:{label:"My character", help:"The hero of your story in your future world. A cartoon, never a real person.", camera:"from a student's eyes", who:true},
+  robot:{label:"A robot or invention", help:"One amazing robot or machine from your future, shown up close.", camera:"close-up", extra:"one amazing robot or invention in the middle of the picture"},
+  poster:{label:"A poster", help:"A bold poster picture for your design. Leave empty space: you add the words later.", camera:"wide view", extra:"bold poster style with empty space at the top for a title"},
+  before:{label:"Before and after", help:"One picture in two halves: today on the left, the future on the right.", camera:"wide view", extra:"split in two halves: on the left the same place today, on the right the same place in the future"},
+  map:{label:"A map from above", help:"Your future place seen from the sky, like a game map.", camera:"from the sky, like a drone", extra:"seen from straight above, like a colourful game map"},
+  inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
+};
+window.F = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
+const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
+const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
+const cfg = () => window.EVG_CLOUD || {};
+const on = () => !!(cfg().url && cfg().key);
+const acc = () => raw("ai-lab-session");
+const base = () => cfg().url.replace(/\/+$/, "");
+const hdr = (extra) => Object.assign({"apikey": cfg().key}, /^eyJ/.test(cfg().key) ? {"Authorization": "Bearer " + cfg().key} : {}, extra || {});
+async function rpc(fn, args){
+  const r = await fetch(base() + "/rest/v1/rpc/" + fn, {method:"POST", headers:hdr({"Content-Type":"application/json"}), body:JSON.stringify(args || {})});
+  const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch(e){}
+  if (!r.ok) throw {code:(j && j.message) || ("http_" + r.status)};
+  return j;
+}
+const url = path => base() + "/storage/v1/object/public/creations/" + path.split("/").map(encodeURIComponent).join("/");
+const EXT = {"image/png":"png","image/jpeg":"jpg","image/webp":"webp","image/gif":"gif","video/mp4":"mp4","video/webm":"webm","video/quicktime":"mov","audio/mpeg":"mp3","audio/mp4":"m4a","audio/wav":"wav","audio/webm":"weba","text/html":"html"};
+const extOf = (mime, name) => EXT[mime] || ((name || "").split(".").pop() || "bin").toLowerCase().slice(0, 5);
+let cache = null;
+async function list(force){
+  if (!on() || !acc()) return [];
+  if (cache && !force) return cache;
+  cache = await rpc("ailab_my_files", {p_token:acc().token}); return cache;
+}
+async function upload(file, slot, label){
+  if (!on() || !acc()) throw {code:"offline"};
+  if (file.size > 30 * 1024 * 1024) throw {code:"too_big"};
+  let mime = file.type || ""; if (!mime && /\.html?$/i.test(file.name)) mime = "text/html";
+  const ticket = await rpc("ailab_upload_ticket", {p_token:acc().token, p_slot:slot});
+  const path = ticket + "/" + slot + "." + extOf(mime, file.name);
+  const r = await fetch(base() + "/storage/v1/object/creations/" + path, {method:"POST", headers:hdr({"Content-Type":mime || "application/octet-stream", "x-upsert":"false"}), body:file});
+  if (!r.ok){ let m = ""; try { m = (await r.json()).message || ""; } catch(e){} throw {code:/mime|type/i.test(m) ? "bad_type" : /size|large/i.test(m) ? "too_big" : "upload_failed", detail:m}; }
+  await rpc("ailab_file_add", {p_token:acc().token, p_ticket:ticket, p_path:path, p_label:label || slot, p_mime:mime, p_size:file.size});
+  cache = null; return list(true);
+}
+async function remove(slot){ await rpc("ailab_file_remove", {p_token:acc().token, p_slot:slot}); cache = null; return list(true); }
+const MSG = {offline:"Saving files needs the class login. Open the course from the class link and log in.", too_big:"This file is bigger than 30 MB. In Adobe, download it smaller (720p for videos).", bad_type:"This kind of file is not allowed. Use a picture (png, jpg), a video (mp4) or your page (html).", not_logged_in:"Please log in again on the home page.", upload_failed:"The upload did not work. Check the internet and try again.", too_many_tries:"Too many uploads in one hour. Wait a bit."};
+const fileName = f => f.slot + "." + extOf(f.mime, f.path);
+const kb = n => n > 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB";
+function preview(f){
+  const u = url(f.path);
+  if (/^image\//.test(f.mime)) return el("img", {src:u, alt:f.label, class:"fprev", loading:"lazy"});
+  if (/^video\//.test(f.mime)) return el("video", {src:u, controls:"", preload:"metadata", class:"fprev"});
+  if (/^audio\//.test(f.mime)) return el("audio", {src:u, controls:"", class:"faud"});
+  return el("a", {href:u, target:"_blank", rel:"noopener", class:"fpage"}, "📄 Open my page");
+}
+/* one upload box for one slot: [{slot, label, accept}] */
+function slotBox(box, s, onDone){
+  const inp = el("input", {type:"file", accept:s.accept || "image/*,video/*", hidden:""});
+  const msg = el("p", {class:"fmsg"});
+  async function draw(){
+    let files = []; try { files = await list(); } catch(e){}
+    const f = files.find(x => x.slot === s.slot);
+    box.replaceChildren(el("div", {class:"fhead"}, el("b", null, s.label), el("code", null, f ? fileName(f) : s.slot + (s.accept && s.accept.includes("html") ? ".html" : s.accept && s.accept.startsWith("video") ? ".mp4" : ".png"))),
+      f ? preview(f) : el("div", {class:"fempty"}, on() ? "Not saved yet" : "Log in to save files"),
+      el("div", {class:"row"}, el("button", {class:"btn sm" + (f ? " alt" : ""), type:"button", disabled: on() ? null : "", onclick:() => inp.click()}, f ? "Replace" : "⬆ Upload"), f ? el("span", {class:"muted", style:"font-size:13px"}, "Saved · " + kb(f.size)) : null),
+      msg, inp);
+  }
+  inp.addEventListener("change", async () => {
+    const file = inp.files[0]; if (!file) return;
+    msg.textContent = "Saving " + file.name + "…"; msg.className = "fmsg";
+    try { await upload(file, s.slot, s.label); msg.textContent = "✓ Saved in your folder!"; msg.className = "fmsg ok"; await draw(); if (onDone) onDone(s.slot); }
+    catch(e){ msg.textContent = MSG[e.code] || ("Problem: " + (e.code || "unknown")); msg.className = "fmsg no"; }
+  });
+  box.classList.add("fslot");
+  ready().then(draw);
+  return {draw};
+}
+/* the kid's whole folder: what should be in it, and what is saved */
+function plan(){
+  const kinds = raw("ch5-pics") || ["big","close","char"], K = window.PICKINDS || {};
+  return kinds.map(k => ({slot:k, label:(K[k] && K[k].label) || k, ch:5, accept:"image/*"})).concat([
+    {slot:"podcast", label:"Podcast clip", ch:6, accept:"video/*,audio/*"}, {slot:"video", label:"My video", ch:7, accept:"video/*"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
+}
+function folder(box, now){
+  async function draw(){
+    let files = []; let err = ""; try { files = await list(true); } catch(e){ err = MSG[e.code] || ""; }
+    const P = plan(), have = s => files.find(f => f.slot === s.slot), n = P.filter(have).length;
+    box.replaceChildren(...[el("span", {class:"tag"}, "📁 My folder · saved in the app"),
+      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), el("small", null, "Ch " + s.ch)); })),
+      el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, on() ? n + " of " + P.length + " saved. Your teacher can see your folder." : "Log in from the class link to save your files in the app."),
+      err ? el("p", {class:"fmsg no"}, err) : null,
+      on() && files.length ? el("div", {class:"row", style:"margin-top:6px"}, el("button", {class:"btn sm alt", type:"button", onclick:() => zip(files, (acc() && acc().username) || "my-folder")}, "⬇ Download my whole folder")) : null].filter(Boolean));
+  }
+  ready().then(draw);
+  return {draw};
+}
+/* zip: same file names as the web page uses */
+function loadZip(){ return window.JSZip ? Promise.resolve() : new Promise((res, rej) => { const s = document.createElement("script"); s.src = "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"; s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
+async function zip(files, name, groups){
+  await loadZip(); const z = new JSZip();
+  const sets = groups || [[name, files]];
+  for (const [folderName, fs] of sets){ const d = z.folder(folderName); for (const f of fs){ const r = await fetch(url(f.path)); d.file(fileName(f), await r.blob()); } }
+  const blob = await z.generateAsync({type:"blob"}); const a = el("a", {href:URL.createObjectURL(blob), download:name + ".zip"}); document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
+}
+return {on, list, upload, remove, url, slotBox, folder, plan, zip, fileName, kb, preview, ready, rpc, MSG};
+})();
+
 /* ---------- chip prompt builder: kids choose, the prompt builds itself ---------- */
 window.B = (function(){
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const join = a => { a = (a || []).filter(Boolean); return a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; };
 /* spec: [{id, title, hint, one:true | max:n, opts:[..] or () => [..], icon}, {id, title, text:true, ph}, {id, label, toggle:true}] */
+const empty = (s, S) => { const v = S[s.id]; return s.text ? !(v || "").trim() : s.one ? !v : !(v || []).length; };
+const nm = s => s.name || (s.title.includes("·") ? s.title.split("·")[0] : s.title).replace(/[?…]/g, "").trim();
+const isReq = s => !s.text && !s.toggle && s.optional !== true;
+function missing(spec, S){ return spec.filter(s => isReq(s) && (!s.when || s.when(S)) && empty(s, S)); }
 function make(box, spec, S, onChange){
   const opts = s => typeof s.opts === "function" ? s.opts() : s.opts;
   function draw(){
@@ -429,7 +543,8 @@ function make(box, spec, S, onChange){
       if (s.one && cur && !list.includes(cur) && !s.keep) S[s.id] = "";
       if (!s.one && Array.isArray(cur)) S[s.id] = cur.filter(x => list.includes(x));
       const on = x => s.one ? S[s.id] === x : (S[s.id] || []).includes(x);
-      return el("div", {class:"bsec"}, el("h4", null, (s.icon ? s.icon + " " : "") + s.title, s.hint || s.max ? el("small", null, s.hint || ("pick up to " + s.max)) : null),
+      const need = isReq(s) && empty(s, S);
+      return el("div", {class:"bsec" + (need ? " need" : ""), "data-id":s.id}, el("h4", null, (s.icon ? s.icon + " " : "") + s.title, need ? el("small", {class:"reqtag"}, "⬅ choose" + (s.one ? " one" : "")) : s.hint || s.max ? el("small", null, s.hint || ("pick up to " + s.max)) : null),
         el("div", {class:"chips"}, ...list.map(x => el("button", {class:"chip", type:"button", "aria-pressed":String(on(x)), onclick:() => {
           if (s.one) S[s.id] = S[s.id] === x ? "" : x;
           else { const a = S[s.id] || []; S[s.id] = a.includes(x) ? a.filter(y => y !== x) : (s.max && a.length >= s.max ? a.slice(1) : a).concat(x); }
@@ -443,13 +558,27 @@ function make(box, spec, S, onChange){
 function power(spec, S){
   let n = 0, t = 0;
   spec.forEach(s => { if (s.toggle) return; t++; const v = S[s.id]; if (s.text ? (v || "").trim().length > 3 : s.one ? !!v : (v || []).length) n++; });
-  return t ? Math.round(n / t * 5) : 0;
+  const p = t ? Math.round(n / t * 5) : 0;
+  return missing(spec, S).length ? Math.min(p, 2) : p;
 }
 function meter(box, spec, S){
   const p = power(spec, S);
-  box.replaceChildren(el("span", {class:"tag"}, "Prompt power"), el("b", null, "★".repeat(p) + "☆".repeat(5 - p)), el("span", {class:"muted"}, p >= 5 ? "Super prompt!" : p >= 3 ? "Good. Choose a bit more." : "Choose more options to make it strong."));
+  const miss = missing(spec, S);
+  box.replaceChildren(el("span", {class:"tag"}, "Prompt power"), el("b", null, "★".repeat(p) + "☆".repeat(5 - p)), el("span", {class:"muted"}, miss.length ? "Missing: " + miss.map(nm).join(", ") + ". Choose it to unlock your prompt." : p >= 5 ? "Super prompt!" : p >= 3 ? "Good. Choose a bit more." : "Choose more options to make it strong."));
 }
-return {make, power, meter, join};
+function guard(spec, S, box, toast){
+  const miss = missing(spec, S); if (!miss.length) return true;
+  const t = "First choose: " + miss.map(nm).join(", ") + ".";
+  if (toast) toast(t);
+  const sec = box && box.querySelector('[data-id="' + miss[0].id + '"]'); if (sec){ sec.scrollIntoView({behavior:"smooth", block:"center"}); sec.classList.add("flash"); setTimeout(() => sec.classList.remove("flash"), 1500); }
+  return false;
+}
+/* the prompt box: shows a clear warning instead of a prompt with gaps */
+function show(pre, spec, S, text){ const miss = missing(spec, S); pre.classList.toggle("blocked", miss.length > 0); pre.textContent = miss.length ? "⚠ Your prompt is not ready yet.\nChoose: " + miss.map(nm).join(", ") + "." : text; }
+/* lock a copy button until every box is chosen */
+function lock(btn, spec, S, extra){ const miss = missing(spec, S), ok = !miss.length && (extra === undefined || extra);
+  btn.disabled = !ok; btn.title = ok ? "" : "Choose everything first"; btn.classList.toggle("locked", !ok); return ok; }
+return {make, power, meter, join, missing, guard, show, lock};
 })();
 
 window.K = (function(){
@@ -494,8 +623,8 @@ function checklist(id, items, compact){
     return li; }));
   return { tick(i){ if (saved[i]) return; const cb = document.getElementById(id + "-" + i); if (!cb) return; cb.checked = true; saved[i] = true; store.set(id, saved); cb.closest("li").classList.add("ok"); $("#" + id).dispatchEvent(new Event("change")); } };
 }
-const {TEAMS, me, picker, fill, rawSet, files} = window.P;
-return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet, files};
+const {TEAMS, me, picker, fill, rawSet} = window.P;
+return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet};
 })();
 
 </script>
@@ -521,27 +650,33 @@ $("#fr").replaceChildren(...FR.map(([t, real, why]) => { const v = el("div"); le
 /* storyboard */
 const card = K.store.raw("ch3-card") || {}, M = K.me(), TT = M.T || K.TEAMS.school;
 $("#vidGoal").textContent = "Your " + (K.store.raw("ch7-vplan") && K.store.raw("ch7-vplan").len || "30 seconds") + " video about " + (card.name || "your design") + ". Choose below, press Make my storyboard, then change anything you want.";
+const PK = window.PICKINDS, MYP = (K.store.raw("ch5-pics") || ["big","close","char"]).filter(k => PK[k]);
+const FILES7 = MYP.map(k => [k + ".png", PK[k].label]).concat([["podcast.mp4", "my podcast clip"], ["", "text only (no file)"]]);
 const DEF = [
-  {name:"Title", what:"hero.png with the title: " + (card.name || "the name of my design"), secs:3},
-  {name:"Podcast", what:"the best 15 seconds of podcast.mp4", secs:15},
-  {name:"Close-up", what:"detail.png with one fact as a caption", secs:5},
-  {name:"Character", what:"character.png with one line: why the future is better", secs:4},
-  {name:"Ending", what:TT.site + " · Made with AI · my first name", secs:3}
+  {name:"Opening", file:MYP[0] + ".png", what:"the title: " + (card.name || "the name of my design"), secs:3},
+  {name:"Voice", file:"podcast.mp4", what:"the best 15 seconds of my podcast", secs:15},
+  ...MYP.slice(1, 3).map(k => ({name:PK[k].label, file:k + ".png", what:"one short caption", secs:4})),
+  {name:"Ending", file:"", what:TT.site + " · Made with AI · my first name", secs:3}
 ];
-const plan = store.get("plan") || DEF.map(x => Object.assign({}, x));
 function drawBoard(){
   $("#board").replaceChildren(...plan.map((s, i) => el("div", {class:"scene"},
-    el("span", {class:"tag"}, "Scene " + (i + 1) + " · " + s.name),
-    el("div", {class:"frame"}, el("span", null, s.name)),
+    el("div", {class:"row", style:"justify-content:space-between"}, el("span", {class:"tag"}, "Scene " + (i + 1)), plan.length > 3 ? el("button", {class:"ghost", type:"button", "aria-label":"Remove scene " + (i + 1), onclick:() => { plan.splice(i, 1); drawBoard(); }}, "✕") : ""),
+    (() => { const n = el("input", {"aria-label":"Scene name " + (i + 1), value:s.name || ""}); n.addEventListener("input", () => { s.name = n.value; save(); }); return n; })(),
+    el("div", {class:"frame"}, el("span", null, s.file || "text only")),
+    el("label", {class:"tag", for:"file" + i}, "File"),
+    (() => { const f = el("select", {id:"file" + i}, ...FILES7.map(([v, l]) => el("option", {value:v, selected: v === (s.file || "") ? "" : null}, v ? v + " · " + l : l))); f.addEventListener("change", () => { s.file = f.value; drawBoard(); }); return f; })(),
     el("label", {class:"tag", for:"what" + i}, "What we see and hear"),
     (() => { const t = el("textarea", {id:"what" + i, rows:"3"}); t.value = s.what; t.addEventListener("input", () => { s.what = t.value; save(); }); return t; })(),
     el("label", {class:"tag", for:"secs" + i}, "Seconds"),
-    (() => { const n = el("input", {id:"secs" + i, type:"number", min:"1", max:"60", value:String(s.secs)}); n.addEventListener("input", () => { s.secs = Math.max(0, +n.value || 0); save(); }); return n; })())));
+    (() => { const n = el("input", {id:"secs" + i, type:"number", min:"1", max:"60", value:String(s.secs)}); n.addEventListener("input", () => { s.secs = Math.max(0, +n.value || 0); save(); }); return n; })())),
+    plan.length < 8 ? el("button", {class:"btn alt add-scene", type:"button", onclick:() => { plan.splice(plan.length - 1, 0, {name:"New scene", file:"", what:"", secs:3}); drawBoard(); }}, "+ Add a scene") : "");
   save();
 }
-function save(){ store.set("plan", plan); const t = plan.reduce((a, s) => a + (+s.secs || 0), 0); $("#total").textContent = t + " s";
-  $("#totalMsg").textContent = t > 40 ? "· too long, cut something" : t < 22 ? "· a bit short" : "· good length";
-  $("#miniPlan").replaceChildren(...plan.map(s => el("li", null, el("b", null, s.name + " (" + s.secs + " s): "), s.what))); }
+function save(){ store.set("plan", plan); const t = plan.reduce((a, s) => a + (+s.secs || 0), 0), goal = parseInt((K.store.raw("ch7-vplan") || {}).len) || 30; $("#total").textContent = t + " s";
+  $("#totalMsg").textContent = t > goal + 8 ? "· too long, cut something" : t < goal - 8 ? "· a bit short" : "· good length";
+  $("#miniPlan").replaceChildren(...plan.map(s => el("li", null, el("b", null, (s.name || "Scene") + " (" + s.secs + " s): "), (s.file ? s.file + " · " : "") + s.what))); }
+
+const plan = store.get("plan") || DEF.map(x => Object.assign({}, x));
 drawBoard();
 
 /* video plan builder: choose, the storyboard and the prompt build themselves */
@@ -560,38 +695,37 @@ function vidText(){
   const st = K.store.raw("ch4-story") || {};
   return "Role: You are a video director who makes short videos for kids.\n" +
     "Task: Plan " + (V.type || "a short video") + " of " + (V.len || "30 seconds") + " for " + TT.site + (card.name ? " about my design \"" + card.name + "\"" : "") + ".\n" +
-    "Context: My files are hero.png (the big picture), detail.png (a close-up), character.png (my character) and podcast.mp4 (my voice)." +
+    "Context: My files are " + MYP.map(k => k + ".png (" + PK[k].label.toLowerCase() + ")").join(", ") + " and podcast.mp4 (my voice)." +
     (card.i1 ? " My big ideas: " + [card.i1, card.i2, card.i3].filter(Boolean).join("; ") + "." : "") + (st.title ? " My story is called \"" + st.title + "\"." : "") +
     (V.open ? " It starts with " + V.open + "." : "") + (V.music ? " Music: " + V.music + "." : "") + (V.caps ? " Captions: " + V.caps + "." : "") + (V.end ? " It ends with " + V.end + "." : "") +
     ((V.idea || "").trim() ? " My own idea: " + V.idea.trim() + "." : "") +
-    "\nFormat: A table with 5 scenes: which file, the caption (6 words maximum), and the seconds. Then 3 ideas for a slogan. Easy English. The last scene says Made with AI.";
+    "\nFormat: A table with " + Math.min(7, MYP.length + 2) + " scenes: which file, the caption (6 words maximum), and the seconds. Then 3 ideas for a slogan. Easy English. The last scene says Made with AI.";
 }
 function applyPlan(){
   const total = parseInt(V.len) || 30, k = total / 30, r = x => Math.max(2, Math.round(x * k));
   const cap = V.caps === "questions to the viewer" ? "a question to the viewer" : V.caps === "short facts" ? "one fact" : V.caps === "no captions, only my voice" ? "no caption" : "big bold words";
   plan.length = 0;
-  plan.push({name:"Opening", what:(V.open || "a big title on my best picture") + " · hero.png · title: " + (card.name || "my design"), secs:r(4)});
-  plan.push({name:"Voice", what:"the best part of podcast.mp4 · " + (V.music || "quiet") + " music under it", secs:r(13)});
-  plan.push({name:"Close-up", what:"detail.png · " + cap, secs:r(5)});
-  plan.push({name:"Character", what:"character.png · " + cap, secs:r(5)});
-  plan.push({name:"Ending", what:(V.end || "a slogan") + " · " + TT.site + " · Made with AI · my first name", secs:r(3)});
+  plan.push({name:"Opening", file:MYP[0] + ".png", what:(V.open || "a big title on my best picture") + " · title: " + (card.name || "my design"), secs:r(4)});
+  plan.push({name:"Voice", file:"podcast.mp4", what:"the best part of my podcast · " + (V.music || "quiet") + " music under it", secs:r(12)});
+  MYP.slice(1, 4).forEach(p => plan.push({name:PK[p].label, file:p + ".png", what:cap, secs:r(4)}));
+  plan.push({name:"Ending", file:"", what:(V.end || "a slogan") + " · " + TT.site + " · Made with AI · my first name", secs:r(3)});
   drawBoard();
 }
 let vidUI;
-function drawVid(){ $("#vidGoal").textContent = "Your " + (V.len || "30 seconds") + " video about " + (card.name || "your design") + ". Choose below, press Make my storyboard, then change anything you want."; $("#vidOut").textContent = vidText(); window.B.meter($("#vidP"), VSPEC, V); }
+function drawVid(){ $("#vidGoal").textContent = "Your " + (V.len || "30 seconds") + " video about " + (card.name || "your design") + ". Choose below, press Make my storyboard, then change anything you want."; window.B.show($("#vidOut"), VSPEC, V, vidText()); window.B.meter($("#vidP"), VSPEC, V); window.B.lock($("#copyVid"), VSPEC, V); window.B.lock($("#applyPlan"), VSPEC, V); }
 function onVid(redraw){ store.set("vplan", V); if (redraw) vidUI.draw(); drawVid(); }
 vidUI = window.B.make($("#vidB"), VSPEC, V, onVid);
-$("#applyPlan").onclick = () => { if (!V.type){ K.toast("Choose the kind of video first."); return; } applyPlan(); K.toast("Your storyboard is ready below. Change anything you want."); };
-$("#copyVid").onclick = () => { if (!V.type){ K.toast("Choose the kind of video first."); return; } copy(vidText(), $("#vidOut"), "Gemini"); };
+$("#applyPlan").onclick = () => { if (!window.B.guard(VSPEC, V, $("#vidB"), K.toast)) return; applyPlan(); K.toast("Your storyboard is ready below. Change anything you want."); };
+$("#copyVid").onclick = () => { if (!window.B.guard(VSPEC, V, $("#vidB"), K.toast)) return; copy(vidText(), $("#vidOut"), "a NEW Gemini chat"); };
 drawVid();
 
 checklist("list1", [
   ["Start a video", "In Adobe Express, click Create video, then start from scratch with a 16:9 (wide) size."],
-  ["Get your files", "Download hero.png, detail.png, character.png and podcast.mp4 from your AI Creators folder in Google Drive. In Adobe, click Upload (or Media, then Upload) and add all 4."],
-  ["Scene 1: opening", "Put hero.png in the first scene and make your opening (title, question or countdown). Use your storyboard."],
-  ["Scene 2: your voice", "Add a scene with the + button and put podcast.mp4 in it. Trim it to the best 15 seconds."],
-  ["Scene 3: close-up", "Add detail.png and write one fact as a caption."],
-  ["Scenes 4 and 5", "character.png with one short line, then the ending: your team site, Made with AI, your first name."],
+  ["Get your files", "In the box on the right, press ⬇ Download my whole folder and open the zip. In Adobe, click Upload (or Media, then Upload) and add your pictures and podcast.mp4."],
+  ["Scene 1: opening", "Put the picture of scene 1 in the first scene and make your opening (title, question or countdown). Follow your storyboard."],
+  ["Scene 2: your voice", "Add a scene with the + button and put podcast.mp4 in it. Trim it to the best part."],
+  ["The next scenes", "Add each scene of your storyboard with its picture and caption."],
+  ["The ending", "Last scene: your team site, Made with AI, your first name."],
   ["Music, quietly", "Add a music track from Adobe's library. Make it quiet so your voice is clear."],
   ["Watch it once", "Press Play and watch your first cut from start to end. Your project saves by itself in Adobe."]
 ]);
@@ -611,10 +745,10 @@ checklist("list2", [
   ["Add the label", "The ending says Made with AI. Add a small \"AI\" label in a corner of the scenes made by AI."],
   ["Check the length", "Watch the whole video. About 30 seconds? Cut anything that drags."],
   ["Check the sound", "Can you hear every word over the music?"],
-  ["Save it", "Click Download and choose MP4. Rename the file video.mp4 and upload it to your AI Creators folder in Google Drive."],
+  ["Save it", "Click Download and choose MP4. Then press ⬆ Upload in the box on the right and choose the file. It is saved in your folder."],
   ["Show a friend", "Does your friend understand your design in 30 seconds? If not, change one scene."]
 ]);
-K.files($("#filesBox"), 7); document.addEventListener("change", () => K.files($("#filesBox"), 7));
+const fold7 = F.folder($("#filesBox"), 7); F.slotBox($("#vidSlot"), {slot:"video", label:"My video", accept:"video/*"}, () => { fold7.draw(); const cb = document.getElementById("list2-4"); if (cb && !cb.checked){ cb.checked = true; cb.dispatchEvent(new Event("change", {bubbles:true})); } });
 K.start();
 })();
 </script>

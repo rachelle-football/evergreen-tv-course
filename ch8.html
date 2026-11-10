@@ -203,6 +203,24 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .files2 code{font:700 14px var(--mono)}
 .files2 small{color:var(--muted);font-family:var(--mono);font-size:12px}
 .howsave{margin-top:8px;font-size:15px}.howsave summary{cursor:pointer;font-weight:700;color:var(--green)}.howsave ol{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
+.bsec.need{border:2px solid var(--onair);background:var(--onair-soft);border-radius:12px;padding:10px 12px}
+.bsec .reqtag{color:var(--onair)!important;font-weight:700}
+.bsec.flash{animation:flash 1.4s}
+@keyframes flash{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 4px var(--onair)}}
+.prompt.blocked{color:var(--onair);border-color:var(--onair);background:var(--onair-soft);font-weight:700}
+.newchat{margin:6px 0 0;font-size:14px;background:var(--gold-soft);border-radius:8px;padding:6px 10px}
+.btn.locked{opacity:.35;cursor:not-allowed}
+.btn.locked::after{content:" 🔒"}
+.fslot{border:1px solid var(--line);border-radius:12px;padding:10px;display:grid;gap:8px;background:var(--panel)}
+.fhead{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.fhead code{font:700 13px var(--mono);color:var(--muted)}
+.fprev{width:100%;max-height:220px;object-fit:contain;border-radius:8px;background:#000}
+img.fprev{background:var(--paper)}
+.faud{width:100%}
+.fempty{border:2px dashed var(--line);border-radius:8px;padding:18px;text-align:center;color:var(--muted);font-size:15px}
+.fmsg{margin:0;font-size:14px;min-height:0}.fmsg.ok{color:var(--green);font-weight:700}.fmsg.no{color:var(--onair);font-weight:700}
+.fpage{font-weight:700}
+.files2 a{color:inherit}
+.slots{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
 .chk{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px}
 .chk>div:first-child{display:flex;flex-direction:column;gap:2px;min-width:0}
 .chk b{font-family:var(--display);font-size:19px}.chk .muted{font-size:15px}
@@ -277,7 +295,9 @@ Bright colours, big fonts, works on a phone.</pre>
       <span class="tag">Your director's prompt (made from all your work)</span>
       <pre class="prompt small" id="pageOut"></pre>
       <div class="row"><button class="btn sm" id="copyPage" type="button">Copy my prompt</button></div>
-      <p class="muted" style="margin:0;font-size:14px">Name the page <b id="pageFile">part_name.html</b> and put it in your AI Creators folder in Google Drive, next to your pictures and videos.</p>
+      <p class="newchat">🆕 Paste it in a <b>NEW</b> Gemini chat with Canvas (press <b>New chat</b> first), so Gemini does not mix it with your other work.</p>
+      <span class="tag" style="margin-top:6px">Save your page in your folder</span>
+      <div id="pageSlot"></div>
     </aside>
   </div>
 </section>
@@ -360,28 +380,9 @@ function picker(box, onChange){
   }
   draw();
 }
-/* the kid's AI Creators folder in Google Drive: what is in it, made in which chapter */
-const FILES = [
-  ["hero.png", 5, "Big picture", () => (store.raw("ch5-list1") || [])[5]],
-  ["detail.png", 5, "Close-up picture", () => (store.raw("ch5-list1") || [])[6]],
-  ["character.png", 5, "Character picture", () => (store.raw("ch5-list1") || [])[6]],
-  ["podcast.mp4", 6, "Podcast clip", () => (store.raw("ch6-list1") || [])[7]],
-  ["video.mp4", 7, "30-second video", () => (store.raw("ch7-list2") || [])[4]],
-  ["my page (.html)", 8, "Web page", () => (store.raw("ch8-list1") || [])[5]]
-];
-function files(box, now){
-  const n = FILES.filter(f => f[3]()).length;
-  box.replaceChildren(el("span", {class:"tag"}, "📁 My AI Creators folder · Google Drive"),
-    el("ul", {class:"files2"}, ...FILES.map(([f, ch, what, ok]) => el("li", {class:(ok() ? "ok" : "") + (ch === now ? " now" : "")}, el("b", null, ok() ? "✓" : ch === now ? "→" : "○"), el("span", null, el("code", null, f), " ", what), el("small", null, "Ch " + ch)))),
-    el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, n + " of " + FILES.length + " files saved. Everything goes on your web page in Chapter 8."),
-    el("details", {class:"howsave"}, el("summary", null, "How do I save a file in my folder?"),
-      el("ol", null, el("li", null, "In Adobe Express, press Download. The file goes to your computer's Downloads."),
-        el("li", null, "Open Downloads and rename the file exactly as in the list (for example hero.png)."),
-        el("li", null, "Go to drive.google.com, open your AI Creators folder, press New, then File upload, and pick the file."))));
-}
 /* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
 function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
-return {TEAMS, me, picker, fill, rawSet, files, FILES};
+return {TEAMS, me, picker, fill, rawSet};
 })();
 
 /* options that fit each part: places, things and looks */
@@ -408,11 +409,124 @@ window.PARTKIT = {
   "Weather and climate": {icon:"🌦️", places:["a city ready for storms","a cool city in a heat wave","a weather station on the mountain"], things:["weather robots","shade trees on every street","cooling mist towers","storm shields","a giant weather screen","rainbows after the rain"], looks:["dramatic sky","bright and safe","glowing blue"]}
 };
 
+/* ---------- My folder: every picture and video is saved in the app (Supabase storage) ---------- */
+window.PICKINDS = {
+  big:{label:"Big picture of my world", help:"Your whole future world, seen from far. It goes at the top of your web page.", camera:"wide view"},
+  close:{label:"Close-up of my best idea", help:"Zoom in on your best idea: pick only 1 or 2 things.", camera:"close-up"},
+  char:{label:"My character", help:"The hero of your story in your future world. A cartoon, never a real person.", camera:"from a student's eyes", who:true},
+  robot:{label:"A robot or invention", help:"One amazing robot or machine from your future, shown up close.", camera:"close-up", extra:"one amazing robot or invention in the middle of the picture"},
+  poster:{label:"A poster", help:"A bold poster picture for your design. Leave empty space: you add the words later.", camera:"wide view", extra:"bold poster style with empty space at the top for a title"},
+  before:{label:"Before and after", help:"One picture in two halves: today on the left, the future on the right.", camera:"wide view", extra:"split in two halves: on the left the same place today, on the right the same place in the future"},
+  map:{label:"A map from above", help:"Your future place seen from the sky, like a game map.", camera:"from the sky, like a drone", extra:"seen from straight above, like a colourful game map"},
+  inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
+};
+window.F = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
+const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
+const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
+const cfg = () => window.EVG_CLOUD || {};
+const on = () => !!(cfg().url && cfg().key);
+const acc = () => raw("ai-lab-session");
+const base = () => cfg().url.replace(/\/+$/, "");
+const hdr = (extra) => Object.assign({"apikey": cfg().key}, /^eyJ/.test(cfg().key) ? {"Authorization": "Bearer " + cfg().key} : {}, extra || {});
+async function rpc(fn, args){
+  const r = await fetch(base() + "/rest/v1/rpc/" + fn, {method:"POST", headers:hdr({"Content-Type":"application/json"}), body:JSON.stringify(args || {})});
+  const t = await r.text(); let j = null; try { j = JSON.parse(t); } catch(e){}
+  if (!r.ok) throw {code:(j && j.message) || ("http_" + r.status)};
+  return j;
+}
+const url = path => base() + "/storage/v1/object/public/creations/" + path.split("/").map(encodeURIComponent).join("/");
+const EXT = {"image/png":"png","image/jpeg":"jpg","image/webp":"webp","image/gif":"gif","video/mp4":"mp4","video/webm":"webm","video/quicktime":"mov","audio/mpeg":"mp3","audio/mp4":"m4a","audio/wav":"wav","audio/webm":"weba","text/html":"html"};
+const extOf = (mime, name) => EXT[mime] || ((name || "").split(".").pop() || "bin").toLowerCase().slice(0, 5);
+let cache = null;
+async function list(force){
+  if (!on() || !acc()) return [];
+  if (cache && !force) return cache;
+  cache = await rpc("ailab_my_files", {p_token:acc().token}); return cache;
+}
+async function upload(file, slot, label){
+  if (!on() || !acc()) throw {code:"offline"};
+  if (file.size > 30 * 1024 * 1024) throw {code:"too_big"};
+  let mime = file.type || ""; if (!mime && /\.html?$/i.test(file.name)) mime = "text/html";
+  const ticket = await rpc("ailab_upload_ticket", {p_token:acc().token, p_slot:slot});
+  const path = ticket + "/" + slot + "." + extOf(mime, file.name);
+  const r = await fetch(base() + "/storage/v1/object/creations/" + path, {method:"POST", headers:hdr({"Content-Type":mime || "application/octet-stream", "x-upsert":"false"}), body:file});
+  if (!r.ok){ let m = ""; try { m = (await r.json()).message || ""; } catch(e){} throw {code:/mime|type/i.test(m) ? "bad_type" : /size|large/i.test(m) ? "too_big" : "upload_failed", detail:m}; }
+  await rpc("ailab_file_add", {p_token:acc().token, p_ticket:ticket, p_path:path, p_label:label || slot, p_mime:mime, p_size:file.size});
+  cache = null; return list(true);
+}
+async function remove(slot){ await rpc("ailab_file_remove", {p_token:acc().token, p_slot:slot}); cache = null; return list(true); }
+const MSG = {offline:"Saving files needs the class login. Open the course from the class link and log in.", too_big:"This file is bigger than 30 MB. In Adobe, download it smaller (720p for videos).", bad_type:"This kind of file is not allowed. Use a picture (png, jpg), a video (mp4) or your page (html).", not_logged_in:"Please log in again on the home page.", upload_failed:"The upload did not work. Check the internet and try again.", too_many_tries:"Too many uploads in one hour. Wait a bit."};
+const fileName = f => f.slot + "." + extOf(f.mime, f.path);
+const kb = n => n > 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB";
+function preview(f){
+  const u = url(f.path);
+  if (/^image\//.test(f.mime)) return el("img", {src:u, alt:f.label, class:"fprev", loading:"lazy"});
+  if (/^video\//.test(f.mime)) return el("video", {src:u, controls:"", preload:"metadata", class:"fprev"});
+  if (/^audio\//.test(f.mime)) return el("audio", {src:u, controls:"", class:"faud"});
+  return el("a", {href:u, target:"_blank", rel:"noopener", class:"fpage"}, "📄 Open my page");
+}
+/* one upload box for one slot: [{slot, label, accept}] */
+function slotBox(box, s, onDone){
+  const inp = el("input", {type:"file", accept:s.accept || "image/*,video/*", hidden:""});
+  const msg = el("p", {class:"fmsg"});
+  async function draw(){
+    let files = []; try { files = await list(); } catch(e){}
+    const f = files.find(x => x.slot === s.slot);
+    box.replaceChildren(el("div", {class:"fhead"}, el("b", null, s.label), el("code", null, f ? fileName(f) : s.slot + (s.accept && s.accept.includes("html") ? ".html" : s.accept && s.accept.startsWith("video") ? ".mp4" : ".png"))),
+      f ? preview(f) : el("div", {class:"fempty"}, on() ? "Not saved yet" : "Log in to save files"),
+      el("div", {class:"row"}, el("button", {class:"btn sm" + (f ? " alt" : ""), type:"button", disabled: on() ? null : "", onclick:() => inp.click()}, f ? "Replace" : "⬆ Upload"), f ? el("span", {class:"muted", style:"font-size:13px"}, "Saved · " + kb(f.size)) : null),
+      msg, inp);
+  }
+  inp.addEventListener("change", async () => {
+    const file = inp.files[0]; if (!file) return;
+    msg.textContent = "Saving " + file.name + "…"; msg.className = "fmsg";
+    try { await upload(file, s.slot, s.label); msg.textContent = "✓ Saved in your folder!"; msg.className = "fmsg ok"; await draw(); if (onDone) onDone(s.slot); }
+    catch(e){ msg.textContent = MSG[e.code] || ("Problem: " + (e.code || "unknown")); msg.className = "fmsg no"; }
+  });
+  box.classList.add("fslot");
+  ready().then(draw);
+  return {draw};
+}
+/* the kid's whole folder: what should be in it, and what is saved */
+function plan(){
+  const kinds = raw("ch5-pics") || ["big","close","char"], K = window.PICKINDS || {};
+  return kinds.map(k => ({slot:k, label:(K[k] && K[k].label) || k, ch:5, accept:"image/*"})).concat([
+    {slot:"podcast", label:"Podcast clip", ch:6, accept:"video/*,audio/*"}, {slot:"video", label:"My video", ch:7, accept:"video/*"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
+}
+function folder(box, now){
+  async function draw(){
+    let files = []; let err = ""; try { files = await list(true); } catch(e){ err = MSG[e.code] || ""; }
+    const P = plan(), have = s => files.find(f => f.slot === s.slot), n = P.filter(have).length;
+    box.replaceChildren(...[el("span", {class:"tag"}, "📁 My folder · saved in the app"),
+      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), el("small", null, "Ch " + s.ch)); })),
+      el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, on() ? n + " of " + P.length + " saved. Your teacher can see your folder." : "Log in from the class link to save your files in the app."),
+      err ? el("p", {class:"fmsg no"}, err) : null,
+      on() && files.length ? el("div", {class:"row", style:"margin-top:6px"}, el("button", {class:"btn sm alt", type:"button", onclick:() => zip(files, (acc() && acc().username) || "my-folder")}, "⬇ Download my whole folder")) : null].filter(Boolean));
+  }
+  ready().then(draw);
+  return {draw};
+}
+/* zip: same file names as the web page uses */
+function loadZip(){ return window.JSZip ? Promise.resolve() : new Promise((res, rej) => { const s = document.createElement("script"); s.src = "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"; s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
+async function zip(files, name, groups){
+  await loadZip(); const z = new JSZip();
+  const sets = groups || [[name, files]];
+  for (const [folderName, fs] of sets){ const d = z.folder(folderName); for (const f of fs){ const r = await fetch(url(f.path)); d.file(fileName(f), await r.blob()); } }
+  const blob = await z.generateAsync({type:"blob"}); const a = el("a", {href:URL.createObjectURL(blob), download:name + ".zip"}); document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
+}
+return {on, list, upload, remove, url, slotBox, folder, plan, zip, fileName, kb, preview, ready, rpc, MSG};
+})();
+
 /* ---------- chip prompt builder: kids choose, the prompt builds itself ---------- */
 window.B = (function(){
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const join = a => { a = (a || []).filter(Boolean); return a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; };
 /* spec: [{id, title, hint, one:true | max:n, opts:[..] or () => [..], icon}, {id, title, text:true, ph}, {id, label, toggle:true}] */
+const empty = (s, S) => { const v = S[s.id]; return s.text ? !(v || "").trim() : s.one ? !v : !(v || []).length; };
+const nm = s => s.name || (s.title.includes("·") ? s.title.split("·")[0] : s.title).replace(/[?…]/g, "").trim();
+const isReq = s => !s.text && !s.toggle && s.optional !== true;
+function missing(spec, S){ return spec.filter(s => isReq(s) && (!s.when || s.when(S)) && empty(s, S)); }
 function make(box, spec, S, onChange){
   const opts = s => typeof s.opts === "function" ? s.opts() : s.opts;
   function draw(){
@@ -425,7 +539,8 @@ function make(box, spec, S, onChange){
       if (s.one && cur && !list.includes(cur) && !s.keep) S[s.id] = "";
       if (!s.one && Array.isArray(cur)) S[s.id] = cur.filter(x => list.includes(x));
       const on = x => s.one ? S[s.id] === x : (S[s.id] || []).includes(x);
-      return el("div", {class:"bsec"}, el("h4", null, (s.icon ? s.icon + " " : "") + s.title, s.hint || s.max ? el("small", null, s.hint || ("pick up to " + s.max)) : null),
+      const need = isReq(s) && empty(s, S);
+      return el("div", {class:"bsec" + (need ? " need" : ""), "data-id":s.id}, el("h4", null, (s.icon ? s.icon + " " : "") + s.title, need ? el("small", {class:"reqtag"}, "⬅ choose" + (s.one ? " one" : "")) : s.hint || s.max ? el("small", null, s.hint || ("pick up to " + s.max)) : null),
         el("div", {class:"chips"}, ...list.map(x => el("button", {class:"chip", type:"button", "aria-pressed":String(on(x)), onclick:() => {
           if (s.one) S[s.id] = S[s.id] === x ? "" : x;
           else { const a = S[s.id] || []; S[s.id] = a.includes(x) ? a.filter(y => y !== x) : (s.max && a.length >= s.max ? a.slice(1) : a).concat(x); }
@@ -439,13 +554,27 @@ function make(box, spec, S, onChange){
 function power(spec, S){
   let n = 0, t = 0;
   spec.forEach(s => { if (s.toggle) return; t++; const v = S[s.id]; if (s.text ? (v || "").trim().length > 3 : s.one ? !!v : (v || []).length) n++; });
-  return t ? Math.round(n / t * 5) : 0;
+  const p = t ? Math.round(n / t * 5) : 0;
+  return missing(spec, S).length ? Math.min(p, 2) : p;
 }
 function meter(box, spec, S){
   const p = power(spec, S);
-  box.replaceChildren(el("span", {class:"tag"}, "Prompt power"), el("b", null, "★".repeat(p) + "☆".repeat(5 - p)), el("span", {class:"muted"}, p >= 5 ? "Super prompt!" : p >= 3 ? "Good. Choose a bit more." : "Choose more options to make it strong."));
+  const miss = missing(spec, S);
+  box.replaceChildren(el("span", {class:"tag"}, "Prompt power"), el("b", null, "★".repeat(p) + "☆".repeat(5 - p)), el("span", {class:"muted"}, miss.length ? "Missing: " + miss.map(nm).join(", ") + ". Choose it to unlock your prompt." : p >= 5 ? "Super prompt!" : p >= 3 ? "Good. Choose a bit more." : "Choose more options to make it strong."));
 }
-return {make, power, meter, join};
+function guard(spec, S, box, toast){
+  const miss = missing(spec, S); if (!miss.length) return true;
+  const t = "First choose: " + miss.map(nm).join(", ") + ".";
+  if (toast) toast(t);
+  const sec = box && box.querySelector('[data-id="' + miss[0].id + '"]'); if (sec){ sec.scrollIntoView({behavior:"smooth", block:"center"}); sec.classList.add("flash"); setTimeout(() => sec.classList.remove("flash"), 1500); }
+  return false;
+}
+/* the prompt box: shows a clear warning instead of a prompt with gaps */
+function show(pre, spec, S, text){ const miss = missing(spec, S); pre.classList.toggle("blocked", miss.length > 0); pre.textContent = miss.length ? "⚠ Your prompt is not ready yet.\nChoose: " + miss.map(nm).join(", ") + "." : text; }
+/* lock a copy button until every box is chosen */
+function lock(btn, spec, S, extra){ const miss = missing(spec, S), ok = !miss.length && (extra === undefined || extra);
+  btn.disabled = !ok; btn.title = ok ? "" : "Choose everything first"; btn.classList.toggle("locked", !ok); return ok; }
+return {make, power, meter, join, missing, guard, show, lock};
 })();
 
 window.K = (function(){
@@ -490,8 +619,8 @@ function checklist(id, items, compact){
     return li; }));
   return { tick(i){ if (saved[i]) return; const cb = document.getElementById(id + "-" + i); if (!cb) return; cb.checked = true; saved[i] = true; store.set(id, saved); cb.closest("li").classList.add("ok"); $("#" + id).dispatchEvent(new Event("change")); } };
 }
-const {TEAMS, me, picker, fill, rawSet, files} = window.P;
-return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet, files};
+const {TEAMS, me, picker, fill, rawSet} = window.P;
+return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet};
 })();
 
 </script>
@@ -503,15 +632,18 @@ const raw = k => store.raw(k);
 $("#copyDemo").onclick = () => copy($("#demoPrompt").textContent, $("#demoPrompt"), "Gemini Canvas");
 
 /* page plan */
+let MYF = [];
+const PK8 = window.PICKINDS, PICS8 = (raw("ch5-pics") || ["big","close","char"]).filter(k => PK8[k]);
+const fname = slot => { const f = MYF.find(x => x.slot === slot); return f ? F.fileName(f) : slot + (slot === "podcast" || slot === "video" ? ".mp4" : slot === "page" ? ".html" : ".png"); };
+const saved = slot => MYF.some(x => x.slot === slot);
 function have(){
-  const d = raw("ch3-card") || {}, st = raw("ch4-story") || {}, l5 = raw("ch5-list1") || [], l6 = raw("ch6-list1") || [], l7 = raw("ch7-list2") || [];
+  const d = raw("ch3-card") || {}, st = raw("ch4-story") || {};
   return [
-    ["Title and big picture", "hero.png from Chapter 5", !!l5[5]],
     ["Your design card", "Name, 3 big ideas, a day in it (Chapter 3)", !!(d.name && d.i1)],
     ["Your story", "From Chapter 4", !!(st.text && st.text.length > 40)],
-    ["2 more pictures", "detail.png and character.png", !!l5[6]],
-    ["Your podcast clip", "podcast.mp4 from Chapter 6", !!l6[7]],
-    ["Your video", "video.mp4 from Chapter 7", !!l7[4]],
+    ...PICS8.map(k => [PK8[k].label, fname(k) + " · Chapter 5", saved(k)]),
+    ["Your podcast clip", fname("podcast") + " · Chapter 6", saved("podcast")],
+    ["Your video", fname("video") + " · Chapter 7", saved("video")],
     ["Made with AI", "A label on everything AI made", true]
   ];
 }
@@ -522,22 +654,22 @@ const WSPEC = [
   {id:"theme", icon:"🎨", title:"Theme of my page", one:true, opts:["a magazine from the future","a video game world","a space mission","a nature adventure","a newspaper from 2050","a museum of the future"]},
   {id:"colours", icon:"🌈", title:"Colours", one:true, opts:["blue and glowing neon","green and sunny yellow","white and gold","purple and pink","ocean blue and sand","rainbow colours"]},
   {id:"font", icon:"🔤", title:"Letters", one:true, opts:["rounded and friendly","futuristic","handwritten","big and bold"]},
-  {id:"sections", icon:"🧩", title:"What goes on my page", opts:["my design ideas","my story","my 3 pictures","my podcast clip","my video"], hint:"pick everything you made"},
+  {id:"sections", icon:"🧩", title:"What goes on my page", opts:["my design ideas","my story","my pictures","my podcast clip","my video"], hint:"pick everything you made"},
   {id:"fun", icon:"🕹️", title:"Interactive things", max:2, opts:["a quiz with 3 questions","a before/after slider: today vs the future","a fun-fact button","a poll: would you like this?","a mini game: match problems and solutions","a countdown to the future","a day/night mode button"]},
   {id:"anim", icon:"✨", title:"Animations", one:true, opts:["no animations","gentle animations","lots of animations"]},
   {id:"idea", title:"✨ Your own idea", text:true, ph:"e.g. little robots walk along the bottom of the page", hint:"makes it yours"}
 ];
-const W = Object.assign({theme:"", colours:"", font:"", sections:["my design ideas","my story","my 3 pictures","my podcast clip","my video"], fun:[], anim:"gentle animations", idea:""}, store.get("web") || {});
+const W = Object.assign({theme:"", colours:"", font:"", sections:["my design ideas","my story","my pictures","my podcast clip","my video"], fun:[], anim:"gentle animations", idea:""}, store.get("web") || {});
 function slug(s){ return (s || "").toLowerCase().replace(/^the /, "").split(/\s+/)[0].replace(/[^a-z0-9]/g, "") || "part"; }
 function pageText(){
   const m = me(), T = m.T || K.TEAMS.school, d = raw("ch3-card") || {}, st = raw("ch4-story") || {}, has = x => W.sections.includes(x);
   const ideas = [d.i1, d.i2, d.i3, d.mine].filter(Boolean), out = [];
-  out.push("A big title" + (has("my 3 pictures") ? " with the picture hero.png behind it" : "") + ".");
+  out.push("A big title" + (has("my pictures") ? " with the picture " + fname(PICS8[0]) + " behind it" : "") + ".");
   if (has("my design ideas")) out.push("My design: " + (ideas.length ? ideas.map(x => "\"" + x + "\"").join(", ") : "(my big ideas)") + ", each in its own card." + (d.day ? " A day in it: \"" + d.day + "\"" : ""));
-  if (has("my story")) out.push("My story" + (st.title ? ", called \"" + st.title + "\"" : "") + (has("my 3 pictures") ? ", with the picture character.png next to it" : "") + ". Here is the story: \"" + (st.text || "(my story)").trim() + "\"");
-  if (has("my 3 pictures")) out.push("The picture detail.png with a short caption.");
-  if (has("my podcast clip")) out.push("A video player for podcast.mp4 with the title \"Listen: my podcast clip\".");
-  if (has("my video")) out.push("A video player for video.mp4 with the title \"Watch: my video\".");
+  if (has("my story")) out.push("My story" + (st.title ? ", called \"" + st.title + "\"" : "") + (has("my pictures") && PICS8.includes("char") ? ", with the picture " + fname("char") + " next to it" : "") + ". Here is the story: \"" + (st.text || "(my story)").trim() + "\"");
+  if (has("my pictures")) PICS8.filter(k => k !== PICS8[0] && k !== "char").forEach(k => out.push("The picture " + fname(k) + " (" + PK8[k].label.toLowerCase() + ") with a short caption."));
+  if (has("my podcast clip")) out.push("A video player for " + fname("podcast") + " with the title \"Listen: my podcast clip\".");
+  if (has("my video")) out.push("A video player for " + fname("video") + " with the title \"Watch: my video\".");
   W.fun.forEach(f => out.push(f.charAt(0).toUpperCase() + f.slice(1) + "."));
   out.push("A footer: \"Made with AI by EB7 · " + T.site + "\". Under every picture and video, a small label: Made with AI.");
   return "Role: You are a web designer who builds amazing websites for kids.\n" +
@@ -547,10 +679,10 @@ function pageText(){
     "Format: The page looks like " + (W.theme || "a colourful page from the future") + ". Colours: " + (W.colours || "bright and friendly") + ". Letters: " + (W.font || "big and easy to read") + ". " + (W.anim || "gentle animations").replace(/^./, c => c.toUpperCase()) + ". Big fonts, easy to read, works well on a phone. Do not invent facts or real people's names.";
 }
 let webUI;
-function drawPage(){ $("#pageOut").textContent = pageText(); window.B.meter($("#webP"), WSPEC, W); $("#pageFile").textContent = slug((raw("ch3-card") || {}).name || me().part) + "_yourname.html"; }
+function drawPage(){ window.B.show($("#pageOut"), WSPEC, W, pageText()); window.B.meter($("#webP"), WSPEC, W); window.B.lock($("#copyPage"), WSPEC, W);  }
 function onWeb(redraw){ store.set("web", W); if (redraw) webUI.draw(); drawPage(); }
 webUI = window.B.make($("#webB"), WSPEC, W, onWeb);
-$("#copyPage").onclick = () => { if (!W.theme){ K.toast("Choose a theme for your page first."); return; } copy(pageText(), $("#pageOut"), "Gemini Canvas"); L1.tick(2); };
+$("#copyPage").onclick = () => { if (!window.B.guard(WSPEC, W, $("#webB"), K.toast)) return; copy(pageText(), $("#pageOut"), "a NEW Gemini chat with Canvas"); L1.tick(2); };
 const BETTER = [["Magazine look", "Make my page look like a colourful magazine page, but keep all my text the same."], ["Phone check", "Make sure the whole page fits a phone screen: nothing too wide, nothing overlapping."], ["Add animations", "Add gentle animations when the cards appear. Nothing flashing."], ["Easier to read", "Make all the text bigger and the colours stronger so it is easy to read."]];
 $("#better").replaceChildren(...BETTER.map(([n, t]) => el("button", {class:"btn sm alt", type:"button", title:t, onclick:() => { copy(t, null, "the same Gemini chat"); L1.tick(4); }}, "Copy: " + n)));
 const L1 = checklist("list1", [
@@ -559,8 +691,8 @@ const L1 = checklist("list1", [
   ["Paste your prompt", "Copy my prompt (on the right), paste it in Gemini and press Enter. Wait about 30 seconds."],
   ["Look at the preview", "Your pictures and videos will not show yet: they are on your computer, not in Gemini. That is normal."],
   ["Improve it twice", "Copy 2 improvement prompts into the same chat, or write your own."],
-  ["Save the page", "In the Canvas panel, find Download (the arrow icon). Rename the file with the name shown on the right and upload it to your AI Creators folder in Google Drive."],
-  ["See it with everything", "In Google Drive, right-click your AI Creators folder and press Download. Open the zip, then double-click your page. Now your pictures and videos appear. Do they all work?"]
+  ["Save the page", "In the Canvas panel, find Download (the arrow icon). Then press ⬆ Upload under your prompt and choose the file. It is saved in your folder as page.html."],
+  ["See it with everything", "In the folder box (part 02), press ⬇ Download my whole folder. Open the zip and double-click page.html. Now your pictures and videos appear. Do they all work?"]
 ]);
 picker($("#proj"), () => { drawPage(); drawPlan(); });
 document.addEventListener("click", () => { if (W.theme && W.colours) L1.tick(0); });
@@ -603,26 +735,29 @@ const FSPEC = [
   {id:"how", icon:"🔧", title:"How should it be fixed?", max:2, opts:["make the text bigger","use stronger colours","make it fit a phone screen","use the exact file names (hero.png, podcast.mp4…)","add gentle animations","make it look like the rest of the page","make the button work"]},
   {id:"detail", title:"✏️ Say exactly what you see (optional)", text:true, ph:"e.g. the Start quiz button does nothing when I click it"}
 ];
-const F = Object.assign({what:"", where:"", how:[], detail:""}, store.get("fixB") || {});
+const FX = Object.assign({what:"", where:"", how:[], detail:""}, store.get("fixB") || {});
 function fixText(){ const j = window.B.join;
-  return "On my page, " + (F.where || "something") + ": " + (F.what || "there is a problem") + "." + ((F.detail || "").trim() ? " " + F.detail.trim().charAt(0).toUpperCase() + F.detail.trim().slice(1).replace(/\.?$/, ".") : "") +
-    "\nPlease fix it" + (F.how.length ? ": " + j(F.how) : "") + ".\nKeep everything else on my page exactly the same.";
+  return "On my page, " + (FX.where || "something") + ": " + (FX.what || "there is a problem") + "." + ((FX.detail || "").trim() ? " " + FX.detail.trim().charAt(0).toUpperCase() + FX.detail.trim().slice(1).replace(/\.?$/, ".") : "") +
+    "\nPlease fix it" + (FX.how.length ? ": " + j(FX.how) : "") + ".\nKeep everything else on my page exactly the same.";
 }
 let fixUI;
-function drawFix(){ $("#fixOut").textContent = fixText(); window.B.meter($("#fixP"), FSPEC, F); $("#fixN").textContent = store.get("fixes") || 0; }
-function onFix(redraw){ store.set("fixB", F); if (redraw) fixUI.draw(); drawFix(); }
-fixUI = window.B.make($("#fixB"), FSPEC, F, onFix);
-$("#copyFix").onclick = () => { if (!F.what || !F.where){ K.toast("Choose what is wrong and where first."); return; } copy(fixText(), $("#fixOut"), "your page's Gemini chat"); };
-$("#nextFix").onclick = () => { store.set("fixes", (store.get("fixes") || 0) + 1); F.what = ""; F.where = ""; F.how = []; F.detail = ""; onFix(true); K.toast("Fix counted. Choose the next one."); };
+function drawFix(){ window.B.show($("#fixOut"), FSPEC, FX, fixText()); window.B.meter($("#fixP"), FSPEC, FX); window.B.lock($("#copyFix"), FSPEC, FX); $("#fixN").textContent = store.get("fixes") || 0; }
+function onFix(redraw){ store.set("fixB", FX); if (redraw) fixUI.draw(); drawFix(); }
+fixUI = window.B.make($("#fixB"), FSPEC, FX, onFix);
+$("#copyFix").onclick = () => { if (!window.B.guard(FSPEC, FX, $("#fixB"), K.toast)) return; copy(fixText(), $("#fixOut"), "your page's Gemini chat"); };
+$("#nextFix").onclick = () => { store.set("fixes", (store.get("fixes") || 0) + 1); FX.what = ""; FX.where = ""; FX.how = []; FX.detail = ""; onFix(true); K.toast("Fix counted. Choose the next one."); };
 drawFix();
 
 /* launch */
-const L = [["Every button works",""],["My 3 pictures show on the page",""],["My podcast clip and my video play with sound",""],["Every fact is checked",""],["Everything AI-made is labelled Made with AI",""],["First names only, no photos of real people",""],["It works on a phone",""],["All 6 files are in my AI Creators folder in Google Drive, shared with my teacher",""]];
+const L = [["Every button works",""],["My 3 pictures show on the page",""],["My podcast clip and my video play with sound",""],["Every fact is checked",""],["Everything AI-made is labelled Made with AI",""],["First names only, no photos of real people",""],["It works on a phone",""],["My folder in the app has my pictures, podcast, video and page",""]];
 checklist("launch", L);
 function ready(){ const n = [...document.querySelectorAll("#launch input")].filter(x => x.checked).length;
-  $("#ready").replaceChildren(el("span", {class:"tag"}, "Status"), el("div", {class:"big-num"}, n + " / " + L.length), n === L.length ? el("p", {class:"lead", style:"margin:0;color:var(--green);font-weight:700"}, "Ready for launch! Your teacher takes your AI Creators folder from Google Drive.") : el("p", {class:"lead", style:"margin:0"}, "Tick every line before launch day.")); }
+  $("#ready").replaceChildren(el("span", {class:"tag"}, "Status"), el("div", {class:"big-num"}, n + " / " + L.length), n === L.length ? el("p", {class:"lead", style:"margin:0;color:var(--green);font-weight:700"}, "Ready for launch! Your teacher downloads your folder from the teacher page.") : el("p", {class:"lead", style:"margin:0"}, "Tick every line before launch day.")); }
 $("#launch").addEventListener("change", ready); ready();
-K.files($("#filesBox"), 8); document.addEventListener("change", () => K.files($("#filesBox"), 8));
+const fold8 = F.folder($("#filesBox"), 8);
+F.slotBox($("#pageSlot"), {slot:"page", label:"My web page", accept:".html,text/html"}, () => { fold8.draw(); refreshFiles(); const cb = document.getElementById("list1-5"); if (cb && !cb.checked){ cb.checked = true; cb.dispatchEvent(new Event("change", {bubbles:true})); } });
+function refreshFiles(){ F.ready().then(() => F.list(true)).then(fs => { MYF = fs || []; drawPlan(); drawPage(); }).catch(() => {}); }
+refreshFiles();
 K.start();
 })();
 </script>

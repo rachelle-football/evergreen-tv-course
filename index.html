@@ -202,6 +202,7 @@ td.ok{background:var(--green-soft);font-weight:700;text-align:center}td.part{bac
 .work{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));white-space:normal;padding:8px 0}
 .wk{background:var(--paper);border-radius:10px;padding:10px}.wk p{margin:4px 0 0;white-space:pre-wrap;font-size:15px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(24px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-weight:700;z-index:20;max-width:calc(100% - 32px)}
+.folders{display:grid;gap:12px;margin-top:10px}.fold{border:1px solid var(--line);border-radius:12px;padding:12px}.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.th{display:flex;flex-direction:column;align-items:center;gap:2px;width:86px;text-decoration:none;color:inherit}.th img,.th span{width:86px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;background:var(--paper)}.th small{font:12px var(--mono);color:var(--muted)}
 </style>
 <script src="config.js"></script>
 </head><body>
@@ -235,7 +236,7 @@ const CH = [
   {n:2, t:"AI Training", s:"2–3", f:"ch2.html", learn:"Teach a real AI: school objects or a recycling robot", lists:[["ch2-list1",8],["ch2-list2",6],["ch2-list3",6]]},
   {n:3, t:"Prompt Engineering", s:"4", f:"ch3.html", learn:"Design your part with Gemini: your design card", lists:[["ch3-list1",7]]},
   {n:4, t:"AI Storytelling", s:"5", f:"ch4.html", learn:"A story from the future, with your own character", lists:[["ch4-list1",6],["ch4-hunt",5]]},
-  {n:5, t:"AI Images", s:"6", f:"ch5.html", learn:"3 pictures of your design with Adobe Express", lists:[["ch5-list1",8]]},
+  {n:5, t:"AI Images", s:"6", f:"ch5.html", learn:"3 to 5 pictures you choose, saved in your folder", lists:[["ch5-list1",8]]},
   {n:6, t:"AI Voice", s:"7", f:"ch6.html", learn:"Your clip for the team podcast, in your own voice", lists:[["ch6-list1",8]]},
   {n:7, t:"AI Video", s:"8–9", f:"ch7.html", learn:"30 seconds of video, fact-checked and labelled", lists:[["ch7-list1",8],["ch7-list2",6]]},
   {n:8, t:"Website Building", s:"10–11", f:"ch8.html", learn:"Your page on the team website, tested and fixed", lists:[["ch8-list1",7],["ch8-launch",8]]},
@@ -293,9 +294,10 @@ function renderHome(){
       el("span", {class:"num"}, pr[i] === 100 ? "✓" : String(c.n)),
       el("span", {class:"body"}, el("span", {class:"tag"}, "Session " + c.s), el("b", null, c.t), el("span", {class:"learn"}, c.learn), el("span", {class:"bar sm"}, el("i", {style:"width:" + pr[i] + "%"}))),
       el("span", {class:"pct"}, pr[i] + "%")))),
-    (() => { const L = k => pj(d[k]) || [], F = [["hero.png",5,L("ch5-list1")[5]],["detail.png",5,L("ch5-list1")[6]],["character.png",5,L("ch5-list1")[6]],["podcast.mp4",6,L("ch6-list1")[7]],["video.mp4",7,L("ch7-list2")[4]],["my page (.html)",8,L("ch8-list1")[5]]];
-      return el("div", {class:"card extra"}, el("span", {class:"tag"}, "📁 My AI Creators folder · Google Drive"), el("b", null, F.filter(f => f[2]).length + " of 6 project files saved"),
-        el("span", {class:"muted"}, F.map(f => (f[2] ? "✓ " : "○ ") + f[0] + " (Ch " + f[1] + ")").join("   ·   "))); })(),
+    (() => { const box = el("div", {class:"card extra"}, el("span", {class:"tag"}, "📁 My folder · saved in the app"), el("b", null, "Loading…"));
+      if (ON && ACC){ rpc("ailab_my_files", {p_token:ACC.token}).then(fs => { box.replaceChildren(el("span", {class:"tag"}, "📁 My folder · saved in the app"), el("b", null, fs.length + " file" + (fs.length === 1 ? "" : "s") + " saved"), el("span", {class:"muted"}, fs.length ? fs.map(f => "✓ " + f.slot + " (" + (f.label || "") + ")").join("   ·   ") : "Your pictures, podcast, video and page appear here when you upload them (Chapters 5 to 8).")); }).catch(() => box.replaceChildren(el("span", {class:"tag"}, "📁 My folder"), el("span", {class:"muted"}, "Your folder will appear here."))); }
+      else box.replaceChildren(el("span", {class:"tag"}, "📁 My folder"), el("span", {class:"muted"}, "Log in to save your pictures and videos in the app."));
+      return box; })(),
     el("a", {class:"card extra", href:"ai-lab.html"}, el("span", {class:"tag"}, "Extra practice"), el("b", null, "AI Lab games"), el("span", {class:"muted"}, "10 mini missions: train a classifier, build a guessing machine, be a neuron, and more. Same login."))
   );
 }
@@ -323,6 +325,35 @@ function renderTeacher(){
 function hub(tok){
   let list = [], filter = "", cards = [], open = null;
   const msg = el("div"), cardsOut = el("div"), tableOut = el("div");
+  /* student folders: every picture and video the kids saved in the app */
+  const foldersOut = el("div");
+  const FURL = path => C.url.replace(/\/+$/, "") + "/storage/v1/object/public/creations/" + path.split("/").map(encodeURIComponent).join("/");
+  const FEXT = {"image/png":"png","image/jpeg":"jpg","image/webp":"webp","image/gif":"gif","video/mp4":"mp4","video/webm":"webm","video/quicktime":"mov","audio/mpeg":"mp3","audio/mp4":"m4a","audio/wav":"wav","text/html":"html"};
+  const fname = f => f.slot + "." + (FEXT[f.mime] || (f.path.split(".").pop() || "bin"));
+  const mb = n => (n / 1048576).toFixed(1) + " MB";
+  const loadZip = () => window.JSZip ? Promise.resolve() : new Promise((res, rej) => { const s = document.createElement("script"); s.src = "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+  async function zipFolders(groups, name, btn){
+    const old = btn.textContent; btn.disabled = true;
+    try { await loadZip(); const z = new JSZip(); let n = 0, tot = groups.reduce((a, g) => a + g[1].length, 0);
+      for (const [folder, fs] of groups){ const d = z.folder(folder); for (const f of fs){ btn.textContent = "Downloading " + (++n) + " of " + tot + "…"; d.file(fname(f), await (await fetch(FURL(f.path))).blob()); } }
+      btn.textContent = "Making the zip…"; const blob = await z.generateAsync({type:"blob"}); const a = el("a", {href:URL.createObjectURL(blob), download:name + ".zip"}); document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
+    } catch(e){ toast("The download did not work. Try again."); }
+    btn.textContent = old; btn.disabled = false;
+  }
+  async function loadFolders(){
+    foldersOut.replaceChildren(el("div", {class:"card", style:"margin-top:14px"}, el("h3", null, "Student folders"), el("p", {class:"muted"}, "Loading…")));
+    let rows = []; try { rows = await rpc("ailab_list_files", {p_token:tok}); } catch(e){ foldersOut.replaceChildren(el("div", {class:"card", style:"margin-top:14px"}, el("h3", null, "Student folders"), el("p", {class:"muted"}, e.code === "not_teacher" ? "Please log in again." : "Folders are not switched on yet: run files.sql in Supabase (see SETUP.txt)."))); return; }
+    const by = {}; rows.forEach(r => (by[r.username] = by[r.username] || {name:r.display_name, cls:r.class_name, files:[]}).files.push(r));
+    const total = rows.reduce((a, r) => a + (+r.size || 0), 0), groups = Object.entries(by).map(([u, v]) => [u, v.files]);
+    const allBtn = el("button", {class:"btn", type:"button", onclick:() => zipFolders(groups, "ai-creators-folders", allBtn)}, "⬇ Download all folders");
+    foldersOut.replaceChildren(el("div", {class:"card", style:"margin-top:14px"},
+      el("div", {class:"row", style:"justify-content:space-between"}, el("h3", null, "Student folders (" + Object.keys(by).length + ")"), el("div", {class:"row"}, el("span", {class:"muted"}, mb(total) + " used of 1024 MB free"), el("button", {class:"ghost", type:"button", onclick:loadFolders}, "↻ Refresh"), rows.length ? allBtn : "")),
+      !rows.length ? el("p", {class:"muted"}, "No files yet. Students upload their pictures in Chapter 5.") :
+      el("div", {class:"folders"}, ...Object.entries(by).map(([u, v]) => { const b = el("button", {class:"btn sm alt", type:"button", onclick:() => zipFolders([[u, v.files]], u, b)}, "⬇ Folder");
+        return el("div", {class:"fold"}, el("div", {class:"row", style:"justify-content:space-between"}, el("div", null, el("b", null, v.name), el("br"), el("small", {class:"muted"}, u + " · " + v.cls + " · " + mb(v.files.reduce((a, f) => a + (+f.size || 0), 0)))), b),
+          el("div", {class:"thumbs"}, ...v.files.map(f => el("a", {href:FURL(f.path), target:"_blank", rel:"noopener", title:f.label, class:"th"}, /^image\//.test(f.mime) ? el("img", {src:FURL(f.path), alt:f.label, loading:"lazy"}) : el("span", null, /^video|^audio/.test(f.mime) ? "🎬" : "📄"), el("small", null, fname(f)))))); }))));
+  }
+
   const fail = e => { if (e.code === "not_teacher"){ try { sessionStorage.removeItem(TKEY); } catch(x) {} renderTeacher(); toast(ERR(e.code)); } else msg.replaceChildren(el("div", {class:"fb no"}, ERR(e.code))); };
   const load = async () => { try { list = await rpc("ailab_list_students", {p_token:tok}) || []; draw(); } catch(e){ fail(e); } };
   const cls = el("input", {placeholder:"Class, e.g. EB7 A", "aria-label":"Class"});
@@ -372,8 +403,8 @@ function hub(tok){
       el("button", {class:"ghost", type:"button", onclick:() => { rpc("ailab_logout", {p_token:tok}).catch(() => {}); try { sessionStorage.removeItem(TKEY); } catch(e) {} location.hash = ""; route(); }}, "Log out")),
     msg,
     el("div", {class:"card"}, el("span", {class:"tag"}, "Add students"), el("h3", null, "Create accounts for a class"), el("div", {class:"form"}, cls, names, el("div", {class:"row"}, el("button", {class:"btn", type:"button", onclick:create}, "Create accounts"), el("span", {class:"muted"}, "Usernames and passwords are made for you. No email needed.")))),
-    cardsOut, tableOut);
-  load();
+    cardsOut, tableOut, foldersOut);
+  load(); loadFolders();
 }
 
 /* ---------- routing ---------- */
