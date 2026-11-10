@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head><body>
+<title>Build with a Prompt</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: a broadcast "rundown" — one segment on air at a time, channel bug + clock on top, rundown rail below */
+:root{
+  --paper:#F4F6F2; --panel:#FFFFFF; --ink:#13221C; --muted:#56665E; --line:#D7DFD9;
+  --green:#1E7A55; --green-soft:#E3F1E9; --onair:#D9412A; --onair-soft:#FBE7E3; --gold:#B7791F; --gold-soft:#FBF0DC;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0E1512; --panel:#16201B; --ink:#E8F0EB; --muted:#9BB0A5; --line:#2A3832;
+  --green:#4BC38B; --green-soft:#16362A; --onair:#FF6B50; --onair-soft:#3A1D17; --gold:#E9B04F; --gold-soft:#3A2C14; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0E1512; --panel:#16201B; --ink:#E8F0EB; --muted:#9BB0A5; --line:#2A3832;
+  --green:#4BC38B; --green-soft:#16362A; --onair:#FF6B50; --onair-soft:#3A1D17; --gold:#E9B04F; --gold-soft:#3A2C14; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--panel)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);line-height:1.08;margin:0;text-wrap:balance}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--panel);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:14px;padding-block:10px;flex-wrap:wrap}
+.bug{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;letter-spacing:.02em}
+.bug .live{white-space:nowrap;display:inline-flex;align-items:center;gap:6px;background:var(--onair);color:#fff;font:700 12px/1 var(--mono);letter-spacing:.12em;padding:6px 8px;border-radius:4px}
+.bug .live i{width:7px;height:7px;border-radius:50%;background:#fff;animation:blink 1.6s steps(2) infinite}
+@keyframes blink{50%{opacity:.25}}
+.bug small{font-family:var(--body);font-weight:400;color:var(--muted);letter-spacing:0}
+.clock{margin-left:auto;display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:15px}
+.clock b{font-size:20px;font-variant-numeric:tabular-nums;min-width:4.2ch;text-align:right}
+.clock b.late{color:var(--onair)}
+.ghost{background:transparent;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:14px}
+.ghost:hover{border-color:var(--ink)}
+
+/* stage */
+main{padding-block:26px 120px}
+.seg[hidden]{display:none!important}
+.lower{display:flex;align-items:stretch;gap:0;margin-bottom:22px;max-width:100%}
+.lower .no{background:var(--green);color:#fff;font:700 15px/1 var(--mono);padding:12px 14px;display:flex;align-items:center;border-radius:10px 0 0 10px}
+.lower .name{background:var(--panel);border:1px solid var(--line);border-left:0;border-radius:0 10px 10px 0;padding:8px 16px;min-width:0}
+.lower .name h2{font-size:clamp(26px,3.6vw,40px);font-weight:800}
+.lower .name p{margin:2px 0 0;color:var(--muted);font-size:15px}
+.big{font-family:var(--display);font-weight:700;font-size:clamp(24px,3vw,34px);line-height:1.2;max-width:30ch;margin:0 0 18px;text-wrap:balance}
+.lead{font-size:20px;max-width:62ch;margin:0 0 20px}
+.muted{color:var(--muted)}
+.note{font-size:14px;color:var(--muted);margin-top:14px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.tag{display:inline-block;font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.btn{background:var(--ink);color:var(--paper);border:0;border-radius:10px;padding:12px 18px;font-weight:700}
+.btn:hover{opacity:.9}
+.btn.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:8px 12px;font-size:15px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+a{color:var(--green);font-weight:700}
+
+
+/* chapter 2 */
+.def{border:2px solid var(--green);background:var(--green-soft);border-radius:16px;padding:20px 22px;margin-top:18px}
+.def p{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(22px,2.8vw,30px);line-height:1.25}
+.steps3{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:12px;align-items:center}
+.steps3 h3{font-size:26px;margin:6px 0}
+.steps3 p{margin:0;font-size:17px}
+.steps3 .arrow{font:700 28px/1 var(--mono);color:var(--muted)}
+@media (max-width:820px){.steps3{grid-template-columns:1fr}.steps3 .arrow{transform:rotate(90deg);justify-self:center}}
+.mission{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:900px){.mission{grid-template-columns:1fr}}
+.checklist{list-style:none;padding:0;margin:0;display:grid;gap:10px;counter-reset:st}
+.checklist li{counter-increment:st;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.checklist li.ok{border-color:var(--green);background:var(--green-soft)}
+.checklist label{display:grid;grid-template-columns:auto auto 1fr;gap:12px;align-items:start;padding:14px 16px;cursor:pointer}
+.checklist label::before{content:counter(st);font:700 15px/1 var(--mono);background:var(--ink);color:var(--paper);border-radius:6px;padding:6px 8px;grid-column:1;grid-row:1}
+.checklist input{grid-column:2;grid-row:1;width:22px;height:22px;margin:2px 0 0;accent-color:var(--green)}
+.checklist label>span{grid-column:3;grid-row:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.checklist b{font-family:var(--display);font-size:20px}
+.checklist .how{font-size:16px;color:var(--ink)}
+.checklist li.ok b{text-decoration:line-through;text-decoration-thickness:2px}
+.tally{display:grid;gap:14px;position:sticky;top:84px}
+.tcol{border-top:1px solid var(--line);padding-top:12px}
+.tname{margin:0;font-weight:700}
+.pct{font:800 clamp(40px,5vw,56px)/1 var(--display);font-variant-numeric:tabular-nums;margin:4px 0}
+.done-note{margin:10px 0 0;font-weight:700;color:var(--green)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.fruits{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px}
+.fruit{display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;width:64px}
+.fruit .ball{width:52px;height:52px;border-radius:50% 50% 46% 46%;display:block;box-shadow:inset -6px -6px 0 rgba(0,0,0,.15)}
+.fruit .leaf{position:absolute;top:-6px;left:34px;width:14px;height:9px;background:#3E8E41;border-radius:0 80% 0 80%}
+.fruit small{font-size:13px;color:var(--muted)}
+#aiSays.bad{border-color:var(--onair);background:var(--onair-soft)}
+#aiSays.good{border-color:var(--green);background:var(--green-soft)}
+.pick{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr))}
+.segcard{text-align:left;background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:4px;min-height:96px}
+.segcard strong{font-family:var(--display);font-size:20px}
+.segcard span{font-size:15px;color:var(--muted)}
+.segcard:hover{border-color:var(--ink)}
+.segcard[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;background:var(--panel);color:var(--ink);resize:vertical;margin-top:8px}
+.pdiv{align-self:flex-start;font:700 11px/1 var(--mono);color:var(--muted);padding:10px 2px 0;border-top:4px solid transparent}
+
+/* chapter 3 */
+.prompt{white-space:pre-wrap;font:15px/1.55 var(--mono);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px;margin:10px 0 12px;overflow-x:auto}
+.quote{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.3;margin:10px 0 10px}
+.card.bad{border-color:var(--onair);background:var(--onair-soft)}
+.card.good{border-color:var(--green);background:var(--green-soft)}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr))}
+.part{display:flex;flex-direction:column;gap:4px}
+.part b{font-family:var(--display);font-size:22px}
+.part span{color:var(--muted);font-size:16px}
+.growth{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;position:relative}
+.gstep{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.gstep b{font-family:var(--display);font-size:20px}
+.gstep span:last-child{font-size:15px;color:var(--muted)}
+.gstep.now{border:2px solid var(--onair);background:var(--onair-soft)}
+.gstep.end{border:2px solid var(--green);background:var(--green-soft)}
+@media (max-width:900px){.growth{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.side{display:flex;flex-direction:column;gap:8px;position:sticky;top:84px}
+select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);width:100%}
+#segPrompt{min-height:220px;font:14px/1.5 var(--mono)}
+.follow{display:grid;gap:8px}
+.fchip{display:flex;justify-content:space-between;gap:10px;align-items:center;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:15px}
+.fchip small{font:700 12px/1 var(--mono);color:var(--green);white-space:nowrap}
+.fchip:hover{border-color:var(--ink)}
+@media (max-width:900px){.side,.tally{position:static}}
+.def.warn{border-color:var(--onair);background:var(--onair-soft)}
+.def.warn p{font-size:clamp(19px,2.2vw,24px)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-weight:700;z-index:20;max-width:calc(100% - 32px)}
+/* rundown rail */
+.rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
+.steps{display:flex;gap:6px;flex:1;min-width:0;overflow-x:auto}
+.step{flex:1;min-width:44px;background:transparent;border:0;padding:6px 4px;text-align:left;border-top:4px solid var(--line);border-radius:0;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.step b{font-family:var(--mono);margin-right:4px}
+.step.done{border-top-color:var(--green)}
+.step[aria-current="step"]{border-top-color:var(--onair);color:var(--ink);font-weight:700}
+@media (max-width:700px){.bug small{display:none}.step .t{display:none}.clock .lbl{display:none}body{font-size:17px}.lead{font-size:18px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<header class="top">
+  <div class="wrap">
+    <div class="bug"><span class="live"><i></i>ON AIR</span><span>Evergreen TV <small>· AI class · Chapter 3: Build with a prompt</small></span></div>
+    <div class="clock" aria-live="off">
+      <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
+      <button class="ghost" id="clockBtn" type="button">Start</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="stage">
+
+<section class="seg" id="seg-1" data-min="5" data-title="One sentence">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>One sentence, one website</h2><p>5 minutes · teacher demo</p></div></div>
+  <p class="big">Watch: the teacher types one prompt. In 30 seconds, an AI writes hundreds of lines of code and builds a website.</p>
+  <div class="card">
+    <span class="tag">Teacher: open gemini.google.com, press + then Canvas, and paste</span>
+    <pre class="prompt" id="demoPrompt">Create a colorful webpage for "Evergreen TV – Sports Desk", the sports corner of our school news platform, made by 12-year-old students.
+Include: a big title with a TV logo, a scoreboard for 3 school football matches, a "Player of the Week" card, and a button that shows a random fun sports fact.
+Use bright colors and big fonts.</pre>
+    <div class="row"><button class="btn sm copy" data-copy="demoPrompt" type="button">Copy prompt</button></div>
+  </div>
+  <p class="lead" style="margin-top:16px">Then ask the class: <b>how many lines of code did the AI write?</b> Open the code view and scroll.</p>
+</section>
+
+<section class="seg" id="seg-2" data-min="5" data-title="You are the director" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>You are the director</h2><p>5 minutes · the lesson</p></div></div>
+  <p class="big">The AI is the programmer. You are the director. It builds exactly what you describe, and guesses the rest.</p>
+  <div class="grid g2">
+    <div class="card bad"><span class="tag">Weak prompt</span><p class="quote">"Make a sports website."</p><p class="muted" style="margin:0">The AI has to guess everything: which sport, which teams, what goes on the page, what it looks like.</p></div>
+    <div class="card good"><span class="tag">Director's prompt</span><p class="quote">"Make 'Evergreen TV – Sports Desk' with a scoreboard for 3 school matches, a Player of the Week card and a fun-fact button. Bright colors, big fonts."</p><p class="muted" style="margin:0">The AI knows what to build.</p></div>
+  </div>
+  <p class="lead" style="margin-top:18px">A director's prompt has 4 parts:</p>
+  <div class="grid g4">
+    <div class="card part"><b>1. Name</b><span>What is your corner called?</span></div>
+    <div class="card part"><b>2. What's on it</b><span>3 things on the page</span></div>
+    <div class="card part"><b>3. Look</b><span>Colors, fonts, mood</span></div>
+    <div class="card part"><b>4. Action</b><span>What happens when you click</span></div>
+  </div>
+</section>
+
+<section class="seg" id="seg-3" data-min="3" data-title="Our platform" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Our platform: Evergreen TV</h2><p>3 minutes · the big picture</p></div></div>
+  <p class="big">Every student builds one corner of Evergreen TV. Your corner grows every week until the platform goes live.</p>
+  <div class="growth">
+    <div class="gstep now"><span class="tag">Today · Ch 3</span><b>The page</b><span>Your corner's first version</span></div>
+    <div class="gstep"><span class="tag">Ch 4</span><b>A character</b><span>Talks to visitors</span></div>
+    <div class="gstep"><span class="tag">Ch 5</span><b>Pictures</b><span>Made with AI</span></div>
+    <div class="gstep"><span class="tag">Ch 6</span><b>A presenter</b><span>Speaks with your voice</span></div>
+    <div class="gstep"><span class="tag">Ch 7</span><b>Video</b><span>Your 45-second segment</span></div>
+    <div class="gstep end"><span class="tag">Ch 9</span><b>Launch</b><span>All corners, one platform</span></div>
+  </div>
+</section>
+
+<section class="seg" id="seg-4" data-min="27" data-title="Mission: build your corner" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Mission: build your corner</h2><p>27 minutes · on your computer</p></div></div>
+  <div class="mission">
+    <div>
+      <ol class="checklist" id="list1"></ol>
+    </div>
+    <aside class="card side">
+      <label class="tag" for="segSel">1 · Your segment</label>
+      <select id="segSel"></select>
+      <span class="tag" style="margin-top:12px">2 · Your starting prompt</span>
+      <textarea id="segPrompt" spellcheck="false" aria-label="Your starting prompt"></textarea>
+      <p class="muted" style="margin:0;font-size:14px">Change anything you like before you copy it. Make it yours.</p>
+      <div class="row"><button class="btn sm" id="copySeg" type="button">Copy my prompt</button></div>
+      <span class="tag" style="margin-top:14px">3 · Improve it: copy one at a time</span>
+      <div id="follow" class="follow"></div>
+    </aside>
+  </div>
+  <div class="def warn"><span class="tag">Safety rule</span><p>Your page can be seen by anyone with the link. First names only. No photos of people, no phone numbers, no addresses.</p></div>
+</section>
+
+<section class="seg" id="seg-5" data-min="5" data-title="Show your corner" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Show your corner</h2><p>5 minutes · 3 students present</p></div></div>
+  <p class="big">Three students show their corner. The class checks it with these questions.</p>
+  <div class="grid g3">
+    <div class="card"><span class="tag">Does it work?</span><p class="lead" style="margin:6px 0 0">Click every button. Does each one do something?</p></div>
+    <div class="card"><span class="tag">Is it clear?</span><p class="lead" style="margin:6px 0 0">Can a visitor tell in 5 seconds what this corner is about?</p></div>
+    <div class="card"><span class="tag">Is it safe?</span><p class="lead" style="margin:6px 0 0">First names only, no photos of people, nothing private.</p></div>
+  </div>
+  <div class="card" style="margin-top:16px;background:var(--gold-soft);border-color:transparent">
+    <span class="tag">Remember</span>
+    <p class="lead" style="margin:6px 0 0">You wrote zero lines of code, but every idea on the page is yours. Next week your corner gets a character who talks to visitors.</p>
+  </div>
+</section>
+
+</main>
+
+<nav class="rail" aria-label="Lesson segments">
+  <div class="wrap">
+    <button class="btn sm alt" id="prev" type="button" aria-label="Previous segment">←</button>
+    <div class="steps" id="steps"></div>
+    <button class="btn sm" id="next" type="button">Next →</button>
+  </div>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+(function(){
+const $ = s => document.querySelector(s);
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const store = { get(k){ try { return JSON.parse(localStorage.getItem("ch3-" + k)); } catch(e){ return null; } }, set(k, v){ try { localStorage.setItem("ch3-" + k, JSON.stringify(v)); } catch(e){} } };
+const segs = [...document.querySelectorAll(".seg")];
+let cur = 0;
+
+/* navigation */
+const stepsBox = $("#steps");
+segs.forEach((s, i) => stepsBox.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))));
+const stepBtns = [...stepsBox.children];
+function go(i){
+  cur = Math.max(0, Math.min(segs.length - 1, i));
+  segs.forEach((s, k) => s.hidden = k !== cur);
+  stepBtns.forEach((b, k) => { b.classList.toggle("done", k < cur); if (k === cur) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+  $("#next").textContent = cur === segs.length - 1 ? "Done" : "Next →";
+  $("#prev").disabled = cur === 0;
+  if (location.hash !== "#" + segs[cur].id) history.replaceState(null, "", "#" + segs[cur].id);
+  resetClock(); window.scrollTo(0, 0);
+}
+$("#prev").onclick = () => go(cur - 1);
+$("#next").onclick = () => go(cur + 1);
+addEventListener("keydown", e => { if (e.target.matches("textarea,input,select")) return; if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); });
+addEventListener("hashchange", () => { const i = segs.findIndex(s => "#" + s.id === location.hash); if (i >= 0 && i !== cur) go(i); });
+
+/* clock */
+let left = 0, tick = null;
+const fmt = s => (s < 0 ? "-" : "") + String(Math.floor(Math.abs(s)/60)).padStart(2,"0") + ":" + String(Math.abs(s)%60).padStart(2,"0");
+function resetClock(){ clearInterval(tick); tick = null; left = (+segs[cur].dataset.min) * 60; $("#clock").textContent = fmt(left); $("#clock").classList.remove("late"); $("#clockBtn").textContent = "Start"; }
+$("#clockBtn").onclick = () => {
+  if (tick){ clearInterval(tick); tick = null; $("#clockBtn").textContent = "Start"; return; }
+  $("#clockBtn").textContent = "Pause";
+  tick = setInterval(() => { left--; $("#clock").textContent = fmt(left); $("#clock").classList.toggle("late", left < 0); }, 1000);
+};
+
+/* copy helper */
+let tt;
+function toast(msg){ const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 2200); }
+async function copyText(text, selectEl){
+  try { await navigator.clipboard.writeText(text); toast("Copied. Now paste it into Gemini."); }
+  catch(e){ if (selectEl){ selectEl.focus(); if (selectEl.select) selectEl.select(); else { const r = document.createRange(); r.selectNodeContents(selectEl); const s = getSelection(); s.removeAllRanges(); s.addRange(r); } } toast("Press Ctrl+C to copy the selected text."); }
+}
+document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => { const src = document.getElementById(b.dataset.copy); copyText(src.textContent, src); }));
+
+/* checklist */
+function checklist(id, items){
+  const saved = store.get(id) || [];
+  $("#" + id).replaceChildren(...items.map(([title, body], i) => {
+    const cb = el("input", {type:"checkbox", id: id + "-" + i}); cb.checked = !!saved[i];
+    const li = el("li", {class: cb.checked ? "ok" : ""}, el("label", {for: id + "-" + i}, cb, el("span", null, el("b", null, title), el("span", {class:"how"}, body))));
+    cb.addEventListener("change", () => { saved[i] = cb.checked; store.set(id, saved); li.classList.toggle("ok", cb.checked); });
+    return li; }));
+}
+checklist("list1", [
+  ["Open Gemini with Canvas", "Go to gemini.google.com. Press the + next to the message box, then choose Canvas."],
+  ["Pick your segment", "Choose your segment in the prompt box (next to this list, or below it on a small screen). Your starting prompt appears."],
+  ["Make the prompt yours", "Change at least one thing: a colour, a name, a button idea. Then press Copy my prompt."],
+  ["Paste and build", "Paste into Gemini and press Enter. Wait about 30 seconds. Your page appears on the right."],
+  ["Test every button", "Click everything. Write down one thing that does not work or that you want to change."],
+  ["Improve it twice", "Copy one improvement prompt, paste it in the same chat, press Enter. Then do a second one, or write your own."],
+  ["Save your corner", "In the Canvas panel, find Download (the arrow icon) and save the file. Name it with your segment and first name, for example sports_ghadi.html."],
+  ["Hand it in", "Give the file to your teacher the way they ask (Google Classroom or a USB stick)."]
+]);
+
+/* segment prompts */
+const BASE = (name, corner, inc, look) => `Create a colorful webpage called "Evergreen TV – ${name}", the ${corner} corner of our school's news platform, made by a 12-year-old student.
+Include: ${inc}
+Look: ${look}, big fonts, and it must work well on a phone.
+Rules: no real full names, no photos of real people.`;
+const SEGS = {
+  "Sports Desk": BASE("Sports Desk", "sports", "a scoreboard for 3 school football matches with made-up team names, a \"Player of the Week\" card, and a button that shows a random fun sports fact.", "bright green and yellow, like a stadium"),
+  "Weather Robot": BASE("Weather Robot", "weather", "a friendly robot character with a speech bubble, 5 forecast cards for the school week with a funny comment on each, and a button \"What should I wear today?\" that gives a silly answer.", "sky blue and white, cheerful"),
+  "Tech and AI Corner": BASE("Tech and AI Corner", "technology", "3 \"Gadget of the Week\" cards, a \"Did you know?\" button with random tech facts, and a poll \"Would you use it?\" that counts the votes.", "dark blue with neon accents, futuristic"),
+  "School News": BASE("School News", "school news", "a countdown to the next school event, 3 news cards with short headlines, and a list of this month's events.", "school colours, clean and clear"),
+  "Canteen Review": BASE("Canteen Review", "food review", "today's menu where visitors can give each dish 1 to 5 stars, a \"Dish of the Week\" card, and a vote button that shows the live count.", "warm orange and cream, like a café"),
+  "Style and Trends": BASE("Style and Trends", "style", "a lookbook of 4 outfit cards, a \"Mix and Match\" button that combines a random top, bottom and shoes, and a \"Colour of the Week\" box.", "soft pastel colours, elegant"),
+  "Games and Apps Review": BASE("Games and Apps Review", "games and apps", "3 review cards with star ratings, and a 3-question quiz \"Which game fits you?\" that shows a result at the end.", "arcade style, purple and pink"),
+  "Interview with a Legend": BASE("Interview with a Legend", "interview", "a profile card of a famous inventor or athlete from history, 5 interview questions as cards that flip to show the answers, and a short timeline of their life.", "classic, like a magazine"),
+  "Fake or Real?": BASE("Fake or Real?", "fake-or-real game", "a game with 5 surprising statements, \"Real\" and \"Fake\" buttons for each, the right answer with a short explanation, and a final score.", "mysterious, black and gold"),
+  "Funny Ads": BASE("Funny Ads", "funny ads", "an ad page for an impossible product (for example a backpack that does your homework), a list of its silly features, a funny price, a \"Buy now\" button that shows a joke, and a \"Made with AI\" label.", "loud and colourful, like a TV commercial")
+};
+const FOLLOW = [
+  "Make the title bigger and add a small animation when the page opens.",
+  "Add a dark mode button.",
+  "Add a footer that says: Made with AI by Evergreen TV.",
+  "Make it look better on a phone.",
+  "Add one more button that does something fun, and surprise me."
+];
+const sel = $("#segSel"), ta = $("#segPrompt");
+Object.keys(SEGS).forEach(n => sel.append(el("option", {value:n}, n)));
+const savedSeg = store.get("seg") || (function(){ try { return JSON.parse(localStorage.getItem("ch2-seg")); } catch(e){ return null; } })();
+if (savedSeg && SEGS[savedSeg]) sel.value = savedSeg;
+const savedPrompt = store.get("prompt");
+ta.value = savedPrompt && savedPrompt.seg === sel.value ? savedPrompt.text : SEGS[sel.value];
+sel.addEventListener("change", () => { store.set("seg", sel.value); ta.value = SEGS[sel.value]; store.set("prompt", {seg: sel.value, text: ta.value}); });
+ta.addEventListener("input", () => store.set("prompt", {seg: sel.value, text: ta.value}));
+$("#copySeg").onclick = () => copyText(ta.value, ta);
+$("#follow").replaceChildren(...FOLLOW.map(f => el("button", {class:"fchip", type:"button", onclick:() => copyText(f)}, el("span", null, f), el("small", null, "Copy"))));
+
+const start = segs.findIndex(s => "#" + s.id === location.hash);
+go(start >= 0 ? start : 0);
+})();
+</script>
+
+<script src="config.js"></script>
+<script src="sync.js"></script>
+</body></html>

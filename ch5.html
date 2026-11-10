@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head><body>
+<title>AI Pictures</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: a broadcast "rundown" — one segment on air at a time, channel bug + clock on top, rundown rail below */
+:root{
+  --paper:#F4F6F2; --panel:#FFFFFF; --ink:#13221C; --muted:#56665E; --line:#D7DFD9;
+  --green:#1E7A55; --green-soft:#E3F1E9; --onair:#D9412A; --onair-soft:#FBE7E3; --gold:#B7791F; --gold-soft:#FBF0DC;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0E1512; --panel:#16201B; --ink:#E8F0EB; --muted:#9BB0A5; --line:#2A3832;
+  --green:#4BC38B; --green-soft:#16362A; --onair:#FF6B50; --onair-soft:#3A1D17; --gold:#E9B04F; --gold-soft:#3A2C14; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0E1512; --panel:#16201B; --ink:#E8F0EB; --muted:#9BB0A5; --line:#2A3832;
+  --green:#4BC38B; --green-soft:#16362A; --onair:#FF6B50; --onair-soft:#3A1D17; --gold:#E9B04F; --gold-soft:#3A2C14; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--panel)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);line-height:1.08;margin:0;text-wrap:balance}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--panel);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:14px;padding-block:10px;flex-wrap:wrap}
+.bug{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;letter-spacing:.02em}
+.bug .live{white-space:nowrap;display:inline-flex;align-items:center;gap:6px;background:var(--onair);color:#fff;font:700 12px/1 var(--mono);letter-spacing:.12em;padding:6px 8px;border-radius:4px}
+.bug .live i{width:7px;height:7px;border-radius:50%;background:#fff;animation:blink 1.6s steps(2) infinite}
+@keyframes blink{50%{opacity:.25}}
+.bug small{font-family:var(--body);font-weight:400;color:var(--muted);letter-spacing:0}
+.clock{margin-left:auto;display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:15px}
+.clock b{font-size:20px;font-variant-numeric:tabular-nums;min-width:4.2ch;text-align:right}
+.clock b.late{color:var(--onair)}
+.ghost{background:transparent;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:14px}
+.ghost:hover{border-color:var(--ink)}
+
+/* stage */
+main{padding-block:26px 120px}
+.seg[hidden]{display:none!important}
+.lower{display:flex;align-items:stretch;gap:0;margin-bottom:22px;max-width:100%}
+.lower .no{background:var(--green);color:#fff;font:700 15px/1 var(--mono);padding:12px 14px;display:flex;align-items:center;border-radius:10px 0 0 10px}
+.lower .name{background:var(--panel);border:1px solid var(--line);border-left:0;border-radius:0 10px 10px 0;padding:8px 16px;min-width:0}
+.lower .name h2{font-size:clamp(26px,3.6vw,40px);font-weight:800}
+.lower .name p{margin:2px 0 0;color:var(--muted);font-size:15px}
+.big{font-family:var(--display);font-weight:700;font-size:clamp(24px,3vw,34px);line-height:1.2;max-width:30ch;margin:0 0 18px;text-wrap:balance}
+.lead{font-size:20px;max-width:62ch;margin:0 0 20px}
+.muted{color:var(--muted)}
+.note{font-size:14px;color:var(--muted);margin-top:14px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.tag{display:inline-block;font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.btn{background:var(--ink);color:var(--paper);border:0;border-radius:10px;padding:12px 18px;font-weight:700}
+.btn:hover{opacity:.9}
+.btn.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:8px 12px;font-size:15px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+a{color:var(--green);font-weight:700}
+
+
+/* chapter 2 */
+.def{border:2px solid var(--green);background:var(--green-soft);border-radius:16px;padding:20px 22px;margin-top:18px}
+.def p{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(22px,2.8vw,30px);line-height:1.25}
+.steps3{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:12px;align-items:center}
+.steps3 h3{font-size:26px;margin:6px 0}
+.steps3 p{margin:0;font-size:17px}
+.steps3 .arrow{font:700 28px/1 var(--mono);color:var(--muted)}
+@media (max-width:820px){.steps3{grid-template-columns:1fr}.steps3 .arrow{transform:rotate(90deg);justify-self:center}}
+.mission{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:900px){.mission{grid-template-columns:1fr}}
+.checklist{list-style:none;padding:0;margin:0;display:grid;gap:10px;counter-reset:st}
+.checklist li{counter-increment:st;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.checklist li.ok{border-color:var(--green);background:var(--green-soft)}
+.checklist label{display:grid;grid-template-columns:auto auto 1fr;gap:12px;align-items:start;padding:14px 16px;cursor:pointer}
+.checklist label::before{content:counter(st);font:700 15px/1 var(--mono);background:var(--ink);color:var(--paper);border-radius:6px;padding:6px 8px;grid-column:1;grid-row:1}
+.checklist input{grid-column:2;grid-row:1;width:22px;height:22px;margin:2px 0 0;accent-color:var(--green)}
+.checklist label>span{grid-column:3;grid-row:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.checklist b{font-family:var(--display);font-size:20px}
+.checklist .how{font-size:16px;color:var(--ink)}
+.checklist li.ok b{text-decoration:line-through;text-decoration-thickness:2px}
+.tally{display:grid;gap:14px;position:sticky;top:84px}
+.tcol{border-top:1px solid var(--line);padding-top:12px}
+.tname{margin:0;font-weight:700}
+.pct{font:800 clamp(40px,5vw,56px)/1 var(--display);font-variant-numeric:tabular-nums;margin:4px 0}
+.done-note{margin:10px 0 0;font-weight:700;color:var(--green)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.fruits{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px}
+.fruit{display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;width:64px}
+.fruit .ball{width:52px;height:52px;border-radius:50% 50% 46% 46%;display:block;box-shadow:inset -6px -6px 0 rgba(0,0,0,.15)}
+.fruit .leaf{position:absolute;top:-6px;left:34px;width:14px;height:9px;background:#3E8E41;border-radius:0 80% 0 80%}
+.fruit small{font-size:13px;color:var(--muted)}
+#aiSays.bad{border-color:var(--onair);background:var(--onair-soft)}
+#aiSays.good{border-color:var(--green);background:var(--green-soft)}
+.pick{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr))}
+.segcard{text-align:left;background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:4px;min-height:96px}
+.segcard strong{font-family:var(--display);font-size:20px}
+.segcard span{font-size:15px;color:var(--muted)}
+.segcard:hover{border-color:var(--ink)}
+.segcard[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;background:var(--panel);color:var(--ink);resize:vertical;margin-top:8px}
+.pdiv{align-self:flex-start;font:700 11px/1 var(--mono);color:var(--muted);padding:10px 2px 0;border-top:4px solid transparent}
+
+/* chapter 3 */
+.prompt{white-space:pre-wrap;font:15px/1.55 var(--mono);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px;margin:10px 0 12px;overflow-x:auto}
+.quote{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.3;margin:10px 0 10px}
+.card.bad{border-color:var(--onair);background:var(--onair-soft)}
+.card.good{border-color:var(--green);background:var(--green-soft)}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr))}
+.part{display:flex;flex-direction:column;gap:4px}
+.part b{font-family:var(--display);font-size:22px}
+.part span{color:var(--muted);font-size:16px}
+.growth{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;position:relative}
+.gstep{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.gstep b{font-family:var(--display);font-size:20px}
+.gstep span:last-child{font-size:15px;color:var(--muted)}
+.gstep.now{border:2px solid var(--onair);background:var(--onair-soft)}
+.gstep.end{border:2px solid var(--green);background:var(--green-soft)}
+@media (max-width:900px){.growth{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.side{display:flex;flex-direction:column;gap:8px;position:sticky;top:84px}
+select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);width:100%}
+#segPrompt{min-height:220px;font:14px/1.5 var(--mono)}
+.follow{display:grid;gap:8px}
+.fchip{display:flex;justify-content:space-between;gap:10px;align-items:center;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:15px}
+.fchip small{font:700 12px/1 var(--mono);color:var(--green);white-space:nowrap}
+.fchip:hover{border-color:var(--ink)}
+@media (max-width:900px){.side,.tally{position:static}}
+.def.warn{border-color:var(--onair);background:var(--onair-soft)}
+.def.warn p{font-size:clamp(19px,2.2vw,24px)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-weight:700;z-index:20;max-width:calc(100% - 32px)}
+
+/* chapter 4 */
+.chat{display:flex;flex-direction:column;gap:10px;min-height:360px}
+.msgs{flex:1;display:flex;flex-direction:column;gap:8px;overflow-y:auto;max-height:380px;padding:4px}
+.msg{max-width:85%;padding:10px 14px;border-radius:14px;font-size:17px}
+.msg.bot{background:var(--paper);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+.msg.bot.fail{border-color:var(--onair);background:var(--onair-soft)}
+.msg.me{background:var(--green);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+input{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);width:100%;min-width:0}
+#botForm{flex-wrap:nowrap}
+.score{font-family:var(--mono);font-weight:700}
+.recipe{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.ing textarea{min-height:0;margin-top:0;font-size:16px}
+.ing{display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+.prompt.small{font-size:13px;max-height:260px;overflow:auto}
+.checklist.compact label{padding:10px 12px}
+.checklist.compact b{font-size:16px;font-family:var(--body)}
+.checklist.compact label::before{font-size:12px;padding:4px 6px}
+
+/* chapter 5 */
+.shot{width:100%;height:auto;border-radius:10px;margin-top:10px;display:block}
+canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:block;margin-top:10px;image-rendering:pixelated}
+.how-list{margin:0;padding-left:22px;display:grid;gap:12px;font-size:19px}
+.g5{grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+.tabs{display:flex;gap:6px;margin:10px 0 2px;flex-wrap:wrap}
+.tab{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:15px;font-weight:700}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.stat b{display:block;font-family:var(--display);font-size:clamp(34px,4vw,48px);line-height:1.1;margin:4px 0 8px;font-variant-numeric:tabular-nums}
+/* rundown rail */
+.rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
+.steps{display:flex;gap:6px;flex:1;min-width:0;overflow-x:auto}
+.step{flex:1;min-width:44px;background:transparent;border:0;padding:6px 4px;text-align:left;border-top:4px solid var(--line);border-radius:0;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.step b{font-family:var(--mono);margin-right:4px}
+.step.done{border-top-color:var(--green)}
+.step[aria-current="step"]{border-top-color:var(--onair);color:var(--ink);font-weight:700}
+@media (max-width:700px){.bug small{display:none}.step .t{display:none}.clock .lbl{display:none}body{font-size:17px}.lead{font-size:18px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<header class="top">
+  <div class="wrap">
+    <div class="bug"><span class="live"><i></i>ON AIR</span><span>Evergreen TV <small>· AI class · Chapter 5: AI pictures</small></span></div>
+    <div class="clock" aria-live="off">
+      <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
+      <button class="ghost" id="clockBtn" type="button">Start</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="stage">
+
+<section class="seg" id="seg-1" data-min="5" data-title="Spot the AI's choices">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>Spot the AI's choices</h2><p>5 minutes · warm-up</p></div></div>
+  <p class="big">We asked an AI for a picture. It gave us four in ten seconds. Look closely: what did it decide by itself?</p>
+  <div class="card">
+    <span class="tag">Our prompt</span>
+    <p class="quote" style="font-size:19px">"Bright cartoon TV news studio for a school sports show, a big screen showing a football, a desk with a microphone, colorful, fun, for kids"</p>
+    <img src="adobe-test.jpg" alt="Four AI-made cartoon TV studios, each with an oval American football on the screen and a boy presenter at the desk" class="shot">
+    <p class="muted" style="font-size:14px;margin:8px 0 0">Made with Adobe Express by our teacher, 10 November 2026.</p>
+  </div>
+  <div class="row" style="margin-top:14px"><button class="btn" id="spotBtn" type="button">Show what it decided</button></div>
+  <div class="grid g2" id="spot" hidden style="margin-top:14px">
+    <div class="card bad"><span class="tag">Choice 1 · the ball</span><p class="lead" style="margin:6px 0 0">The ball is oval: an <b>American</b> football. Most of the pictures it learned from come from America, where "football" means that game.</p></div>
+    <div class="card bad"><span class="tag">Choice 2 · the presenter</span><p class="lead" style="margin:6px 0 0">We never asked for a person. It added one anyway, and chose <b>a boy, four times out of four</b>.</p></div>
+  </div>
+</section>
+
+<section class="seg" id="seg-2" data-min="7" data-title="How image AI works" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>How an AI makes a picture</h2><p>7 minutes · the lesson</p></div></div>
+  <div class="grid g2" style="align-items:start">
+    <div class="card">
+      <span class="tag">Watch: from noise to picture</span>
+      <canvas id="noise" width="360" height="240" aria-label="Random dots slowly turning into a picture of a sun over a hill"></canvas>
+      <div class="row" style="margin-top:10px"><button class="btn sm" id="denoise" type="button">Start</button><span class="muted" id="stepTxt" style="font-size:15px">Step 0 of 30</span></div>
+    </div>
+    <div>
+      <ol class="how-list">
+        <li><b>It studied millions of pictures with captions</b>, like "a red apple on a table".</li>
+        <li><b>It starts every new picture as random dots</b>, like TV snow.</li>
+        <li><b>Step by step, it cleans the dots</b> into something that matches your words.</li>
+        <li><b>Where your words are vague, it guesses</b> from what it saw most often. That is why it drew an American football and a boy.</li>
+      </ol>
+    </div>
+  </div>
+  <p class="lead" style="margin-top:16px">So your prompt must leave less to guess. A strong picture prompt has 5 ingredients:</p>
+  <div class="grid g5">
+    <div class="card part"><b>Subject</b><span>What is in it: "a round black and white soccer ball"</span></div>
+    <div class="card part"><b>Setting</b><span>Where: "a TV studio with a big screen"</span></div>
+    <div class="card part"><b>Style</b><span>Cartoon, 3D, watercolour, pixel art</span></div>
+    <div class="card part"><b>Light</b><span>Bright, sunset, neon, night</span></div>
+    <div class="card part"><b>Camera</b><span>Close-up, wide shot, from above</span></div>
+  </div>
+</section>
+
+<section class="seg" id="seg-3" data-min="28" data-title="Mission: your 3 pictures" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: 3 pictures for your corner</h2><p>28 minutes · Adobe Express, then Gemini</p></div></div>
+  <div class="mission">
+    <div><ol class="checklist" id="list1"></ol></div>
+    <aside class="card side">
+      <label class="tag" for="segSel">Your segment</label>
+      <select id="segSel"></select>
+      <div class="tabs" role="tablist" id="picTabs"></div>
+      <label class="tag" for="fSubject">Subject</label><input id="fSubject">
+      <label class="tag" for="fSetting">Setting</label><input id="fSetting">
+      <label class="tag" for="fStyle">Style</label><input id="fStyle">
+      <label class="tag" for="fLight">Light</label><input id="fLight">
+      <label class="tag" for="fCamera">Camera</label><input id="fCamera">
+      <span class="tag">Your prompt for Adobe Express</span>
+      <pre class="prompt small" id="picOut"></pre>
+      <div class="row"><button class="btn sm" id="copyPic" type="button">Copy picture prompt</button></div>
+      <p class="muted" style="margin:0;font-size:14px">Save it as <b id="fileName">studio.png</b></p>
+    </aside>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <span class="tag">Step 7 · prompt for Gemini (adds your pictures to your corner)</span>
+    <pre class="prompt small" id="addOut"></pre>
+    <div class="row"><button class="btn sm" id="copyAdd" type="button">Copy Gemini prompt</button></div>
+  </div>
+  <div class="def warn"><span class="tag">Credits are limited</span><p>Each picture uses Adobe credits. Think before you press Enter: aim for 2 tries per picture.</p></div>
+</section>
+
+<section class="seg" id="seg-4" data-min="5" data-title="Bias check" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Bias check and share</h2><p>5 minutes · the whole class</p></div></div>
+  <p class="big">Did the AI add people you did not ask for? Count them as a class.</p>
+  <div class="grid g3" id="countBox"></div>
+  <p class="lead" id="countMsg" style="margin-top:14px"></p>
+  <div class="card" style="margin-top:14px;background:var(--gold-soft);border-color:transparent">
+    <span class="tag">Remember</span>
+    <p class="lead" style="margin:6px 0 0">The AI fills every gap in your words with what it saw most often. Be precise, check what it decided, and fix it with your prompt. Next week your corner gets a presenter.</p>
+  </div>
+</section>
+
+</main>
+
+<nav class="rail" aria-label="Lesson segments">
+  <div class="wrap">
+    <button class="btn sm alt" id="prev" type="button" aria-label="Previous segment">←</button>
+    <div class="steps" id="steps"></div>
+    <button class="btn sm" id="next" type="button">Next →</button>
+  </div>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+(function(){
+const $ = s => document.querySelector(s);
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const store = { get(k){ try { return JSON.parse(localStorage.getItem("ch5-" + k)); } catch(e){ return null; } }, set(k, v){ try { localStorage.setItem("ch5-" + k, JSON.stringify(v)); } catch(e){} } };
+const segs = [...document.querySelectorAll(".seg")];
+let cur = 0;
+
+const stepsBox = $("#steps");
+segs.forEach((s, i) => stepsBox.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))));
+const stepBtns = [...stepsBox.children];
+function go(i){
+  cur = Math.max(0, Math.min(segs.length - 1, i));
+  segs.forEach((s, k) => s.hidden = k !== cur);
+  stepBtns.forEach((b, k) => { b.classList.toggle("done", k < cur); if (k === cur) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+  $("#next").textContent = cur === segs.length - 1 ? "Done" : "Next →";
+  $("#prev").disabled = cur === 0;
+  if (location.hash !== "#" + segs[cur].id) history.replaceState(null, "", "#" + segs[cur].id);
+  resetClock(); window.scrollTo(0, 0);
+}
+$("#prev").onclick = () => go(cur - 1);
+$("#next").onclick = () => go(cur + 1);
+addEventListener("keydown", e => { if (e.target.matches("textarea,input,select")) return; if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); });
+addEventListener("hashchange", () => { const i = segs.findIndex(s => "#" + s.id === location.hash); if (i >= 0 && i !== cur) go(i); });
+
+let left = 0, tick = null;
+const fmt = s => (s < 0 ? "-" : "") + String(Math.floor(Math.abs(s)/60)).padStart(2,"0") + ":" + String(Math.abs(s)%60).padStart(2,"0");
+function resetClock(){ clearInterval(tick); tick = null; left = (+segs[cur].dataset.min) * 60; $("#clock").textContent = fmt(left); $("#clock").classList.remove("late"); $("#clockBtn").textContent = "Start"; }
+$("#clockBtn").onclick = () => {
+  if (tick){ clearInterval(tick); tick = null; $("#clockBtn").textContent = "Start"; return; }
+  $("#clockBtn").textContent = "Pause";
+  tick = setInterval(() => { left--; $("#clock").textContent = fmt(left); $("#clock").classList.toggle("late", left < 0); }, 1000);
+};
+
+let tt;
+function toast(msg){ const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 2200); }
+async function copyText(text, selectEl, where){
+  try { await navigator.clipboard.writeText(text); toast("Copied. Now paste it into " + (where || "the AI") + "."); }
+  catch(e){ if (selectEl){ const r = document.createRange(); r.selectNodeContents(selectEl); const s = getSelection(); s.removeAllRanges(); s.addRange(r); } toast("Press Ctrl+C to copy the selected text."); }
+}
+function checklist(id, items){
+  const saved = store.get(id) || [];
+  $("#" + id).replaceChildren(...items.map(([title, body], i) => {
+    const cb = el("input", {type:"checkbox", id: id + "-" + i}); cb.checked = !!saved[i];
+    const li = el("li", {class: cb.checked ? "ok" : ""}, el("label", {for: id + "-" + i}, cb, el("span", null, el("b", null, title), el("span", {class:"how"}, body))));
+    cb.addEventListener("change", () => { saved[i] = cb.checked; store.set(id, saved); li.classList.toggle("ok", cb.checked); });
+    return li; }));
+}
+
+/* 1 spot */
+$("#spotBtn").onclick = () => { $("#spot").hidden = false; };
+
+/* 2 noise to picture */
+const cv = $("#noise"), cx = cv.getContext("2d"), W = cv.width, H = cv.height;
+const target = document.createElement("canvas"); target.width = W; target.height = H;
+(function(){ const t = target.getContext("2d"); const g = t.createLinearGradient(0,0,0,H); g.addColorStop(0,"#8FD3FF"); g.addColorStop(1,"#E9F7FF"); t.fillStyle = g; t.fillRect(0,0,W,H);
+  t.fillStyle = "#FFC93C"; t.beginPath(); t.arc(270,70,38,0,7); t.fill(); t.fillStyle = "#3E9B5C"; t.beginPath(); t.ellipse(120,250,220,90,0,0,7); t.fill(); t.fillStyle = "#2F7A47"; t.beginPath(); t.ellipse(330,260,160,70,0,0,7); t.fill();
+  t.fillStyle = "#C8352B"; t.fillRect(70,150,46,36); t.fillStyle = "#7A3B1E"; t.beginPath(); t.moveTo(64,152); t.lineTo(93,128); t.lineTo(122,152); t.fill(); })();
+const tgt = target.getContext("2d").getImageData(0,0,W,H).data;
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const noise = new Uint8ClampedArray(W*H*4); for (let i=0;i<noise.length;i+=4){ noise[i]=rnd()*255; noise[i+1]=rnd()*255; noise[i+2]=rnd()*255; noise[i+3]=255; }
+function frame(k){ const img = cx.createImageData(W,H), a = k/30; for (let i=0;i<noise.length;i++) img.data[i] = i%4===3 ? 255 : noise[i]*(1-a) + tgt[i]*a; cx.putImageData(img,0,0); $("#stepTxt").textContent = "Step " + k + " of 30"; }
+frame(0);
+let running = false;
+$("#denoise").onclick = () => { if (running) return; running = true; let k = 0; const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; const go2 = () => { k++; frame(k); if (k < 30) setTimeout(go2, reduce ? 0 : 120); else { running = false; $("#denoise").textContent = "Again"; } }; go2(); };
+
+/* 3 picture builder */
+const SEG = {
+  "Sports Desk": ["a round black and white soccer ball on a big screen", "trophy and stadium"],
+  "Weather Robot": ["a friendly round robot weather presenter with a cloud on its head", "sun and cloud"],
+  "Tech and AI Corner": ["glowing gadgets and a small friendly robot on a desk", "lightbulb and circuit"],
+  "School News": ["a school building on a big screen with balloons", "newspaper and school bag"],
+  "Canteen Review": ["colourful plates of food with star ratings floating above them", "chef hat and fork"],
+  "Style and Trends": ["a runway with colourful outfits on mannequins", "hanger and sparkle"],
+  "Games and Apps Review": ["a giant game controller and floating app icons", "game controller"],
+  "Interview with a Legend": ["two armchairs facing each other under spotlights, no people", "microphone and star"],
+  "Fake or Real?": ["a giant magnifying glass over two photos, one real and one fake", "magnifying glass and question mark"],
+  "Funny Ads": ["a silly invented product on a shiny stage with confetti", "megaphone and price tag"]
+};
+const KINDS = {
+  studio: {label:"Studio", file:"studio.png", make:(s,f) => `a TV studio for a school ${s} show, ${f.subject}, no people`},
+  logo: {label:"Logo", file:"logo.png", make:(s,f) => `a simple flat logo icon for a kids' TV segment called ${s}, ${f.subject}, bold shapes, white background, no text, no letters`},
+  title: {label:"Title card", file:"title.png", make:(s,f) => `a wide colourful title card background for the ${s} segment, ${f.subject}, empty space in the middle for a title, no text, no letters`}
+};
+const sel = $("#segSel"); Object.keys(SEG).forEach(n => sel.append(el("option", {value:n}, n)));
+function prevSeg(){ for (const k of ["ch5-seg","ch4-seg","ch3-seg","ch2-seg"]) { try { const v = JSON.parse(localStorage.getItem(k)); if (v && SEG[v]) return v; } catch(e){} } return "Sports Desk"; }
+sel.value = prevSeg();
+let kind = "studio";
+const fields = ["Subject","Setting","Style","Light","Camera"];
+function defaults(){ const s = SEG[sel.value];
+  return {studio:{Subject:s[0], Setting:"a bright TV studio with a news desk and a big screen", Style:"cartoon", Light:"bright and colourful", Camera:"wide shot"},
+          logo:{Subject:s[1], Setting:"plain white background", Style:"flat vector icon", Light:"bright", Camera:"centred"},
+          title:{Subject:s[1], Setting:"a colourful TV graphic", Style:"cartoon", Light:"bright", Camera:"wide banner"}}[kind]; }
+function load(){ const saved = store.get("pic-" + sel.value + "-" + kind); const d = saved || defaults(); fields.forEach(f => $("#f" + f).value = d[f]); draw(); }
+function draw(){
+  const f = {}; fields.forEach(x => f[x.toLowerCase()] = $("#f" + x).value.trim());
+  const base = KINDS[kind].make(sel.value, f);
+  $("#picOut").textContent = `Generate an image: ${base}. Setting: ${f.setting}. Style: ${f.style}. Light: ${f.light}. Camera: ${f.camera}. For kids.`;
+  $("#fileName").textContent = KINDS[kind].file;
+  const o = {}; fields.forEach(x => o[x] = $("#f" + x).value); store.set("pic-" + sel.value + "-" + kind, o);
+}
+function tabs(){ $("#picTabs").replaceChildren(...Object.keys(KINDS).map(k => el("button", {type:"button", role:"tab", "aria-selected": String(k === kind), class:"tab", onclick:() => { kind = k; tabs(); load(); }}, KINDS[k].label))); }
+fields.forEach(f => $("#f" + f).addEventListener("input", draw));
+sel.addEventListener("change", () => { store.set("seg", sel.value); load(); });
+tabs(); load();
+$("#copyPic").onclick = () => copyText($("#picOut").textContent, $("#picOut"), "Adobe Express");
+$("#addOut").textContent = `I made 3 pictures for my page. They will be in the same folder as the page:
+- studio.png: use it as the background of the top of the page
+- logo.png: put it next to the title, small and round
+- title.png: use it as a wide banner under the title
+Keep everything else on my page the same.`;
+$("#copyAdd").onclick = () => copyText($("#addOut").textContent, $("#addOut"), "Gemini");
+checklist("list1", [
+  ["Open Adobe Express", "Go to new.express.adobe.com and sign in with your school account."],
+  ["Picture 1: the studio", "On the right, choose Studio. Change the ingredients if you want, press Copy picture prompt, paste it in the big box at the top of Adobe Express and press Enter."],
+  ["Be a detective", "Look at the 4 pictures. Did the AI add things you did not ask for? Wrong ball, only boys, strange hands, messy letters?"],
+  ["Fix it with words", "Change one ingredient to fix what is wrong, and try again. Two tries per picture."],
+  ["Download the best one", "Click your favourite picture, choose Download, and save it in a folder called Evergreen TV as studio.png."],
+  ["Pictures 2 and 3", "Do the same with Logo (save as logo.png) and Title card (save as title.png)."],
+  ["Add them to your corner", "Open your page in Gemini (last week's chat). Copy the Gemini prompt below the list and paste it. Download the new page into the same Evergreen TV folder."],
+  ["Check it", "Open the page from the folder. Do your 3 pictures show? If not, check the file names match exactly."]
+]);
+
+/* 4 class count */
+const C = store.get("count") || {boys:0, girls:0, none:0};
+function drawCount(){ const total = C.boys + C.girls;
+  $("#countBox").replaceChildren(...[["boys","Pictures with a boy or man"],["girls","Pictures with a girl or woman"],["none","Pictures with no people"]].map(([k, l]) =>
+    el("div", {class:"card stat"}, el("span", {class:"tag"}, l), el("b", null, String(C[k])), el("div", {class:"row"}, el("button", {class:"btn sm", type:"button", onclick:() => { C[k]++; store.set("count", C); drawCount(); }}, "+1"), el("button", {class:"btn sm alt", type:"button", onclick:() => { C[k] = Math.max(0, C[k]-1); store.set("count", C); drawCount(); }}, "−1")))));
+  $("#countMsg").textContent = total < 3 ? "Ask each student: did your AI add a person? Press +1 for each picture." : C.boys > C.girls * 2 ? "The AI drew far more boys than girls. Nobody asked for that: it came from the pictures it learned from. That is bias." : C.girls > C.boys * 2 ? "The AI drew far more girls than boys. Nobody asked for that: it came from its examples. That is bias too." : "Fairly balanced this time. Did students who asked for \"no people\" get no people?"; }
+drawCount();
+
+const start = segs.findIndex(s => "#" + s.id === location.hash);
+go(start >= 0 ? start : 0);
+})();
+</script>
+
+<script src="config.js"></script>
+<script src="sync.js"></script>
+</body></html>

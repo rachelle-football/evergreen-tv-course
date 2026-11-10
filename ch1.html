@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head><body>
+<title>Meet AI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: a broadcast "rundown" — one segment on air at a time, channel bug + clock on top, rundown rail below */
+:root{
+  --paper:#F4F6F2; --panel:#FFFFFF; --ink:#13221C; --muted:#56665E; --line:#D7DFD9;
+  --green:#1E7A55; --green-soft:#E3F1E9; --onair:#D9412A; --onair-soft:#FBE7E3; --gold:#B7791F; --gold-soft:#FBF0DC;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0E1512; --panel:#16201B; --ink:#E8F0EB; --muted:#9BB0A5; --line:#2A3832;
+  --green:#4BC38B; --green-soft:#16362A; --onair:#FF6B50; --onair-soft:#3A1D17; --gold:#E9B04F; --gold-soft:#3A2C14; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0E1512; --panel:#16201B; --ink:#E8F0EB; --muted:#9BB0A5; --line:#2A3832;
+  --green:#4BC38B; --green-soft:#16362A; --onair:#FF6B50; --onair-soft:#3A1D17; --gold:#E9B04F; --gold-soft:#3A2C14; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--panel)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);line-height:1.08;margin:0;text-wrap:balance}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--panel);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:14px;padding-block:10px;flex-wrap:wrap}
+.bug{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;letter-spacing:.02em}
+.bug .live{white-space:nowrap;display:inline-flex;align-items:center;gap:6px;background:var(--onair);color:#fff;font:700 12px/1 var(--mono);letter-spacing:.12em;padding:6px 8px;border-radius:4px}
+.bug .live i{width:7px;height:7px;border-radius:50%;background:#fff;animation:blink 1.6s steps(2) infinite}
+@keyframes blink{50%{opacity:.25}}
+.bug small{font-family:var(--body);font-weight:400;color:var(--muted);letter-spacing:0}
+.clock{margin-left:auto;display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:15px}
+.clock b{font-size:20px;font-variant-numeric:tabular-nums;min-width:4.2ch;text-align:right}
+.clock b.late{color:var(--onair)}
+.ghost{background:transparent;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:14px}
+.ghost:hover{border-color:var(--ink)}
+
+/* stage */
+main{padding-block:26px 120px}
+.seg[hidden]{display:none!important}
+.lower{display:flex;align-items:stretch;gap:0;margin-bottom:22px;max-width:100%}
+.lower .no{background:var(--green);color:#fff;font:700 15px/1 var(--mono);padding:12px 14px;display:flex;align-items:center;border-radius:10px 0 0 10px}
+.lower .name{background:var(--panel);border:1px solid var(--line);border-left:0;border-radius:0 10px 10px 0;padding:8px 16px;min-width:0}
+.lower .name h2{font-size:clamp(26px,3.6vw,40px);font-weight:800}
+.lower .name p{margin:2px 0 0;color:var(--muted);font-size:15px}
+.big{font-family:var(--display);font-weight:700;font-size:clamp(24px,3vw,34px);line-height:1.2;max-width:30ch;margin:0 0 18px;text-wrap:balance}
+.lead{font-size:20px;max-width:62ch;margin:0 0 20px}
+.muted{color:var(--muted)}
+.note{font-size:14px;color:var(--muted);margin-top:14px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.tag{display:inline-block;font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.btn{background:var(--ink);color:var(--paper);border:0;border-radius:10px;padding:12px 18px;font-weight:700}
+.btn:hover{opacity:.9}
+.btn.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:8px 12px;font-size:15px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+a{color:var(--green);font-weight:700}
+
+/* 1 real or ai */
+.quote{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.3;margin:10px 0 16px}
+.verdict{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:16px}
+.verdict.h{background:var(--green-soft)} .verdict.a{background:var(--onair-soft)}
+.score{font-family:var(--mono);font-weight:700}
+
+/* 2 day */
+.day{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr))}
+.moment{position:relative;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;min-height:150px;display:flex;flex-direction:column;gap:6px}
+.moment:hover{border-color:var(--ink)}
+.moment time{font:700 14px/1 var(--mono);color:var(--muted)}
+.moment strong{font-family:var(--display);font-size:22px}
+.moment .reveal{font-size:16px}
+.moment[aria-expanded="true"]{border-color:var(--green);background:var(--green-soft)}
+.moment .hint{margin-top:auto;font-size:13px;color:var(--muted)}
+.found{font-family:var(--mono);font-weight:700}
+
+/* 3 rules */
+.rules{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 16px}
+.rule{background:var(--panel);border:2px solid var(--line);border-radius:999px;padding:10px 16px;font-weight:700}
+.rule[aria-pressed="true"]{border-color:var(--onair);background:var(--onair-soft);text-decoration:line-through}
+.broke{min-height:64px}
+.def{border:2px solid var(--green);background:var(--green-soft);border-radius:16px;padding:20px 22px;margin-top:18px}
+.def p{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(22px,2.8vw,30px);line-height:1.25}
+
+/* 4 loop + next word */
+.loop svg{width:100%;height:auto;max-width:620px;display:block}
+.bars{display:grid;gap:8px;margin-top:10px}
+.bar{display:grid;grid-template-columns:110px 1fr 46px;gap:10px;align-items:center;font-size:16px}
+.bar span:last-child{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.track{height:16px;border-radius:8px;background:var(--line);overflow:hidden}
+.track i{display:block;height:100%;width:0;background:var(--green);border-radius:8px;transition:width .8s ease}
+.sentence{font-family:var(--display);font-size:24px;font-weight:700;margin:6px 0}
+.sentence u{text-decoration:none;border-bottom:3px dashed var(--green);padding:0 18px}
+
+/* 5 alphazero */
+.board{display:grid;grid-template-columns:repeat(8,1fr);width:min(100%,280px);aspect-ratio:1;border:2px solid var(--ink);border-radius:6px;overflow:hidden}
+.board i:nth-child(16n+1),.board i:nth-child(16n+3),.board i:nth-child(16n+5),.board i:nth-child(16n+7),
+.board i:nth-child(16n+10),.board i:nth-child(16n+12),.board i:nth-child(16n+14),.board i:nth-child(16n+16){background:var(--green-soft)}
+.board i{background:var(--panel)}
+.stat b{display:block;font-family:var(--display);font-size:clamp(30px,4vw,46px);line-height:1;font-variant-numeric:tabular-nums}
+.meter{height:12px;background:var(--line);border-radius:6px;overflow:hidden;margin:10px 0}
+.meter i{display:block;height:100%;width:0;background:var(--gold)}
+
+/* 6 timeline */
+.line{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative;margin:10px 0 24px}
+.line::before{content:"";position:absolute;left:8%;right:8%;top:22px;height:3px;background:var(--line)}
+.stop{position:relative;text-align:center;padding:0 8px}
+.stop .dot{width:20px;height:20px;border-radius:50%;background:var(--panel);border:3px solid var(--green);margin:13px auto 10px}
+.stop.now .dot{background:var(--green)}
+.stop b{display:block;font:700 22px/1 var(--mono)}
+.stop span{font-size:15px;color:var(--muted)}
+.job h3{font-size:22px;margin:4px 0 6px}
+.job p{margin:0;font-size:16px}
+
+/* 7 quiz */
+.q{margin-bottom:14px}
+.q h3{font-size:21px;margin-bottom:10px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:9px 14px;text-align:left}
+.opt.right{border-color:var(--green);background:var(--green-soft)}
+.opt.wrong{border-color:var(--onair);background:var(--onair-soft)}
+.why{font-size:15px;color:var(--muted);margin-top:8px}
+textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;background:var(--panel);color:var(--ink);resize:vertical}
+
+/* rundown rail */
+.rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
+.steps{display:flex;gap:6px;flex:1;min-width:0;overflow-x:auto}
+.step{flex:1;min-width:44px;background:transparent;border:0;padding:6px 4px;text-align:left;border-top:4px solid var(--line);border-radius:0;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.step b{font-family:var(--mono);margin-right:4px}
+.step.done{border-top-color:var(--green)}
+.step[aria-current="step"]{border-top-color:var(--onair);color:var(--ink);font-weight:700}
+@media (max-width:700px){.bug small{display:none}.step .t{display:none}.clock .lbl{display:none}body{font-size:17px}.lead{font-size:18px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="bug"><span class="live"><i></i>ON AIR</span><span>Evergreen TV <small>· AI class · Chapter 1: Meet AI</small></span></div>
+    <div class="clock" aria-live="off">
+      <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
+      <button class="ghost" id="clockBtn" type="button">Start</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="stage">
+
+<!-- 1 -->
+<section class="seg" id="seg-1" data-min="5" data-title="Real or AI?">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>Real or AI?</h2><p>5 minutes · warm-up</p></div></div>
+  <p class="big">Some of these lines were written by famous people long ago. Some were written by an AI this week. Can you tell which?</p>
+  <div class="grid g2" id="quotes"></div>
+  <p class="lead" style="margin-top:22px"><span class="score" id="qscore">0 of 4</span> right so far. Now try faces: <a href="https://www.whichfaceisreal.com/" target="_blank" rel="noopener">Which Face Is Real?</a> (a game made by University of Washington researchers; one face is a real photo, the other was made by AI).</p>
+</section>
+
+<!-- 2 -->
+<section class="seg" id="seg-2" data-min="7" data-title="Where AI hides" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>Where AI hides</h2><p>7 minutes · one normal day</p></div></div>
+  <p class="big">You already used AI today, maybe ten times. Tap each moment to find the AI inside it.</p>
+  <div class="day" id="day"></div>
+  <p class="lead" style="margin-top:20px">Found: <span class="found" id="foundN">0 of 8</span></p>
+</section>
+
+<!-- 3 -->
+<section class="seg" id="seg-3" data-min="8" data-title="What is AI?" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>What is AI?</h2><p>8 minutes · rules vs. examples</p></div></div>
+  <p class="big">Challenge: write a rule a computer could follow to know if an animal is a cat.</p>
+  <p class="lead">Pick a rule. Let's see if it works.</p>
+  <div class="rules" id="rules"></div>
+  <div class="card broke" id="broke" aria-live="polite"><p class="muted" style="margin:0">Choose a rule above.</p></div>
+  <div class="def" id="def" hidden>
+    <span class="tag">So what is AI?</span>
+    <p>AI is a computer that learns from examples, instead of following rules that a person wrote.</p>
+    <div class="note" style="color:var(--ink);font-size:17px">Show it thousands of photos labelled "cat" and "not a cat", and it finds the patterns by itself. Nobody writes the rule.</div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="seg" id="seg-4" data-min="8" data-title="How it learns" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>How it learns from us</h2><p>8 minutes · the learning loop</p></div></div>
+  <div class="grid g2">
+    <div class="card loop">
+      <span class="tag">The learning loop</span>
+      <svg viewBox="0 0 620 300" role="img" aria-label="Examples lead to a guess, the guess is checked, the AI adjusts and guesses better">
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--muted)"/></marker></defs>
+        <g fill="none" stroke="var(--muted)" stroke-width="2">
+          <path d="M228 70H392" marker-end="url(#ah)"/><path d="M490 104V196" marker-end="url(#ah)"/>
+          <path d="M392 230H228" marker-end="url(#ah)"/><path d="M130 196V104" marker-end="url(#ah)"/>
+        </g>
+        <g id="loopNodes" font-family="Atkinson Hyperlegible, sans-serif">
+          <g data-i="0"><rect x="32" y="36" width="196" height="68" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/><text x="130" y="66" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">1. Examples</text><text x="130" y="88" text-anchor="middle" font-size="14" fill="var(--muted)">photos, words, clicks</text></g>
+          <g data-i="1"><rect x="392" y="36" width="196" height="68" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/><text x="490" y="66" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">2. A guess</text><text x="490" y="88" text-anchor="middle" font-size="14" fill="var(--muted)">"I think it's a cat"</text></g>
+          <g data-i="2"><rect x="392" y="196" width="196" height="68" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/><text x="490" y="226" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">3. Feedback</text><text x="490" y="248" text-anchor="middle" font-size="14" fill="var(--muted)">"No, it's a dog"</text></g>
+          <g data-i="3"><rect x="32" y="196" width="196" height="68" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/><text x="130" y="226" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">4. Adjust</text><text x="130" y="248" text-anchor="middle" font-size="14" fill="var(--muted)">and guess better</text></g>
+        </g>
+        <text x="310" y="156" text-anchor="middle" font-size="15" fill="var(--muted)" font-family="Atkinson Hyperlegible, sans-serif">repeat millions of times</text>
+      </svg>
+      <p class="muted" style="margin:8px 0 0;font-size:16px">Where do the examples come from? From us: our photos, our messages, what we click, watch and skip.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Be the AI: guess the next word</span>
+      <p class="sentence" id="sent"></p>
+      <div class="row"><button class="btn sm" id="revealWord" type="button">Show the AI's guesses</button><button class="btn sm alt" id="nextSent" type="button">Next sentence</button></div>
+      <div class="bars" id="bars" aria-live="polite"></div>
+      <p class="note">Example numbers, to show the idea. ChatGPT works this way: it picks a likely next word, again and again.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <span class="tag">Try a real AI</span>
+    <p class="lead" style="margin:6px 0 0">Play 2 rounds of <a href="https://quickdraw.withgoogle.com/" target="_blank" rel="noopener">Quick, Draw!</a> by Google. You draw, the AI guesses. It can guess because millions of people played before you and gave it examples.</p>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="seg" id="seg-5" data-min="5" data-title="Can it teach itself?" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Can AI teach itself?</h2><p>5 minutes · a true story from 2017</p></div></div>
+  <div class="grid g2" style="align-items:start">
+    <div>
+      <p class="big">An AI called AlphaZero was given only the rules of chess. No tips, no famous games. Then it played against itself.</p>
+      <div class="row"><button class="btn" id="train" type="button">Watch it practise</button></div>
+      <div class="meter" aria-hidden="true"><i id="meter"></i></div>
+      <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+        <div class="card stat"><span class="tag">Practice time</span><b id="hrs">0 h</b></div>
+        <div class="card stat"><span class="tag">Its teacher</span><b style="font-size:26px">itself</b></div>
+      </div>
+      <div class="card" id="result" style="margin-top:14px" hidden>
+        <span class="tag">After about 9 hours</span>
+        <p class="lead" style="margin:6px 0 0">It played the best chess program in the world, 100 games: <b>28 wins, 0 losses, 72 draws.</b></p>
+      </div>
+    </div>
+    <div>
+      <div class="board" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <div class="card" style="margin-top:14px;background:var(--gold-soft);border-color:transparent">
+        <span class="tag">But who is the boss?</span>
+        <p style="margin:6px 0 0">People chose the goal (win at chess), built the AI and decided what it is used for. AI can get better at a task by itself. People decide which task.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="seg" id="seg-6" data-min="5" data-title="Why learn it now?" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>Why learn it now?</h2><p>5 minutes · your timeline</p></div></div>
+  <div class="line">
+    <div class="stop now"><div class="dot"></div><b>2026</b><span>You, in EB7, learning AI</span></div>
+    <div class="stop"><div class="dot"></div><b>2030</b><span>You finish school</span></div>
+    <div class="stop"><div class="dot"></div><b>2035</b><span>Your first job</span></div>
+  </div>
+  <p class="big">By then, AI will be inside almost every job. Here is what it already does today:</p>
+  <div class="grid g3">
+    <div class="card job"><span class="tag">Doctor</span><h3>Reads scans</h3><p>Points to signs of illness in X-rays so the doctor looks twice.</p></div>
+    <div class="card job"><span class="tag">Football coach</span><h3>Tracks every run</h3><p>Measures where each player ran in a match and how fast.</p></div>
+    <div class="card job"><span class="tag">Designer</span><h3>Sketches ideas</h3><p>Draws 20 ideas in a minute. The designer picks one and makes it great.</p></div>
+    <div class="card job"><span class="tag">Engineer</span><h3>Checks designs</h3><p>Tests a bridge or a phone on the computer before it is built.</p></div>
+    <div class="card job"><span class="tag">Chef</span><h3>Invents recipes</h3><p>Suggests dishes from what is left in the fridge.</p></div>
+    <div class="card job"><span class="tag">Teacher</span><h3>Makes practice</h3><p>Turns a lesson into a quiz in seconds. The teacher checks it.</p></div>
+  </div>
+  <div class="def" style="border-color:var(--onair);background:var(--onair-soft)"><p>The people who know how to use AI will lead. You can start today.</p></div>
+</section>
+
+<!-- 7 -->
+<section class="seg" id="seg-7" data-min="7" data-title="Quiz and your idea" hidden>
+  <div class="lower"><div class="no">07</div><div class="name"><h2>Quick quiz</h2><p>7 minutes · then your idea</p></div></div>
+  <div id="quiz"></div>
+  <p class="lead"><span class="score" id="quizScore">0 of 5</span></p>
+  <div class="card">
+    <span class="tag">Your turn</span>
+    <h3 style="font-size:24px;margin:6px 0 10px">If you could build anything with AI, what would it be?</h3>
+    <label for="idea" class="muted" style="font-size:15px">Write one sentence. (First name only if you share it.)</label>
+    <textarea id="idea" placeholder="I would build an AI that…"></textarea>
+    <p class="note">Next week: Inside AI. You will train a real AI with your own examples.</p>
+  </div>
+</section>
+
+</main>
+
+<nav class="rail" aria-label="Lesson segments">
+  <div class="wrap">
+    <button class="btn sm alt" id="prev" type="button" aria-label="Previous segment">←</button>
+    <div class="steps" id="steps"></div>
+    <button class="btn sm" id="next" type="button">Next →</button>
+  </div>
+</nav>
+
+<script>
+(function(){
+const $ = s => document.querySelector(s);
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const segs = [...document.querySelectorAll(".seg")];
+let cur = 0;
+
+/* ---------- navigation ---------- */
+const stepsBox = $("#steps");
+segs.forEach((s, i) => stepsBox.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))));
+function go(i){
+  cur = Math.max(0, Math.min(segs.length - 1, i));
+  segs.forEach((s, k) => s.hidden = k !== cur);
+  [...stepsBox.children].forEach((b, k) => { b.classList.toggle("done", k < cur); if (k === cur) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+  $("#next").textContent = cur === segs.length - 1 ? "Done" : "Next →";
+  $("#prev").disabled = cur === 0;
+  if (location.hash !== "#" + segs[cur].id) history.replaceState(null, "", "#" + segs[cur].id);
+  resetClock(); window.scrollTo(0, 0);
+}
+$("#prev").onclick = () => go(cur - 1);
+$("#next").onclick = () => go(cur + 1);
+addEventListener("keydown", e => { if (e.target.matches("textarea,input")) return; if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); });
+addEventListener("hashchange", () => { const i = segs.findIndex(s => "#" + s.id === location.hash); if (i >= 0 && i !== cur) go(i); });
+
+/* ---------- segment clock ---------- */
+let left = 0, tick = null;
+const fmt = s => (s < 0 ? "-" : "") + String(Math.floor(Math.abs(s)/60)).padStart(2,"0") + ":" + String(Math.abs(s)%60).padStart(2,"0");
+function resetClock(){ clearInterval(tick); tick = null; left = (+segs[cur].dataset.min) * 60; $("#clock").textContent = fmt(left); $("#clock").classList.remove("late"); $("#clockBtn").textContent = "Start"; }
+$("#clockBtn").onclick = () => {
+  if (tick){ clearInterval(tick); tick = null; $("#clockBtn").textContent = "Start"; return; }
+  $("#clockBtn").textContent = "Pause";
+  tick = setInterval(() => { left--; $("#clock").textContent = fmt(left); $("#clock").classList.toggle("late", left < 0); }, 1000);
+};
+
+/* ---------- 1 real or AI ---------- */
+const QUOTES = [
+  {t:"“Hope is the thing with feathers / That perches in the soul.”", ai:false, src:"Human: Emily Dickinson, an American poet, around 1861."},
+  {t:"“The lunch bell rings like a tiny alarm clock for my stomach, and suddenly every maths problem looks like a sandwich.”", ai:true, src:"AI: written by an AI (Claude) for this lesson."},
+  {t:"“All the world's a stage, and all the men and women merely players.”", ai:false, src:"Human: William Shakespeare, in a play from 1599."},
+  {t:"“Football is chess that learned how to run, with eleven kings and one very nervous goalkeeper.”", ai:true, src:"AI: written by an AI (Claude) for this lesson."}
+];
+let qRight = 0;
+const qBox = $("#quotes");
+QUOTES.forEach(q => {
+  const v = el("div");
+  const pick = guessAI => { if (v.childElementCount) return; const ok = guessAI === q.ai; if (ok) qRight++; $("#qscore").textContent = qRight + " of 4";
+    v.append(el("div", {class:"verdict " + (q.ai ? "a" : "h")}, el("b", null, ok ? "Right! " : "Not this time. "), q.src)); };
+  qBox.append(el("div", {class:"card"}, el("span", {class:"tag"}, "Who wrote it?"), el("p", {class:"quote"}, q.t),
+    el("div", {class:"row"}, el("button", {class:"btn sm alt", type:"button", onclick:() => pick(false)}, "A person"), el("button", {class:"btn sm alt", type:"button", onclick:() => pick(true)}, "An AI")), v));
+});
+
+/* ---------- 2 where AI hides ---------- */
+const DAY = [
+  ["07:00","Unlock your phone","Face unlock: the AI recognises your face from the camera.","thousands of example faces"],
+  ["07:20","Text a friend","Autocorrect and word suggestions: the AI predicts your next word.","huge amounts of written text"],
+  ["12:30","Use a photo filter","The AI finds your eyes, nose and mouth and follows them as you move.","millions of face photos"],
+  ["15:00","Watch one more video","The next video is chosen by AI to keep you watching.","what millions of people watched and skipped"],
+  ["16:00","Drive to training","Maps predicts the traffic and how long the trip takes.","phones moving on the roads"],
+  ["18:00","Do French homework","A translation app turns French into English.","the same texts written in two languages"],
+  ["19:30","Parents check email","The spam filter hides junk email.","emails people marked as spam"],
+  ["20:00","“Hey Google, set an alarm”","The AI turns your voice into words, then into an action.","many hours of recorded speech"]
+];
+let found = 0;
+DAY.forEach(([time, what, ai, from]) => {
+  const b = el("button", {class:"moment", type:"button", "aria-expanded":"false"}, el("time", null, time), el("strong", null, what), el("span", {class:"hint"}, "Tap to find the AI"));
+  b.onclick = () => { if (b.getAttribute("aria-expanded") === "true") return; b.setAttribute("aria-expanded", "true"); b.querySelector(".hint").remove();
+    b.append(el("span", {class:"reveal"}, ai), el("span", {class:"hint"}, "It learned from: " + from)); found++; $("#foundN").textContent = found + " of 8"; };
+  $("#day").append(b);
+});
+
+/* ---------- 3 rules ---------- */
+const RULES = [
+  ["It has whiskers","Dogs, rabbits and seals have whiskers too. Your rule says a seal is a cat."],
+  ["It has four legs","So do dogs, horses and tables. And a cat with three legs is still a cat."],
+  ["It says “meow”","A sleeping cat says nothing. A cat in a photo can't make any sound."],
+  ["It has pointy ears","Many dogs have pointy ears. Some cats have folded ears."],
+  ["It is small","A lion is a cat, and it is not small. A tiny dog is small."]
+];
+let broken = 0;
+RULES.forEach(([r, why]) => { const b = el("button", {class:"rule", type:"button", "aria-pressed":"false"}, r);
+  b.onclick = () => { $("#broke").replaceChildren(el("span", {class:"tag", style:"color:var(--onair)"}, "Rule broken"), el("p", {class:"lead", style:"margin:6px 0 0"}, why));
+    if (b.getAttribute("aria-pressed") === "false"){ b.setAttribute("aria-pressed", "true"); broken++; }
+    if (broken >= 3) $("#def").hidden = false; };
+  $("#rules").append(b); });
+
+/* ---------- 4 loop + next word ---------- */
+const loopNodes = [...document.querySelectorAll("#loopNodes g")]; let li = 0;
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function lightLoop(){ loopNodes.forEach((g, k) => { const r = g.querySelector("rect"); r.setAttribute("stroke", k === li ? "var(--green)" : "var(--line)"); r.setAttribute("stroke-width", k === li ? "3" : "2"); }); li = (li + 1) % 4; }
+lightLoop(); if (!reduce) setInterval(lightLoop, 1400);
+const SENT = [
+  {s:["I'm so hungry, let's eat some"," ."], w:[["pizza",34],["food",22],["lunch",15],["cake",9],["shawarma",8]]},
+  {s:["The goalkeeper jumped and saved the"," !"], w:[["ball",31],["penalty",29],["shot",24],["day",8],["game",5]]},
+  {s:["After school I always do my"," ."], w:[["homework",71],["best",8],["chores",6],["work",5],["training",4]]}
+];
+let si = 0;
+function showSent(){ const x = SENT[si]; $("#sent").replaceChildren(x.s[0] + " ", el("u", null, "?"), x.s[1]); $("#bars").replaceChildren(); }
+$("#revealWord").onclick = () => { const x = SENT[si]; $("#bars").replaceChildren(...x.w.map(([w, p]) => { const i = el("i"); setTimeout(() => i.style.width = p + "%", 30); return el("div", {class:"bar"}, el("span", null, w), el("div", {class:"track"}, i), el("span", null, p + "%")); })); $("#sent u").textContent = x.w[0][0]; };
+$("#nextSent").onclick = () => { si = (si + 1) % SENT.length; showSent(); };
+showSent();
+
+/* ---------- 5 alphazero ---------- */
+let trained = false;
+$("#train").onclick = () => { if (trained) return; trained = true; let h = 0; const step = () => { h += .25; $("#hrs").textContent = (h % 1 ? h.toFixed(1) : h) + " h"; $("#meter").style.width = (h/9*100) + "%"; if (h < 9) setTimeout(step, reduce ? 0 : 70); else $("#result").hidden = false; }; step(); };
+
+/* ---------- 7 quiz ---------- */
+const QUIZ = [
+  ["What makes AI different from a normal program?", ["It learns from examples","It is faster","It uses more electricity"], 0, "A normal program follows rules a person wrote. AI learns patterns from examples."],
+  ["Where do many AIs get their examples?", ["From robots","From people: our photos, words and clicks","From the moon"], 1, "Our photos, messages and clicks become the examples AI learns from."],
+  ["ChatGPT writes by…", ["copying one website","picking a likely next word again and again","asking a person every time"], 1, "It predicts the next word, then the next, then the next."],
+  ["AlphaZero got very good at chess by…", ["reading chess books","playing millions of games against itself","copying a world champion"], 1, "It started with only the rules and learned by practising against itself."],
+  ["Who decides what an AI is used for?", ["The AI","People","Nobody"], 1, "AI can get better at a task, but people choose the task."]
+];
+let qz = 0;
+QUIZ.forEach(([q, opts, ok, why]) => { const w = el("p", {class:"why"}); let done = false;
+  const bs = opts.map((o, i) => el("button", {class:"opt", type:"button", onclick:() => { if (done) return; done = true; bs[ok].classList.add("right"); if (i !== ok) bs[i].classList.add("wrong"); else { qz++; $("#quizScore").textContent = qz + " of 5"; } w.textContent = why; }}, o));
+  $("#quiz").append(el("div", {class:"card q"}, el("h3", null, q), el("div", {class:"opts"}, bs), w)); });
+try { const d = localStorage.getItem("meet-ai-idea"); if (d) $("#idea").value = d; } catch(e) {}
+$("#idea").addEventListener("input", () => { try { localStorage.setItem("meet-ai-idea", $("#idea").value); } catch(e) {} });
+
+const start = segs.findIndex(s => "#" + s.id === location.hash);
+go(start >= 0 ? start : 0);
+})();
+</script>
+
+<script src="config.js"></script>
+<script src="sync.js"></script>
+</body></html>

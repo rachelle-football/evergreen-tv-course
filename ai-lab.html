@@ -1,0 +1,2071 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<script src="config.js"></script>
+</head>
+<body>
+<title>AI Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,800&display=swap">
+<style>
+/* Layout: a sticky lab bar with XP, a mission map of cards, and one mission "bench" at a time. */
+:root{
+  --bg:#F4F5FB; --surface:#FFFFFF; --ink:#1E1B3A; --muted:#58547C; --line:#E3E1F2; --chip:#EDEEF8;
+  --coral:#FF6B4A; --coral-ink:#C2410C; --sun:#FFC93C; --deep:#1E1B3A; --deep-ink:#F6F7FB; --deep-muted:#C9C6E8;
+  --good:#15803D; --good-bg:#DCFCE7; --bad:#B42318; --bad-bg:#FEE4E2; --warn-bg:#FFF4D6;
+  --display:'Fredoka', 'Trebuchet MS', Arial, sans-serif;
+  --body:'Nunito Sans', 'Segoe UI', Arial, sans-serif;
+  --r:18px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#13112A; --surface:#1E1B3A; --ink:#F6F7FB; --muted:#B9B5DA; --line:#312C5C; --chip:#29254D;
+  --coral:#FF7A5C; --coral-ink:#FF9C82; --sun:#FFC93C; --deep:#2C2852; --deep-ink:#F6F7FB; --deep-muted:#C9C6E8;
+  --good:#4ADE80; --good-bg:#14361F; --bad:#F97066; --bad-bg:#3D1717; --warn-bg:#3A3015; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#13112A; --surface:#1E1B3A; --ink:#F6F7FB; --muted:#B9B5DA; --line:#312C5C; --chip:#29254D;
+  --coral:#FF7A5C; --coral-ink:#FF9C82; --sun:#FFC93C; --deep:#2C2852; --deep-ink:#F6F7FB; --deep-muted:#C9C6E8;
+  --good:#4ADE80; --good-bg:#14361F; --bad:#F97066; --bad-bg:#3D1717; --warn-bg:#3A3015; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.15;margin:0;text-wrap:balance}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--coral);outline-offset:2px;border-radius:8px}
+.gut{padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px))}
+.wrap{max-width:1040px;margin:0 auto}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:16px;padding-block:10px;flex-wrap:wrap}
+.logo{font-family:var(--display);font-weight:700;font-size:22px;text-decoration:none;color:var(--ink);display:flex;align-items:center;gap:8px}
+.logo b{background:var(--coral);color:#fff;border-radius:10px;padding:0 8px;font-weight:700}
+.who{margin-left:auto;display:flex;align-items:center;gap:12px;min-width:0}
+.lvl{font-family:var(--display);font-weight:600;font-size:14px;background:var(--chip);border-radius:999px;padding:4px 12px;white-space:nowrap}
+.xpbar{width:150px;height:10px;border-radius:99px;background:var(--chip);overflow:hidden}
+.xpbar i{display:block;height:100%;background:linear-gradient(90deg,var(--coral),var(--sun));border-radius:99px;transition:width .5s}
+.xpn{font-variant-numeric:tabular-nums;font-weight:800;font-size:14px;white-space:nowrap}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:12px 20px;font-weight:800;cursor:pointer;background:var(--coral);color:#fff;text-decoration:none;box-shadow:0 4px 0 var(--coral-ink);transition:transform .08s}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--coral-ink)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.alt{background:var(--surface);color:var(--ink);box-shadow:0 4px 0 var(--line);border:2px solid var(--line)}
+.btn.sun{background:var(--sun);color:#1E1B3A;box-shadow:0 4px 0 #C99512}
+.btn.sm{padding:8px 14px;border-radius:12px;font-size:14px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+
+/* home */
+main{padding-block:28px 64px}
+.hero{display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:stretch;margin-bottom:28px}
+.hero>*,.two>*,.bins>*,.charset>*{min-width:0}
+.hero-main{background:var(--deep);color:var(--deep-ink);border-radius:28px;padding:32px;display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden}
+.hero-main h1{font-size:clamp(34px,6vw,56px);font-weight:700}
+.hero-main h1 span{color:var(--sun)}
+.hero-main p{color:var(--deep-muted);max-width:46ch}
+.hero-main .net{position:absolute;right:-30px;bottom:-30px;width:220px;opacity:.25}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.side{display:flex;flex-direction:column;gap:12px}
+.name-in{display:flex;gap:8px}
+.name-in input{flex:1;min-width:0;border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--bg)}
+.lic{display:flex;flex-direction:column;gap:8px}
+.lic .bar{height:12px;border-radius:99px;background:var(--chip);overflow:hidden}
+.lic .bar i{display:block;height:100%;background:var(--good)}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:var(--coral-ink)}
+.small{font-size:14px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.mcard{display:flex;flex-direction:column;gap:10px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;transition:transform .12s, box-shadow .12s;min-width:0}
+.mcard:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(30,27,58,.10)}
+.mcard .num{font-family:var(--display);font-weight:700;font-size:40px;line-height:1;color:var(--coral)}
+.mcard h3{font-size:21px}
+.mcard p{font-size:14px;color:var(--muted)}
+.mcard .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pill{font-size:12px;font-weight:800;border-radius:999px;padding:3px 10px;background:var(--chip);white-space:nowrap}
+.pill.done{background:var(--good-bg);color:var(--good)}
+.pill.new{background:var(--warn-bg)}
+.cloud{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}.cloud.warn{color:var(--bad)}
+.login{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:stretch;margin-top:24px}
+.login .card{padding:24px}
+@media (max-width:760px){.login{grid-template-columns:1fr}}
+.logincards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:10px}
+.lcard{border:2px dashed var(--line);border-radius:14px;padding:12px;background:var(--surface);break-inside:avoid}
+.lcard p{margin:2px 0}
+.hubt td,.hubt th{padding:6px 6px;font-size:13px;white-space:nowrap;text-transform:none;letter-spacing:0}
+.hubt td.ok{background:var(--good-bg);color:var(--good);font-weight:800;text-align:center}
+.hubt td.part{background:var(--warn-bg);text-align:center}
+@media print{body *{visibility:hidden}.printme,.printme *{visibility:visible}.printme{position:absolute;left:0;top:0;width:100%}.lcard{border:1px dashed #000;color:#000;background:#fff}}
+.mystery{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:10px}
+.mcard{border:2px solid var(--line);border-radius:16px;padding:10px;background:var(--surface);display:flex;flex-direction:column;gap:6px}
+.mcard .fb{margin-top:6px}
+.mcard th,.mcard td{padding:5px 4px;font-size:12px;letter-spacing:0;text-transform:none;white-space:nowrap}
+.mcard .tbl{overflow-x:auto}
+.panel.deep .pill:not(.done){background:rgba(255,255,255,.14);color:#F6F7FB}
+.mcard.isdone{border-color:var(--good)}
+
+/* mission */
+.mhead{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.back{color:var(--muted);text-decoration:none;font-weight:800;font-size:14px}
+.mhead h1{font-size:clamp(30px,5vw,44px)}
+.goal{max-width:62ch;color:var(--muted);font-size:17px}
+.stage{display:flex;flex-direction:column;gap:18px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.panel.deep{background:var(--deep);color:var(--deep-ink);border-color:transparent}
+.panel.deep .small{color:var(--deep-muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.big{font-family:var(--display);font-weight:600;font-size:clamp(24px,4vw,34px);line-height:1.25;text-wrap:balance}
+.fb{border-radius:14px;padding:14px 16px;font-weight:600}
+.fb.ok{background:var(--good-bg);color:var(--good)}
+.fb.no{background:var(--bad-bg);color:var(--bad)}
+.fb.info{background:var(--warn-bg)}
+.fb span{color:var(--ink);font-weight:400;display:block;margin-top:4px}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--chip)}
+.dots i.ok{background:var(--good)} .dots i.no{background:var(--bad)} .dots i.now{background:var(--coral)}
+.score{font-family:var(--display);font-weight:700;font-size:64px;line-height:1;color:var(--coral)}
+textarea,.field{width:100%;border:2px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--bg);resize:vertical}
+select.field{padding:10px 12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;font-weight:700;font-size:14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+
+/* mini chatgpt */
+.counts{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.crow{background:var(--bg);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.crow b{font-family:var(--display);font-weight:600}
+.nx{display:flex;align-items:center;gap:8px;font-size:14px}
+.nx .b{height:8px;border-radius:9px;background:var(--coral)}
+.gen{font-family:var(--display);font-size:clamp(24px,4vw,34px);font-weight:600;min-height:1.3em;display:flex;flex-wrap:wrap;gap:6px 10px}
+.gen span{animation:pop .3s ease}
+.why{font-size:14px;color:var(--muted);min-height:1.5em}
+@keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+
+/* fruit lab */
+.pool{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px}
+.fruit{border:2px solid var(--line);background:var(--surface);border-radius:16px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-size:12px;font-weight:700}
+.fruit .e{font-size:34px;line-height:1.1}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.bin{border:2px dashed var(--line);border-radius:18px;padding:14px;min-height:110px;display:flex;flex-direction:column;gap:8px}
+.bin.sel{border-color:var(--coral);border-style:solid}
+.bin .items{display:flex;flex-wrap:wrap;gap:6px}
+.bin .items button{font-size:28px;border:0;background:var(--bg);border-radius:12px;padding:2px 6px;cursor:pointer}
+.results{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.res{border-radius:14px;padding:10px;display:flex;align-items:center;gap:10px;background:var(--bg)}
+.res .e{font-size:32px}
+.res.ok{background:var(--good-bg)} .res.no{background:var(--bad-bg)}
+.res small{display:block;font-size:12px;color:var(--muted)}
+.matrix{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px;max-width:520px}
+.matrix div{border-radius:12px;padding:12px;text-align:center;font-weight:800}
+.matrix .h{background:transparent;font-size:13px;color:var(--muted)}
+.matrix .v{font-family:var(--display);font-size:34px}
+.matrix .g{background:var(--good-bg);color:var(--good)} .matrix .r{background:var(--bad-bg);color:var(--bad)}
+
+/* dishes */
+.dishes{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.dish{border:2px solid var(--line);border-radius:14px;padding:10px;background:var(--surface);font-weight:700;cursor:pointer;text-align:left;transition:opacity .25s}
+.dish.out{opacity:.25;text-decoration:line-through;cursor:default}
+.qs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.q{border:2px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--surface);cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px}
+.q .split{display:flex;height:8px;border-radius:9px;overflow:hidden;background:var(--chip)}
+.q .split i{background:var(--coral)}
+.q .n{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.q[disabled]{opacity:.4;cursor:default}
+.path{display:flex;flex-wrap:wrap;gap:6px}
+.path span{background:var(--chip);border-radius:999px;padding:4px 12px;font-size:14px;font-weight:700}
+
+.treewrap{display:inline-block;min-width:100%;padding:6px}
+.tnode{display:flex;flex-direction:column;align-items:center;gap:8px}
+.tq{background:var(--deep);color:var(--deep-ink);border-radius:12px;padding:8px 14px;font-weight:800;text-align:center;max-width:220px}
+.tbr{display:flex;gap:14px;align-items:flex-start}
+.tbr>div{display:flex;flex-direction:column;align-items:center;gap:6px;border-top:3px solid var(--line);padding-top:6px}
+.tlab{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase}
+.tleaf{background:var(--good-bg);color:var(--good);border-radius:12px;padding:8px 12px;font-weight:800;white-space:nowrap}
+.tleaf.stuck{background:var(--bad-bg);color:var(--bad);white-space:normal;max-width:200px}
+.learn{background:var(--warn-bg);border-radius:18px;padding:16px 20px;margin-bottom:18px;display:flex;flex-direction:column;gap:4px}
+.learn p{font-family:var(--display);font-weight:600;font-size:clamp(18px,2.6vw,22px);line-height:1.3}
+.create{border:2px dashed var(--coral);margin-top:18px}
+.painter{width:100%;max-width:640px;height:auto;border-radius:16px;display:block;background:#E8F6FF}
+.panel.deep .painter + .small{color:var(--deep-muted)}
+.sketch img{width:100%;max-width:480px;border-radius:14px;background:#fff;display:block}
+/* neuron */
+.net svg{width:100%;height:auto;max-width:620px}
+.days td button{white-space:nowrap}
+.wctl{display:flex;gap:14px;flex-wrap:wrap}
+.wctl div{display:flex;flex-wrap:wrap;align-items:center;gap:6px;background:var(--bg);border-radius:12px;padding:6px 10px;font-weight:700}
+.wctl button{width:30px;height:30px;border-radius:9px;border:2px solid var(--line);background:var(--surface);cursor:pointer;font-weight:800}
+
+/* prompt */
+.ing{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ing div{border-radius:12px;padding:10px;background:var(--chip);font-weight:800;font-size:14px;text-align:center}
+.ing div.on{background:var(--good-bg);color:var(--good)}
+.answer{white-space:pre-wrap;background:var(--bg);border-radius:14px;padding:14px;min-height:60px}
+.log{display:flex;flex-direction:column;gap:6px}
+.log div{display:flex;gap:10px;font-size:14px;background:var(--bg);border-radius:10px;padding:8px 10px}
+.log b{white-space:nowrap}
+.preview{font-family:var(--display);font-size:clamp(20px,3vw,26px);font-weight:500;line-height:1.35}
+.meter{display:flex;gap:4px}
+.meter i{flex:1;height:10px;border-radius:9px;background:var(--chip)}
+.meter i.on{background:var(--coral)}
+.ingrow{display:flex;flex-direction:column;gap:8px}
+.ingrow label{font-weight:800}
+
+/* voice */
+.line{display:grid;grid-template-columns:110px 1fr auto auto;gap:8px;align-items:center}
+.line.now input{border-color:var(--coral)}
+.charset{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* detective */
+.sent{display:flex;flex-direction:column;gap:8px}
+.sent button{text-align:left;border:2px solid var(--line);background:var(--surface);border-radius:14px;padding:12px 14px;cursor:pointer;font-size:16px}
+.sent button[aria-pressed="true"]{border-color:var(--bad);background:var(--bad-bg)}
+.sent button.t{border-color:var(--good)}
+.sent button small{display:block;margin-top:4px;font-weight:700}
+
+/* licence */
+.cert{border:3px solid var(--ink);border-radius:28px;padding:32px;display:flex;flex-direction:column;gap:14px;background:var(--surface);position:relative}
+.cert h2{font-size:clamp(30px,5vw,46px)}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.badge{border-radius:14px;padding:12px;background:var(--chip);font-weight:800;font-size:14px;display:flex;align-items:center;gap:8px}
+.badge.on{background:var(--good-bg);color:var(--good)}
+.badge i{font-style:normal;font-family:var(--display);font-size:20px}
+
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(30px);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:14px;font-weight:800;opacity:0;transition:.3s;pointer-events:none;z-index:20;max-width:calc(100% - 32px)}
+#toast.on{opacity:1;transform:translateX(-50%)}
+
+@media (max-width:760px){
+  .hero,.two,.bins,.charset{grid-template-columns:1fr}
+  .ing{grid-template-columns:1fr 1fr}
+  .xpbar{width:90px}
+  .line{grid-template-columns:1fr;}
+}
+@media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} }
+</style>
+
+<header class="top gut">
+  <div class="wrap">
+    <a class="logo" href="#"><b>AI</b> Lab</a>
+    <div class="who">
+      <span class="lvl" id="lvl">Rookie</span>
+      <div class="xpbar" aria-hidden="true"><i id="xpfill" style="width:0"></i></div>
+      <span class="xpn" id="xpn">0 XP</span>
+    </div>
+  </div>
+</header>
+<main class="gut"><div class="wrap" id="app"></div></main>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+/* ---------- state ---------- */
+/* CLOUD: paste your Supabase Project URL and "anon public" key here to turn on student accounts.
+   Leave them empty and the lab works on this computer only, with no login. */
+const CLOUD = window.EVG_CLOUD || {url:"", key:""};
+const cloudOn = () => !!(CLOUD.url && CLOUD.key);
+const SESS_KEY = "ai-lab-session";
+let ACC = null; try { ACC = cloudOn() ? JSON.parse(localStorage.getItem(SESS_KEY) || "null") : null; } catch(e) {}
+let KEY = ACC ? "ai-lab-v1:" + ACC.username : "ai-lab-v1";
+const blankState = () => ({name:"", best:{}, done:{}, prompts:[], create:{}, fruits:[], _t:0});
+function normalize(d){ const s = Object.assign(blankState(), d && typeof d === "object" ? d : {});
+  ["best","done","create"].forEach(k => { if (!s[k] || typeof s[k] !== "object" || Array.isArray(s[k])) s[k] = {}; });
+  ["prompts","fruits"].forEach(k => { if (!Array.isArray(s[k])) s[k] = []; }); return s; }
+let S = blankState();
+try { const r = localStorage.getItem(KEY); if (r) S = normalize(JSON.parse(r)); } catch(e) {}
+function save(){ S._t = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} if (cloudOn() && ACC) queueCloud(); }
+
+async function rpc(fn, args, keepalive){
+  let r;
+  try { r = await fetch(CLOUD.url.replace(/\/+$/,"") + "/rest/v1/rpc/" + fn, {method:"POST", keepalive: !!keepalive,
+    headers: Object.assign({"apikey":CLOUD.key, "Content-Type":"application/json"}, /^eyJ/.test(CLOUD.key) ? {"Authorization":"Bearer " + CLOUD.key} : {}), body: JSON.stringify(args || {})}); }
+  catch(e){ throw {code:"offline"}; }
+  const t = await r.text(); let j = null; try { j = t ? JSON.parse(t) : null; } catch(e) {}
+  if (!r.ok) throw {code: (j && j.message) || ("http_" + r.status)};
+  return j;
+}
+let cloudT = null, dirty = false;
+function setCloud(st){
+  const el = document.getElementById("cloud"); if (!el) return;
+  const T = {saving:["☁ Saving…",""], saved:["☁ Saved",""], offline:["☁ Offline: will save later","warn"], expired:["☁ Please log in again","warn"]}[st] || ["",""];
+  el.textContent = T[0]; el.className = "cloud " + T[1];
+}
+function queueCloud(){ dirty = true; setCloud("saving"); clearTimeout(cloudT); cloudT = setTimeout(flushCloud, 1200); }
+async function flushCloud(keepalive){
+  if (!cloudOn() || !ACC || !dirty) return; dirty = false; clearTimeout(cloudT);
+  try { await rpc("ailab_save", {p_token:ACC.token, p_data:S}, keepalive); setCloud("saved"); }
+  catch(e){ dirty = true; if (e.code === "not_logged_in"){ setCloud("expired"); } else { setCloud("offline"); cloudT = setTimeout(flushCloud, 15000); } }
+}
+addEventListener("pagehide", () => flushCloud(true));
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushCloud(true); });
+function startSession(r){
+  ACC = {token:r.token, username:r.username, name:r.name, cls:r.class || ""};
+  try { localStorage.setItem(SESS_KEY, JSON.stringify(ACC)); } catch(e) {}
+  KEY = "ai-lab-v1:" + ACC.username;
+  let local = null; try { local = normalize(JSON.parse(localStorage.getItem(KEY) || "null")); } catch(e) {}
+  const server = normalize(r.data);
+  S = local && local._t > (server._t || 0) ? local : server;  // keep whichever copy is newer
+  S.name = ACC.name; try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {}
+  if (S !== server){ dirty = true; flushCloud(); }
+}
+async function logout(){
+  await flushCloud();
+  if (ACC) rpc("ailab_logout", {p_token:ACC.token}).catch(()=>{});
+  try { localStorage.removeItem(SESS_KEY); localStorage.removeItem(KEY); } catch(e) {}
+  ACC = null; KEY = "ai-lab-v1"; S = blankState(); setCloud(""); renderTop(); location.hash = ""; route();
+}
+const LEVELS = [[0,"Rookie"],[200,"Trainer"],[450,"Tester"],[700,"Engineer"],[900,"AI Pro"]];
+const totalXP = () => Object.values(S.best).reduce((a,b)=>a+b,0);
+function level(x){ let n = LEVELS[0][1]; for (const [t,l] of LEVELS) if (x >= t) n = l; return n; }
+const app = document.getElementById("app");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const wait = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
+const shuffle = a => { a = a.slice(); for (let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+
+/* tiny element helper: text only, never innerHTML for user content */
+function h(tag, attrs, ...kids){
+  const el = document.createElement(tag);
+  if (attrs) for (const k in attrs){
+    const v = attrs[k];
+    if (v == null || v === false) continue;
+    if (k === "class") el.className = v;
+    else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else if (k === "style") el.setAttribute("style", v);
+    else el.setAttribute(k, v === true ? "" : v);
+  }
+  for (const c of kids.flat()) if (c != null && c !== false) el.append(c instanceof Node ? c : String(c));
+  return el;
+}
+
+let toastT;
+function toast(msg){ const t = document.getElementById("toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(()=>t.classList.remove("on"), 2600); }
+
+function renderTop(){
+  const x = totalXP();
+  document.getElementById("xpn").textContent = x + " XP";
+  document.getElementById("lvl").textContent = level(x);
+  document.getElementById("xpfill").style.width = Math.min(100, x/10) + "%";
+}
+function award(id, xp){
+  xp = Math.max(0, Math.min(100, Math.round(xp)));
+  const prev = S.best[id] || 0, m = MISSIONS.find(m=>m.id===id);
+  if (xp > prev) S.best[id] = xp;
+  if (xp >= m.pass && !S.done[id]) { S.done[id] = true; toast("Badge earned: " + m.badge); }
+  else if (xp > prev) toast("+" + (xp - prev) + " XP");
+  save(); renderTop();
+}
+
+/* sample capability (optional AI features) */
+let samplePromise = null;
+function getSample(){
+  if (!samplePromise) samplePromise = (!cloudOn() && window.claude && window.claude.use) ? window.claude.use("sample").catch(()=>null) : Promise.resolve(null);
+  return samplePromise;
+}
+const errCopy = c => ({not_granted:"The AI helper is switched off for this view.", rate_limited:"Too many questions at once. Wait a minute and try again.", refused:"The AI did not answer that. Try asking it differently.", session_expired:"Please sign in again to use the AI helper."})[c] || "The AI helper could not answer right now. Try again.";
+
+/* ---------- missions ---------- */
+const MISSIONS = [
+ {id:"m1", s:"Session 1", title:"Human or Machine?", blurb:"Ten everyday things. Which ones are really AI?", badge:"AI Spotter", pass:70, render:m1,
+  learn:"AI learns from examples. An ordinary program only follows fixed rules a person wrote.",
+  create:{kind:"text", title:"Invent an AI gadget for our school", task:"Write a prompt asking an AI to describe a gadget you invent: what it does and what examples it learns from.", ex:"You are an inventor. Describe a smart lunchbox that learns which foods I like from what I leave. Use 3 short sentences."}},
+ {id:"m2", s:"Session 2", title:"Mini ChatGPT", blurb:"Train a tiny language model on a story and watch it make things up.", badge:"Word Wizard", pass:75, render:m2,
+  learn:"A chatbot writes by predicting the next word from patterns, so it can sound right and still invent things.",
+  create:{kind:"text", title:"Story starter", task:"Write a prompt that makes an AI write a 4-sentence story set in Lebanon. Then read the answer: which sentence could be invented?", ex:"Write a 4-sentence funny story for 12-year-olds about a cat who opens a manakish bakery in Tripoli."}},
+ {id:"m3", s:"Session 3", title:"Train & Score", blurb:"Teach the AI what an apple is, then test it on new photos.", badge:"Model Trainer", pass:80, render:m3,
+  learn:"An AI answers by comparing new things with its training examples, and we measure it with accuracy on photos it has never seen.",
+  create:{kind:"image", paint:"fruit", title:"Invent a fruit", task:"Describe a fruit that doesn't exist yet. Give it a colour, a shape, a size, a setting and a style.", ex:"A star-shaped purple fruit the size of a football with glowing seeds, on a market stall at night, cartoon style."}},
+ {id:"m4", s:"Session 4", title:"Bias Lab", blurb:"Find who the apple detector is unfair to, measure it, and fix the data.", badge:"Bias Buster", pass:100, render:m4,
+  learn:"When the data leaves a group out, the AI is unfair to that group. A confusion matrix shows exactly who it fails.",
+  create:{kind:"image", paint:"people", title:"A fair picture", task:"Write an image prompt for “a team of scientists” that shows many different kinds of people, so the AI can't fall back on one stereotype.", ex:"A team of scientists of different ages, genders and backgrounds laughing together in a bright lab, watercolour style, wide shot."}},
+ {id:"m5", s:"Session 5", title:"Build a Guessing Machine", blurb:"Make your own data and questions. The machine learns a decision tree from them and guesses.", badge:"Tree Builder", pass:100, render:m5,
+  learn:"A decision tree learns which question to ask first from a table of data: the one that splits it most evenly.",
+  create:{kind:"image", paint:"creature", title:"A creature for your machine", task:"Invent a new animal to add to your table. Describe it so clearly that a friend could answer every yes/no question about it.", ex:"A small blue bird with fish fins that swims in the sea at night and glows, 3D cartoon, close-up."}},
+ {id:"m6", s:"Session 5", title:"Be the Neuron", blurb:"Train a neuron to decide: should we play football today?", badge:"Neuron Master", pass:100, render:m6,
+  learn:"A neural network learns by changing its weights a little after every mistake. Nobody writes the rule.",
+  create:{kind:"voice", title:"Give the neuron a voice", task:"Describe in words how the neuron should sound, then write what it says when it decides.", ex:"An old, slow, wise robot", say:"Total is five. Let's play football!"}},
+ {id:"m7", s:"Session 7", title:"Prompt Coach", blurb:"Write text prompts with Role, Task, Context and Format.", badge:"Prompt Pro", pass:75, render:m7,
+  learn:"A clear text prompt has four parts: Role, Task, Context and Format. Never personal information.",
+  create:{kind:"text", title:"Your own study buddy", task:"Write a prompt that turns the AI into a study buddy for a subject you find hard. It must quiz you and give hints, never the answers.", ex:"You are my maths coach. I'm in grade 7 and fractions are hard for me. Ask me 3 questions, one at a time, and give a hint if I'm wrong, never the answer."}},
+ {id:"m8", s:"Session 8", title:"Image Prompt Studio", blurb:"Mix six ingredients into a picture prompt worth generating.", badge:"Image Director", pass:90, render:m8,
+  learn:"An image prompt describes the picture: subject, action, setting, style, light and camera. The AI can only draw what you describe.",
+  create:{kind:"image", title:"Free creation", task:"Invent any picture you want: a dream, a world, a character. Use all six ingredients, in your own words.", ex:"A giant cedar tree growing on the moon with tiny astronauts having a picnic under it, paper cut-out art, soft blue light, wide shot."}},
+ {id:"m9", s:"Session 9", title:"Voice Studio", blurb:"Record your voice, hear it say things you never said, then produce a radio ad.", badge:"Voice Producer", pass:75, render:m9,
+  learn:"AI can say any script in any voice, so a voice on its own never proves who is speaking.",
+  create:{kind:"voice", title:"Design a voice with words", task:"Describe a voice in words, like a prompt. The app turns your words into a voice. Then write a line for it to say.", ex:"A tiny excited mouse who talks very fast", say:"Hello everyone! Welcome to the school fair!"}},
+ {id:"m10", s:"Session 10", title:"Fact & Fake Detective", blurb:"Catch the AI's false facts, then decide what to do with fakes.", badge:"Fake Detective", pass:75, render:m10,
+  learn:"Fluent is not the same as true. Check facts with real sources, and stop before you share.",
+  create:{kind:"text", title:"Trick your friend", task:"Write a prompt asking an AI for 5 facts about a topic you know well. Then change ONE fact in the answer to a false one and challenge a friend to find it.", ex:"Give me 5 short facts about the Lebanese national football team, one per line, for a 12-year-old."}}
+];
+
+/* ---------- home ---------- */
+function renderHome(){
+  const x = totalXP(), done = MISSIONS.filter(m=>S.done[m.id]).length;
+  const nameIn = h("input", {id:"nick", maxlength:"20", placeholder:"First name or nickname", value:S.name || "", "aria-label":"Your lab name"});
+  const saveName = () => { S.name = nameIn.value.trim().slice(0,20); save(); toast(S.name ? "Hi " + S.name + "!" : "Name cleared"); greet.textContent = greeting(); };
+  const greeting = () => S.name ? "Welcome back, " + S.name + "." : "Welcome, scientist.";
+  const greet = h("p", {class:"big", style:"color:var(--deep-ink)"}, greeting());
+  app.replaceChildren(
+    h("section", {class:"hero"},
+      h("div", {class:"hero-main"},
+        h("p", {class:"eyebrow", style:"color:var(--sun)"}, "Think · Train · Test"),
+        h("h1", null, "The ", h("span", null, "AI Lab")),
+        greet,
+        h("p", null, "Ten missions. Train models, break them, fix them, and learn to boss AI around with great prompts. Every mission gives XP and a badge."),
+        netArt()
+      ),
+      h("div", {class:"side"},
+        ACC ? h("div", {class:"card"},
+          h("p", {class:"eyebrow"}, "Logged in"),
+          h("p", {style:"font-weight:800;font-size:20px;margin:6px 0"}, ACC.name),
+          h("p", {class:"small"}, (ACC.cls ? ACC.cls + " · " : "") + "username " + ACC.username + " · your progress is saved online"),
+          h("button", {class:"btn sm alt", style:"margin-top:8px", onclick:logout}, "Log out")) :
+        h("div", {class:"card"},
+          h("label", {class:"eyebrow", for:"nick"}, "Your lab name"),
+          h("div", {class:"name-in", style:"margin-top:8px"}, nameIn, h("button", {class:"btn sm", onclick:saveName}, "Save")),
+          h("p", {class:"small", style:"margin-top:8px"}, "First name only. Never your full name, school or phone.")
+        ),
+        h("a", {class:"card lic", href:"#licence", style:"text-decoration:none;color:inherit"},
+          h("p", {class:"eyebrow"}, "AI Licence"),
+          h("p", null, h("b", null, done + " of 10"), " missions done · ", level(x), " · ", x, " XP"),
+          h("div", {class:"bar"}, h("i", {style:"width:" + (done*10) + "%"})),
+          h("p", {class:"small"}, done >= 8 ? "Your licence is ready. Open it." : "Finish 8 missions to unlock your licence."),
+          h("p", null, "★ Creative stars: ", h("b", null, Object.keys(S.create).length + " of 10"))
+        )
+      )
+    ),
+    h("h2", {style:"font-size:28px;margin-bottom:14px"}, "Missions"),
+    h("div", {class:"grid"}, MISSIONS.map((m,i) => {
+      const b = S.best[m.id] || 0;
+      return h("a", {class:"mcard" + (S.done[m.id] ? " isdone" : ""), href:"#" + m.id},
+        h("span", {class:"num"}, String(i+1)),
+        h("span", {class:"eyebrow"}, m.s),
+        h("h3", null, m.title),
+        h("p", null, m.blurb),
+        h("div", {class:"foot"},
+          h("span", {class:"pill " + (S.done[m.id] ? "done" : b ? "" : "new")}, S.done[m.id] ? "Badge: " + m.badge : b ? b + " XP" : "New"),
+          h("span", {class:"small"}, b + "/100")
+        ));
+    })),
+    S.prompts.length ? h("section", {style:"margin-top:32px"}, h("h2", {style:"font-size:28px;margin-bottom:6px"}, "My creations"),
+      h("p", {class:"small", style:"margin:0 0 14px"}, "Everything you made with your prompts: pictures, voices and ideas. Click one to go back and improve it."),
+      h("div", {class:"grid"}, S.prompts.slice(0,12).map(p => galleryCard(p)))) : null,
+    h("p", {class:"small", style:"margin-top:24px"}, "Made for the Think, Train, Test course at school. Your progress stays on this device only.")
+  );
+}
+/* ---------- reliable speech (works around Chrome's cancel-then-speak bug) ---------- */
+const SPEAK = {keep:[]};
+function speakNow(utts, onFail){
+  const synth = window.speechSynthesis;
+  if (!synth || typeof SpeechSynthesisUtterance === "undefined"){ if (onFail) onFail("unsupported"); return; }
+  const list = Array.isArray(utts) ? utts : [utts]; SPEAK.keep = list; let started = false, failed = false;
+  const fail = code => { if (failed) return; failed = true; if (onFail) onFail(code); };
+  list.forEach(u => { const os = u.onstart, oe = u.onerror;
+    u.onstart = e => { started = true; if (os) os(e); };
+    u.onerror = e => { const c = e && e.error; if (c !== "interrupted" && c !== "canceled") fail(c || "error"); if (oe) oe(e); }; });
+  const go = () => { try { synth.resume(); } catch(e){} list.forEach(u => synth.speak(u)); };
+  if (synth.speaking || synth.pending){ synth.cancel(); setTimeout(go, 150); } else go();
+  setTimeout(() => { if (!started && !(list[0] && list[0].volume === 0)) fail("silent"); }, 3000);
+}
+function noSound(code){
+  const why = code === "unsupported" ? "This browser can't speak." : code === "not-allowed" ? "The browser blocked the sound." : code === "silent" ? "Didn't hear anything?" : "The voice didn't start (" + code + ").";
+  toast(why + " Turn the volume up, and open the AI Lab in Chrome or Edge in its own tab.");
+}
+function soundCheck(out){
+  const log = []; const show = () => out.replaceChildren(h("div", {class:"fb info", style:"margin-top:10px;text-align:left"}, "Sound check", h("span", {style:"white-space:pre-line"}, log.join("\n"))));
+  const add = t => { log.push(t); show(); };
+  try { const AC = window.AudioContext || window.webkitAudioContext; const ac = new AC(); const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = 660; g.gain.value = 0.15; o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime + 0.35); add("1. Beep: played (state " + ac.state + "). Did you hear a beep?"); }
+  catch(e){ add("1. Beep: failed (" + (e && e.name) + ")"); }
+  const synth = window.speechSynthesis;
+  if (!synth || typeof SpeechSynthesisUtterance === "undefined"){ add("2. Speech: NOT supported in this browser"); return; }
+  let vs = []; try { vs = synth.getVoices(); } catch(e){}
+  add("2. Speech: supported · " + vs.length + " voices" + (vs.length ? " (" + vs.slice(0,3).map(v => v.name + (v.localService ? "" : " [online]")).join(", ") + ")" : ""));
+  setTimeout(() => {
+    const u = new SpeechSynthesisUtterance("Testing, one, two, three."); let st = false;
+    u.onstart = () => { st = true; add("3. Voice: started ✓"); };
+    u.onend = () => add("4. Voice: finished ✓");
+    u.onerror = e => add("3. Voice error: " + (e && e.error));
+    try { synth.cancel(); synth.resume(); } catch(e){}
+    setTimeout(() => { try { synth.speak(u); add("3. Voice: sent… (speaking=" + synth.speaking + ", paused=" + synth.paused + ")"); } catch(e){ add("3. Voice: speak() failed (" + (e && e.name) + ")"); } }, 150);
+    setTimeout(() => { if (!st) add("✗ The voice never started. Send this box to your teacher."); }, 4000);
+  }, 500);
+}
+function galleryCard(p){
+  const mm = MISSIONS.find(x=>x.id===p.m), kind = {text:"Text", image:"Picture", voice:"Voice"}[p.kind] || "Prompt";
+  let media = null;
+  if (p.kind === "image"){ const cv = h("canvas", {width:"320", height:"200", class:"painter", role:"img", "aria-label":"Picture drawn from: " + p.t.slice(0,100)}); setTimeout(()=>PP.draw(cv, p.t, mm && mm.create.paint || null), 0); media = cv; }
+  if (p.kind === "voice"){ const [desc, said] = p.t.split(" → "); media = h("button", {class:"btn sm sun", onclick:()=>playVoice(desc, (said||"Hello!").replace(/[“”]/g,""))}, "▶ Hear my voice"); }
+  const del = h("button", {class:"btn sm alt", "aria-label":"Delete this creation", onclick:()=>{ S.prompts = S.prompts.filter(x => x !== p); save(); route(); }}, "Delete");
+  return h("div", {class:"card", style:"display:flex;flex-direction:column;gap:8px;min-width:0"},
+    h("div", {class:"row", style:"justify-content:space-between"}, h("span", {class:"pill"}, kind), h("span", {class:"small"}, mm ? mm.create.title : "")),
+    media, h("p", {style:"overflow-wrap:anywhere;margin:0"}, p.t),
+    h("div", {class:"row"}, h("a", {class:"btn sm", href:"#" + p.m}, "Improve it"), del));
+}
+function playVoice(desc, said){
+  const synth = window.speechSynthesis; if (!synth){ noSound("unsupported"); return; }
+  const v = voiceFrom(desc); const u = new SpeechSynthesisUtterance(said);
+  const vs = synth.getVoices().filter(x => (x.lang||"").toLowerCase().startsWith(v.lang));
+  if (vs[0]){ u.voice = vs[0]; u.lang = vs[0].lang; } else u.lang = v.lang; u.pitch = v.pitch; u.rate = v.rate; speakNow(u, noSound);
+}
+function netArt(){
+  const ns = "http://www.w3.org/2000/svg", s = document.createElementNS(ns, "svg");
+  s.setAttribute("viewBox", "0 0 200 200"); s.setAttribute("class", "net"); s.setAttribute("aria-hidden", "true");
+  const A = [[30,40],[30,100],[30,160]], B = [[100,70],[100,130]], C = [[170,100]];
+  const line = (a,b)=>{ const l = document.createElementNS(ns,"line"); l.setAttribute("x1",a[0]); l.setAttribute("y1",a[1]); l.setAttribute("x2",b[0]); l.setAttribute("y2",b[1]); l.setAttribute("stroke","#FFC93C"); l.setAttribute("stroke-width","3"); s.append(l); };
+  A.forEach(a=>B.forEach(b=>line(a,b))); B.forEach(b=>C.forEach(c=>line(b,c)));
+  [...A,...B,...C].forEach(p=>{ const c = document.createElementNS(ns,"circle"); c.setAttribute("cx",p[0]); c.setAttribute("cy",p[1]); c.setAttribute("r","14"); c.setAttribute("fill","#FF6B4A"); s.append(c); });
+  return s;
+}
+
+/* ---------- mission frame ---------- */
+function renderMission(id){
+  const i = MISSIONS.findIndex(m=>m.id===id), m = MISSIONS[i];
+  const stage = h("div", {class:"stage"});
+  app.replaceChildren(
+    h("div", {class:"mhead"},
+      h("a", {class:"back", href:"#"}, "← All missions"),
+      h("p", {class:"eyebrow"}, "Mission " + (i+1) + " · " + m.s),
+      h("h1", null, m.title),
+      h("p", {class:"goal"}, m.blurb),
+      h("div", {class:"row"}, h("span", {class:"pill" + (S.done[id] ? " done" : "")}, S.done[id] ? "Badge earned: " + m.badge : "Best: " + (S.best[id]||0) + " XP · pass at " + m.pass))
+    ),
+    h("div", {class:"learn"}, h("span", {class:"eyebrow"}, "What you'll learn"), h("p", null, m.learn)),
+    stage,
+    createBox(m)
+  );
+  m.render(stage);
+}
+function endPanel(id, pct, lines){
+  const m = MISSIONS.find(x=>x.id===id);
+  award(id, pct);
+  return h("div", {class:"panel deep"},
+    h("p", {class:"eyebrow", style:"color:var(--sun)"}, "Mission result"),
+    h("p", {class:"score", style:"color:var(--sun)"}, Math.round(pct) + " XP"),
+    ...(lines||[]).map(l=>h("p", null, l)),
+    h("p", {class:"small"}, pct >= m.pass ? "Badge unlocked: " + m.badge + "." : "Score " + m.pass + " to earn the " + m.badge + " badge. Try again!"),
+    h("div", {class:"row"}, h("button", {class:"btn sun", onclick:()=>renderMission(id)}, "Play again"), h("a", {class:"btn alt", href:"#"}, "All missions"))
+  );
+}
+
+
+
+/* ---------- Prompt Painter: turns words into a picture with simple rules ---------- */
+const PP = (() => {
+  const COLORS = {red:"#E53935",orange:"#FB8C00",yellow:"#FDD835",green:"#43A047",blue:"#1E88E5",purple:"#8E24AA",violet:"#8E24AA",pink:"#EC407A",black:"#2B2B2B",white:"#F5F5F5",brown:"#795548",gold:"#FFC107",golden:"#FFC107",silver:"#B0BEC5",grey:"#9E9E9E",gray:"#9E9E9E",turquoise:"#26C6DA",rainbow:"rainbow"};
+  const SHAPES = {rectangle:"rectangle",rectangular:"rectangle",rectangles:"rectangle",brick:"rectangle",flat:"rectangle",cylinder:"long",tube:"long",round:"round",circle:"round",circular:"round",sphere:"round",star:"star","star-shaped":"star",heart:"heart","heart-shaped":"heart",long:"long",banana:"long",square:"square",cube:"square",box:"square",oval:"oval",egg:"oval",triangle:"triangle",triangular:"triangle",pyramid:"triangle",diamond:"diamond",crescent:"crescent"};
+  const SIZES = {tiny:0.45,small:0.62,little:0.62,mini:0.5,medium:0.85,big:1.08,large:1.08,giant:1.32,huge:1.32,enormous:1.38,massive:1.38};
+  const PATTERN = {spots:"spots",spotted:"spots",dots:"spots",dotted:"spots",stripes:"stripes",striped:"stripes",stripy:"stripes",zigzag:"zigzag"};
+  const FEAT = {glowing:"glow",glow:"glow",glows:"glow",shiny:"glow",sparkling:"glow",sparkly:"glow",magic:"glow",magical:"glow",seeds:"seeds",seed:"seeds",seedy:"seeds",leaf:"leaf",leaves:"leaf",face:"face",smile:"face",smiling:"face",eyes:"face",eye:"face",cute:"face",wings:"wings",wing:"wings",flying:"wings",fins:"fins",fin:"fins",swimming:"fins",swims:"fins",horns:"horns",horn:"horns",legs:"legs",leg:"legs",tail:"tail",crown:"crown",hat:"hat",spikes:"spikes",spiky:"spikes",furry:"fur",fluffy:"fur",fur:"fur"};
+  const SETTING = {night:"night",space:"space",galaxy:"space",planet:"space",stars:"space",moon:"moon",lunar:"moon",beach:"beach",sand:"beach",sea:"sea",ocean:"sea",underwater:"sea",forest:"forest",jungle:"forest",woods:"forest",mountain:"mountain",mountains:"mountain",snow:"mountain",snowy:"mountain",desert:"desert",market:"market",stall:"market",shop:"market",souk:"market",city:"city",street:"city",town:"city",beirut:"city",tripoli:"city",stadium:"stadium",pitch:"stadium",field:"stadium",kitchen:"kitchen",table:"kitchen",plate:"kitchen",garden:"garden",park:"garden",grass:"garden",sky:"sky",clouds:"sky",cloud:"sky",lab:"lab",laboratory:"lab",school:"school",classroom:"school"};
+  const LIGHT = {sunset:"sunset",sunrise:"sunrise",dark:"dark",neon:"neon",bright:"bright",sunny:"bright",moonlit:"dark",morning:"bright",evening:"sunset",rainy:"rain",rain:"rain",foggy:"fog",fog:"fog"};
+  const STYLE = {cartoon:"cartoon",cartoony:"cartoon",comic:"cartoon",watercolour:"watercolour",watercolor:"watercolour",painting:"watercolour",painted:"watercolour",pixel:"pixel",pixelated:"pixel","8-bit":"pixel",sketch:"sketch",pencil:"sketch",drawing:"sketch","3d":"3d",realistic:"3d",photo:"3d",photograph:"3d",paper:"paper","cut-out":"paper",cutout:"paper"};
+  const CAMERA = {"close-up":"close",closeup:"close",close:"close",wide:"wide",below:"below",above:"above","bird's-eye":"above",birds:"above",top:"above"};
+  const NUM = {one:1,two:2,three:3,four:4,five:5,six:6,many:5,lots:5,team:4,group:4,crowd:6,family:3,pair:2};
+  const EMOJI = {cat:"🐱",cats:"🐱",kitten:"🐱",dog:"🐶",dogs:"🐶",puppy:"🐶",robot:"🤖",robots:"🤖",dragon:"🐉",dragons:"🐉",tree:"🌳",trees:"🌳",cedar:"🌲",rocket:"🚀",football:"⚽",soccer:"⚽",car:"🚗",cars:"🚗",house:"🏠",castle:"🏰",fish:"🐟",bird:"🐦",birds:"🐦",whale:"🐋",horse:"🐴",unicorn:"🦄",lion:"🦁",bear:"🐻",bee:"🐝",butterfly:"🦋",flower:"🌸",flowers:"🌸",cake:"🎂",pizza:"🍕",bread:"🍞",manakish:"🫓",book:"📚",books:"📚",ghost:"👻",alien:"👽",aliens:"👽",dinosaur:"🦖",turtle:"🐢",octopus:"🐙",penguin:"🐧",monkey:"🐵",rabbit:"🐰",owl:"🦉",frog:"🐸",apple:"🍎",boat:"⛵",plane:"✈️",train:"🚂",bike:"🚲",guitar:"🎸",camel:"🐫",snail:"🐌",shark:"🦈",dolphin:"🐬"};
+  const JOBS = {scientist:"🔬",scientists:"🔬",doctor:"⚕️",doctors:"⚕️",teacher:"🏫",teachers:"🏫",astronaut:"🚀",astronauts:"🚀",chef:"🍳",chefs:"🍳",cook:"🍳",farmer:"🌾",farmers:"🌾",artist:"🎨",artists:"🎨",pilot:"✈️",pilots:"✈️",people:"",person:"",kid:"",kids:"",child:"",children:"",student:"",students:"",friends:"",player:"⚽",players:"⚽",footballer:"⚽",footballers:"⚽"};
+  const MOOD = {friendly:"bright",happy:"bright",exciting:"bright",excited:"bright",fun:"bright",funny:"bright",silly:"bright",brave:"bright",cheerful:"bright",afternoon:"bright",floodlights:"bright",daylight:"bright",calm:"sunrise",peaceful:"sunrise",soft:"sunrise",gentle:"sunrise",sleepy:"sunset",cosy:"sunset",cozy:"sunset",warm:"sunset",scary:"dark",spooky:"dark",mysterious:"dark",creepy:"dark",sad:"rain",gloomy:"fog",cold:"fog",old:null,ancient:null,busy:null,new:null,modern:null,beautiful:null,angry:null,station:null,art:null};
+  const PROPS = {goalkeeper:"🧤",gloves:"🧤",ball:"⚽",umbrella:"☂️",balloon:"🎈",balloons:"🎈",flag:"🇱🇧",lebanon:"🇱🇧",lebanese:"🇱🇧",trophy:"🏆",medal:"🥇",cup:"🏆"};
+  const DIVERSE = /\b(different|diverse|various|mixed|all kinds|backgrounds?|genders?|cultures?|countries|skin|men and women|women and men|boys and girls|girls and boys)\b/;
+  const STOP = new Set("a an the of with and in on at is it its that has have very to for by from under above near inside who which this my our some like style shot light view art made looks look size shape colour color coloured colored are be as so each other together being doing there their them they we i you can into out up down next behind front over while just really super kind kinds type sort lot".split(" "));
+  const FRUIT = new Set(["fruit","fruits","berry","berries"]), CREATURE = new Set(["creature","creatures","monster","monsters","animal","animals","beast","pet"]);
+  const shapeWord = {round:"round",star:"star",heart:"heart",long:"long",square:"square",oval:"oval",triangle:"triangle",diamond:"diamond",crescent:"crescent"};
+
+  const KNOWN = new Set([COLORS,SHAPES,SIZES,PATTERN,FEAT,SETTING,LIGHT,STYLE,CAMERA,NUM,EMOJI,JOBS,MOOD,PROPS].flatMap(o=>Object.keys(o)).concat([...FRUIT,...CREATURE,"night","midnight","moonlit"]));
+  function dist(a, b){ const m = a.length, n = b.length; if (Math.abs(m-n) > 2) return 9; const d = [];
+    for (let i=0;i<=m;i++){ d[i] = [i]; } for (let j=0;j<=n;j++) d[0][j] = j;
+    for (let i=1;i<=m;i++) for (let j=1;j<=n;j++){ d[i][j] = Math.min(d[i-1][j]+1, d[i][j-1]+1, d[i-1][j-1] + (a[i-1]===b[j-1] ? 0 : 1));
+      if (i>1 && j>1 && a[i-1]===b[j-2] && a[i-2]===b[j-1]) d[i][j] = Math.min(d[i][j], d[i-2][j-2]+1); }
+    return d[m][n]; }
+  function guess(w){ const max = w.length >= 7 ? 2 : 1; let best = null, score = 99;
+    for (const k of KNOWN){ if (k.length < 4) continue; const d = dist(w, k); if (d > max) continue;
+      const sc = d*10 + (k[0] === w[0] ? 0 : 5) + Math.abs(k.length - w.length); if (sc < score){ score = sc; best = k; } }
+    return best; }
+  function parse(text, fallback){
+    const t = " " + text.toLowerCase().replace(/[“”"]/g," ").replace(/comic book/g,"comic").replace(/cut out/g,"cut-out") + " ";
+    const toks = t.replace(/[^a-z0-9'\- ]/g," ").split(/\s+/).filter(Boolean);
+    const sp = {fixed:[], props:[], mood:null, colors:[], shape:null, size:1, pattern:null, feats:new Set(), setting:null, light:null, style:null, camera:null, count:1, subject:null, job:null, diverse:DIVERSE.test(t), unknown:[]};
+    let name = null;
+    for (const mm of t.matchAll(/\b(?:is|called|named|name is|it's)\s+(?:a |an |the )?([a-z][a-z'\-]{1,15})\b/g)){ const w = mm[1]; if (!KNOWN.has(w) && !STOP.has(w) && !FRUIT.has(w)){ name = w; break; } }
+    sp.name = name;
+    const VERBS = /^(eat|eats|eating|sit|sits|sitting|stand|stands|standing|play|plays|playing|run|runs|running|fly|flies|jump|jumps|jumping|dance|dances|dancing|laugh|laughs|laughing|having|picnic|growing|grows|lives|live|living|holding|wearing|makes|making|baking|bakes|works|working|diving|save|saving|floating|past|named|called|than|bigger|smaller)$/;
+    for (let i=0;i<toks.length;i++){
+      let w = toks[i];
+      if (w === name) continue;
+      if (!STOP.has(w) && !VERBS.test(w) && !KNOWN.has(w) && w.length >= 4){ const g = guess(w); if (g){ sp.fixed.push([w, g]); w = g; } }
+      let hit = false;
+      if (COLORS[w]){ sp.colors.push(w); hit = true; }
+      if (SHAPES[w]){ sp.shape = SHAPES[w]; hit = true; }
+      if (SIZES[w]){ sp.size = SIZES[w]; hit = true; }
+      if (PATTERN[w]){ sp.pattern = PATTERN[w]; hit = true; }
+      if (FEAT[w]){ sp.feats.add(FEAT[w]); hit = true; }
+      if (SETTING[w]){ if (!sp.setting || w === "moon" && toks[i-1] === "the") sp.setting = SETTING[w]; hit = true; }
+      if (LIGHT[w]){ sp.light = LIGHT[w]; hit = true; }
+      if (w === "night" || w === "midnight" || w === "moonlit") sp.night = true;
+      if (STYLE[w]){ sp.style = STYLE[w]; hit = true; }
+      if (CAMERA[w]){ sp.camera = CAMERA[w]; hit = true; }
+      if (NUM[w]){ sp.count = NUM[w]; hit = true; }
+      if (w in MOOD){ if (MOOD[w] && !sp.mood) sp.mood = MOOD[w]; hit = true; }
+      if (PROPS[w]){ if (!sp.props.includes(PROPS[w])) sp.props.push(PROPS[w]); hit = true; }
+      if (/^\d+$/.test(w)){ sp.count = Math.min(6, Math.max(1, +w)); hit = true; }
+      if (JOBS[w] !== undefined){ if (!sp.job) sp.job = w; hit = true; }
+      if (EMOJI[w]){ if (!sp.subject) sp.subject = w; if (/s$/.test(w) && sp.count === 1 && !NUM[toks[i-1]]) sp.count = 3; hit = true; }
+      if (FRUIT.has(w)){ if (!sp.subject) sp.subject = "fruit"; hit = true; }
+      if (CREATURE.has(w)){ if (!sp.subject) sp.subject = "creature"; hit = true; }
+      if (/^(ages|old|young|women|men|boys|girls|man|woman|boy|girl)$/.test(w)) hit = true;
+      if (DIVERSE.test(" " + w + " ")) hit = true;
+      if (!hit && !STOP.has(w) && !/^(ing|ed|s)$/.test(w) && w.length > 1 && !VERBS.test(w)) sp.unknown.push(w);
+    }
+    if (sp.colors.includes("golden") && sp.light === null && /golden (light|sun|hour)/.test(t)){ sp.colors = sp.colors.filter(c=>c!=="golden"); sp.light = "sunset"; }
+    if (sp.job && (!sp.subject || sp.subject === "fruit" || sp.subject === "creature")) sp.subject = "people";
+    else if (sp.job && sp.subject) sp.extraPeople = true;
+    if (!sp.subject) sp.subject = fallback || null;
+    if (sp.subject === "people" && sp.count === 1 && /s\b/.test(sp.job || "") ) sp.count = 4;
+    if (sp.light === "neon" && !sp.style) sp.style = "neon";
+    if (!sp.light && sp.mood) sp.light = sp.mood;
+    sp.unknown = [...new Set(sp.unknown)].slice(0,8);
+    sp.fixed = sp.fixed.filter((f,k,a)=>a.findIndex(g=>g[0]===f[0])===k).slice(0,6);
+    return sp;
+  }
+
+  function understood(sp){
+    const subj = sp.subject === "people" ? (sp.count > 1 ? sp.count + " " : "") + (sp.job || "people") : sp.subject === "fruit" ? "a fruit" : sp.subject === "creature" ? "a creature" : sp.subject ? (sp.count > 1 ? sp.count + " × " : "") + sp.subject : null;
+    return [["Subject", subj],["Colour", sp.colors.join(" + ") || null],["Shape", sp.shape],["Size", sp.size !== 1 ? (sp.size < 1 ? "small" : "big") : null],
+      ["Details", [sp.pattern, ...sp.feats, ...sp.props].filter(Boolean).join(", ") || null],["Setting", sp.setting],["Light & mood", sp.light],["Style", sp.style],["Camera", sp.camera],
+      ...(sp.subject === "people" ? [["Variety", sp.diverse ? "different people" : null]] : []),
+      ...(sp.subject === "fruit" || sp.subject === "creature" ? [["Name", sp.name]] : [])];
+  }
+
+  /* ---- drawing ---- */
+  const SKY = {night:["#0B1033","#2A2F6B"],space:["#05051A","#1B1240"],moon:["#05051A","#1B1240"],sea:["#0E6BA8","#0A2F5C"],sunset:["#FF8A65","#FFD180"],sunrise:["#FFCCBC","#FFF59D"],dark:["#141633","#2E3266"],neon:["#120326","#2B0B4F"],rain:["#90A4AE","#CFD8DC"],fog:["#CFD8DC","#ECEFF1"],bright:["#81D4FA","#E1F5FE"],def:["#9EDCFF","#E8F6FF"]};
+  function fillFor(ctx, col, x, y, r, shade){
+    if (col === "rainbow"){ const g = ctx.createLinearGradient(x-r,y,x+r,y); ["#E53935","#FB8C00","#FDD835","#43A047","#1E88E5","#8E24AA"].forEach((c,i)=>g.addColorStop(i/5,c)); return g; }
+    if (!shade) return col;
+    const g = ctx.createRadialGradient(x-r*0.35,y-r*0.35,r*0.1,x,y,r*1.05); g.addColorStop(0,"#ffffff"); g.addColorStop(0.18,col); g.addColorStop(1,shadeHex(col,-0.45)); return g;
+  }
+  function shadeHex(h, p){ const n = parseInt(h.slice(1),16); let r=n>>16,g=(n>>8)&255,b=n&255; const f = v=>Math.max(0,Math.min(255,Math.round(v + (p<0 ? v*p : (255-v)*p)))); return "#" + ((1<<24)+(f(r)<<16)+(f(g)<<8)+f(b)).toString(16).slice(1); }
+  function shapePath(ctx, shape, x, y, r){
+    ctx.beginPath();
+    if (shape === "star"){ for (let i=0;i<10;i++){ const a = -Math.PI/2 + i*Math.PI/5, rr = i%2 ? r*0.48 : r; ctx.lineTo(x+Math.cos(a)*rr, y+Math.sin(a)*rr); } ctx.closePath(); }
+    else if (shape === "heart"){ ctx.moveTo(x, y+r*0.85); ctx.bezierCurveTo(x-r*1.3, y, x-r*0.8, y-r*1.05, x, y-r*0.45); ctx.bezierCurveTo(x+r*0.8, y-r*1.05, x+r*1.3, y, x, y+r*0.85); }
+    else if (shape === "long"){ ctx.ellipse(x, y, r*1.25, r*0.42, -0.35, 0, Math.PI*2); }
+    else if (shape === "square"){ const s = r*0.85; ctx.roundRect ? ctx.roundRect(x-s, y-s, s*2, s*2, r*0.18) : ctx.rect(x-s, y-s, s*2, s*2); }
+    else if (shape === "rectangle"){ ctx.roundRect ? ctx.roundRect(x-r*1.25, y-r*0.72, r*2.5, r*1.44, r*0.2) : ctx.rect(x-r*1.25, y-r*0.72, r*2.5, r*1.44); }
+    else if (shape === "oval"){ ctx.ellipse(x, y, r*0.72, r, 0, 0, Math.PI*2); }
+    else if (shape === "triangle"){ ctx.moveTo(x, y-r); ctx.lineTo(x+r*0.95, y+r*0.75); ctx.lineTo(x-r*0.95, y+r*0.75); ctx.closePath(); }
+    else if (shape === "diamond"){ ctx.moveTo(x, y-r); ctx.lineTo(x+r*0.75, y); ctx.lineTo(x, y+r); ctx.lineTo(x-r*0.75, y); ctx.closePath(); }
+    else if (shape === "crescent"){ ctx.arc(x, y, r, 0.6, Math.PI*2-0.6); ctx.arc(x+r*0.55, y, r*0.75, Math.PI*2-0.9, 0.9, true); ctx.closePath(); }
+    else ctx.arc(x, y, r, 0, Math.PI*2);
+  }
+  function background(ctx, W, H, sp){
+    const darkPlace = sp.setting === "space" || sp.setting === "moon";
+    const key = sp.style === "neon" || sp.light === "neon" ? "neon" : darkPlace ? sp.setting : sp.night ? "night" : sp.light && SKY[sp.light] ? sp.light : sp.setting && SKY[sp.setting] ? sp.setting : "def";
+    const [a,b] = SKY[key]; const g = ctx.createLinearGradient(0,0,0,H); g.addColorStop(0,a); g.addColorStop(1,b); ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+    const dark = ["night","space","moon","dark","neon"].includes(key) || sp.setting === "space";
+    const rnd = mulberry(7);
+    if (dark){ ctx.fillStyle = "#FFFFFF"; for (let i=0;i<60;i++){ ctx.globalAlpha = 0.4 + rnd()*0.6; ctx.beginPath(); ctx.arc(rnd()*W, rnd()*H*0.7, rnd()*1.6+0.3, 0, 7); ctx.fill(); } ctx.globalAlpha = 1; }
+    if (sp.setting === "moon" || sp.setting === "night" || sp.night || sp.light === "dark"){ ctx.fillStyle = "#FFF6D5"; ctx.beginPath(); ctx.arc(W*0.84, H*0.18, 30, 0, 7); ctx.fill(); }
+    if (!dark && (["sunset","sunrise","bright"].includes(sp.light) || sp.setting === "beach" || sp.setting === "desert")){ ctx.fillStyle = sp.light === "sunset" ? "#FF7043" : "#FFEB3B"; ctx.beginPath(); ctx.arc(W*0.82, H*(sp.light === "sunset" ? 0.55 : 0.2), 34, 0, 7); ctx.fill(); }
+    const gy = H*0.72; let ground = "#7CB342";
+    const S = sp.setting;
+    if (S === "space"){ ctx.fillStyle = "#7E57C2"; ctx.beginPath(); ctx.arc(W*0.15, H*0.25, 34, 0, 7); ctx.fill(); ctx.strokeStyle = "#D1C4E9"; ctx.lineWidth = 4; ctx.beginPath(); ctx.ellipse(W*0.15, H*0.25, 56, 12, -0.3, 0, 7); ctx.stroke(); return gy; }
+    if (S === "moon"){ ground = "#B0B0B8"; ctx.fillStyle = ground; ctx.beginPath(); ctx.ellipse(W/2, H*1.05, W*0.9, H*0.36, 0, 0, 7); ctx.fill(); ctx.fillStyle = "#8E8E99"; [[0.2,0.86,18],[0.7,0.9,26],[0.45,0.95,12]].forEach(([x,y,r])=>{ ctx.beginPath(); ctx.ellipse(W*x,H*y,r,r*0.4,0,0,7); ctx.fill(); }); return gy; }
+    if (S === "sea"){ ctx.fillStyle = "rgba(255,255,255,.25)"; for (let i=0;i<14;i++){ ctx.beginPath(); ctx.arc(rnd()*W, rnd()*H, rnd()*6+2, 0, 7); ctx.fill(); } ctx.fillStyle = "#F4D58D"; ctx.fillRect(0, H*0.88, W, H*0.12); return gy; }
+    if (S === "mountain"){ [["#78909C",0.05,0.95,0.32],["#90A4AE",0.4,1.2,0.24]].forEach(([c,x0,x1,top])=>{ ctx.fillStyle = c; ctx.beginPath(); ctx.moveTo(W*x0, gy); ctx.lineTo(W*(x0+x1)/2, H*top); ctx.lineTo(W*x1, gy); ctx.fill(); ctx.fillStyle = "#FFFFFF"; ctx.beginPath(); const mx = W*(x0+x1)/2; ctx.moveTo(mx, H*top); ctx.lineTo(mx-28, H*top+40); ctx.lineTo(mx+28, H*top+40); ctx.fill(); }); ground = "#ECEFF1"; }
+    if (S === "forest"){ for (let i=0;i<9;i++){ const x = (i+0.5)*W/9, h2 = 90 + rnd()*60; ctx.fillStyle = "#2E7D32"; ctx.beginPath(); ctx.moveTo(x, gy-h2); ctx.lineTo(x+32, gy); ctx.lineTo(x-32, gy); ctx.fill(); } ground = "#558B2F"; }
+    if (S === "desert"){ ground = "#E9C46A"; ctx.fillStyle = "#F4A261"; ctx.beginPath(); ctx.ellipse(W*0.3, gy+10, W*0.4, 40, 0, Math.PI, 0); ctx.fill(); }
+    if (S === "beach"){ ctx.fillStyle = "#29B6F6"; ctx.fillRect(0, gy-40, W, 40); ground = "#F4D58D"; }
+    if (S === "city"){ for (let i=0;i<8;i++){ const x = i*W/8, h2 = 70 + rnd()*110; ctx.fillStyle = ["#546E7A","#607D8B","#455A64"][i%3]; ctx.fillRect(x+4, gy-h2, W/8-8, h2); ctx.fillStyle = "#FFE082"; for (let k=0;k<Math.floor(h2/26);k++){ ctx.fillRect(x+14, gy-h2+10+k*26, 10, 10); ctx.fillRect(x+W/8-28, gy-h2+10+k*26, 10, 10); } } ground = "#9E9E9E"; }
+    if (S === "market"){ ctx.fillStyle = "#8D6E63"; ctx.fillRect(W*0.12, gy-120, W*0.76, 120); for (let i=0;i<10;i++){ ctx.fillStyle = i%2 ? "#FFFFFF" : "#E53935"; ctx.fillRect(W*0.1 + i*W*0.08, gy-150, W*0.08, 34); } ground = "#BCAAA4"; }
+    if (S === "stadium"){ ground = "#43A047";
+      if (dark || sp.light === "bright"){ [0.08,0.92].forEach(fx=>{ ctx.fillStyle = "#546E7A"; ctx.fillRect(W*fx-4, H*0.1, 8, gy-H*0.1); ctx.fillStyle = "#FFFDE7"; ctx.shadowColor = "#FFFDE7"; ctx.shadowBlur = dark ? 30 : 8; ctx.fillRect(W*fx-26, H*0.07, 52, 22); ctx.shadowBlur = 0; }); }
+      ctx.fillStyle = "#37474F"; ctx.fillRect(0, gy-70, W, 70); ctx.fillStyle = "#90A4AE"; for (let i=0;i<60;i++){ ctx.beginPath(); ctx.arc(rnd()*W, gy-60+rnd()*50, 3, 0, 7); ctx.fill(); } }
+    if (S === "kitchen"){ ctx.fillStyle = "#FFF3E0"; ctx.fillRect(0, 0, W, gy); ground = "#A1887F"; }
+    if (S === "lab" || S === "school"){
+      ctx.fillStyle = S === "lab" ? "#E3F2FD" : "#FFF8E1"; ctx.fillRect(0, 0, W, gy);
+      ctx.fillStyle = S === "lab" ? "#FFFFFF" : "#2E7D32"; ctx.fillRect(W*0.22, H*0.08, W*0.56, H*0.26); ctx.strokeStyle = "#8D6E63"; ctx.lineWidth = 6; ctx.strokeRect(W*0.22, H*0.08, W*0.56, H*0.26);
+      ctx.fillStyle = S === "lab" ? "#1E88E5" : "#FFFFFF"; ctx.font = "600 26px 'Comic Sans MS', 'Fredoka', sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText(S === "lab" ? "H₂O + CO₂ → ?" : "A B C  1 + 2 = 3", W/2, H*0.21);
+      if (S === "lab"){ ctx.fillStyle = "#ECEFF1"; ctx.fillRect(0, gy-34, W, 34); ctx.fillStyle = "#000000"; ctx.font = "30px 'Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif"; ["🧪","⚗️","🔬","🧫","🧪"].forEach((e,i)=>ctx.fillText(e, W*(0.06 + i*0.22), gy-50)); }
+      ground = "#BDBDBD"; }
+    if (S === "garden"){ ground = "#66BB6A"; for (let i=0;i<14;i++){ ctx.fillStyle = ["#EC407A","#FFEB3B","#AB47BC"][i%3]; ctx.beginPath(); ctx.arc(rnd()*W, gy+10+rnd()*(H-gy-20), 6, 0, 7); ctx.fill(); } }
+    if (S === "sky"){ ctx.fillStyle = "#FFFFFF"; [[0.2,0.3],[0.6,0.55],[0.85,0.35]].forEach(([x,y])=>{ ctx.beginPath(); ctx.arc(W*x,H*y,24,0,7); ctx.arc(W*x+26,H*y-8,30,0,7); ctx.arc(W*x+54,H*y,22,0,7); ctx.fill(); }); return H*0.62; }
+    if (S === "night" || S === "dark") ground = "#1B5E20";
+    ctx.fillStyle = ground; ctx.fillRect(0, gy, W, H-gy);
+    if (S === "stadium"){ ctx.strokeStyle = "#FFFFFF"; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(W/2, gy+(H-gy)/2, 70, 22, 0, 0, 7); ctx.stroke(); }
+    if (sp.light === "rain"){ ctx.strokeStyle = "rgba(255,255,255,.6)"; ctx.lineWidth = 1.5; for (let i=0;i<70;i++){ const x = rnd()*W, y = rnd()*H; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x-4,y+14); ctx.stroke(); } }
+    return gy;
+  }
+  function mulberry(a){ return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function face(ctx, x, y, r){ ctx.fillStyle = "#FFFFFF"; [-1,1].forEach(s=>{ ctx.beginPath(); ctx.arc(x+s*r*0.3, y-r*0.1, r*0.16, 0, 7); ctx.fill(); }); ctx.fillStyle = "#1E1B3A"; [-1,1].forEach(s=>{ ctx.beginPath(); ctx.arc(x+s*r*0.3, y-r*0.08, r*0.08, 0, 7); ctx.fill(); }); ctx.strokeStyle = "#1E1B3A"; ctx.lineWidth = Math.max(2, r*0.05); ctx.beginPath(); ctx.arc(x, y+r*0.12, r*0.22, 0.2, Math.PI-0.2); ctx.stroke(); }
+  function decorate(ctx, sp, x, y, r, base){
+    ctx.save(); shapePath(ctx, sp.shape || "round", x, y, r); ctx.clip();
+    const pc = sp.colors[1] ? COLORS[sp.colors[1]] : shadeHex(base === "rainbow" ? "#FFFFFF" : base, base === "#2B2B2B" ? 0.55 : -0.35);
+    if (sp.pattern === "spots"){ ctx.fillStyle = pc === "rainbow" ? "#FFFFFF" : pc; const rnd = mulberry(3); for (let i=0;i<14;i++){ ctx.beginPath(); ctx.arc(x-r+rnd()*2*r, y-r+rnd()*2*r, r*0.09+rnd()*r*0.06, 0, 7); ctx.fill(); } }
+    if (sp.pattern === "stripes" || sp.pattern === "zigzag"){ ctx.strokeStyle = pc === "rainbow" ? "#FFFFFF" : pc; ctx.lineWidth = r*0.12; for (let k=-3;k<=3;k++){ ctx.beginPath(); if (sp.pattern === "zigzag"){ for (let j=0;j<=8;j++) ctx.lineTo(x-r+j*r/4, y+k*r*0.32 + (j%2 ? r*0.1 : -r*0.1)); } else { ctx.moveTo(x-r*1.3, y+k*r*0.32); ctx.lineTo(x+r*1.3, y+k*r*0.32); } ctx.stroke(); } }
+    if (sp.feats.has("seeds")){ ctx.fillStyle = base === "#2B2B2B" ? "#FFE082" : "#3E2723"; for (let i=0;i<10;i++){ const a = i*0.63, d = r*(0.35+0.25*(i%2)); ctx.beginPath(); ctx.ellipse(x+Math.cos(a)*d, y+Math.sin(a)*d, r*0.05, r*0.09, a, 0, 7); ctx.fill(); } }
+    ctx.restore();
+  }
+  function fruit(ctx, sp, x, y, r, F){
+    const col = COLORS[sp.colors[0]] || "#E53935";
+    if (sp.feats.has("glow") || F.neon){ ctx.shadowColor = col === "rainbow" ? "#FFEB3B" : col; ctx.shadowBlur = r*0.6; }
+    shapePath(ctx, sp.shape || "round", x, y, r); ctx.fillStyle = fillFor(ctx, col, x, y, r, F.shade); ctx.fill(); ctx.shadowBlur = 0;
+    decorate(ctx, sp, x, y, r, col);
+    if (F.outline){ shapePath(ctx, sp.shape || "round", x, y, r); ctx.strokeStyle = "#1E1B3A"; ctx.lineWidth = Math.max(3, r*0.06); ctx.stroke(); }
+    const topY = sp.shape === "long" ? y - r*0.55 : sp.shape === "rectangle" ? y - r*0.72 : sp.shape === "square" ? y - r*0.85 : sp.shape === "heart" ? y - r*0.45 : y - r;
+    ctx.strokeStyle = "#5D4037"; ctx.lineWidth = Math.max(3, r*0.07); ctx.beginPath(); ctx.moveTo(x, topY+2); ctx.quadraticCurveTo(x+r*0.05, topY - r*0.25, x+r*0.12, topY - r*0.32); ctx.stroke();
+    if (!/\bno leaf\b/.test(F.text)){ ctx.fillStyle = "#43A047"; ctx.beginPath(); ctx.ellipse(x+r*0.32, topY - r*0.2, r*0.28, r*0.12, -0.5, 0, 7); ctx.fill(); if (F.outline){ ctx.strokeStyle = "#1E1B3A"; ctx.lineWidth = 2; ctx.stroke(); } }
+    if (sp.feats.has("face")) face(ctx, x, y, r);
+    extras(ctx, sp, x, y, r, F);
+  }
+  function creature(ctx, sp, x, y, r, F){
+    const col = COLORS[sp.colors[0]] || "#7E57C2";
+    if (sp.feats.has("wings")){ ctx.fillStyle = sp.colors[1] ? COLORS[sp.colors[1]] : "rgba(255,255,255,.85)"; [-1,1].forEach(s=>{ ctx.beginPath(); ctx.ellipse(x+s*r*1.05, y-r*0.35, r*0.75, r*0.35, s*-0.5, 0, 7); ctx.fill(); if (F.outline){ ctx.strokeStyle = "#1E1B3A"; ctx.lineWidth = 3; ctx.stroke(); } }); }
+    if (sp.feats.has("legs")){ ctx.strokeStyle = shadeHex(col === "rainbow" ? "#7E57C2" : col, -0.4); ctx.lineWidth = r*0.14; [-0.45,-0.15,0.15,0.45].forEach(o=>{ ctx.beginPath(); ctx.moveTo(x+o*r, y+r*0.6); ctx.lineTo(x+o*r*1.1, y+r*1.15); ctx.stroke(); }); }
+    if (sp.feats.has("tail")){ ctx.strokeStyle = col === "rainbow" ? "#8E24AA" : col; ctx.lineWidth = r*0.14; ctx.beginPath(); ctx.moveTo(x+r*0.8, y+r*0.3); ctx.quadraticCurveTo(x+r*1.6, y+r*0.2, x+r*1.5, y-r*0.5); ctx.stroke(); }
+    if (sp.feats.has("fins")){ ctx.fillStyle = shadeHex(col === "rainbow" ? "#1E88E5" : col, 0.3); [-1,1].forEach(s=>{ ctx.beginPath(); ctx.moveTo(x+s*r*0.9, y); ctx.lineTo(x+s*r*1.5, y-r*0.35); ctx.lineTo(x+s*r*1.45, y+r*0.35); ctx.fill(); }); }
+    if (sp.feats.has("glow") || F.neon){ ctx.shadowColor = col === "rainbow" ? "#FFEB3B" : col; ctx.shadowBlur = r*0.6; }
+    shapePath(ctx, sp.shape || "oval", x, y, r); ctx.fillStyle = fillFor(ctx, col, x, y, r, F.shade); ctx.fill(); ctx.shadowBlur = 0;
+    decorate(ctx, sp, x, y, r, col === "rainbow" ? "#7E57C2" : col);
+    if (sp.feats.has("fur")){ ctx.strokeStyle = shadeHex(col === "rainbow" ? "#7E57C2" : col, -0.3); ctx.lineWidth = 2; for (let a=0;a<6.28;a+=0.25){ ctx.beginPath(); ctx.moveTo(x+Math.cos(a)*r*0.95, y+Math.sin(a)*r*0.95); ctx.lineTo(x+Math.cos(a)*r*1.12, y+Math.sin(a)*r*1.12); ctx.stroke(); } }
+    if (sp.feats.has("spikes")){ ctx.fillStyle = "#FFFFFF"; for (let i=-2;i<=2;i++){ const bx = x+i*r*0.3; ctx.beginPath(); ctx.moveTo(bx-r*0.12, y-r*0.88); ctx.lineTo(bx, y-r*1.22); ctx.lineTo(bx+r*0.12, y-r*0.88); ctx.fill(); } }
+    if (sp.feats.has("horns")){ ctx.fillStyle = "#FFE0B2"; ctx.strokeStyle = "#5D4037"; ctx.lineWidth = 2; [-1,1].forEach(s=>{ ctx.beginPath(); ctx.moveTo(x+s*r*0.25, y-r*0.85); ctx.lineTo(x+s*r*0.6, y-r*1.5); ctx.lineTo(x+s*r*0.62, y-r*0.68); ctx.closePath(); ctx.fill(); ctx.stroke(); }); }
+    if (F.outline){ shapePath(ctx, sp.shape || "oval", x, y, r); ctx.strokeStyle = "#1E1B3A"; ctx.lineWidth = Math.max(3, r*0.06); ctx.stroke(); }
+    face(ctx, x, y, r);
+    extras(ctx, sp, x, y, r, F);
+  }
+  function extras(ctx, sp, x, y, r){
+    ctx.fillStyle = "#000000"; ctx.globalAlpha = 1;
+    sp.props.forEach((e,k)=>{ ctx.font = Math.round(r*0.6) + "px 'Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(e, x + r*(0.95 + k*0.1), y + r*(0.55 - k*0.6)); });
+    if (sp.feats.has("crown")){ ctx.font = Math.round(r*0.7) + "px serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("👑", x, y - r*1.15); }
+    if (sp.feats.has("hat")){ ctx.font = Math.round(r*0.7) + "px serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("🎩", x, y - r*1.15); }
+  }
+  const TONES = ["\u{1F3FB}","\u{1F3FD}","\u{1F3FF}","\u{1F3FC}","\u{1F3FE}","\u{1F3FB}"];
+  function person(i, sp){
+    const job = JOBS[sp.job] || "", suffix = job === "⚽" ? "" : job ? "‍" + job : "";
+    const t = /\b(ages|old|elderly)\b/.test(sp.textLower) && sp.diverse && i === 3;
+    let base = "\u{1F9D1}";
+    if (sp.diverse){ base = i % 2 ? "\u{1F468}" : "\u{1F469}"; }
+    else if (/\b(women|woman|girls?)\b/.test(sp.textLower)) base = "\u{1F469}";
+    else if (/\b(men|man|boys?)\b/.test(sp.textLower)) base = "\u{1F468}";
+    if (t) base = i % 2 ? "\u{1F474}" : "\u{1F475}";
+    const tone = sp.diverse ? TONES[i % TONES.length] : "";
+    return t ? base + tone : base + tone + suffix;
+  }
+  function draw(canvas, text, fallback){
+    const W = canvas.width, H = canvas.height, ctx = canvas.getContext("2d");
+    const sp = parse(text, fallback); sp.textLower = text.toLowerCase();
+    const F = {outline: sp.style === "cartoon" || sp.style === "paper", shade: sp.style === "3d" || !sp.style || sp.style === "watercolour", neon: sp.style === "neon", text: sp.textLower};
+    const off = document.createElement("canvas"); off.width = W; off.height = H; const c = off.getContext("2d");
+    const gy = background(c, W, H, sp);
+    let zoom = sp.camera === "close" ? 1.55 : sp.camera === "wide" ? 0.6 : sp.camera === "below" ? 1.2 : 1;
+    let n = sp.subject === "fruit" || sp.subject === "creature" ? Math.min(sp.count, 4) : Math.min(sp.count, 6);
+    const blob = sp.subject === "fruit" || sp.subject === "creature";
+    const r = Math.max(W/640, 0.62) * Math.min(120, (blob ? 70 : 62) * sp.size * zoom * (n > 1 ? Math.max(blob ? 0.55 : 0.62, (blob ? 1.4 : 2.2)/n) : 1));
+    const half = (sp.subject === "fruit" || sp.subject === "creature") ? ({rectangle:0.72, long:0.45, square:0.85, heart:0.85, crescent:0.9}[sp.shape] || 1) : 1;
+    const baseY = sp.camera === "below" ? gy + 10 : sp.camera === "above" ? H*0.6 : (sp.setting === "sky" || sp.setting === "space" || sp.setting === "sea") ? H*0.5 : gy - r*0.55*half;
+    if (!sp.subject){
+      c.fillStyle = "rgba(30,27,58,.55)"; c.fillRect(0, H/2-34, W, 68); c.fillStyle = "#FFFFFF"; c.font = "600 22px Fredoka, Arial, sans-serif"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText("Tell me WHAT to draw: a fruit, a cat, a robot…", W/2, H/2);
+    } else {
+      for (let i=0;i<n;i++){
+        const x = n === 1 ? W/2 : W*0.14 + i*(W*0.72)/(n-1), y = baseY + (n > 1 && i%2 ? 8 : 0);
+        if (sp.camera === "above"){ c.fillStyle = "rgba(0,0,0,.18)"; c.beginPath(); c.ellipse(x+8, y+r*0.9, r*0.9, r*0.25, 0, 0, 7); c.fill(); }
+        else { c.fillStyle = "rgba(0,0,0,.15)"; c.beginPath(); c.ellipse(x, Math.min(H-6, y + r*(half + 0.05)), r*(half > 0.8 ? 0.8 : 1.1), r*0.16, 0, 0, 7); c.fill(); }
+        if (sp.subject === "fruit") fruit(c, sp, x, y, r, F);
+        else if (sp.subject === "creature") creature(c, sp, x, y, r, F);
+        else {
+          const glyph = sp.subject === "people" ? person(i, sp) : EMOJI[sp.subject];
+          c.font = Math.round(r*1.9) + "px 'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillStyle = "#000000"; c.globalAlpha = 1;
+          if (sp.feats.has("glow") || F.neon){ c.shadowColor = "#FFEB3B"; c.shadowBlur = 30; }
+          c.fillText(glyph, x, y); c.shadowBlur = 0;
+          if (sp.subject === "people" && JOBS[sp.job] === "⚽"){ c.fillStyle = "#000000"; c.font = Math.round(r*0.7) + "px sans-serif"; c.fillText("⚽", x + r*0.7, y + r*0.7); }
+          extras(c, sp, x, y, r);
+        }
+      }
+    }
+    // style pass
+    ctx.save(); ctx.clearRect(0,0,W,H); ctx.imageSmoothingEnabled = true;
+    if (sp.style === "pixel"){ const s = document.createElement("canvas"); s.width = Math.round(W/9); s.height = Math.round(H/9); const sc = s.getContext("2d"); sc.drawImage(off, 0, 0, s.width, s.height); ctx.imageSmoothingEnabled = false; ctx.drawImage(s, 0, 0, W, H); }
+    else {
+      ctx.filter = sp.style === "sketch" ? "grayscale(1) contrast(1.6) brightness(1.1)" : sp.style === "watercolour" ? "saturate(1.25) blur(1.4px)" : sp.style === "paper" ? "saturate(1.1)" : sp.light === "fog" ? "blur(1px) brightness(1.05)" : "none";
+      ctx.drawImage(off, 0, 0); ctx.filter = "none";
+      if (sp.style === "watercolour"){ const rnd = mulberry(11); for (let i=0;i<900;i++){ ctx.fillStyle = "rgba(255,255,255," + (rnd()*0.12) + ")"; ctx.fillRect(rnd()*W, rnd()*H, 3, 3); } }
+      if (sp.style === "sketch"){ ctx.strokeStyle = "rgba(0,0,0,.08)"; ctx.lineWidth = 1; for (let i=-H;i<W;i+=7){ ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i+H,H); ctx.stroke(); } }
+    }
+    ctx.restore();
+    return sp;
+  }
+  return {parse, understood, draw};
+})();
+function painterBox(getText, fallback){
+  const cv = h("canvas", {width:"640", height:"400", class:"painter", role:"img", "aria-label":"Picture drawn from your prompt"});
+  const chips = h("div", {class:"chips"}), unk = h("div");
+  function update(){
+    const t = getText(); const sp = PP.draw(cv, t, fallback);
+    chips.replaceChildren(...PP.understood(sp).map(([k,v]) => h("span", {class:"pill" + (v ? " done" : "")}, v ? k + ": " + v : k + ": ?")));
+    unk.replaceChildren(sp.fixed.length ? h("div", {class:"fb info"}, "I guessed what you meant: " + sp.fixed.map(([a,b])=>"“" + a + "” → “" + b + "”").join(", "), h("span", null, "Spelling mistake? A real AI also guesses the closest word it knows, and sometimes it guesses wrong!")) : "", sp.unknown.length ? h("div", {class:"fb info"}, "Words I didn't understand at all: " + sp.unknown.join(", "), h("span", null, "Check the spelling, or describe it with simpler words. A real AI also guesses when your words are unclear.")) : "");
+    cv.setAttribute("aria-label", "Picture drawn from: " + t.slice(0,140));
+  }
+  let tm; const later = () => { clearTimeout(tm); tm = setTimeout(update, 180); };
+  return {el: h("div", {class:"stage", style:"gap:10px"}, cv, h("p", {class:"small"}, "Prompt Painter draws your words with simple rules, like a tiny image AI. It only knows a few hundred words. Real image AIs learned from millions of pictures."), chips, unk), update, later};
+}
+
+/* ---------- creative prompt box (every mission) ---------- */
+const IMG = {
+  style:/\b(cartoon|watercolou?r|comic|3d|photo|realistic|painting|pixel|sketch|drawing|clay|paper|anime|oil|pencil|cut-?out|poster|art|style)\b/i,
+  light:/\b(light|lights|sunset|sunrise|night|glow\w*|bright|dark|golden|neon|calm|scary|happy|cosy|cozy|warm|cold|mysterious|exciting|soft|moonlit)\b/i,
+  camera:/\b(close-?up|close up|wide|from below|from above|bird'?s[- ]eye|zoom\w*|shot|view|angle)\b/i,
+  setting:/\b(in|on|at|inside|under|above|near)\s+(a|an|the|my|our)?\s*\w+/i
+};
+function voiceFrom(d){
+  const t = d.toLowerCase(), cnt = re => (t.match(re) || []).length;
+  const low = cnt(/\b(old|deep|giant|big|huge|wise|grandpa|grandfather|monster|bear|low|serious|king|dragon)\b/g);
+  const high = cnt(/\b(tiny|small|little|squeak\w*|mouse|baby|kid|child|high|chipmunk|bird|kitten|fairy|cheerful)\b/g);
+  const slow = cnt(/\b(slow\w*|calm|sleepy|tired|old|wise|gentle|relaxed|bored)\b/g);
+  const fast = cnt(/\b(fast|quick\w*|excited|hurry|energetic|crazy|happy)\b/g);
+  let pitch = Math.min(2, Math.max(0.3, 1 + 0.4*high - 0.35*low)), rate = Math.min(1.7, Math.max(0.5, 1 + 0.25*fast - 0.18*slow));
+  if (/\b(robot|machine|computer|alien)\b/.test(t)){ pitch = Math.max(0.3, pitch*0.8); rate *= 0.95; }
+  const lang = /arab|lebanese|عرب/.test(t) ? "ar" : /french|fran/.test(t) ? "fr" : "en";
+  return {pitch:+pitch.toFixed(2), rate:+rate.toFixed(2), lang, pitchWord: pitch < 0.85 ? "low" : pitch > 1.15 ? "high" : "normal", rateWord: rate < 0.9 ? "slow" : rate > 1.1 ? "fast" : "normal"};
+}
+function cleanSvg(txt){
+  const m = String(txt||"").match(/<svg[\s\S]*<\/svg>/i); if (!m) return null;
+  let svg = m[0].replace(/<script[\s\S]*?<\/script>/gi,"").replace(/<foreignObject[\s\S]*?<\/foreignObject>/gi,"").replace(/\son\w+\s*=\s*("[^"]*"|'[^']*')/gi,"").replace(/\s(xlink:)?href\s*=\s*("[^"]*"|'[^']*')/gi,"");
+  if (!/xmlns=/.test(svg)) svg = svg.replace(/<svg/i, '<svg xmlns="http://www.w3.org/2000/svg"');
+  return svg;
+}
+
+/* ---------- Teach the AI your new fruit (Mission 3 create) ---------- */
+function teachFruit(getText, keep){
+  const MEM0 = [{name:"apple", colour:"red", shape:"round", size:"medium", base:true},{name:"banana", colour:"yellow", shape:"long", size:"medium", base:true},{name:"orange", colour:"orange", shape:"round", size:"medium", base:true}];
+  if (!Array.isArray(S.fruits)) S.fruits = [];
+  const status = h("div"), alertEl = h("div"), memEl = h("div"), testEl = h("div"), lesson = h("div");
+  let cur = null, last = null, opened = 0;
+  const sizeWord = v => v < 0.8 ? "small" : v > 1 ? "big" : "medium";
+  const desc = f => "a " + (f.size === "medium" ? "" : f.size + " ") + f.colour + " " + f.shape + " fruit";
+  const clue = f => f.colour + " · " + f.shape + " · " + f.size;
+  const same = (a,b) => a.colour === b.colour && a.shape === b.shape && a.size === b.size;
+  const memory = () => MEM0.concat(S.fruits);
+  function refresh(){
+    const sp = PP.parse(getText(), "fruit");
+    cur = {name: sp.name, colour: sp.colors[0] || null, shape: sp.shape || null, size: sizeWord(sp.size)};
+    const miss = [];
+    if (!cur.name) miss.push("a name for your fruit (write “…is a zoomba fruit” or “called zoomba”)");
+    if (!cur.colour) miss.push("a colour");
+    if (!cur.shape) miss.push("a shape");
+    if (miss.length){ status.replaceChildren(h("p", {class:"small"}, "To teach the AI your new fruit, your prompt needs: " + miss.join(", ") + ".")); return; }
+    const known = memory().some(f => f.name === cur.name && same(f, cur));
+    status.replaceChildren(h("div", {class:"row"},
+      h("button", {class:"btn sun", onclick:teach, disabled: known ? "" : null}, known ? "✓ The AI already has this " + cur.name : "🧠 Teach the AI: this is a " + cur.name),
+      h("span", {class:"small"}, "Clues it will learn: " + clue(cur))));
+  }
+  let tm; const later = () => { clearTimeout(tm); tm = setTimeout(refresh, 200); };
+  function store(f, removeWhere){
+    if (removeWhere) S.fruits = S.fruits.filter(x => !removeWhere(x));
+    S.fruits = S.fruits.concat([{name:f.name, colour:f.colour, shape:f.shape, size:f.size}]).slice(-12);
+    save(); last = f; alertEl.replaceChildren(); showMemory(); showTests(); refresh();
+  }
+  function teach(){
+    if (!cur || !cur.name || !cur.colour || !cur.shape) return;
+    const f = Object.assign({}, cur); if (keep) keep();
+    const clash = memory().find(x => same(x, f) && x.name !== f.name);
+    const older = memory().filter(x => x.name === f.name && !same(x, f));
+    if (clash){
+      alertEl.replaceChildren(h("div", {class:"fb no", style:"margin-top:14px"}, "Contradiction! Same clues, two different names.",
+        h("span", null, "The AI already learned that " + clue(f) + " is " + (clash.base ? "an " : "a ") + clash.name + ". Now you say the same clues are a " + f.name + ". The AI only sees clues, so it can't tell them apart. Real AIs get confused the same way when their training data disagrees."),
+        h("div", {class:"row", style:"margin-top:10px"},
+          clash.base ? null : h("button", {class:"btn sm", onclick:()=>store(f, x => x.name === clash.name && same(x, f))}, "Fix it: it's a " + f.name + ", not a " + clash.name),
+          h("button", {class:"btn sm alt", onclick:()=>store(f)}, "Teach it anyway (and watch the AI get confused)"),
+          h("button", {class:"btn sm alt", onclick:()=>alertEl.replaceChildren()}, "Cancel: I'll change my clues"))));
+      return;
+    }
+    if (older.length){
+      alertEl.replaceChildren(h("div", {class:"fb info", style:"margin-top:14px"}, "Wait! You taught me a " + f.name + " before, and it looked different.",
+        h("span", null, "Before: " + older.map(clue).join("  /  ") + ".  Now: " + clue(f) + ". Which is true?"),
+        h("div", {class:"row", style:"margin-top:10px"},
+          h("button", {class:"btn sm", onclick:()=>store(f)}, "A " + f.name + " can look different: keep both examples"),
+          h("button", {class:"btn sm alt", onclick:()=>store(f, x => x.name === f.name)}, "I made a mistake: forget the old " + f.name))));
+      return;
+    }
+    store(f);
+  }
+  function summary(name){
+    const ex = memory().filter(x => x.name === name); if (ex.length < 2) return null;
+    const fixed = ["colour","shape","size"].filter(k => ex.every(x => x[k] === ex[0][k])), vary = ["colour","shape","size"].filter(k => !fixed.includes(k));
+    return "From your " + ex.length + " examples, the AI thinks a " + name + " " + (fixed.length ? "is always " + fixed.map(k => ex[0][k] + " (" + k + ")").join(" and ") : "can be anything… it found no clue in common!") + (vary.length && fixed.length ? ", but its " + vary.join(" and ") + " can change." : ".");
+  }
+  function showMemory(){
+    const mem = memory(), count = {};
+    const cv = h("canvas", {width:"300", height:"190", class:"painter", style:"max-width:220px"}); PP.draw(cv, desc(last), "fruit");
+    const sums = [...new Set(S.fruits.map(x => x.name))].map(summary).filter(Boolean);
+    memEl.replaceChildren(h("div", {class:"panel", style:"margin-top:14px"},
+      h("p", {class:"eyebrow"}, "Step 2 · The AI's memory"),
+      h("h3", null, "The AI learned: " + last.name),
+      h("p", {class:"small"}, "It never saw a " + last.name + " before. All it keeps are the clues of every example you taught it."),
+      h("div", {class:"row", style:"align-items:flex-start;gap:16px"}, cv,
+        h("div", {class:"tbl", style:"flex:1;min-width:240px"}, h("table", null,
+          h("tr", null, ...["Example","Colour","Shape","Size"].map(t=>h("th", null, t))),
+          ...mem.map(f => { count[f.name] = (count[f.name]||0) + 1; const isNew = f.name === last.name && same(f, last) && !f.base;
+            return h("tr", {style: isNew ? "background:var(--good-bg);font-weight:800" : !f.base ? "background:var(--chip)" : null}, h("td", null, f.name + (count[f.name] > 1 || mem.filter(x=>x.name===f.name).length > 1 ? " #" + count[f.name] : "") + (isNew ? "  ← NEW" : f.base ? "" : "  (yours)")), h("td", null, f.colour), h("td", null, f.shape), h("td", null, f.size)); })))),
+      ...sums.map(t => h("div", {class:"fb info", style:"margin-top:10px"}, t)),
+      ...(() => { const out = [], m = memory(); m.forEach((x,i) => m.slice(i+1).forEach(y => { if (same(x,y) && x.name !== y.name) out.push(h("div", {class:"fb no", style:"margin-top:10px"}, "⚠ Contradiction in the memory: a " + x.name + " and a " + y.name + " have exactly the same clues (" + clue(x) + "). The AI will never be able to tell them apart.")); })); return out; })(),
+      h("div", {class:"row", style:"margin-top:10px"}, h("button", {class:"btn sm alt", onclick:()=>{ S.fruits = []; save(); last = null; memEl.replaceChildren(); testEl.replaceChildren(); lesson.replaceChildren(); refresh(); toast("The AI forgot your fruits."); }}, "Make the AI forget my fruits"))));
+  }
+  function showTests(){
+    opened = 0; lesson.replaceChildren();
+    const L = last;
+    const COLS = ["red","yellow","green","blue","purple","black","orange","pink"].filter(c => c !== L.colour);
+    const SHP = ["round","long","star","heart","square"].filter(x => x !== L.shape);
+    const otherCol = COLS.find(c => !["red","yellow","orange"].includes(c)) || COLS[0];
+    const tests = [
+      Object.assign({}, L, {size: L.size === "small" ? "big" : "small"}),
+      Object.assign({}, L, {shape: SHP[0] === "round" && L.colour === "red" ? SHP[1] : SHP[0]}),
+      Object.assign({}, L),
+      L.colour === "red" && L.shape === "round" ? {colour:"yellow", shape:"long", size:"medium"} : {colour:"red", shape:"round", size:"medium"},
+      Object.assign({}, L, {colour: otherCol})
+    ];
+    testEl.replaceChildren(h("div", {class:"panel", style:"margin-top:14px"},
+      h("p", {class:"eyebrow"}, "Step 3 · Test the AI"),
+      h("h3", null, "Mystery fruits! Is it a " + L.name + "?"),
+      h("p", {class:"small"}, "Guess first, then click “Ask the AI” to see how it compares the clues with every example in its memory."),
+      h("div", {class:"mystery"}, ...tests.map((f,i) => mysteryCard(f, i)))));
+  }
+  function mysteryCard(f, i){
+    const cv = h("canvas", {width:"300", height:"190", class:"painter"}); PP.draw(cv, desc(f), "fruit");
+    const res = h("div");
+    const btn = h("button", {class:"btn sm", onclick:()=>{
+      btn.remove();
+      const mem = memory(), seen = {};
+      const scored = mem.map(m => { seen[m.name] = (seen[m.name]||0) + 1; const c = {colour: m.colour === f.colour, shape: m.shape === f.shape, size: m.size === f.size};
+        return {m, label: m.name + (mem.filter(x=>x.name===m.name).length > 1 ? " #" + seen[m.name] : ""), c, n: Object.values(c).filter(Boolean).length}; }).sort((a,b) => b.n - a.n);
+      const best = scored[0].n, top = scored.filter(x => x.n === best), names = [...new Set(top.map(x => x.m.name))];
+      const mark = b => b ? "✓" : "✗";
+      const verdict = best <= 1 ? "Not sure… the closest is " + names.join(" or ") + " with only " + best + " of 3 clues." :
+        names.length > 1 ? "Confused! " + names.join(" or ") + ": " + best + " of 3 clues each." :
+        "AI says: " + names[0] + "! (" + best + " of 3 clues match" + (best === 2 ? ", so it's guessing" : "") + ")";
+      res.replaceChildren(h("div", {class:"tbl"}, h("table", null,
+        h("tr", null, ...["Example","Colour","Shape","Size","Score"].map(t=>h("th", null, t))),
+        ...scored.slice(0, Math.max(2, top.length)).map(x => h("tr", null, h("td", null, x.label), h("td", null, mark(x.c.colour)), h("td", null, mark(x.c.shape)), h("td", null, mark(x.c.size)), h("td", null, x.n + " of 3"))))),
+        h("div", {class: names.length > 1 || best <= 1 ? "fb info" : "fb ok"}, verdict));
+      opened++; if (opened === 5) lesson.replaceChildren(h("div", {class:"fb ok", style:"margin-top:14px"}, "That's how an AI learns a new thing.",
+        h("span", null, "Before you taught it, the AI had never heard of a " + last.name + ". It doesn't “know” fruit: it only compares clues with your examples. Give it examples that disagree, and it gets confused. Give it many good examples, and it learns what really matters.")));
+    }}, "Ask the AI");
+    return h("div", {class:"mcard"}, h("p", {class:"small", style:"margin:0 0 6px;font-weight:800"}, "Mystery fruit " + (i+1)), cv, h("p", {class:"small", style:"margin:6px 0"}, clue(f)), btn, res);
+  }
+  if (S.fruits.length){ last = S.fruits[S.fruits.length-1]; showMemory(); showTests(); }
+  const el = h("div", {class:"teach"}, h("div", {class:"panel", style:"margin-top:14px"}, h("p", {class:"eyebrow"}, "Step 1 · Teach it"), h("h3", null, "Teach the AI your new fruit"), status, alertEl), memEl, testEl, lesson);
+  return {el, refresh, later};
+}
+function createBox(m){
+  const c = m.create, kindName = {text:"Text prompt", image:"Image prompt", voice:"Voice prompt"}[c.kind];
+  const ta = h("textarea", {rows:"3", id:"cr-" + m.id, placeholder:"Example: " + c.ex, "aria-label":"Your " + kindName.toLowerCase()});
+  const say = c.kind === "voice" ? h("input", {class:"field", id:"say-" + m.id, value:c.say, maxlength:"140", "aria-label":"What the voice says"}) : null;
+  const hints = h("div", {class:"chips"}), warn = h("div"), out = h("div"), aiRow = h("div", {class:"row"});
+  const words = t => t.trim().split(/\s+/).filter(Boolean).length;
+  function check(){
+    const t = ta.value, n = words(t); let parts;
+    if (c.kind === "image") parts = [["Subject", n >= 3],["Setting", IMG.setting.test(t)],["Style", IMG.style.test(t)],["Light & mood", IMG.light.test(t)],["Camera", IMG.camera.test(t)]];
+    else if (c.kind === "text"){ const p = promptScore(t); parts = [["Role", p.role],["Task", p.task],["Context", p.context],["Format", p.format]]; }
+    else { const v = voiceFrom(t); parts = [["Pitch: " + v.pitchWord, n >= 2 && v.pitchWord !== "normal"],["Speed: " + v.rateWord, n >= 2 && v.rateWord !== "normal"],["Language: " + v.lang.toUpperCase(), n >= 2]]; }
+    hints.replaceChildren(...parts.map(([l,on]) => h("span", {class:"pill" + (on ? " done" : "")}, (on ? "✓ " : "") + l)));
+    const priv = CHECK.privacy.test(t), cheat = CHECK.cheat.test(t);
+    warn.replaceChildren(priv ? h("div", {class:"fb no"}, "Remove personal information.", h("span", null, "No names, addresses, phone numbers or passwords in a prompt.")) : cheat ? h("div", {class:"fb no"}, "Red light: this asks AI to think for you.", h("span", null, "Ask it to explain or quiz you instead.")) : "");
+    return {n, priv, cheat, score: parts.filter(p=>p[1]).length, of: parts.length};
+  }
+  function keep(){
+    const r = check(), min = c.kind === "voice" ? 3 : 8;
+    if (r.priv || r.cheat){ toast("Fix the warning first."); return false; }
+    if (r.n < min){ toast("Write a bit more: at least " + min + " words."); return false; }
+    const text = ta.value.trim().slice(0,400) + (say ? " → “" + say.value.trim().slice(0,140) + "”" : "");
+    S.prompts = [{m:m.id, kind:c.kind, t:text}, ...S.prompts.filter(p => !(p.m === m.id && p.t === text))].slice(0,40);
+    const first = !S.create[m.id]; S.create[m.id] = true; save();
+    toast(first ? "Saved! Creative star earned ★" : "Saved to your prompt gallery");
+    return true;
+  }
+  async function askText(){
+    if (!keep()) return; const sample = await getSample(); if (!sample) return;
+    out.replaceChildren(h("div", {class:"answer"}, "Thinking…")); const box = out.firstChild;
+    const wrapped = "You are the AI inside a school AI lab for 12-year-old students. Answer the student's prompt below safely, kindly and briefly (under 120 words), in simple English. If it asks for personal information, anything unsafe, or for you to do their homework, refuse kindly and suggest a better way to learn. Do not use markdown symbols.\n\nStudent's prompt:\n<<<\n" + ta.value.trim().slice(0,1200) + "\n>>>";
+    try { await sample(wrapped, {modelTier:"quick", cache:false, onText:({text})=>{ box.textContent = text; }}); }
+    catch(e){ box.textContent = (e && e.text) || errCopy(e && e.code); }
+  }
+  let myLine = null;
+  async function recLine(btn){
+    btn.disabled = true;
+    try { myLine = await VT.record(4000, l => { btn.textContent = l > 0 ? "● Recording… " + Math.ceil(l/1000) : "Processing…"; }); toast("Got it! Now describe the voice and press ▶ Make the voice."); }
+    catch(e){ out.replaceChildren(h("div", {class:"fb no"}, "Microphone problem", h("span", null, VT.errText(e && e.code)))); }
+    btn.disabled = false; btn.textContent = myLine ? "🎙 Record my line again" : "🎙 Say the line with MY voice";
+  }
+  function speakIt(){
+    if (!keep()) return; const synth = window.speechSynthesis;
+    const v = voiceFrom(ta.value);
+    if (myLine){
+      const t = ta.value.toLowerCase(), fx = {rate: Math.max(0.5, Math.min(2, v.pitch*0.65 + v.rate*0.35)), robot: /robot|machine|alien|computer|metal/.test(t), echo: /cave|echo|space|ghost|giant|monster|castle|hall/.test(t)};
+      out.replaceChildren(h("div", {class:"fb info"}, "Your OWN voice, changed by your words: speed/pitch ×" + fx.rate.toFixed(2) + (fx.robot ? " + robot" : "") + (fx.echo ? " + echo" : "") + ".",
+        h("span", null, "Try “a giant slow monster in a cave” or “a tiny fast robot”. Real AI voice tools can do this much better, and can even copy someone else, which is why we never clone a voice without permission.")));
+      VT.play(myLine, fx); return;
+    }
+    out.replaceChildren(h("div", {class:"fb info"}, "Your words became: pitch " + v.pitch + " (" + v.pitchWord + "), speed " + v.rate + " (" + v.rateWord + "), language " + v.lang.toUpperCase() + ".",
+      h("span", null, "This app turns a few words into settings with simple rules. Real AI voice tools understand much longer descriptions, and can copy real people, which is why we never clone a voice without permission.")));
+    if (!synth){ out.append(h("p", {class:"small"}, "This browser can't speak. Try Chrome or Edge.")); return; }
+    const u = new SpeechSynthesisUtterance(say.value || "Hello!"); const vs = synth.getVoices().filter(x => (x.lang||"").toLowerCase().startsWith(v.lang));
+    if (vs[0]){ u.voice = vs[0]; u.lang = vs[0].lang; } else u.lang = v.lang; u.pitch = v.pitch; u.rate = v.rate; speakNow(u, noSound);
+  }
+  if (c.kind === "text") aiRow.append(h("button", {class:"btn", onclick:keep}, "Save to my gallery"));
+  if (c.kind === "image") aiRow.append(h("button", {class:"btn", onclick:keep}, "Save to my gallery"));
+  if (c.kind === "voice"){ const rb = h("button", {class:"btn alt", onclick:()=>recLine(rb)}, "🎙 Say the line with MY voice"); aiRow.append(h("button", {class:"btn", onclick:speakIt}, "▶ Make the voice"), rb); }
+  getSample().then(sm => { if (!sm) return;
+    if (c.kind === "text") aiRow.append(h("button", {class:"btn sun", onclick:askText}, "Ask the real AI"));
+  });
+  const painter = c.kind === "image" ? painterBox(()=>ta.value, c.paint || null) : null;
+  const teach = c.paint === "fruit" ? teachFruit(()=>ta.value, keep) : null;
+  ta.addEventListener("input", ()=>{ check(); if (painter) painter.later(); if (teach) teach.later(); });
+  const box = h("section", {class:"panel create"},
+    h("div", {class:"row", style:"justify-content:space-between"}, h("p", {class:"eyebrow"}, "Create · " + kindName), S.create[m.id] ? h("span", {class:"pill done"}, "★ Creative star earned") : h("span", {class:"pill new"}, "★ Earn a creative star")),
+    h("h2", {style:"font-size:26px"}, c.title),
+    h("p", null, c.task),
+    ta, say ? h("label", {class:"small", for:"say-" + m.id}, "What should the voice say?") : null, say,
+    hints, warn, painter ? painter.el : null, aiRow, out, teach ? teach.el : null);
+  check(); if (painter) setTimeout(painter.update, 0); if (teach) teach.refresh();
+  return box;
+}
+
+/* ---------- M1 Human or Machine ---------- */
+function m1(stage){
+  const A = [
+    {t:"Face unlock on a phone", a:"ai", why:"It learned your face from many pictures of it."},
+    {t:"A calculator", a:"no", why:"It follows fixed rules a person wrote. It never learns."},
+    {t:"Video suggestions on YouTube", a:"ai", why:"It learned from what millions of people watch."},
+    {t:"A microwave timer", a:"no", why:"It just counts down. Nothing to learn."},
+    {t:"A translation app", a:"ai", why:"It learned from huge amounts of translated text."},
+    {t:"Traffic lights on a fixed timer", a:"no", why:"Same rule every time, whatever happens."},
+    {t:"The spam filter in your email", a:"ai", why:"It learned what spam looks like from millions of emails."},
+    {t:"A chatbot that answers questions", a:"ai", why:"It learned language patterns from enormous amounts of text."}
+  ];
+  A.push({t:"A robot vacuum that learns the map of your room", a:"ai", why:"It learns the room's layout from its own sensors as it cleans."},
+         {t:"A digital alarm clock", a:"no", why:"It rings at the time you set. Nothing to learn."});
+  const deck = shuffle(A);
+  let i = 0, ok = 0; const marks = [];
+  const card = h("div", {class:"panel"});
+  const dots = h("div", {class:"dots", "aria-label":"Progress"});
+  stage.replaceChildren(dots, card);
+  function drawDots(){ dots.replaceChildren(...deck.map((_,k)=>h("i", {class: marks[k] ? marks[k] : k===i ? "now" : ""}))); }
+  function draw(){
+    drawDots();
+    if (i >= deck.length){ stage.replaceChildren(dots, endPanel("m1", ok/deck.length*100, ["You got " + ok + " out of " + deck.length + " right."])); return; }
+    const c = deck[i];
+    const opts = [["ai","It's AI"],["no","Not AI"]];
+    const fb = h("div");
+    const btns = opts.map(([v,l]) => h("button", {class:"btn" + (v==="no"||v==="yellow" ? " alt" : v==="green" ? " sun" : ""), onclick:()=>{
+      btns.forEach(b=>b.disabled = true);
+      const right = v === c.a; if (right) ok++; marks[i] = right ? "ok" : "no"; drawDots();
+      fb.replaceChildren(h("div", {class:"fb " + (right ? "ok" : "no")}, right ? "Correct!" : "Not quite.", h("span", null, c.why)),
+        h("div", {class:"row", style:"margin-top:12px"}, h("button", {class:"btn", onclick:()=>{ i++; draw(); }}, i === deck.length-1 ? "See my score" : "Next")));
+    }}, l));
+    card.replaceChildren(
+      h("p", {class:"eyebrow"}, "Card " + (i+1) + " of " + deck.length + " · Is it AI?"),
+      h("p", {class:"big"}, c.t),
+      h("p", {class:"small"}, "Ask yourself: does it learn from examples, or follow the same fixed rule every time?"),
+      h("div", {class:"row"}, btns), fb);
+  }
+  draw();
+}
+
+/* ---------- M2 Mini ChatGPT ---------- */
+function m2(stage){
+  const STORIES = {
+    "Football match":"Maya kicks the ball. The ball goes to Karim. Karim kicks the ball to the goal. The goal is big. Maya runs to the goal. The crowd sings.",
+    "Teta's kitchen":"Teta bakes bread. The bread is hot. Teta gives the bread to Sami. Sami eats the bread. The cat sees Sami. The cat eats the bread."
+  };
+  const ta = h("textarea", {id:"story", rows:"4", "aria-label":"Training text"}, STORIES["Football match"]);
+  const tableBox = h("div", {class:"counts"});
+  const gen = h("div", {class:"gen", "aria-live":"polite"});
+  const why = h("p", {class:"why"});
+  const ask = h("div");
+  const tally = h("p", {class:"small"});
+  let model = null, sentences = [], judged = 0, right = 0, foundH = false, busy = false;
+
+  function tokenize(t){ return t.toLowerCase().replace(/[!?]/g,".").replace(/[^a-z؀-ۿ'.\s]/g," ").replace(/\./g," . ").split(/\s+/).filter(Boolean); }
+  function train(){
+    const tk = tokenize(ta.value);
+    if (tk.filter(w=>w!==".").length < 6){ toast("Write a longer story first."); return; }
+    if (tk[tk.length-1] !== ".") tk.push(".");
+    const m = new Map(), starters = [];
+    tk.forEach((w,k)=>{ if (w === ".") return; if (k===0 || tk[k-1]===".") starters.push(w);
+      const n = tk[k+1]; if (!n) return; if (!m.has(w)) m.set(w, new Map()); const mm = m.get(w); mm.set(n, (mm.get(n)||0)+1); });
+    sentences = tk.join(" ").split(" . ").map(s=>s.replace(/ \.$/,"").trim()).filter(Boolean);
+    model = {m, starters};
+    tableBox.replaceChildren(...[...m.entries()].map(([w,mm]) => {
+      const tot = [...mm.values()].reduce((a,b)=>a+b,0);
+      return h("div", {class:"crow"}, h("b", null, "after “" + w + "”"),
+        ...[...mm.entries()].sort((a,b)=>b[1]-a[1]).map(([n,c]) => h("div", {class:"nx"}, h("span", {style:"min-width:64px"}, n === "." ? "(stop)" : n), h("span", {class:"b", style:"width:" + Math.round(c/tot*90) + "px"}), h("span", {class:"small"}, "×" + c))));
+    }));
+    genBtn.disabled = false; gen.replaceChildren(); why.textContent = "Model trained. This table IS the model. Now make it write.";
+  }
+  function pick(mm){ const tot = [...mm.values()].reduce((a,b)=>a+b,0); let r = Math.random()*tot; for (const [n,c] of mm){ r -= c; if (r < 0) return n; } return [...mm.keys()][0]; }
+  async function write(){
+    if (!model || busy) return; busy = true; genBtn.disabled = true; ask.replaceChildren(); gen.replaceChildren();
+    let w = model.starters[Math.floor(Math.random()*model.starters.length)], out = [w];
+    gen.append(h("span", null, w)); why.textContent = "Start word: “" + w + "”";
+    while (out.length < 14){
+      const mm = model.m.get(w); if (!mm) break;
+      await wait(650);
+      const n = pick(mm), tot = [...mm.values()].reduce((a,b)=>a+b,0);
+      why.textContent = "after “" + w + "”: " + [...mm.entries()].map(([k,c])=>(k==="."?"(stop)":k) + " " + Math.round(c/tot*100) + "%").join(" · ") + "  →  picked “" + (n==="."?"(stop)":n) + "”";
+      if (n === ".") break;
+      out.push(n); gen.append(h("span", null, n)); w = n;
+    }
+    gen.append(h("span", null, "."));
+    const s = out.join(" "), real = sentences.includes(s);
+    busy = false;
+    const answer = mine => {
+      judged++; const ok = mine === real; if (ok) right++; if (!real && ok) foundH = true;
+      ask.replaceChildren(h("div", {class:"fb " + (ok ? "ok" : "no")}, real ? "This sentence IS in the story." : "Hallucination! This never happened in the story.",
+        h("span", null, real ? "The model copied a real path through the story." : "Every word pair is from the story, so it sounds right. But the sentence is invented. That's exactly how a chatbot can be confidently wrong.")));
+      tally.textContent = "Judged: " + judged + " of 3 · correct: " + right + (foundH ? " · hallucination found ✓" : "");
+      if (judged >= 3) stage.append(endPanel("m2", right*25 + (foundH ? 25 : 0), ["You judged " + right + " of 3 correctly" + (foundH ? " and caught a hallucination." : ". Catch a hallucination for the last 25 XP.")]));
+      else genBtn.disabled = false;
+    };
+    ask.replaceChildren(h("p", {style:"font-weight:800"}, "Did this sentence happen in the story?"),
+      h("div", {class:"row"}, h("button", {class:"btn sun", onclick:()=>answer(true)}, "Yes, it's real"), h("button", {class:"btn alt", onclick:()=>answer(false)}, "No, it's made up")));
+  }
+  const genBtn = h("button", {class:"btn", disabled:true, onclick:write}, "Write a sentence");
+  stage.replaceChildren(
+    h("div", {class:"panel"},
+      h("p", {class:"eyebrow"}, "Step 1 · Training text"),
+      h("div", {class:"chips"}, Object.keys(STORIES).map(k => h("button", {class:"chip", onclick:()=>{ ta.value = STORIES[k]; model = null; genBtn.disabled = true; tableBox.replaceChildren(); }}, k))),
+      ta, h("p", {class:"small"}, "You can write your own story too. Short sentences that repeat words work best."),
+      h("div", {class:"row"}, h("button", {class:"btn", onclick:train}, "Train the model"))
+    ),
+    h("div", {class:"panel"}, h("p", {class:"eyebrow"}, "Step 2 · The model: what comes after each word"), tableBox),
+    h("div", {class:"panel deep"}, h("p", {class:"eyebrow", style:"color:var(--sun)"}, "Step 3 · Make it write"), gen, why, h("div", {class:"row"}, genBtn), ask, tally)
+  );
+  train();
+}
+
+/* ---------- fruit data (M3, M4) ---------- */
+const F = {
+  apple:{e:"🍎",n:"red apple",color:"red",shape:"round",size:"medium",y:true},
+  gapple:{e:"🍏",n:"green apple",color:"green",shape:"round",size:"medium",y:true},
+  cherry:{e:"🍒",n:"cherries",color:"red",shape:"round",size:"small",y:false},
+  straw:{e:"🍓",n:"strawberry",color:"red",shape:"heart",size:"small",y:false},
+  pear:{e:"🍐",n:"pear",color:"green",shape:"pear",size:"medium",y:false},
+  kiwi:{e:"🥝",n:"kiwi",color:"green",shape:"round",size:"small",y:false},
+  melon:{e:"🍈",n:"melon",color:"green",shape:"round",size:"large",y:false},
+  orange:{e:"🍊",n:"orange",color:"orange",shape:"round",size:"medium",y:false},
+  lemon:{e:"🍋",n:"lemon",color:"yellow",shape:"oval",size:"medium",y:false},
+  banana:{e:"🍌",n:"banana",color:"yellow",shape:"long",size:"medium",y:false},
+  grapes:{e:"🍇",n:"grapes",color:"purple",shape:"bunch",size:"small",y:false},
+  peach:{e:"🍑",n:"peach",color:"orange",shape:"round",size:"medium",y:false}
+};
+const CLUES = ["color","shape","size"];
+const clueText = f => f.color + " · " + f.shape + " · " + f.size;
+function compare(a,b){ return CLUES.map(c => a[c] === b[c]); }
+function predict(key, train){
+  const it = F[key];
+  const scored = train.map(t => { const ok = compare(it, F[t.k]); return {t, ok, m: ok.filter(Boolean).length}; });
+  const best = Math.max(...scored.map(s=>s.m));
+  const top = scored.filter(s=>s.m===best), yes = top.filter(s=>s.t.y).length, no = top.length - yes;
+  const y = yes === no ? null : yes > no;
+  const conf = y === null ? 50 : Math.round(best/3*100 * Math.max(yes,no)/top.length);
+  return {y, conf, best, top, yes, no, scored};
+}
+function fruitBins(train, onChange, binState){
+  const box = h("div", {class:"bins"});
+  function draw(){
+    box.replaceChildren(...[true,false].map(lab => h("div", {class:"bin" + (binState.cur===lab ? " sel" : ""), onclick:e=>{ if (e.target.closest("button")) return; binState.cur = lab; draw(); }},
+      h("div", {class:"row", style:"justify-content:space-between"}, h("b", null, lab ? "Apple" : "Not apple"), h("button", {class:"chip", "aria-pressed": String(binState.cur===lab), onclick:()=>{ binState.cur = lab; draw(); }}, binState.cur===lab ? "Adding here" : "Add here")),
+      h("div", {class:"items"}, train.map((t,k) => t.y === lab ? h("button", {title:"Remove " + F[t.k].n, "aria-label":"Remove " + F[t.k].n, onclick:()=>{ train.splice(k,1); draw(); onChange(); }}, F[t.k].e) : null)),
+      h("p", {class:"small"}, train.filter(t=>t.y===lab).length + " examples · tap one to remove"))));
+  }
+  draw(); return {box, draw};
+}
+function resultsGrid(tests, train){
+  let ok = 0; const rows = tests.map(k => { const p = predict(k, train), right = p.y === F[k].y; if (right) ok++;
+    return h("div", {class:"res " + (right ? "ok" : "no")}, h("span", {class:"e"}, F[k].e),
+      h("div", null, h("b", null, p.y === null ? "Not sure" : p.y ? "Apple" : "Not apple"), h("small", null, (p.y===null ? "" : p.conf + "% sure · ") + (right ? "correct" : "wrong"))));
+  });
+  return {ok, el:h("div", {class:"results"}, rows)};
+}
+
+/* ---------- M3 Train & Score ---------- */
+function m3(stage){
+  const train = [{k:"apple",y:true},{k:"apple",y:true},{k:"banana",y:false},{k:"orange",y:false}];
+  const st = {cur:true};
+  const TEST = ["apple","gapple","cherry","pear","orange","banana","gapple","kiwi","peach","apple"];
+  let i = 0, results = [];
+  const askBox = h("div", {class:"panel deep"});
+  const out = h("div");
+  const resetTest = () => { i = 0; results = []; out.replaceChildren(); drawAsk(); };
+  const bins = fruitBins(train, resetTest, st);
+  const teachBtns = h("div", {class:"row"});
+  function drawTeach(){
+    teachBtns.replaceChildren(
+      h("button", {class:"btn" + (st.cur ? "" : " alt"), onclick:()=>{ st.cur = true; drawTeach(); bins.draw(); }}, "I'm teaching: Apple"),
+      h("button", {class:"btn" + (st.cur ? " alt" : ""), onclick:()=>{ st.cur = false; drawTeach(); bins.draw(); }}, "I'm teaching: Not apple"));
+  }
+  const pool = h("div", {class:"pool"}, Object.keys(F).map(k => h("button", {class:"fruit", title:clueText(F[k]), onclick:()=>{ train.push({k, y:st.cur}); bins.draw(); resetTest(); toast(F[k].e + " taught as " + (st.cur ? "Apple" : "Not apple")); }},
+    h("span", {class:"e"}, F[k].e), F[k].n, h("span", {class:"small", style:"font-weight:600;font-size:11px"}, clueText(F[k])))));
+  function dots(){ return h("div", {class:"dots"}, TEST.map((_,k)=>h("i", {class: results[k] === undefined ? (k===i ? "now" : "") : results[k] ? "ok" : "no"}))); }
+  function drawAsk(){
+    if (train.filter(t=>t.y).length < 1 || train.filter(t=>!t.y).length < 1){
+      askBox.replaceChildren(h("p", {class:"eyebrow", style:"color:var(--sun)"}, "Step 3 · Ask the AI"), h("p", null, "Teach at least one Apple and one Not apple first.")); return; }
+    if (i >= TEST.length){ finish(); return; }
+    const k = TEST[i];
+    askBox.replaceChildren(
+      h("p", {class:"eyebrow", style:"color:var(--sun)"}, "Step 3 · Ask the AI · new photo " + (i+1) + " of " + TEST.length), dots(),
+      h("div", {class:"row", style:"gap:20px"}, h("span", {style:"font-size:72px;line-height:1"}, F[k].e),
+        h("div", null, h("p", {class:"big", style:"color:var(--deep-ink)"}, "Is this an apple?"), h("p", {class:"small"}, "Clues the AI can see: " + clueText(F[k])))),
+      h("div", {class:"row"}, h("button", {class:"btn sun", onclick:()=>think(k)}, "Ask the AI"), h("button", {class:"btn alt sm", onclick:allAtOnce}, "Test all 10 at once")));
+  }
+  function think(k){
+    const p = predict(k, train), right = p.y === F[k].y;
+    // one row per distinct taught fruit+label
+    const seen = new Map(); p.scored.forEach(s => { const id = s.t.k + (s.t.y ? "+" : "-"); if (!seen.has(id)) seen.set(id, {...s, n:0}); seen.get(id).n++; });
+    const rows = [...seen.values()].sort((a,b)=>b.m-a.m).map(s => h("tr", {style: s.m === p.best ? "background:var(--warn-bg)" : ""},
+      h("td", null, F[s.t.k].e + (s.n > 1 ? " ×" + s.n : "")), h("td", null, s.t.y ? "Apple" : "Not apple"),
+      ...CLUES.map((c,j)=>h("td", {style:"color:" + (s.ok[j] ? "var(--good)" : "var(--bad)")}, (s.ok[j] ? "✓ " : "✗ ") + F[s.t.k][c])),
+      h("td", null, h("b", null, s.m + " of 3"))));
+    const verdict = p.y === null ? "Not sure: the closest fruits are a tie between Apple and Not apple" : "AI says: " + (p.y ? "Apple" : "Not apple") + " · " + p.conf + "% sure";
+    const closest = p.top.map(s=>F[s.t.k].e).filter((v,ix,a)=>a.indexOf(v)===ix).join(" ");
+    results[i] = right;
+    let tip = "";
+    if (!right){
+      const real = F[k].y ? "Apple" : "Not apple";
+      tip = "It's really “" + real + "”. The AI only knew fruits that look like " + closest + ". Teach it: add " + F[k].e + " " + F[k].n + " as “" + real + "”, then test again.";
+    }
+    askBox.replaceChildren(
+      h("p", {class:"eyebrow", style:"color:var(--sun)"}, "How the AI decided · new photo " + (i+1) + " of " + TEST.length), dots(),
+      h("p", null, "1. It compares " + F[k].e + " with every fruit you taught it, clue by clue:"),
+      h("div", {class:"tbl", style:"background:var(--surface);color:var(--ink);border-radius:14px;padding:6px"}, h("table", null,
+        h("thead", null, h("tr", null, ...["Taught","Label","Colour","Shape","Size","Match"].map(t=>h("th", null, t)))), h("tbody", null, rows))),
+      h("p", null, "2. It picks the closest match: " + closest + " (" + p.best + " of 3 clues). " + (p.top.length > 1 ? "Those " + p.top.length + " vote: " + p.yes + " Apple, " + p.no + " Not apple." : "")),
+      h("p", {class:"big", style:"color:var(--sun)"}, verdict),
+      h("div", {class:"fb " + (right ? "ok" : "no")}, right ? "Correct!" : "Wrong!", tip ? h("span", null, tip) : null),
+      h("div", {class:"row"}, h("button", {class:"btn", onclick:()=>{ i++; drawAsk(); }}, i === TEST.length-1 ? "See my score" : "Next photo")));
+  }
+  function allAtOnce(){ TEST.forEach((k,j)=>{ results[j] = predict(k, train).y === F[k].y; }); i = TEST.length; finish(); }
+  function finish(){
+    const ok = results.filter(Boolean).length, pct = ok*10;
+    askBox.replaceChildren(h("p", {class:"eyebrow", style:"color:var(--sun)"}, "Step 3 · Ask the AI · finished"), dots(),
+      h("div", {class:"results", style:"color:var(--ink)"}, TEST.map((k,j)=>{ const p = predict(k, train); return h("div", {class:"res " + (results[j] ? "ok" : "no")}, h("span", {class:"e"}, F[k].e),
+        h("div", null, h("b", null, p.y === null ? "Not sure" : p.y ? "Apple" : "Not apple"), h("small", null, results[j] ? "correct" : "wrong"))); })),
+      h("p", {class:"big", style:"color:var(--deep-ink)"}, "Accuracy = " + ok + " ÷ 10 × 100 = " + pct + "%"),
+      pct < 80 ? h("div", {class:"fb info", style:"color:var(--ink)"}, "Get 80% or more.", h("span", null, "Look at the wrong ones. Which fruits did you never teach it? Teach them, and the test starts again.")) : null,
+      h("div", {class:"row"}, h("button", {class:"btn alt sm", onclick:resetTest}, "Test again from photo 1")));
+    out.replaceChildren(endPanel("m3", pct, []));
+  }
+  stage.replaceChildren(
+    h("div", {class:"panel"}, h("p", {class:"eyebrow"}, "How it works"),
+      h("p", null, h("b", null, "1. Teach: "), "show the AI fruits and tell it which are apples. ", h("b", null, "2. Ask: "), "show it a new fruit. ", h("b", null, "3. Watch: "), "it compares the new fruit with everything you taught it, clue by clue (colour, shape, size), and copies the answer of the closest match.")),
+    h("div", {class:"panel"}, h("p", {class:"eyebrow"}, "Step 1 · Teach the AI"), h("p", null, "Choose the label first, then tap fruits to teach them."), teachBtns, pool),
+    h("div", {class:"panel"}, h("p", {class:"eyebrow"}, "Step 2 · What the AI has learned"), bins.box),
+    askBox, out);
+  drawTeach(); drawAsk();
+}
+
+/* ---------- M4 Bias Lab ---------- */
+function m4(stage){
+  const train = [{k:"apple",y:true},{k:"apple",y:true},{k:"apple",y:true},{k:"apple",y:true},{k:"cherry",y:false},{k:"straw",y:false},{k:"pear",y:false},{k:"kiwi",y:false},{k:"melon",y:false},{k:"orange",y:false},{k:"banana",y:false},{k:"lemon",y:false}];
+  const TEST = ["apple","apple","apple","gapple","gapple","cherry","pear","banana","kiwi","orange"];
+  const st = {cur:true}; let step = 0, xp = 0, ranOnce = false, answered = false;
+  const out = h("div", {class:"stage"});
+  const bins = fruitBins(train, ()=>{}, st);
+  const pool = h("div", {class:"pool"}, ["gapple","apple","pear","kiwi","grapes","peach"].map(k => h("button", {class:"fruit", onclick:()=>{ train.push({k, y:st.cur}); bins.draw(); }}, h("span", {class:"e"}, F[k].e), F[k].n)));
+  const fixPanel = h("div", {class:"panel", hidden:true}, h("p", {class:"eyebrow"}, "Step 3 · Fix the data"), h("p", null, "Here are more photos. Add what the training data was missing, then test again."), pool);
+  function matrix(){
+    let tp=0,fn=0,fp=0,tn=0, red=[0,0], green=[0,0];
+    TEST.forEach(k => { const p = predict(k, train).y === true, real = F[k].y;
+      if (real && p) tp++; else if (real) fn++; else if (p) fp++; else tn++;
+      if (k==="apple"){ red[1]++; if (p) red[0]++; } if (k==="gapple"){ green[1]++; if (p) green[0]++; } });
+    return {tp,fn,fp,tn,red,green,acc:(tp+tn)*10};
+  }
+  function run(){
+    const M = matrix(); ranOnce = true;
+    const cell = (v, good) => h("div", {class:"v " + (v===0 ? "" : good ? "g" : "r")}, String(v));
+    const gap = Math.round(M.red[0]/M.red[1]*100) - Math.round(M.green[0]/M.green[1]*100);
+    const fixed = M.acc === 100 && gap === 0;
+    out.replaceChildren(h("div", {class:"panel"},
+      h("p", {class:"eyebrow"}, "Confusion matrix · 10 test photos"),
+      h("div", {class:"matrix"},
+        h("div", {class:"h"}), h("div", {class:"h"}, "AI said: apple"), h("div", {class:"h"}, "AI said: not apple"),
+        h("div", {class:"h", style:"text-align:left"}, "Really apple"), cell(M.tp,true), cell(M.fn,false),
+        h("div", {class:"h", style:"text-align:left"}, "Really not apple"), cell(M.fp,false), cell(M.tn,true)),
+      h("p", {class:"big"}, "Accuracy: " + M.acc + "%"),
+      h("div", {class:"tbl"}, h("table", null, h("tr", null, h("th", null, "Group"), h("th", null, "Correct"), h("th", null, "Accuracy")),
+        h("tr", null, h("td", null, "🍎 Red apples"), h("td", null, M.red[0] + " of " + M.red[1]), h("td", null, Math.round(M.red[0]/M.red[1]*100) + "%")),
+        h("tr", null, h("td", null, "🍏 Green apples"), h("td", null, M.green[0] + " of " + M.green[1]), h("td", null, Math.round(M.green[0]/M.green[1]*100) + "%")))),
+      h("p", null, "Bias gap: ", h("b", null, gap + " points"), gap ? ". The AI is unfair to one group." : ". Fair for both groups!")
+    ));
+    if (step === 0){
+      step = 1; xp = 30;
+      const q = h("div", {class:"panel deep"}, h("p", {class:"eyebrow", style:"color:var(--sun)"}, "Detective question"), h("p", {class:"big", style:"color:var(--deep-ink)"}, "80% sounds good. But who did the AI fail?"));
+      const fb = h("div");
+      const opts = [["Red apples",false],["Green apples",true],["Bananas",false]];
+      const bs = opts.map(([l,c]) => h("button", {class:"btn " + (c ? "sun" : "alt"), onclick:()=>{ bs.forEach(b=>b.disabled=true); if (c && !answered){ xp += 20; answered = true; }
+        fb.replaceChildren(h("div", {class:"fb " + (c ? "ok" : "no")}, c ? "Exactly." : "Look at the table again: green apples scored 0%.", h("span", null, "Every apple in the training data was red, so the AI learned “apple = red”. Green apples were left out.")));
+        fixPanel.hidden = false; }}, l));
+      q.append(h("div", {class:"row"}, bs), fb); out.append(q);
+    } else if (fixed){
+      xp = Math.max(xp, 50) + 50; out.append(endPanel("m4", xp, ["You found the bias, measured it, and fixed it with fairer data."]));
+    } else out.append(h("div", {class:"fb info"}, "Not fixed yet.", h("span", null, "Get 100% with a bias gap of 0. Which photos are still missing?")));
+  }
+  stage.replaceChildren(
+    h("div", {class:"panel"}, h("p", {class:"eyebrow"}, "Step 1 · Someone else's training data"), h("p", null, "A company trained this apple detector. Look closely at its examples before you test it."), bins.box,
+      h("div", {class:"row"}, h("button", {class:"btn", onclick:run}, "Test the detector"))),
+    fixPanel, out);
+}
+
+/* ---------- M5 Build a Guessing Machine ---------- */
+function m5(stage){
+  const TEMPL = {
+    "Lebanese dishes": {items:["Hummus","Shawarma","Falafel","Tabbouleh"], qs:["Does it have meat?","Is it served hot?"],
+      ans:[[false,false],[true,true],[false,true],[false,false]]},
+    "Animals": {items:["Cat","Eagle","Shark","Frog"], qs:["Can it fly?","Does it live in water?"],
+      ans:[[false,false],[true,false],[false,true],[false,true]]},
+    "Start empty": {items:["",""], qs:[""], ans:[[null],[null]]}
+  };
+  let items, qs, ans, tree = null, kidTree = null, trained = false, xp = 0, played = false;
+  function load(name){ const t = TEMPL[name]; items = t.items.slice(); qs = t.qs.slice(); ans = t.ans.map(r=>r.slice()); tree = null; trained = false; draw(); }
+  const tableBox = h("div", {class:"tbl"}), treeBox = h("div"), playBox = h("div"), msg = h("div"), end = h("div");
+
+  function draw(){
+    const head = h("tr", null, h("th", null, "Item"), ...qs.map((q,j) => {
+      const inp = h("input", {class:"field", value:q, placeholder:"Yes/no question " + (j+1), maxlength:"60", "aria-label":"Question " + (j+1), style:"min-width:170px"});
+      inp.addEventListener("input", ()=>{ qs[j] = inp.value; changed(); });
+      return h("th", null, h("div", {class:"row", style:"flex-wrap:nowrap;gap:4px"}, inp, qs.length > 1 ? h("button", {class:"chip", "aria-label":"Delete question " + (j+1), onclick:()=>{ qs.splice(j,1); ans.forEach(r=>r.splice(j,1)); changed(); draw(); }}, "✕") : null));
+    }), h("th", null, h("button", {class:"btn sm", onclick:()=>{ if (qs.length < 8){ qs.push(""); ans.forEach(r=>r.push(null)); changed(); draw(); } }}, "+ Question")));
+    const rows = items.map((it,i) => {
+      const inp = h("input", {class:"field", value:it, placeholder:"Item " + (i+1), maxlength:"30", "aria-label":"Item " + (i+1), style:"min-width:130px"});
+      inp.addEventListener("input", ()=>{ items[i] = inp.value; changed(); });
+      return h("tr", null, h("td", null, h("div", {class:"row", style:"flex-wrap:nowrap;gap:4px"}, inp, items.length > 2 ? h("button", {class:"chip", "aria-label":"Delete item " + (i+1), onclick:()=>{ items.splice(i,1); ans.splice(i,1); changed(); draw(); }}, "✕") : null)),
+        ...qs.map((_,j) => { const v = ans[i][j];
+          return h("td", null, h("button", {class:"chip", "aria-pressed": String(v===true), style: v===null ? "border-style:dashed" : "", "aria-label":"Answer for " + (items[i]||"item") + ", question " + (j+1),
+            onclick:()=>{ ans[i][j] = v === null ? true : v === true ? false : true; changed(); draw(); }}, v === null ? "?" : v ? "Yes" : "No")); }), h("td"));
+    });
+    tableBox.replaceChildren(h("table", null, h("thead", null, head), h("tbody", null, rows)));
+  }
+  function changed(){ if (trained){ trained = false; treeBox.replaceChildren(h("p", {class:"small"}, "You changed the data. Train the machine again.")); playBox.replaceChildren(); } }
+
+  function build(ids, avail, kidOrder){
+    if (ids.length <= 1) return {leaf:ids};
+    let best = null;
+    for (const j of avail){ const y = ids.filter(i=>ans[i][j]), n = ids.filter(i=>!ans[i][j]);
+      if (!y.length || !n.length) continue;
+      const sc = Math.abs(y.length - n.length);
+      if (!best || (!kidOrder && sc < best.sc)) best = {j, y, n, sc};
+      if (kidOrder) break; }
+    if (!best) return {leaf:ids, stuck:true};
+    const rest = avail.filter(x=>x!==best.j);
+    return {q:best.j, yes:build(best.y, rest, kidOrder), no:build(best.n, rest, kidOrder)};
+  }
+  const depth = t => t.leaf ? 0 : 1 + Math.max(depth(t.yes), depth(t.no));
+  const stuckLeaves = (t, out=[]) => { if (t.leaf){ if (t.stuck) out.push(t.leaf); } else { stuckLeaves(t.yes,out); stuckLeaves(t.no,out); } return out; };
+  function drawTree(t){
+    if (t.leaf) return h("div", {class:"tleaf" + (t.stuck ? " stuck" : "")}, t.stuck ? "Can't tell apart: " + t.leaf.map(i=>items[i]).join(", ") : items[t.leaf[0]]);
+    return h("div", {class:"tnode"}, h("div", {class:"tq"}, qs[t.q]),
+      h("div", {class:"tbr"}, h("div", null, h("p", {class:"tlab"}, "Yes"), drawTree(t.yes)), h("div", null, h("p", {class:"tlab"}, "No"), drawTree(t.no))));
+  }
+  function train(){
+    const filledItems = items.map((x,i)=>i).filter(i=>items[i].trim()), filledQs = qs.map((x,j)=>j).filter(j=>qs[j].trim());
+    if (filledItems.length < 3){ toast("Add at least 3 items with names."); return; }
+    if (!filledQs.length){ toast("Write at least one question."); return; }
+    const missing = filledItems.reduce((a,i)=>a + filledQs.filter(j=>ans[i][j]===null).length, 0);
+    if (missing){ msg.replaceChildren(h("div", {class:"fb no"}, missing + " answers are still “?”.", h("span", null, "Fill every Yes/No in the table. The machine can only learn from data you give it."))); return; }
+    msg.replaceChildren();
+    tree = build(filledItems, filledQs, false); kidTree = build(filledItems, filledQs, true); trained = true;
+    const stuck = stuckLeaves(tree), d = depth(tree), kd = depth(kidTree);
+    treeBox.replaceChildren(
+      h("p", null, "The machine looked at every question and put the one that splits your items most evenly at the top. ", h("b", null, "Longest path: " + d + " questions."),
+        kd > d ? " If it asked your questions in the order you wrote them, it would need " + kd + ". Choosing the order is part of learning." : ""),
+      h("div", {class:"tbl"}, h("div", {class:"treewrap"}, drawTree(tree))),
+      stuck.length ? h("div", {class:"fb no"}, "Your questions can't tell " + stuck.map(g=>g.map(i=>items[i]).join(" from ")).join(", or ") + " apart.",
+        h("span", null, "Add a new question that has a different answer for them, then train again.")) :
+        h("div", {class:"fb ok"}, "Every item has its own path. Your machine can guess all " + filledItems.length + " items!"));
+    if (!stuck.length){ xp = Math.max(xp, filledItems.length >= 6 ? 70 : 50); award("m5", xp); startPlay(); } else playBox.replaceChildren();
+  }
+  function startPlay(){
+    let node = tree; const path = [];
+    function step(){
+      if (node.leaf){
+        const guess = items[node.leaf[0]];
+        playBox.replaceChildren(h("div", {class:"panel deep"}, h("p", {class:"eyebrow", style:"color:var(--sun)"}, "Play · the machine guesses"),
+          h("p", {class:"small"}, path.join(" → ")),
+          h("p", {class:"big", style:"color:var(--deep-ink)"}, "Is it… " + guess + "?"),
+          h("div", {class:"row"},
+            h("button", {class:"btn sun", onclick:()=>{ played = true; xp = Math.max(xp, 100); playBox.replaceChildren(h("div", {class:"fb ok"}, "The machine guessed " + guess + " using YOUR questions and YOUR data.", h("span", null, "That's a decision tree: a chain of questions learned from a table of examples.")),
+              h("div", {class:"row", style:"margin-top:10px"}, h("button", {class:"btn", onclick:startPlay}, "Play again"))); end.replaceChildren(endPanel("m5", xp, ["You built and trained your own guessing machine."])); }}, "Yes!"),
+            h("button", {class:"btn alt", onclick:()=>{ playBox.replaceChildren(h("div", {class:"fb no"}, "Wrong guess!", h("span", null, "Either your item isn't in the table, or one of the answers in the table is wrong. Bad data makes bad AI: check the table and train again.")),
+              h("div", {class:"row", style:"margin-top:10px"}, h("button", {class:"btn", onclick:startPlay}, "Play again"))); }}, "No"))));
+        return;
+      }
+      playBox.replaceChildren(h("div", {class:"panel deep"}, h("p", {class:"eyebrow", style:"color:var(--sun)"}, "Play · ask a friend to think of one of your items"),
+        h("p", {class:"small"}, path.length ? path.join(" → ") : "The machine asks:"),
+        h("p", {class:"big", style:"color:var(--deep-ink)"}, qs[node.q]),
+        h("div", {class:"row"}, h("button", {class:"btn sun", onclick:()=>{ path.push(qs[node.q] + " yes"); node = node.yes; step(); }}, "Yes"), h("button", {class:"btn alt", onclick:()=>{ path.push(qs[node.q] + " no"); node = node.no; step(); }}, "No"))));
+    }
+    step();
+  }
+  stage.replaceChildren(
+    h("div", {class:"panel"}, h("p", {class:"eyebrow"}, "How it works"),
+      h("p", null, h("b", null, "1. You make the data: "), "pick a topic, list items, write yes/no questions and answer them for every item. ",
+        h("b", null, "2. The machine learns: "), "it builds a decision tree from your table. ", h("b", null, "3. It plays: "), "a friend thinks of an item and the machine guesses it.")),
+    h("div", {class:"panel"}, h("p", {class:"eyebrow"}, "Step 1 · Your data"),
+      h("div", {class:"chips"}, h("span", {class:"small", style:"align-self:center"}, "Start from:"), Object.keys(TEMPL).map(k=>h("button", {class:"chip", onclick:()=>load(k)}, k))),
+      tableBox,
+      h("div", {class:"row"}, h("button", {class:"btn alt sm", onclick:()=>{ if (items.length < 12){ items.push(""); ans.push(qs.map(()=>null)); changed(); draw(); } }}, "+ Item"),
+        h("span", {class:"small"}, "Tap an answer to switch Yes / No. Aim for 6+ items.")), msg,
+      h("div", {class:"row"}, h("button", {class:"btn", onclick:train}, "Train the machine"))),
+    h("div", {class:"panel"}, h("p", {class:"eyebrow"}, "Step 2 · The tree the machine learned"), treeBox),
+    playBox, end);
+  load("Lebanese dishes");
+  treeBox.replaceChildren(h("p", {class:"small"}, "Press “Train the machine” to see the tree. Tip: the example can't tell two dishes apart yet. Can you spot which?"));
+}
+
+/* ---------- M6 Be the Neuron ---------- */
+function m6(stage){
+  const W = [4,3,2], TH = 5, names = ["Sunny?","Friends free?","Homework done?"];
+  const DAYS = [{d:"A",x:[1,1,1],y:1},{d:"B",x:[1,0,1],y:0},{d:"C",x:[0,1,1],y:0},{d:"D",x:[1,1,0],y:0}];
+  let today = [1,1,0], learned = 0, last = {};
+  const svgBox = h("div", {class:"net"}), wBox = h("div", {class:"wctl"}), tbody = h("tbody"), msg = h("div"), end = h("div");
+  const total = x => x.reduce((a,v,i)=>a + v*W[i], 0);
+  function drawNet(){
+    const ns = "http://www.w3.org/2000/svg", s = document.createElementNS(ns,"svg"); s.setAttribute("viewBox","0 0 620 270"); s.setAttribute("role","img"); s.setAttribute("aria-label","A neuron with three inputs");
+    const css = getComputedStyle(document.documentElement), ink = css.getPropertyValue("--ink").trim(), coral = css.getPropertyValue("--coral").trim(), chip = css.getPropertyValue("--chip").trim(), muted = css.getPropertyValue("--muted").trim(), sun = css.getPropertyValue("--sun").trim();
+    const el = (t,a,txt)=>{ const e = document.createElementNS(ns,t); for (const k in a) e.setAttribute(k,a[k]); if (txt != null) e.textContent = txt; s.append(e); return e; };
+    const ys = [50,135,220], tot = total(today), play = tot >= TH;
+    ys.forEach((y,i)=>{ const w = W[i];
+      el("line",{x1:212,y1:y,x2:330,y2:135,stroke: w>0 ? coral : muted,"stroke-width":Math.max(1.5, Math.abs(w)*2.2),"stroke-dasharray": w>0 ? "" : "6 6"});
+      el("text",{x:272,y:(y+135)/2 - 8,"text-anchor":"middle","font-size":"18","font-weight":"800",fill:ink},"× " + w);
+      el("circle",{cx:182,cy:y,r:30,fill: today[i] ? sun : chip, stroke:ink,"stroke-width":2});
+      el("text",{x:182,y:y+7,"text-anchor":"middle","font-size":"22","font-weight":"800",fill:"#1E1B3A"}, String(today[i]));
+      el("text",{x:6,y:y+5,"text-anchor":"start","font-size":"15","font-weight":"800",fill:muted}, names[i]);
+    });
+    el("circle",{cx:370,cy:135,r:56,fill:ink});
+    el("text",{x:370,y:130,"text-anchor":"middle","font-size":"14","font-weight":"700",fill:chip},"total");
+    el("text",{x:370,y:156,"text-anchor":"middle","font-size":"28","font-weight":"800",fill:sun}, String(tot));
+    el("line",{x1:426,y1:135,x2:470,y2:135,stroke:ink,"stroke-width":3});
+    el("rect",{x:470,y:105,width:140,height:60,rx:14,fill: play ? coral : chip});
+    el("text",{x:540,y:142,"text-anchor":"middle","font-size":"18","font-weight":"800",fill: play ? "#ffffff" : ink}, play ? "Play!" : "Don't play");
+    svgBox.replaceChildren(s);
+  }
+  function drawW(){
+    wBox.replaceChildren(...W.map((w,i)=>h("div", null, names[i] + " weight", h("button", {"aria-label":"Lower " + names[i] + " weight", onclick:()=>{ W[i]--; refresh(); }}, "−"), h("b", null, String(w)), h("button", {"aria-label":"Raise " + names[i] + " weight", onclick:()=>{ W[i]++; refresh(); }}, "+"))),
+      h("div", null, "Today: ", ...today.map((v,i)=>h("button", {style:"width:auto;padding:0 8px", onclick:()=>{ today[i] = 1 - today[i]; drawNet(); }}, names[i].replace("?","") + " " + v))));
+  }
+  function drawDays(){
+    tbody.replaceChildren(...DAYS.map(dy => { const r = last[dy.d];
+      return h("tr", null, h("td", null, h("b", null, dy.d)), h("td", null, dy.x.join(" · ")), h("td", null, dy.y ? "Play" : "Don't play"),
+        h("td", null, r ? r.tot + " → " + (r.said ? "Play" : "Don't") : "–"), h("td", null, r ? (r.ok ? "✓" : "✗ mistake") : ""),
+        h("td", null, h("button", {class:"btn sm alt", onclick:()=>runDay(dy)}, "Test")));
+    }));
+  }
+  function runDay(dy){
+    today = dy.x.slice(); const tot = total(dy.x), said = tot >= TH, ok = said === !!dy.y; last[dy.d] = {tot, said, ok};
+    drawNet(); drawDays();
+    if (ok) msg.replaceChildren(h("div", {class:"fb ok"}, "Day " + dy.d + ": correct."));
+    else msg.replaceChildren(h("div", {class:"fb no"}, "Day " + dy.d + ": mistake! The neuron said " + (said ? "Play" : "Don't play") + ".",
+      h("span", null, said ? "Learning rule: take 1 away from every weight whose input was 1." : "Learning rule: add 1 to every weight whose input was 1.")),
+      h("div", {class:"row", style:"margin-top:10px"}, h("button", {class:"btn sun", onclick:()=>learn(dy, said)}, "Learn from this mistake")));
+    check();
+  }
+  function learn(dy, said){ dy.x.forEach((v,i)=>{ if (v) W[i] += said ? -1 : 1; }); learned++; last = {}; msg.replaceChildren(h("div", {class:"fb info"}, "Weights changed to " + W.join(" · ") + ". Test all four days again.")); refresh(); }
+  function check(){
+    if (DAYS.every(dy => last[dy.d] && last[dy.d].ok)){
+      end.replaceChildren(h("div", {class:"fb ok"}, "All four days correct with weights " + W.join(" · ") + "!", h("span", null, "Nobody told the neuron “homework first”. It learned that rule from examples and mistakes. Big networks do exactly this with millions of weights.")), endPanel("m6", 100, [learned ? "Your neuron learned from " + learned + " mistakes." : "You found working weights by hand."]));
+    }
+  }
+  function refresh(){ drawNet(); drawW(); drawDays(); }
+  stage.replaceChildren(
+    h("div", {class:"panel"}, h("p", {class:"eyebrow"}, "The neuron · total of 5 or more means Play"), svgBox, wBox),
+    h("div", {class:"panel"}, h("p", {class:"eyebrow"}, "Training days · test each one, learn from every mistake"),
+      h("div", {class:"tbl"}, h("table", null, h("thead", null, h("tr", null, ...["Day","Sunny · Friends · Homework","Right answer","Neuron total","Result",""].map(t=>h("th", null, t)))), tbody)), msg),
+    end);
+  refresh();
+}
+
+/* ---------- prompt checks (M7) ---------- */
+const CHECK = {
+  role: /\b(you are|you're|act as|pretend (to be|you are)|imagine you are|be my|as an? (teacher|coach|tutor|scientist|expert|guide))\b/i,
+  task: /\b(explain|write|make|give|create|list|quiz|plan|summari[sz]e|help|describe|compare|tell|teach|suggest|design|check|ask|show)\b/i,
+  context: /\b(i am|i'm|im|grade|year[- ]old|years old|for (a|my|kids|children|students|beginners|someone)|student|class|level|already know|don't understand|do not understand|i have|my (test|exam|project))\b/i,
+  format: /\b(bullet|points?|list|table|steps?|sentences?|words|paragraphs?|one at a time|short|numbered|questions)\b/i,
+  privacy: /(\S+@\S+\.\S+)|(\+?\d[\d\s-]{6,}\d)|\b(my name is|i live (in|at|on)|my address|password|my school is|my phone)\b/i,
+  cheat: /\b(do my homework|write my (essay|homework|assignment|report)|give me (all )?the answers|solve (all )?my|answers? (to|for) my homework)\b/i
+};
+function promptScore(t){ return {role:CHECK.role.test(t), task:CHECK.task.test(t), context:CHECK.context.test(t), format:CHECK.format.test(t), privacy:CHECK.privacy.test(t), cheat:CHECK.cheat.test(t)}; }
+
+/* ---------- M7 Prompt Coach ---------- */
+function m7(stage){
+  const TASKS = [
+    "Get the AI to explain why volcanoes erupt to a 7-year-old, in 3 bullet points.",
+    "Get a 5-question quiz on fractions, one question at a time, with no answers shown.",
+    "Get a 3-day study plan for a science test, as a simple table.",
+    "Get help understanding the water cycle, without the AI doing your homework for you."
+  ];
+  let task = 0, versions = [], ctl = null;
+  const ta = h("textarea", {id:"prompt", rows:"4", placeholder:"Write your prompt here…", "aria-label":"Your prompt"});
+  ta.value = "volcanoes";
+  const ing = h("div", {class:"ing"}), warn = h("div"), log = h("div", {class:"log"}), answer = h("div", {class:"answer", hidden:true}), aiRow = h("div", {class:"row"});
+  const taskP = h("p", {class:"big"}, TASKS[0]);
+  function live(){
+    const s = promptScore(ta.value);
+    ing.replaceChildren(...[["role","Role"],["task","Task"],["context","Context"],["format","Format"]].map(([k,l]) => h("div", {class: s[k] ? "on" : ""}, (s[k] ? "✓ " : "") + l)));
+    const w = [];
+    if (s.privacy) w.push(h("div", {class:"fb no"}, "Stop: personal information!", h("span", null, "Remove names, addresses, phone numbers, emails or passwords. Never give them to an AI.")));
+    if (s.cheat) w.push(h("div", {class:"fb no"}, "Red light: this asks AI to think for you.", h("span", null, "Ask it to explain, quiz you or give hints instead.")));
+    warn.replaceChildren(...w); return s;
+  }
+  function saveVersion(){
+    const s = live(); const pts = ["role","task","context","format"].filter(k=>s[k]).length - (s.privacy || s.cheat ? 2 : 0);
+    versions.push({t:ta.value.trim(), pts:Math.max(0,pts)});
+    log.replaceChildren(...versions.map((v,i)=>h("div", null, h("b", null, "v" + (i+1) + " · " + v.pts + "/4"), h("span", null, v.t.slice(0,140)))));
+    const best = Math.max(...versions.map(v=>v.pts));
+    if (versions.length >= 2 && best >= 3) stageEnd.replaceChildren(endPanel("m7", best*25, ["Best prompt: " + best + " of 4 ingredients, after " + versions.length + " versions."]));
+    else toast(versions.length < 2 ? "Now improve it and check version 2." : "Aim for 3 or 4 ingredients.");
+  }
+  async function askAI(){
+    const s = live(); if (s.privacy){ toast("Remove the personal information first."); return; }
+    if (!ta.value.trim()) return;
+    const sample = await getSample(); if (!sample){ aiRow.replaceChildren(h("p", {class:"small"}, "The live AI isn't available here. Your teacher can run your prompt on the projector.")); return; }
+    ctl && ctl.abort(); ctl = new AbortController(); answer.hidden = false; answer.textContent = "Thinking…";
+    const wrapped = "You are the AI inside a school AI lab for 12-year-old students. Answer the student's prompt below safely, kindly and briefly (under 150 words), in simple English. If it asks for personal information, anything unsafe, or for you to do their homework for them, refuse kindly and suggest a better way to learn. Do not use markdown symbols like ** or #.\n\nStudent's prompt:\n<<<\n" + ta.value.trim().slice(0, 1500) + "\n>>>";
+    try { await sample(wrapped, {modelTier:"quick", cache:false, signal:ctl.signal, onText:({text})=>{ answer.textContent = text; }}); }
+    catch(e){ answer.textContent = (e && e.text) || ""; if (!e || e.code !== "cancelled") answer.append(h("p", {class:"small"}, errCopy(e && e.code))); }
+  }
+  const stageEnd = h("div");
+  getSample().then(s => { if (s) aiRow.replaceChildren(h("button", {class:"btn sun", onclick:askAI}, "Ask the real AI"), h("span", {class:"small"}, "Runs your prompt through Claude. Compare answers from v1 and v2!")); });
+  ta.addEventListener("input", live);
+  stage.replaceChildren(
+    h("div", {class:"panel deep"}, h("p", {class:"eyebrow", style:"color:var(--sun)"}, "Your challenge"), taskP,
+      h("div", {class:"chips"}, TASKS.map((t,i)=>h("button", {class:"chip", style:"background:var(--surface);color:var(--ink)", onclick:()=>{ task = i; taskP.textContent = t; }}, "Challenge " + (i+1))))),
+    h("div", {class:"panel"},
+      h("p", {class:"eyebrow"}, "Write, check, improve"), ta, ing, warn,
+      h("p", {class:"small"}, "Role: who is the AI? · Task: what exactly? · Context: who are you, what do you know? · Format: how should the answer look?"),
+      h("div", {class:"row"}, h("button", {class:"btn", onclick:saveVersion}, "Check this version")), aiRow, answer),
+    h("div", {class:"panel"}, h("p", {class:"eyebrow"}, "Prompt log · the log matters more than the answer"), log),
+    stageEnd);
+  live();
+}
+
+/* ---------- M8 Image Prompt Studio ---------- */
+function m8(stage){
+  const ING = [
+    ["Subject","Who or what?",["a robot goalkeeper","an old cedar tree","a friendly dragon","a tiny astronaut cat"]],
+    ["Action","Doing what?",["diving to save a ball","glowing in the snow","baking manakish","floating past the moon"]],
+    ["Setting","Where and when?",["in a stadium at night","on a mountain in Lebanon","in a busy old market","inside a space station"]],
+    ["Style","What kind of picture?",["comic book style","watercolour painting","3D cartoon","paper cut-out art"]],
+    ["Light & mood","How does it feel?",["bright floodlights, exciting","soft golden sunrise, calm","neon glow, mysterious","warm afternoon light, cosy"]],
+    ["Camera","How close, from where?",["shot from below","close-up","wide shot","bird's-eye view"]]
+  ];
+  const val = ING.map(()=>""); let copied = false, doctor = false;
+  const prev = h("p", {class:"preview"}), meter = h("div", {class:"meter"}), rows = h("div", {class:"stage"}), docOut = h("div"), docRow = h("div", {class:"row"}), end = h("div");
+  function prompt(){ const p = val.filter(Boolean); if (!p.length) return ""; const [s,a,se,st,l,c] = val; const parts = [[s,a,se].filter(Boolean).join(" "), st, l, c].filter(Boolean).join(", "); return parts.charAt(0).toUpperCase() + parts.slice(1) + "."; }
+  function draw(){
+    rows.replaceChildren(...ING.map(([name,q,opts],i) => {
+      const inp = h("input", {class:"field", id:"ing" + i, placeholder:"…or write your own", value: opts.includes(val[i]) ? "" : val[i], "aria-label":name + " (your own words)"});
+      inp.addEventListener("input", ()=>{ val[i] = inp.value.trim(); update(); [...chips.children].forEach(c=>c.setAttribute("aria-pressed","false")); });
+      const chips = h("div", {class:"chips"}, opts.map(o => h("button", {class:"chip", "aria-pressed": String(val[i]===o), onclick:()=>{ val[i] = val[i]===o ? "" : o; draw(); }}, o)));
+      return h("div", {class:"ingrow"}, h("label", {for:"ing" + i}, (i+1) + " · " + name + " ", h("span", {class:"small"}, q)), chips, inp);
+    }));
+    update();
+  }
+  function update(){
+    const p = prompt(), n = val.filter(Boolean).length;
+    prev.textContent = p || "Pick ingredients and your prompt appears here.";
+    meter.replaceChildren(...val.map(v=>h("i", {class: v ? "on" : ""})));
+    meterLbl.textContent = n + " of 6 ingredients" + (n === 6 ? " · director level!" : "");
+    if (typeof pbox !== "undefined" && pbox) pbox.later();
+  }
+  const meterLbl = h("p", {class:"small"});
+  async function copy(){
+    const p = prompt(); if (!p){ toast("Add some ingredients first."); return; }
+    try { await navigator.clipboard.writeText(p); toast("Prompt copied!"); } catch(e){ toast("Prompt saved."); }
+    copied = true; finish();
+  }
+  function finish(){ const n = val.filter(Boolean).length; if ((copied || doctor) && n === 6) end.replaceChildren(endPanel("m8", 100, ["A six-ingredient prompt, and you saw every ingredient change the picture. That's exactly how you talk to a real image AI."])); else if (copied || doctor) award("m8", n*15); }
+  async function ask(){
+    const p = prompt(); if (!p) return; const sample = await getSample(); if (!sample) return;
+    docOut.replaceChildren(h("p", {class:"small"}, "The prompt doctor is thinking…"));
+    try {
+      const r = await sample.json("You coach 12-year-old students writing prompts for an AI image generator. Rate this prompt from 1 to 10 for how clearly it describes the picture, name the weakest part, and give one short tip to improve it. Reply with only JSON like {\"score\":7,\"weakest\":\"setting\",\"tip\":\"Say what time of day it is.\"}.\n\nPrompt: " + p, {modelTier:"quick"});
+      doctor = true;
+      docOut.replaceChildren(h("div", {class:"fb info"}, "Prompt doctor: " + (Number(r && r.score) || "?") + "/10", h("span", null, "Weakest part: " + String((r && r.weakest) || "–") + ". Tip: " + String((r && r.tip) || "–"))));
+      finish();
+    } catch(e){ docOut.replaceChildren(h("p", {class:"small"}, errCopy(e && e.code))); }
+  }
+  function surprise(){ ING.forEach(([,,o],i)=>{ val[i] = o[Math.floor(Math.random()*o.length)]; }); draw(); }
+  getSample().then(s => { if (s) docRow.replaceChildren(h("button", {class:"btn sun", onclick:ask}, "Ask the prompt doctor"), h("span", {class:"small"}, "An AI rates your prompt and gives one tip.")); });
+  var pbox = painterBox(prompt, null);
+  stage.replaceChildren(
+    h("div", {class:"panel deep"}, h("p", {class:"eyebrow", style:"color:var(--sun)"}, "Your prompt"), prev, meter, meterLbl, pbox.el,
+      h("div", {class:"row"}, h("button", {class:"btn", onclick:copy}, "Copy prompt"), h("button", {class:"btn alt", onclick:surprise}, "Surprise me")), docRow, docOut),
+    h("div", {class:"panel"}, h("p", {class:"eyebrow"}, "Six ingredients"), rows),
+    h("div", {class:"fb info"}, "Before you generate:", h("span", null, "No real people, no classmates' names or faces. Every AI image gets the label “Made with AI”.")),
+    end);
+  draw();
+}
+
+/* ---------- M9 Voice Studio ---------- */
+function m9(stage){
+  const synth = window.speechSynthesis;
+  const C = {A:{name:"Host", lang:"en", voice:"", pitch:1.1, rate:1, fx:"none"}, B:{name:"Robot", lang:"en", voice:"", pitch:0.6, rate:0.9, fx:"robot"}};
+  const lines = [
+    ["A","Hey! Did you hear about the school fair this Saturday?"],
+    ["B","Yes. Beep. There will be games, food and a robot football match."],
+    ["A","What time does it start?"],
+    ["B","From ten in the morning until two."],
+    ["A","See you there. Bring your friends!"]
+  ];
+  let voices = [], played = false, quizPct = 0, playing = false; const recs = new Map();
+  const FX = {none:{}, giant:{rate:0.72}, chipmunk:{rate:1.55}, robot:{robot:true}, echo:{echo:true}, alien:{rate:1.3, robot:true}}; const checkOut = h("div");
+  const charBox = h("div", {class:"charset"}), lineBox = h("div", {class:"stage", style:"gap:8px"}), quiz = h("div"), end = h("div"), note = h("p", {class:"small"});
+  function loadVoices(){ let vs = []; try { vs = synth ? synth.getVoices() : []; } catch(e){} if (vs.length === voices.length && charBox.childElementCount) return; voices = vs; drawChars(); }
+  function vlist(lang){ return voices.filter(v => (v.lang||"").toLowerCase().startsWith(lang)); }
+  function drawChars(){
+    charBox.replaceChildren(...["A","B"].map(k => { const c = C[k], vs = vlist(c.lang);
+      if (!c.voice && vs.length) c.voice = vs[k === "B" && vs.length > 1 ? 1 : 0].name;
+      const lang = h("select", {class:"field", id:"lang" + k, "aria-label":"Language"}, [["en","English"],["ar","Arabic"],["fr","French"]].map(([v,l])=>h("option", {value:v, selected: v===c.lang}, l)));
+      lang.addEventListener("change", ()=>{ c.lang = lang.value; c.voice = ""; drawChars(); });
+      const voice = h("select", {class:"field", id:"voice" + k, "aria-label":"Voice"}, vs.length ? vs.map(v=>h("option", {value:v.name, selected: v.name===c.voice}, v.name)) : [h("option", {value:""}, "No " + c.lang.toUpperCase() + " voice on this device")]);
+      voice.addEventListener("change", ()=>{ c.voice = voice.value; });
+      const pitch = h("input", {type:"range", min:"0.3", max:"2", step:"0.1", value:String(c.pitch), id:"pitch" + k, "aria-label":"Pitch"}); pitch.addEventListener("input", ()=>{ c.pitch = +pitch.value; });
+      const rate = h("input", {type:"range", min:"0.5", max:"1.6", step:"0.1", value:String(c.rate), id:"rate" + k, "aria-label":"Speed"}); rate.addEventListener("input", ()=>{ c.rate = +rate.value; });
+      const fxSel = h("select", {class:"field", id:"fx" + k, "aria-label":"Effect for recorded lines"}, [["none","My normal voice"],["giant","🦣 Giant"],["chipmunk","🐿 Chipmunk"],["robot","🤖 Robot"],["echo","🏔 Echo"],["alien","👽 Alien"]].map(([v,l])=>h("option", {value:v, selected: v===c.fx}, l)));
+      fxSel.addEventListener("change", ()=>{ c.fx = fxSel.value; });
+      const name = h("input", {class:"field", value:c.name, id:"cname" + k, maxlength:"16", "aria-label":"Character name"}); name.addEventListener("input", ()=>{ c.name = name.value || k; drawLines(); });
+      return h("div", {class:"panel", style:"background:var(--bg)"}, h("p", {class:"eyebrow"}, "Character " + k), name, lang, voice,
+        h("label", {class:"small", for:"pitch" + k}, "Pitch (low ↔ high)"), pitch, h("label", {class:"small", for:"rate" + k}, "Speed (slow ↔ fast)"), rate,
+        h("button", {class:"btn sm alt", onclick:()=>say(k, "Hello! I am " + (c.name||k) + ".")}, "Test voice"),
+        h("label", {class:"small", for:"fx" + k}, "Effect when you record this character with 🎙"), fxSel);
+    }));
+  }
+  function drawLines(){
+    lineBox.replaceChildren(...lines.map((l,i) => {
+      const sel = h("select", {class:"field", "aria-label":"Who speaks line " + (i+1)}, ["A","B"].map(k=>h("option", {value:k, selected:l[0]===k}, C[k].name || k)));
+      sel.addEventListener("change", ()=>{ l[0] = sel.value; });
+      const inp = h("input", {class:"field", value:l[1], maxlength:"160", "aria-label":"Line " + (i+1)}); inp.addEventListener("input", ()=>{ l[1] = inp.value; });
+      const rb = h("button", {class:"btn sm " + (recs.get(l) ? "" : "alt"), title:"Record this line with your own voice", onclick: async () => {
+        rb.disabled = true;
+        try { recs.set(l, await VT.record(4500, t => { rb.textContent = t > 0 ? "● " + Math.ceil(t/1000) : "…"; })); VT.play(recs.get(l), FX[C[l[0]].fx]); }
+        catch(e){ note.textContent = VT.errText(e && e.code); toast("The microphone didn't work."); }
+        drawLines(); }}, recs.get(l) ? "🎙 ✓" : "🎙");
+      return h("div", {class:"line", id:"ln" + i}, sel, inp, rb, h("button", {class:"btn sm alt", "aria-label":"Delete line " + (i+1), onclick:()=>{ recs.delete(l); lines.splice(i,1); drawLines(); }}, "✕"));
+    }), h("div", {class:"row"}, h("button", {class:"btn sm alt", onclick:()=>{ if (lines.length < 8){ lines.push([lines.length%2 ? "B" : "A", ""]); drawLines(); } }}, "+ Add line")));
+  }
+  function utter(k, text){ const c = C[k], u = new SpeechSynthesisUtterance(text); const v = voices.find(v=>v.name===c.voice) || vlist(c.lang)[0]; if (v){ u.voice = v; u.lang = v.lang; } else u.lang = c.lang; u.pitch = c.pitch; u.rate = c.rate; return u; }
+  function say(k, text){ if (!synth){ noSound("unsupported"); return; } speakNow(utter(k, text), code => { noSound(code); note.textContent = "No sound? Check the volume or headphones. If it still doesn't speak, open the AI Lab in Chrome or Edge in its own tab (some previews block sound)."; }); }
+  let runId = 0;
+  function speakLine(l){
+    return new Promise(res => {
+      if (!synth){ res("nosynth"); return; }
+      const u = utter(l[0], l[1]); let started = false, fin = false; SPEAK.keep = [u];
+      const end = r => { if (!fin){ fin = true; res(r); } };
+      u.onstart = () => { started = true; };
+      u.onend = () => end("ok"); u.onerror = e => end((e && e.error) || "error");
+      try { synth.resume(); synth.speak(u); } catch(e){ end("error"); }
+      setTimeout(() => { if (!started){ try { synth.cancel(); } catch(e){} end("silent"); } }, 3000);
+      setTimeout(() => end("timeout"), 2500 + l[1].length * 140);
+    });
+  }
+  function stopAll(){ runId++; try { if (synth) synth.cancel(); } catch(e){} VT.stop(); playing = false; playBtn.textContent = "▶ Play the radio ad"; document.querySelectorAll(".line").forEach(e=>e.classList.remove("now")); }
+  async function play(){
+    if (playing){ stopAll(); return; }
+    const L = lines.filter(l=>l[1].trim()); if (L.length < 3){ toast("Write at least 3 lines."); return; }
+    const id = ++runId; playing = true; playBtn.textContent = "■ Stop"; note.textContent = ""; let failed = 0;
+    try { if (synth && (synth.speaking || synth.pending)){ synth.cancel(); await new Promise(r => setTimeout(r, 150)); } } catch(e){}
+    for (const l of L){
+      if (id !== runId) return;
+      document.querySelectorAll(".line").forEach(e=>e.classList.remove("now")); const e = document.getElementById("ln" + lines.indexOf(l)); if (e) e.classList.add("now");
+      if (recs.get(l)) await VT.play(recs.get(l), FX[C[l[0]].fx]);
+      else { const r = await speakLine(l); if (r !== "ok" && r !== "timeout") failed++; }
+    }
+    if (id !== runId) return;
+    stopAll();
+    if (failed) note.textContent = "Some computer voices didn't speak on this device. Record those lines with 🎙 instead: your own voice + the character's effect.";
+    if (!played){ played = true; finish(); }
+  }
+  const playBtn = h("button", {class:"btn", onclick:play}, "▶ Play the radio ad");
+  function finish(){ const xp = (played ? 50 : 0) + quizPct*50; if (played && quizPct === 1) end.replaceChildren(endPanel("m9", xp, ["Radio ad produced and safety quiz passed."])); else award("m9", xp); }
+  const QZ = [
+    ["A voice note that sounds exactly like your uncle asks you to send money fast. What do you do first?", ["Send it, he sounds worried","Hang up and call him back on his real number","Ask him to talk louder"], 1],
+    ["Your friend wants to copy your teacher's voice for a funny video. Is that OK?", ["Yes, it's just a joke","Only with the teacher's clear permission, and labelled as AI","Yes, if you don't post it"], 1],
+    ["What is a family safe word for?", ["To unlock the phone","To check that a call really is from your family","To play a game"], 1]
+  ];
+  function drawQuiz(){
+    let ans = {};
+    const box = h("div", {class:"stage", style:"gap:12px"}, QZ.map(([q,opts,c],i) => { const fb = h("div");
+      const bs = opts.map((o,j)=>h("button", {class:"btn sm alt", onclick:()=>{ ans[i] = j===c; bs.forEach(b=>b.disabled = true); fb.replaceChildren(h("div", {class:"fb " + (j===c ? "ok" : "no")}, j===c ? "Right." : "Think again: " + opts[c] + ".")); if (Object.keys(ans).length === QZ.length){ quizPct = Object.values(ans).filter(Boolean).length / QZ.length; finish(); } }}, o));
+      return h("div", null, h("p", {style:"font-weight:800;margin-bottom:8px"}, q), h("div", {class:"row"}, bs), fb); }));
+    quiz.replaceChildren(box);
+  }
+  if (synth){ loadVoices(); try { synth.addEventListener("voiceschanged", loadVoices); } catch(e) { synth.onvoiceschanged = loadVoices; } } else { note.textContent = "This browser can't speak. Try Chrome or Edge on the lab computers."; }
+  stage.replaceChildren(
+    h("div", {class:"panel deep"}, h("p", {class:"eyebrow", style:"color:var(--sun)"}, "Part 1 · Your voice twin"), h("h2", {style:"font-size:28px"}, "Can a computer copy YOUR voice?"), h("p", null, "Record your voice, see what an AI measures in it, then hear it say things you never said.")),
+    voiceTwin(() => { if (!played){ played = true; finish(); } }),
+    h("div", {class:"panel deep", style:"margin-top:14px"}, h("p", {class:"eyebrow", style:"color:var(--sun)"}, "Part 2 · Computer voices"), h("h2", {style:"font-size:28px"}, "Make a radio ad with computer voices")),
+    h("div", {class:"panel"}, h("p", {class:"eyebrow"}, "Step 1 · Cast your voices"), charBox, h("p", {class:"small"}, "Voices come from this computer. Arabic and French appear only if the computer has them installed."),
+      h("button", {class:"btn sm alt", onclick:()=>soundCheck(checkOut)}, "🔊 No sound? Run a sound check"), checkOut),
+    h("div", {class:"panel"}, h("p", {class:"eyebrow"}, "Step 2 · Write the script (the script matters more than the voice)"), h("p", {class:"small"}, "Each line uses its character's computer voice. Or press 🎙 to record the line with your own voice: it gets the character's effect."), lineBox),
+    h("div", {class:"panel deep"}, h("p", {class:"eyebrow", style:"color:var(--sun)"}, "Step 3 · Produce"), h("div", {class:"row"}, playBtn), note,
+      h("p", {class:"small"}, "Try to make one line sound excited or sad. Can this voice do it? Newer AI voices can, and that's what makes fake voices dangerous.")),
+    h("div", {class:"panel"}, h("p", {class:"eyebrow"}, "Step 4 · Voice safety quiz"), quiz),
+    end);
+  drawChars(); drawLines(); drawQuiz();
+}
+
+/* ---------- Voice Twin: record your own voice (stays on this device) ---------- */
+const VT = (() => {
+  let ac = null, stream = null;
+  const ctx = () => { if (!ac){ const AC = window.AudioContext || window.webkitAudioContext; ac = new AC(); } if (ac.state === "suspended") ac.resume(); return ac; };
+  async function mic(){
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder === "undefined") throw {code:"unsupported"};
+    if (stream && stream.active) return stream;
+    try { stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true, noiseSuppression:true}}); return stream; }
+    catch(e){ throw {code: e && (e.name === "NotAllowedError" || e.name === "SecurityError") ? "blocked" : e && e.name === "NotFoundError" ? "nomic" : "error"}; }
+  }
+  function record(ms, onTick){
+    return mic().then(st => new Promise((res, rej) => {
+      const chunks = [], rec = new MediaRecorder(st); const a = ctx();
+      rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+      rec.onstop = async () => {
+        try { st.getTracks().forEach(t => t.stop()); } catch(e){} stream = null;
+        const blob = new Blob(chunks, {type: rec.mimeType || "audio/webm"}); const url = URL.createObjectURL(blob);
+        try { const ab = await a.decodeAudioData(await blob.arrayBuffer()); const t = trim(ab); t.url = url; res(t); } catch(e){ rej({code:"decode"}); } };
+      rec.start(); let left = ms; if (onTick) onTick(left);
+      const iv = setInterval(() => { left -= 100; if (onTick) onTick(Math.max(0,left)); if (left <= 0){ clearInterval(iv); try { rec.stop(); } catch(e){} } }, 100);
+    }));
+  }
+  function trim(b){
+    const d = b.getChannelData(0), sr = b.sampleRate, win = Math.floor(sr*0.02); let peak = 0;
+    for (let i=0;i<d.length;i++) peak = Math.max(peak, Math.abs(d[i]));
+    const th = Math.max(0.02, peak*0.12); let s = 0, e = d.length;
+    for (let i=0;i<d.length;i+=win){ let m = 0; for (let j=i;j<Math.min(d.length,i+win);j++) m = Math.max(m, Math.abs(d[j])); if (m > th){ s = Math.max(0, i - win*3); break; } }
+    for (let i=d.length-win;i>0;i-=win){ let m = 0; for (let j=i;j<Math.min(d.length,i+win);j++) m = Math.max(m, Math.abs(d[j])); if (m > th){ e = Math.min(d.length, i + win*6); break; } }
+    if (e - s < sr*0.15){ s = 0; e = d.length; }
+    const out = ctx().createBuffer(1, e - s, sr); const o = out.getChannelData(0); const g = peak > 0 ? Math.min(4, 0.8/peak) : 1;
+    for (let i=0;i<o.length;i++) o[i] = d[s+i]*g; out.peak = peak; return out;
+  }
+  function join(bufs, gap){
+    const a = ctx(), sr = bufs[0].sampleRate, g = Math.floor(sr*(gap||0.06)); const len = bufs.reduce((n,b)=>n+b.length+g, 0);
+    const out = a.createBuffer(1, len, sr), o = out.getChannelData(0); let p = 0;
+    bufs.forEach(b => { o.set(b.getChannelData(0), p); p += b.length + g; }); return out;
+  }
+  let cur = null;
+  async function play(buf, fx){
+    fx = fx || {}; const a = ctx(); stop();
+    try { if (a.state !== "running") await a.resume(); } catch(e){}
+    let src = buf; if (fx.reverse){ src = a.createBuffer(1, buf.length, buf.sampleRate); const i0 = buf.getChannelData(0), o = src.getChannelData(0); for (let i=0;i<o.length;i++) o[i] = i0[o.length-1-i]; }
+    const n = a.createBufferSource(); n.buffer = src; n.playbackRate.value = fx.rate || 1;
+    let last = n;
+    if (fx.robot){ const g = a.createGain(); g.gain.value = 0; const o = a.createOscillator(); o.frequency.value = 55; o.connect(g.gain); o.start(); last.connect(g); last = g; n.onended = () => { try { o.stop(); } catch(e){} }; }
+    const out = a.createGain(); out.gain.value = fx.robot ? 1.6 : 1; last.connect(out); out.connect(a.destination);
+    if (fx.echo){ const d = a.createDelay(1); d.delayTime.value = 0.22; const fb = a.createGain(); fb.gain.value = 0.42; last.connect(d); d.connect(fb); fb.connect(d); d.connect(a.destination); }
+    n.start(); cur = n; return new Promise(r => { n.addEventListener("ended", r); });
+  }
+  function stop(){ if (cur){ try { cur.stop(); } catch(e){} cur = null; } }
+  function pitch(b){
+    const d = b.getChannelData(0), sr = b.sampleRate, N = 2048, found = [];
+    for (let s=0; s+N < d.length; s += N/2){
+      let rms = 0; for (let i=0;i<N;i++) rms += d[s+i]*d[s+i]; rms = Math.sqrt(rms/N); if (rms < 0.04) continue;
+      let best = -1, bl = 0; const minL = Math.floor(sr/500), maxL = Math.floor(sr/70);
+      for (let l=minL; l<=maxL; l++){ let c = 0; for (let i=0;i<N-l;i+=2) c += d[s+i]*d[s+i+l]; if (c > best){ best = c; bl = l; } }
+      if (bl) found.push(sr/bl);
+    }
+    if (!found.length) return null; found.sort((x,y)=>x-y); return Math.round(found[Math.floor(found.length/2)]);
+  }
+  function wave(canvas, b, color){
+    const c = canvas.getContext("2d"), W = canvas.width, H = canvas.height, d = b.getChannelData(0), step = Math.max(1, Math.floor(d.length/W));
+    c.clearRect(0,0,W,H); c.fillStyle = color || "#FF6B4A";
+    for (let x=0;x<W;x++){ let m = 0; for (let j=0;j<step;j++) m = Math.max(m, Math.abs(d[x*step+j]||0)); const hh = Math.max(1, m*H*0.9); c.fillRect(x, (H-hh)/2, 1, hh); }
+  }
+  const errText = code => code === "blocked" ? "The microphone is blocked here. Click the 🎙 icon in the address bar and allow the microphone. (Inside the Claude preview the microphone can't be used: open the AI Lab from the school website.)" :
+    code === "nomic" ? "No microphone found. Plug in a headset with a microphone." : code === "unsupported" ? "This browser can't record. Use Chrome or Edge." : "Recording didn't work. Try again.";
+  return {record, play, stop, join, pitch, wave, errText, ctx};
+})();
+
+function voiceTwin(onFake){
+  const WORDS = ["I","really","love","hate","never","eat","pizza","homework","broccoli","football","Mondays"];
+  const FAKES = [["I","really","love","homework"],["I","hate","pizza"],["I","never","eat","pizza"],["I","really","love","broccoli"],["I","hate","football"]];
+  const clips = {}; let main = null;
+  const recBtnLbl = "🎙 Record (5 seconds)";
+  const mainOut = h("div"), printOut = h("div"), wordsBox = h("div", {class:"chips"}), fakeOut = h("div"), builder = h("div"), fxOut = h("div"), err = h("div");
+  const wcv = h("canvas", {width:"640", height:"90", class:"painter", style:"background:var(--chip);height:auto"});
+  const showErr = e => err.replaceChildren(h("div", {class:"fb no"}, "Microphone problem", h("span", null, VT.errText(e && e.code))));
+  const recBtn = h("button", {class:"btn", onclick: async () => {
+    err.replaceChildren(); recBtn.disabled = true;
+    try { main = await VT.record(5000, left => { recBtn.textContent = left > 0 ? "● Recording… " + Math.ceil(left/1000) : "Processing…"; }); drawMain(); }
+    catch(e){ showErr(e); }
+    recBtn.disabled = false; recBtn.textContent = main ? "🎙 Record again" : recBtnLbl;
+  }}, recBtnLbl);
+  function drawMain(){
+    VT.wave(wcv, main);
+    const hz = VT.pitch(main), secs = (main.length/main.sampleRate).toFixed(1);
+    const band = !hz ? "?" : hz < 165 ? "low (deep)" : hz < 255 ? "medium" : "high";
+    mainOut.replaceChildren(wcv, h("div", {class:"row"}, h("button", {class:"btn sm", onclick:()=>VT.play(main)}, "▶ Play my voice"),
+      main.url ? h("audio", {controls:"", src:main.url, style:"height:40px;max-width:100%"}) : null),
+      h("p", {class:"small"}, "Can't hear anything? Use the small player next to the button, and check your speakers or headphones."));
+    printOut.replaceChildren(h("div", {class:"panel", style:"margin-top:14px"},
+      h("p", {class:"eyebrow"}, "Step 2 · Your voice print"),
+      h("h3", null, "This is what a voice AI measures in your voice"),
+      h("div", {class:"row", style:"gap:10px"},
+        h("span", {class:"pill done"}, "Pitch: " + (hz ? hz + " Hz, " + band : "too quiet, record again louder")),
+        h("span", {class:"pill done"}, "Length: " + secs + " s"),
+        h("span", {class:"pill done"}, "Loudness: " + (main.peak > 0.5 ? "loud" : main.peak > 0.15 ? "normal" : "quiet"))),
+      h("p", {class:"small"}, "Every voice has its own print: how high it is, how fast you talk, the shape of your sounds. A voice-cloning AI learns this print from as little as 10 seconds of you talking. Then it can make your voice say anything.")));
+    fxOut.replaceChildren(h("div", {class:"panel", style:"margin-top:14px"},
+      h("p", {class:"eyebrow"}, "Step 4 · Voice changer"),
+      h("h3", null, "Same recording, new voice"),
+      h("div", {class:"row"}, ...[["🦣 Giant",{rate:0.7}],["🐿 Chipmunk",{rate:1.6}],["🤖 Robot",{robot:true}],["🏔 Cave echo",{echo:true}],["⏪ Backwards",{reverse:true}],["👽 Alien",{rate:1.3, robot:true, echo:true}]].map(([l,fx]) => h("button", {class:"btn sm alt", onclick:()=>VT.play(main, fx)}, l))),
+      h("p", {class:"small"}, "A computer can change any voice in a second. So when you hear a strange or surprising voice message, it may not be what it sounds like.")));
+  }
+  function drawWords(){
+    wordsBox.replaceChildren(...WORDS.map(w => { const b = h("button", {class:"chip", "aria-pressed": String(!!clips[w]), onclick: async () => {
+      err.replaceChildren(); b.textContent = "● say “" + w + "”…";
+      try { clips[w] = await VT.record(1400); VT.play(clips[w]); } catch(e){ showErr(e); }
+      drawWords(); drawFakes(); }}, (clips[w] ? "✓ " : "🎙 ") + w); return b; }));
+  }
+  let built = [];
+  function playWords(ws){ const miss = ws.filter(w => !clips[w]); if (miss.length){ toast("Record these words first: " + miss.join(", ")); return; } VT.play(VT.join(ws.map(w => clips[w]))); if (onFake) onFake(); }
+  function drawFakes(){
+    const ready = WORDS.filter(w => clips[w]).length;
+    fakeOut.replaceChildren(h("p", {class:"small"}, ready + " of " + WORDS.length + " words recorded."),
+      h("div", {class:"stage", style:"gap:8px"}, ...FAKES.map(f => h("div", {class:"row", style:"justify-content:space-between;border:2px solid var(--line);border-radius:14px;padding:8px 12px"},
+        h("span", {style:"font-weight:800"}, "“" + f.join(" ") + "”"), h("button", {class:"btn sm", onclick:()=>playWords(f)}, "▶ Hear “you” say it")))));
+    builder.replaceChildren(h("p", {style:"font-weight:800;margin:14px 0 6px"}, "Build your own fake sentence:"),
+      h("div", {class:"chips"}, ...WORDS.filter(w => clips[w]).map(w => h("button", {class:"chip", onclick:()=>{ if (built.length < 8){ built.push(w); drawFakes(); } }}, "+ " + w))),
+      h("div", {class:"row", style:"margin-top:8px"}, h("span", {class:"preview", style:"font-size:18px;min-height:0"}, built.length ? "“" + built.join(" ") + "”" : "Click the words in order…"),
+        h("button", {class:"btn sm", onclick:()=>{ if (built.length) playWords(built); }}, "▶ Play"), h("button", {class:"btn sm alt", onclick:()=>{ built = []; drawFakes(); }}, "Clear")));
+  }
+  drawWords(); drawFakes();
+  return h("div", null,
+    h("div", {class:"panel"},
+      h("p", {class:"eyebrow"}, "Step 1 · Record your voice"),
+      h("h3", null, "Read this out loud, then press record:"),
+      h("p", {class:"preview", style:"font-size:20px"}, "“Hello! I love football, pizza and my school. Today is a great day.”"),
+      h("div", {class:"row"}, recBtn), err, mainOut,
+      h("p", {class:"small"}, "🔒 Your recordings stay on this computer only. Nothing is uploaded or saved, and they disappear when you close the page.")),
+    printOut,
+    h("div", {class:"panel", style:"margin-top:14px"},
+      h("p", {class:"eyebrow"}, "Step 3 · Make your voice say things you never said"),
+      h("h3", null, "Record each word once. Then the app makes new sentences in YOUR voice."),
+      wordsBox, fakeOut, builder,
+      h("div", {class:"fb info", style:"margin-top:12px"}, "You never said these sentences!", h("span", null, "The app just cut and glued your words, so it sounds choppy. A real voice-cloning AI learns your whole voice print and says ANY sentence smoothly, even words you never recorded. That's why we never post our voice publicly, never clone someone without permission, and use a family safe word."))),
+    fxOut);
+}
+
+/* ---------- M10 Fact & Fake Detective ---------- */
+function m10(stage){
+  const ROUNDS = [
+    {q:"Tell me 5 facts about our solar system.", s:[
+      ["The Sun is the biggest planet in our solar system.",false,"The Sun is a star, not a planet."],
+      ["Mars is the closest planet to the Sun.",false,"Mercury is the closest planet to the Sun."],
+      ["Jupiter is the largest planet.",true,""],
+      ["Earth has two moons.",false,"Earth has one moon."],
+      ["Sunlight takes about 8 minutes to reach Earth.",true,""]]},
+    {q:"Tell me 5 facts about Lebanon.", s:[
+      ["Beirut is the capital of Lebanon.",true,""],
+      ["A cedar tree is on the Lebanese flag.",true,""],
+      ["Lebanon's coast is on the Red Sea.",false,"Lebanon's coast is on the Mediterranean Sea."],
+      ["Mount Everest is the highest mountain in Lebanon.",false,"Everest is in the Himalayas. Lebanon's highest peak is Qurnat as Sawda'."],
+      ["Arabic is the official language of Lebanon.",true,""]]},
+    {q:"Tell me 5 facts about the human body.", s:[
+      ["An adult has 206 bones.",true,""],
+      ["The heart has four chambers.",true,""],
+      ["Humans have three lungs.",false,"Humans have two lungs."],
+      ["The skin is the body's largest organ.",true,""],
+      ["Blood inside your body is blue.",false,"Blood is always red. Veins only look blue through the skin."]]}
+  ];
+  const SC = [
+    ["A photo of a huge fire in the city centre arrives in your family WhatsApp group. Nobody knows who took it.", ["Forward it so everyone is careful","Stop. Check who posted it first and whether real news reports it","Reply “Is this real?” to the group"], 1],
+    ["A video shows a famous footballer saying he is joining a Lebanese team. Only one unknown account posted it.", ["Share it, it's great news","Check the player's official account and real sports news first","Comment asking if it's real"], 1],
+    ["An ad shows a celebrity saying a new app gives free phones.", ["Download the app quickly","It's probably fake: don't click, and tell an adult","Send it to friends to try"], 1],
+    ["You made a funny AI picture of a robot teacher for a class project.", ["Post it without saying anything","Label it “Made with AI” before sharing","Say it's a real photo"], 1]
+  ];
+  let r = 0, aScore = 0, bScore = 0, bDone = 0;
+  const box = h("div", {class:"stage"});
+  function drawRound(){
+    if (r >= ROUNDS.length){ drawScenarios(); return; }
+    const R = ROUNDS[r], marks = R.s.map(()=>false);
+    const btns = R.s.map((s,i)=>h("button", {"aria-pressed":"false", onclick:()=>{ marks[i] = !marks[i]; btns[i].setAttribute("aria-pressed", String(marks[i])); }}, s[0]));
+    const res = h("div");
+    const checkBtn = h("button", {class:"btn", onclick:()=>{
+      checkBtn.disabled = true; let ok = 0;
+      R.s.forEach((s,i)=>{ const right = marks[i] === !s[1]; if (right) ok++; btns[i].disabled = true; if (s[1]) btns[i].classList.add("t");
+        btns[i].append(h("small", {style:"color:" + (s[1] ? "var(--good)" : "var(--bad)")}, s[1] ? "True" : "False: " + s[2])); });
+      aScore += ok;
+      res.replaceChildren(h("div", {class:"fb " + (ok === 5 ? "ok" : "info")}, ok + " of 5 judged correctly.", h("span", null, "The AI sounded just as sure about the false lines. Only a real source tells you which is which.")),
+        h("div", {class:"row", style:"margin-top:12px"}, h("button", {class:"btn sun", onclick:()=>{ r++; drawRound(); }}, r < ROUNDS.length-1 ? "Next round" : "Part 2: fakes")));
+    }}, "Check my answers");
+    box.replaceChildren(h("div", {class:"panel"},
+      h("p", {class:"eyebrow"}, "Part 1 · Catch the AI · round " + (r+1) + " of 3"),
+      h("p", null, "Someone asked a chatbot: ", h("b", null, "“" + R.q + "”"), " Tap every line you think is FALSE."),
+      h("div", {class:"sent"}, btns), h("div", {class:"row"}, checkBtn), res));
+  }
+  function drawScenarios(){
+    const list = h("div", {class:"stage", style:"gap:14px"}, SC.map(([q,opts,c]) => { const fb = h("div");
+      const bs = opts.map((o,j)=>h("button", {class:"btn sm alt", style:"text-align:left", onclick:()=>{ bs.forEach(b=>b.disabled=true); if (j===c) bScore++; bDone++;
+        fb.replaceChildren(h("div", {class:"fb " + (j===c ? "ok" : "no")}, j===c ? "Good detective work." : "Better: " + opts[c] + "."));
+        if (bDone === SC.length) end.replaceChildren(endPanel("m10", aScore/15*60 + bScore/SC.length*40, ["Catch the AI: " + aScore + " of 15 lines. Fake decisions: " + bScore + " of " + SC.length + "."])); }}, o));
+      return h("div", {class:"panel"}, h("p", {style:"font-weight:800"}, q), h("div", {class:"stage", style:"gap:8px"}, bs), fb); }));
+    const end = h("div");
+    box.replaceChildren(h("div", {class:"panel deep"}, h("p", {class:"eyebrow", style:"color:var(--sun)"}, "Part 2 · What would you do?"), h("p", null, "The 4 S routine: Stop · Source · Search · Second opinion.")), list, end);
+  }
+  stage.replaceChildren(box); drawRound();
+}
+
+/* ---------- licence ---------- */
+function renderLicence(){
+  const done = MISSIONS.filter(m=>S.done[m.id]).length, ok = done >= 8;
+  app.replaceChildren(
+    h("div", {class:"mhead"}, h("a", {class:"back", href:"#"}, "← All missions"), h("p", {class:"eyebrow"}, "AI Licence")),
+    h("div", {class:"cert"},
+      h("p", {class:"eyebrow"}, ok ? "Awarded to" : "Locked · " + done + " of 8 missions"),
+      h("h2", null, ok ? (S.name || "A brilliant AI scientist") : "Your AI Licence"),
+      h("p", {class:"big"}, ok ? "can think, train and test AI." : "Finish 8 missions to unlock it."),
+      h("div", {class:"two"}, ["I think before I ask.","I check what AI tells me.","I keep myself and others safe.","My work is my own."].map(t=>h("p", {style:"font-weight:800"}, "✓ " + t))),
+      h("p", {class:"small"}, level(totalXP()) + " · " + totalXP() + " XP" + (ok ? " · " + new Date().toLocaleDateString() : "")),
+      h("p", null, "★ Creative stars: " + Object.keys(S.create).length + " of 10" + (Object.keys(S.create).length >= 6 ? " · Prompt Artist" : "")),
+      h("p", {class:"eyebrow", style:"margin-top:8px"}, "Badges"),
+      h("div", {class:"badges"}, MISSIONS.map(m=>h("div", {class:"badge" + (S.done[m.id] ? " on" : "")}, h("i", null, S.done[m.id] ? "★" : "☆"), m.badge)))
+    ));
+}
+
+/* ---------- router ---------- */
+/* ---------- login + teacher hub ---------- */
+const LOGIN_ERR = c => ({wrong_login:"Wrong username or password. Check with your teacher.", too_many_tries:"Too many tries. Wait 10 minutes, then try again.", offline:"No internet connection. Check the Wi-Fi and try again.",
+  teacher_exists:"A teacher account already exists. Log in instead.", too_short:"Username needs 3+ letters and password 6+ characters.", not_teacher:"Your teacher session ended. Log in again."})[c] || "Something went wrong (" + c + "). Try again.";
+function renderLogin(){
+  const u = h("input", {class:"field", id:"lu", autocomplete:"username", autocapitalize:"none", spellcheck:"false", placeholder:"e.g. ghadi27", "aria-label":"Username"});
+  const p = h("input", {class:"field", id:"lp", type:"password", autocomplete:"current-password", placeholder:"e.g. cedar-42", "aria-label":"Password"});
+  const err = h("div"), btn = h("button", {class:"btn", type:"submit"}, "Let's go!");
+  const form = h("form", {class:"stage", style:"gap:12px", onsubmit: async e => {
+    e.preventDefault(); err.replaceChildren(); if (!u.value.trim() || !p.value){ err.replaceChildren(h("div", {class:"fb no"}, "Type your username and password.")); return; }
+    btn.disabled = true; btn.textContent = "Opening your lab…";
+    try { const r = await rpc("ailab_student_login", {p_user:u.value.trim(), p_pass:p.value}); startSession(r); renderTop(); location.hash = ""; route(); toast("Hi " + ACC.name + "! Your progress is saved online."); }
+    catch(e2){ err.replaceChildren(h("div", {class:"fb no"}, LOGIN_ERR(e2.code))); btn.disabled = false; btn.textContent = "Let's go!"; }
+  }}, h("label", {for:"lu", class:"eyebrow"}, "Username"), u, h("label", {for:"lp", class:"eyebrow"}, "Password"), p, btn, err);
+  app.replaceChildren(h("section", {class:"login"},
+    h("div", {class:"hero-main", style:"border-radius:24px;padding:28px"}, h("p", {class:"eyebrow", style:"color:var(--sun)"}, "Think · Train · Test"), h("h1", null, "The ", h("span", null, "AI Lab")), h("p", null, "Log in with the card your teacher gave you."), netArt()),
+    h("div", {class:"card"}, form, h("p", {class:"small", style:"margin-top:14px"}, "Forgot your password? Ask your teacher for a new one."), h("a", {class:"small", href:"#teacher"}, "I'm the teacher →"))));
+  setTimeout(() => u.focus(), 50);
+}
+
+const TKEY = "ai-lab-teacher";
+const WORDS = ["cedar","rocket","mango","tiger","comet","pixel","robot","panda","lemon","falcon","orbit","cactus","olive","planet","dolphin","koala","maple","star"];
+const rnd = n => Math.floor(Math.random()*n);
+function slugName(name){ const f = (name.trim().split(/\s+/)[0] || "").toLowerCase().normalize("NFD").replace(/[^a-z]/g, "").slice(0,10); return f || "student"; }
+function renderTeacher(){
+  if (!cloudOn()){ app.replaceChildren(h("section", {class:"panel"}, h("p", {class:"eyebrow"}, "Teacher hub"), h("h2", null, "Student accounts are not switched on yet"), h("p", null, "Ask your tech person to connect the AI Lab to its Supabase database (see the setup guide)."), h("a", {class:"btn sm alt", href:"#"}, "← Back"))); return; }
+  let tok = null; try { tok = sessionStorage.getItem(TKEY); } catch(e) {}
+  if (tok) return teacherHub(tok);
+  const box = h("div", null, h("p", {class:"small"}, "Checking…"));
+  app.replaceChildren(h("section", {class:"panel", style:"max-width:520px;margin:0 auto"}, h("p", {class:"eyebrow"}, "Teacher hub"), box));
+  rpc("ailab_has_teacher", {}).then(has => {
+    const u = h("input", {class:"field", autocomplete:"username", autocapitalize:"none", "aria-label":"Teacher username", placeholder:"Teacher username"});
+    const p = h("input", {class:"field", type:"password", autocomplete: has ? "current-password" : "new-password", "aria-label":"Teacher password", placeholder: has ? "Password" : "Choose a password (6+ characters)"});
+    const err = h("div"), btn = h("button", {class:"btn", type:"submit"}, has ? "Log in" : "Create the teacher account");
+    box.replaceChildren(h("h2", null, has ? "Teacher log in" : "First time: create the teacher account"),
+      ...(has ? [] : [h("p", {class:"small"}, "This happens only once. Keep this password safe: it controls all student accounts.")]),
+      h("form", {class:"stage", style:"gap:10px", onsubmit: async e => { e.preventDefault(); err.replaceChildren(); btn.disabled = true;
+        try { const t = await rpc(has ? "ailab_teacher_login" : "ailab_setup_teacher", {p_user:u.value.trim(), p_pass:p.value}); try { sessionStorage.setItem(TKEY, t); } catch(x) {} teacherHub(t); }
+        catch(e2){ err.replaceChildren(h("div", {class:"fb no"}, LOGIN_ERR(e2.code))); btn.disabled = false; } }}, u, p, btn, err),
+      h("a", {class:"small", href:"#"}, "← Back to the lab"));
+  }).catch(e => box.replaceChildren(h("div", {class:"fb no"}, LOGIN_ERR(e.code))));
+}
+function teacherHub(tok){
+  let list = [], filter = "", cards = [];
+  const out = h("div"), addOut = h("div"), msg = h("div");
+  const fail = e => { if (e.code === "not_teacher"){ try { sessionStorage.removeItem(TKEY); } catch(x) {} renderTeacher(); toast(LOGIN_ERR(e.code)); } else msg.replaceChildren(h("div", {class:"fb no"}, LOGIN_ERR(e.code))); };
+  async function load(){ try { list = await rpc("ailab_list_students", {p_token:tok}) || []; draw(); } catch(e){ fail(e); } }
+  const cls = h("input", {class:"field", placeholder:"Class, e.g. EB7 A", "aria-label":"Class name"});
+  const names = h("textarea", {rows:"6", placeholder:"One student per line, first name + last name\nGhadi Hamadeh\nSara Khoury", "aria-label":"Student names"});
+  async function create(){
+    const rows = names.value.split("\n").map(x => x.trim()).filter(Boolean).slice(0,60);
+    if (!rows.length){ toast("Write the student names first."); return; }
+    const taken = new Set(list.map(s => s.username)), made = [];
+    rows.forEach(n => { let un; do { un = slugName(n) + String(10 + rnd(90)); } while (taken.has(un)); taken.add(un);
+      made.push({name:n.slice(0,40), username:un, class:cls.value.trim().slice(0,20), password: WORDS[rnd(WORDS.length)] + "-" + String(10 + rnd(90))}); });
+    try { await rpc("ailab_add_students", {p_token:tok, p_rows:made}); cards = made; names.value = ""; drawCards(); load(); toast(made.length + " accounts created"); }
+    catch(e){ fail(e); }
+  }
+  function drawCards(){
+    const url = location.href.split("#")[0];
+    addOut.replaceChildren(!cards.length ? "" : h("div", {class:"panel", style:"margin-top:14px"},
+      h("div", {class:"row", style:"justify-content:space-between"}, h("h3", null, "Login cards (" + cards.length + ")"), h("button", {class:"btn sm", onclick:()=>window.print()}, "🖨 Print the cards")),
+      h("p", {class:"small"}, "Print or copy them now: passwords are stored locked and can't be shown again. You can always give a student a new password."),
+      h("div", {class:"logincards printme"}, ...cards.map(c => h("div", {class:"lcard"},
+        h("p", {class:"eyebrow"}, "AI Lab · " + (c.class || "")), h("p", {style:"font-weight:800;font-size:18px;margin:4px 0"}, c.name),
+        h("p", null, "Username: ", h("b", null, c.username)), h("p", null, "Password: ", h("b", null, c.password)), h("p", {class:"small", style:"overflow-wrap:anywhere"}, url))))));
+  }
+  function confirmBtn(label, sure, fn){ let armed = false; const b = h("button", {class:"btn sm alt", onclick:()=>{ if (!armed){ armed = true; b.textContent = sure; setTimeout(()=>{ armed = false; b.textContent = label; }, 3000); } else fn(); }}, label); return b; }
+  function draw(){
+    const classes = [...new Set(list.map(s => s.class_name || ""))].sort();
+    const shown = list.filter(s => !filter || s.class_name === filter);
+    const sel = h("select", {class:"field", style:"max-width:220px", "aria-label":"Filter by class"}, h("option", {value:""}, "All classes"), ...classes.map(c => h("option", {value:c, selected:c===filter}, c || "(no class)")));
+    sel.addEventListener("change", ()=>{ filter = sel.value; draw(); });
+    const xpOf = s => Object.values((s.data && s.data.best) || {}).reduce((a,b)=>a+(+b||0), 0);
+    const ago = t => { if (!t) return "never"; const d = (Date.now() - new Date(t))/60000; return d < 60 ? Math.round(d) + " min ago" : d < 1440 ? Math.round(d/60) + " h ago" : Math.round(d/1440) + " days ago"; };
+    out.replaceChildren(h("div", {class:"panel", style:"margin-top:14px"},
+      h("div", {class:"row", style:"justify-content:space-between"}, h("h3", null, "Students (" + shown.length + ")"), h("div", {class:"row"}, sel, h("button", {class:"btn sm alt", onclick:load}, "↻ Refresh"), h("button", {class:"btn sm alt", onclick:()=>csv(shown)}, "⬇ Export CSV"))),
+      !shown.length ? h("p", {class:"small"}, "No students yet. Add a class above.") :
+      h("div", {class:"tbl", style:"overflow-x:auto"}, h("table", {class:"hubt"},
+        h("tr", null, ...["Student","Username","XP","Level", ...MISSIONS.map((m,i)=>"M"+(i+1)), "★","Last active",""].map(t=>h("th", null, t))),
+        ...shown.map(s => { const d = s.data || {}, best = d.best || {}, done = d.done || {}, x = xpOf(s);
+          return h("tr", null, h("td", null, h("b", null, s.display_name), h("br"), h("span", {class:"small"}, s.class_name)), h("td", null, s.username), h("td", null, x), h("td", null, level(x)),
+            ...MISSIONS.map(m => h("td", {class: done[m.id] ? "ok" : best[m.id] ? "part" : "", title:m.title}, done[m.id] ? "✓" : best[m.id] ? String(best[m.id]) : "·")),
+            h("td", null, Object.keys(d.create || {}).length), h("td", {class:"small"}, ago([s.updated_at, s.last_login].filter(Boolean).sort().pop())),
+            h("td", null, h("div", {class:"row", style:"flex-wrap:nowrap"},
+              confirmBtn("New password", "Sure?", async () => { const pw = WORDS[rnd(WORDS.length)] + "-" + String(10 + rnd(90)); try { await rpc("ailab_reset_password", {p_token:tok, p_user:s.username, p_pass:pw}); cards = [{name:s.display_name, username:s.username, class:s.class_name, password:pw}]; drawCards(); toast("New password: " + pw); } catch(e){ fail(e); } }),
+              confirmBtn("Delete", "Delete forever?", async () => { try { await rpc("ailab_delete_student", {p_token:tok, p_user:s.username}); toast("Deleted"); load(); } catch(e){ fail(e); } })))); })))));
+  }
+  function csv(rows){
+    const head = ["name","class","username","xp","level", ...MISSIONS.map((m,i)=>"M"+(i+1)+" "+m.title), "creative_stars","last_active"];
+    const q = v => '"' + String(v == null ? "" : v).replace(/"/g,'""') + '"';
+    const lines = [head.map(q).join(",")].concat(rows.map(s => { const d = s.data || {}, x = Object.values(d.best || {}).reduce((a,b)=>a+(+b||0),0);
+      return [s.display_name, s.class_name, s.username, x, level(x), ...MISSIONS.map(m => (d.best||{})[m.id] || 0), Object.keys(d.create||{}).length, s.updated_at || ""].map(q).join(","); }));
+    const a = h("a", {href: URL.createObjectURL(new Blob(["﻿" + lines.join("\n")], {type:"text/csv"})), download:"ai-lab-progress.csv"}); document.body.append(a); a.click(); a.remove();
+  }
+  app.replaceChildren(
+    h("div", {class:"row", style:"justify-content:space-between"}, h("div", null, h("p", {class:"eyebrow"}, "Teacher hub"), h("h1", {style:"font-size:36px"}, "My classes")),
+      h("button", {class:"btn sm alt", onclick:()=>{ rpc("ailab_logout", {p_token:tok}).catch(()=>{}); try { sessionStorage.removeItem(TKEY); } catch(e) {} location.hash = ""; route(); }}, "Log out")),
+    msg,
+    h("div", {class:"panel"}, h("p", {class:"eyebrow"}, "Add students"), h("h3", null, "Create accounts for a class"),
+      h("div", {class:"stage", style:"gap:10px"}, cls, names, h("div", {class:"row"}, h("button", {class:"btn", onclick:create}, "Create accounts"), h("span", {class:"small"}, "Usernames and passwords are made for you. No email needed.")))),
+    addOut, out);
+  load();
+}
+function route(){
+  const id = (location.hash || "").slice(1);
+  document.body.classList.toggle("in-hub", id === "teacher");
+  const who = document.querySelector(".who"); if (who) who.style.visibility = (id === "teacher" || (cloudOn() && !ACC)) ? "hidden" : "";
+  if (id === "teacher"){ renderTeacher(); window.scrollTo(0,0); return; }
+  if (cloudOn() && !ACC){ renderLogin(); window.scrollTo(0,0); return; }
+  if (MISSIONS.some(m=>m.id===id)) renderMission(id);
+  else if (id === "licence") renderLicence();
+  else renderHome();
+  window.scrollTo(0,0);
+}
+addEventListener("hashchange", route);
+(function boot(){
+  const who = document.querySelector(".who");
+  if (who && cloudOn()){ who.prepend(h("span", {id:"cloud", class:"cloud"})); }
+  renderTop();
+  if (cloudOn() && ACC && location.hash !== "#teacher"){
+    app.replaceChildren(h("p", {class:"small", style:"padding:40px 0"}, "Opening your lab…"));
+    rpc("ailab_load", {p_token:ACC.token}).then(r => { r.token = ACC.token; startSession(r); setCloud("saved"); renderTop(); route(); })
+      .catch(e => { if (e.code === "not_logged_in"){ try { localStorage.removeItem(SESS_KEY); } catch(x) {} ACC = null; S = blankState(); renderTop(); route(); }
+        else { setCloud("offline"); toast("Offline: using the copy on this computer."); route(); } });
+  } else route();
+})();
+})();
+</script>
+
+</body>
+</html>

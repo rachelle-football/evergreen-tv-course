@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head><body>
+<title>Video and Fakes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: a broadcast "rundown" — one segment on air at a time, channel bug + clock on top, rundown rail below */
+:root{
+  --paper:#F4F6F2; --panel:#FFFFFF; --ink:#13221C; --muted:#56665E; --line:#D7DFD9;
+  --green:#1E7A55; --green-soft:#E3F1E9; --onair:#D9412A; --onair-soft:#FBE7E3; --gold:#B7791F; --gold-soft:#FBF0DC;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0E1512; --panel:#16201B; --ink:#E8F0EB; --muted:#9BB0A5; --line:#2A3832;
+  --green:#4BC38B; --green-soft:#16362A; --onair:#FF6B50; --onair-soft:#3A1D17; --gold:#E9B04F; --gold-soft:#3A2C14; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0E1512; --panel:#16201B; --ink:#E8F0EB; --muted:#9BB0A5; --line:#2A3832;
+  --green:#4BC38B; --green-soft:#16362A; --onair:#FF6B50; --onair-soft:#3A1D17; --gold:#E9B04F; --gold-soft:#3A2C14; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--panel)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);line-height:1.08;margin:0;text-wrap:balance}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--panel);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:14px;padding-block:10px;flex-wrap:wrap}
+.bug{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;letter-spacing:.02em}
+.bug .live{white-space:nowrap;display:inline-flex;align-items:center;gap:6px;background:var(--onair);color:#fff;font:700 12px/1 var(--mono);letter-spacing:.12em;padding:6px 8px;border-radius:4px}
+.bug .live i{width:7px;height:7px;border-radius:50%;background:#fff;animation:blink 1.6s steps(2) infinite}
+@keyframes blink{50%{opacity:.25}}
+.bug small{font-family:var(--body);font-weight:400;color:var(--muted);letter-spacing:0}
+.clock{margin-left:auto;display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:15px}
+.clock b{font-size:20px;font-variant-numeric:tabular-nums;min-width:4.2ch;text-align:right}
+.clock b.late{color:var(--onair)}
+.ghost{background:transparent;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:14px}
+.ghost:hover{border-color:var(--ink)}
+
+/* stage */
+main{padding-block:26px 120px}
+.seg[hidden]{display:none!important}
+.lower{display:flex;align-items:stretch;gap:0;margin-bottom:22px;max-width:100%}
+.lower .no{background:var(--green);color:#fff;font:700 15px/1 var(--mono);padding:12px 14px;display:flex;align-items:center;border-radius:10px 0 0 10px}
+.lower .name{background:var(--panel);border:1px solid var(--line);border-left:0;border-radius:0 10px 10px 0;padding:8px 16px;min-width:0}
+.lower .name h2{font-size:clamp(26px,3.6vw,40px);font-weight:800}
+.lower .name p{margin:2px 0 0;color:var(--muted);font-size:15px}
+.big{font-family:var(--display);font-weight:700;font-size:clamp(24px,3vw,34px);line-height:1.2;max-width:30ch;margin:0 0 18px;text-wrap:balance}
+.lead{font-size:20px;max-width:62ch;margin:0 0 20px}
+.muted{color:var(--muted)}
+.note{font-size:14px;color:var(--muted);margin-top:14px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.tag{display:inline-block;font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.btn{background:var(--ink);color:var(--paper);border:0;border-radius:10px;padding:12px 18px;font-weight:700}
+.btn:hover{opacity:.9}
+.btn.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:8px 12px;font-size:15px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+a{color:var(--green);font-weight:700}
+
+
+/* chapter 2 */
+.def{border:2px solid var(--green);background:var(--green-soft);border-radius:16px;padding:20px 22px;margin-top:18px}
+.def p{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(22px,2.8vw,30px);line-height:1.25}
+.steps3{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:12px;align-items:center}
+.steps3 h3{font-size:26px;margin:6px 0}
+.steps3 p{margin:0;font-size:17px}
+.steps3 .arrow{font:700 28px/1 var(--mono);color:var(--muted)}
+@media (max-width:820px){.steps3{grid-template-columns:1fr}.steps3 .arrow{transform:rotate(90deg);justify-self:center}}
+.mission{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:900px){.mission{grid-template-columns:1fr}}
+.checklist{list-style:none;padding:0;margin:0;display:grid;gap:10px;counter-reset:st}
+.checklist li{counter-increment:st;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.checklist li.ok{border-color:var(--green);background:var(--green-soft)}
+.checklist label{display:grid;grid-template-columns:auto auto 1fr;gap:12px;align-items:start;padding:14px 16px;cursor:pointer}
+.checklist label::before{content:counter(st);font:700 15px/1 var(--mono);background:var(--ink);color:var(--paper);border-radius:6px;padding:6px 8px;grid-column:1;grid-row:1}
+.checklist input{grid-column:2;grid-row:1;width:22px;height:22px;margin:2px 0 0;accent-color:var(--green)}
+.checklist label>span{grid-column:3;grid-row:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.checklist b{font-family:var(--display);font-size:20px}
+.checklist .how{font-size:16px;color:var(--ink)}
+.checklist li.ok b{text-decoration:line-through;text-decoration-thickness:2px}
+.tally{display:grid;gap:14px;position:sticky;top:84px}
+.tcol{border-top:1px solid var(--line);padding-top:12px}
+.tname{margin:0;font-weight:700}
+.pct{font:800 clamp(40px,5vw,56px)/1 var(--display);font-variant-numeric:tabular-nums;margin:4px 0}
+.done-note{margin:10px 0 0;font-weight:700;color:var(--green)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.fruits{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px}
+.fruit{display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;width:64px}
+.fruit .ball{width:52px;height:52px;border-radius:50% 50% 46% 46%;display:block;box-shadow:inset -6px -6px 0 rgba(0,0,0,.15)}
+.fruit .leaf{position:absolute;top:-6px;left:34px;width:14px;height:9px;background:#3E8E41;border-radius:0 80% 0 80%}
+.fruit small{font-size:13px;color:var(--muted)}
+#aiSays.bad{border-color:var(--onair);background:var(--onair-soft)}
+#aiSays.good{border-color:var(--green);background:var(--green-soft)}
+.pick{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr))}
+.segcard{text-align:left;background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:4px;min-height:96px}
+.segcard strong{font-family:var(--display);font-size:20px}
+.segcard span{font-size:15px;color:var(--muted)}
+.segcard:hover{border-color:var(--ink)}
+.segcard[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;background:var(--panel);color:var(--ink);resize:vertical;margin-top:8px}
+.pdiv{align-self:flex-start;font:700 11px/1 var(--mono);color:var(--muted);padding:10px 2px 0;border-top:4px solid transparent}
+
+/* chapter 3 */
+.prompt{white-space:pre-wrap;font:15px/1.55 var(--mono);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px;margin:10px 0 12px;overflow-x:auto}
+.quote{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.3;margin:10px 0 10px}
+.card.bad{border-color:var(--onair);background:var(--onair-soft)}
+.card.good{border-color:var(--green);background:var(--green-soft)}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr))}
+.part{display:flex;flex-direction:column;gap:4px}
+.part b{font-family:var(--display);font-size:22px}
+.part span{color:var(--muted);font-size:16px}
+.growth{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;position:relative}
+.gstep{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.gstep b{font-family:var(--display);font-size:20px}
+.gstep span:last-child{font-size:15px;color:var(--muted)}
+.gstep.now{border:2px solid var(--onair);background:var(--onair-soft)}
+.gstep.end{border:2px solid var(--green);background:var(--green-soft)}
+@media (max-width:900px){.growth{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.side{display:flex;flex-direction:column;gap:8px;position:sticky;top:84px}
+select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);width:100%}
+#segPrompt{min-height:220px;font:14px/1.5 var(--mono)}
+.follow{display:grid;gap:8px}
+.fchip{display:flex;justify-content:space-between;gap:10px;align-items:center;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:15px}
+.fchip small{font:700 12px/1 var(--mono);color:var(--green);white-space:nowrap}
+.fchip:hover{border-color:var(--ink)}
+@media (max-width:900px){.side,.tally{position:static}}
+.def.warn{border-color:var(--onair);background:var(--onair-soft)}
+.def.warn p{font-size:clamp(19px,2.2vw,24px)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-weight:700;z-index:20;max-width:calc(100% - 32px)}
+
+/* chapter 4 */
+.chat{display:flex;flex-direction:column;gap:10px;min-height:360px}
+.msgs{flex:1;display:flex;flex-direction:column;gap:8px;overflow-y:auto;max-height:380px;padding:4px}
+.msg{max-width:85%;padding:10px 14px;border-radius:14px;font-size:17px}
+.msg.bot{background:var(--paper);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+.msg.bot.fail{border-color:var(--onair);background:var(--onair-soft)}
+.msg.me{background:var(--green);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+input{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);width:100%;min-width:0}
+#botForm{flex-wrap:nowrap}
+.score{font-family:var(--mono);font-weight:700}
+.recipe{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.ing textarea{min-height:0;margin-top:0;font-size:16px}
+.ing{display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+.prompt.small{font-size:13px;max-height:260px;overflow:auto}
+.checklist.compact label{padding:10px 12px}
+.checklist.compact b{font-size:16px;font-family:var(--body)}
+.checklist.compact label::before{font-size:12px;padding:4px 6px}
+
+/* chapter 5 */
+.shot{width:100%;height:auto;border-radius:10px;margin-top:10px;display:block}
+canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:block;margin-top:10px;image-rendering:pixelated}
+.how-list{margin:0;padding-left:22px;display:grid;gap:12px;font-size:19px}
+.g5{grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+.tabs{display:flex;gap:6px;margin:10px 0 2px;flex-wrap:wrap}
+.tab{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:15px;font-weight:700}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.stat b{display:block;font-family:var(--display);font-size:clamp(34px,4vw,48px);line-height:1.1;margin:4px 0 8px;font-variant-numeric:tabular-nums}
+
+/* chapter extras */
+.pdiv{align-self:flex-start;font:700 11px/1 var(--mono);color:var(--muted);padding:10px 2px 0;border-top:4px solid transparent}
+.quote{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.3;margin:6px 0 14px}
+.verdict{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:16px}
+.verdict.h{background:var(--green-soft)}.verdict.a{background:var(--onair-soft)}
+.signs{margin:8px 0 0;padding-left:22px;display:grid;gap:6px;font-size:18px}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr))}
+.board{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.scene{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.frame{aspect-ratio:16/9;max-width:100%;border:2px dashed var(--line);border-radius:10px;display:grid;place-items:center;color:var(--muted);font-family:var(--display);font-weight:700;font-size:20px;background:var(--paper)}
+.scene textarea{min-height:0;margin-top:0;font-size:16px}
+.scene input{max-width:120px}
+.files,.mini{margin:0;padding-left:20px;display:grid;gap:4px;font-size:15px}
+.facts{display:grid;gap:8px}
+.frow{display:grid;grid-template-columns:2fr 1.4fr 1.4fr auto;gap:8px;align-items:center}
+.frow.head span{font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.okbox{display:flex;align-items:center;gap:6px;font-weight:700}.okbox input{width:22px;height:22px;accent-color:var(--green)}
+@media (max-width:760px){.frow{grid-template-columns:1fr}.frow.head{display:none}.frow{border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--panel)}}
+/* rundown rail */
+.rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
+.steps{display:flex;gap:6px;flex:1;min-width:0;overflow-x:auto}
+.step{flex:1;min-width:44px;background:transparent;border:0;padding:6px 4px;text-align:left;border-top:4px solid var(--line);border-radius:0;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.step b{font-family:var(--mono);margin-right:4px}
+.step.done{border-top-color:var(--green)}
+.step[aria-current="step"]{border-top-color:var(--onair);color:var(--ink);font-weight:700}
+@media (max-width:700px){.bug small{display:none}.step .t{display:none}.clock .lbl{display:none}body{font-size:17px}.lead{font-size:18px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<header class="top">
+  <div class="wrap">
+    <div class="bug"><span class="live"><i></i>ON AIR</span><span>Evergreen TV <small>· AI class · Chapter 7: Video and fakes</small></span></div>
+    <div class="clock" aria-live="off">
+      <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
+      <button class="ghost" id="clockBtn" type="button">Start</button>
+    </div>
+  </div>
+</header>
+<main class="wrap" id="stage">
+<section class="seg" id="seg-1" data-min="6" data-title="Fake or real?" data-p="1">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>Fake or real?</h2><p>Period 1 · 6 minutes · warm-up</p></div></div>
+  <p class="big">Three of these are true. Three are fake. Vote before you click.</p>
+  <div class="grid g3" id="fr"></div>
+  <p class="lead" style="margin-top:14px"><span class="score" id="frScore">0 of 6</span> right</p>
+</section>
+
+<section class="seg" id="seg-2" data-min="7" data-title="Spot an AI video" data-p="1" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>How AI video works, and how to catch it</h2><p>Period 1 · 7 minutes · the lesson</p></div></div>
+  <div class="grid g2" style="align-items:start">
+    <div class="card">
+      <span class="tag">How it works</span>
+      <p class="lead" style="margin:6px 0 0">A video is about 25 pictures every second. An AI video model makes all of those pictures from your words, and each one has to match the one before. That is hard, so it slips.</p>
+      <p class="lead" style="margin:12px 0 0"><b>Teacher:</b> show one AI-made clip you prepared on your own account, then one real clip. Ask: which is which, and how can you tell?</p>
+    </div>
+    <div class="card">
+      <span class="tag">Signs of an AI video</span>
+      <ul class="signs">
+        <li>Hands with too many or melting fingers</li>
+        <li>Writing that turns into scribbles</li>
+        <li>Things that appear or vanish between frames</li>
+        <li>Lips that do not match the words</li>
+        <li>Skin too smooth, light that makes no sense</li>
+      </ul>
+    </div>
+  </div>
+  <p class="lead" style="margin-top:18px">Before you believe or share anything, do the <b>4 S check</b>:</p>
+  <div class="grid g4">
+    <div class="card part"><b>Source</b><span>Who made it? Do you trust them?</span></div>
+    <div class="card part"><b>Search</b><span>Can you find it on 2 trusted sites?</span></div>
+    <div class="card part"><b>Signs</b><span>Any of the AI signs above?</span></div>
+    <div class="card part"><b>Slow down</b><span>Very angry or scared? Wait before sharing.</span></div>
+  </div>
+</section>
+
+<section class="seg" id="seg-3" data-min="10" data-title="Storyboard" data-p="1" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: plan your segment</h2><p>Period 1 · 10 minutes · on this page</p></div></div>
+  <p class="big">Every TV segment starts on paper. Plan your 4 scenes. Aim for 45 seconds in total.</p>
+  <div class="board" id="board"></div>
+  <p class="lead" style="margin-top:14px">Total: <span class="score" id="total">0 s</span> <span class="muted" id="totalMsg"></span></p>
+</section>
+
+<section class="seg" id="seg-4" data-min="22" data-title="Mission: first cut" data-p="1" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Mission: make your first cut</h2><p>Period 1 · 22 minutes · Adobe Express</p></div></div>
+  <div class="mission">
+    <div><ol class="checklist" id="list1"></ol></div>
+    <aside class="card side">
+      <span class="tag">Your files (Evergreen TV folder)</span>
+      <ul class="files"><li><b>title.png</b> · Chapter 5</li><li><b>studio.png</b> · Chapter 5</li><li><b>logo.png</b> · Chapter 5</li><li><b>presenter.mp4</b> · Chapter 6</li></ul>
+      <span class="tag">Your plan</span>
+      <ol class="mini" id="miniPlan"></ol>
+    </aside>
+  </div>
+</section>
+
+<section class="seg" id="seg-5" data-min="10" data-title="Fact check" data-p="2" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: fact-check before it airs</h2><p>Period 2 · 10 minutes · real newsrooms do this</p></div></div>
+  <p class="big">Write the 3 most important facts in your segment. Find each one on 2 trusted websites, or in what really happened at school.</p>
+  <div class="facts" id="facts"></div>
+  <p class="lead" id="factMsg" style="margin-top:12px"></p>
+</section>
+
+<section class="seg" id="seg-6" data-min="20" data-title="Mission: finish" data-p="2" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>Mission: finish, label, publish</h2><p>Period 2 · 20 minutes · Adobe Express, then Gemini</p></div></div>
+  <div class="mission">
+    <div><ol class="checklist" id="list2"></ol></div>
+    <aside class="card side">
+      <span class="tag">Prompt for Gemini (adds your segment to your corner)</span>
+      <pre class="prompt small" id="addOut">My finished segment video is called segment.mp4 and it will be in the same folder as my page.
+Replace the presenter video with a big video player for segment.mp4, at the top of my page, with the caption: "Evergreen TV · Made with AI".
+Keep everything else on my page the same.</pre>
+      <div class="row"><button class="btn sm copy" data-copy="addOut" type="button">Copy Gemini prompt</button></div>
+    </aside>
+  </div>
+</section>
+
+<section class="seg" id="seg-7" data-min="15" data-title="Mini premiere" data-p="2" hidden>
+  <div class="lower"><div class="no">07</div><div class="name"><h2>Mini premiere</h2><p>Period 2 · 15 minutes · the class watches</p></div></div>
+  <p class="big">Watch 4 or 5 finished segments. After each one, one student gives a star and a wish.</p>
+  <div class="grid g3">
+    <div class="card"><span class="tag">A star</span><p class="lead" style="margin:6px 0 0">One thing that really works.</p></div>
+    <div class="card"><span class="tag">A wish</span><p class="lead" style="margin:6px 0 0">One thing to fix next week.</p></div>
+    <div class="card"><span class="tag">The 4 S check</span><p class="lead" style="margin:6px 0 0">Is it labelled Made with AI? Are the facts checked?</p></div>
+  </div>
+  <div class="card" style="margin-top:16px;background:var(--gold-soft);border-color:transparent"><span class="tag">Next week</span><p class="lead" style="margin:6px 0 0">Test and fix: a classmate tests your whole corner, and you make it better.</p></div>
+</section>
+</main>
+<nav class="rail" aria-label="Lesson segments">
+  <div class="wrap">
+    <button class="btn sm alt" id="prev" type="button" aria-label="Previous segment">←</button>
+    <div class="steps" id="steps"></div>
+    <button class="btn sm" id="next" type="button">Next →</button>
+  </div>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script>
+window.K = (function(){
+const $ = s => document.querySelector(s);
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+let PFX = "k";
+const store = { get(k){ try { return JSON.parse(localStorage.getItem(PFX + "-" + k)); } catch(e){ return null; } }, set(k, v){ try { localStorage.setItem(PFX + "-" + k, JSON.stringify(v)); } catch(e){} }, raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
+let segs = [], cur = 0, stepBtns = [], left = 0, tick = null, tt;
+const fmt = s => (s < 0 ? "-" : "") + String(Math.floor(Math.abs(s)/60)).padStart(2,"0") + ":" + String(Math.abs(s)%60).padStart(2,"0");
+function resetClock(){ clearInterval(tick); tick = null; left = (+segs[cur].dataset.min) * 60; $("#clock").textContent = fmt(left); $("#clock").classList.remove("late"); $("#clockBtn").textContent = "Start"; }
+function go(i){
+  cur = Math.max(0, Math.min(segs.length - 1, i));
+  segs.forEach((s, k) => s.hidden = k !== cur);
+  stepBtns.forEach((b, k) => { b.classList.toggle("done", k < cur); if (k === cur) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+  $("#next").textContent = cur === segs.length - 1 ? "Done" : "Next →";
+  $("#prev").disabled = cur === 0;
+  if (location.hash !== "#" + segs[cur].id) history.replaceState(null, "", "#" + segs[cur].id);
+  resetClock(); window.scrollTo(0, 0);
+}
+function init(prefix, p2){
+  PFX = prefix; segs = [...document.querySelectorAll(".seg")];
+  const box = $("#steps");
+  segs.forEach((s, i) => { if (p2 && i === p2) box.append(el("span", {class:"pdiv", "aria-hidden":"true"}, "P2")); box.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))); });
+  stepBtns = [...box.querySelectorAll(".step")];
+  $("#prev").onclick = () => go(cur - 1); $("#next").onclick = () => go(cur + 1);
+  addEventListener("keydown", e => { if (e.target.matches("textarea,input,select")) return; if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); });
+  addEventListener("hashchange", () => { const i = segs.findIndex(s => "#" + s.id === location.hash); if (i >= 0 && i !== cur) go(i); });
+  $("#clockBtn").onclick = () => { if (tick){ clearInterval(tick); tick = null; $("#clockBtn").textContent = "Start"; return; } $("#clockBtn").textContent = "Pause"; tick = setInterval(() => { left--; $("#clock").textContent = fmt(left); $("#clock").classList.toggle("late", left < 0); }, 1000); };
+}
+function start(){ const s = segs.findIndex(x => "#" + x.id === location.hash); go(s >= 0 ? s : 0); }
+function toast(msg){ const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 2400); }
+async function copy(text, selectEl, where){
+  try { await navigator.clipboard.writeText(text); toast("Copied. Now paste it into " + (where || "the AI") + "."); }
+  catch(e){ if (selectEl){ if (selectEl.select) { selectEl.focus(); selectEl.select(); } else { const r = document.createRange(); r.selectNodeContents(selectEl); const s = getSelection(); s.removeAllRanges(); s.addRange(r); } } toast("Press Ctrl+C to copy the selected text."); }
+}
+function checklist(id, items, compact){
+  const saved = store.get(id) || [];
+  $("#" + id).replaceChildren(...items.map(([title, body], i) => {
+    const cb = el("input", {type:"checkbox", id: id + "-" + i}); cb.checked = !!saved[i];
+    const li = el("li", {class: cb.checked ? "ok" : ""}, el("label", {for: id + "-" + i}, cb, el("span", null, el("b", null, title), body ? el("span", {class:"how"}, body) : "")));
+    cb.addEventListener("change", () => { saved[i] = cb.checked; store.set(id, saved); li.classList.toggle("ok", cb.checked); });
+    return li; }));
+}
+const SEGS = ["Sports Desk","Weather Robot","Tech and AI Corner","School News","Canteen Review","Style and Trends","Games and Apps Review","Interview with a Legend","Fake or Real?","Funny Ads"];
+function prevSeg(){ for (const k of [PFX + "-seg","ch5-seg","ch4-seg","ch3-seg","ch2-seg"]) { const v = store.raw(k); if (v && SEGS.includes(v)) return v; } return "Sports Desk"; }
+function segSelect(sel, onChange){ SEGS.forEach(n => sel.append(el("option", {value:n}, n))); sel.value = prevSeg(); sel.addEventListener("change", () => { store.set("seg", sel.value); if (onChange) onChange(); }); }
+return {$, el, store, init, start, toast, copy, checklist, SEGS, segSelect, prevSeg};
+})();
+
+</script>
+<script>
+(function(){
+const {$, el, store, copy, checklist} = K;
+K.init("ch7", 4);
+/* fake or real */
+const FR = [
+  ["Octopuses have three hearts.", true, "True. Two pump blood through the gills and one through the body."],
+  ["Scientists taught a goldfish to say 10 words.", false, "Fake. Goldfish have no vocal cords. Search it: no trusted source says this."],
+  ["A day on Venus is longer than a year on Venus.", true, "True. Venus turns very slowly: one turn takes longer than one trip around the Sun."],
+  ["The Eiffel Tower is painted gold every summer.", false, "Fake. It is repainted about every 7 years, and not gold."],
+  ["Honey found in ancient Egyptian tombs was still edible.", true, "True. Honey can last thousands of years when it is sealed."],
+  ["The cedar trees of Lebanon glow blue at night.", false, "Fake. It sounds magical, which is exactly why fakes spread."]
+];
+let frS = 0;
+$("#fr").replaceChildren(...FR.map(([t, real, why]) => { const v = el("div"); let done = false;
+  const pick = g => { if (done) return; done = true; const ok = g === real; if (ok){ frS++; $("#frScore").textContent = frS + " of 6"; }
+    v.append(el("div", {class:"verdict " + (real ? "h" : "a")}, el("b", null, ok ? "Right! " : "Not this time. "), why)); };
+  return el("div", {class:"card"}, el("p", {class:"quote"}, t), el("div", {class:"row"}, el("button", {class:"btn sm alt", type:"button", onclick:() => pick(true)}, "Real"), el("button", {class:"btn sm alt", type:"button", onclick:() => pick(false)}, "Fake")), v); }));
+
+/* storyboard */
+const DEF = [
+  {name:"Title", what:"title.png with my segment name on it", secs:3},
+  {name:"Presenter", what:"presenter.mp4: my character says my script", secs:30},
+  {name:"Picture", what:"studio.png or logo.png with one fact as a caption", secs:7},
+  {name:"Ending", what:"Evergreen TV · Made with AI · my first name", secs:5}
+];
+const plan = store.get("plan") || DEF.map(x => Object.assign({}, x));
+function drawBoard(){
+  $("#board").replaceChildren(...plan.map((s, i) => el("div", {class:"scene"},
+    el("span", {class:"tag"}, "Scene " + (i + 1) + " · " + s.name),
+    el("div", {class:"frame"}, el("span", null, s.name)),
+    el("label", {class:"tag", for:"what" + i}, "What we see and hear"),
+    (() => { const t = el("textarea", {id:"what" + i, rows:"3"}); t.value = s.what; t.addEventListener("input", () => { s.what = t.value; save(); }); return t; })(),
+    el("label", {class:"tag", for:"secs" + i}, "Seconds"),
+    (() => { const n = el("input", {id:"secs" + i, type:"number", min:"1", max:"60", value:String(s.secs)}); n.addEventListener("input", () => { s.secs = Math.max(0, +n.value || 0); save(); }); return n; })())));
+  save();
+}
+function save(){ store.set("plan", plan); const t = plan.reduce((a, s) => a + (+s.secs || 0), 0); $("#total").textContent = t + " s";
+  $("#totalMsg").textContent = t > 50 ? "· too long, cut something" : t < 35 ? "· a bit short" : "· good length";
+  $("#miniPlan").replaceChildren(...plan.map(s => el("li", null, el("b", null, s.name + " (" + s.secs + " s): "), s.what))); }
+drawBoard();
+
+checklist("list1", [
+  ["Start a video", "In Adobe Express, click Create video, then choose to start from scratch with a 16:9 (wide) size."],
+  ["Upload your files", "Click Upload (or Media, then Upload) and add title.png, studio.png, logo.png and presenter.mp4 from your Evergreen TV folder."],
+  ["Scene 1: title", "Put title.png in the first scene. Add a text with your segment name. Set it to about 3 seconds."],
+  ["Scene 2: presenter", "Add a new scene with the + button and put presenter.mp4 in it."],
+  ["Scene 3: picture", "Add a scene with studio.png or logo.png and write one fact from your script as a caption."],
+  ["Scene 4: ending", "Add a scene with the text: Evergreen TV · Made with AI · your first name."],
+  ["Music, quietly", "Add a music track from Adobe's library. Make it quiet so your voice is clear."],
+  ["Watch it once", "Press Play and watch your first cut from start to end. Your project saves by itself in Adobe."]
+]);
+/* fact check */
+const facts = store.get("facts") || [{c:"", s1:"", s2:"", ok:false},{c:"", s1:"", s2:"", ok:false},{c:"", s1:"", s2:"", ok:false}];
+function drawFacts(){
+  $("#facts").replaceChildren(el("div", {class:"frow head"}, el("span", null, "Fact in my segment"), el("span", null, "Source 1"), el("span", null, "Source 2"), el("span", null, "Checked")),
+    ...facts.map((f, i) => { const inp = (k, ph) => { const x = el("input", {placeholder:ph, "aria-label": k + " " + (i + 1)}); x.value = f[k]; x.addEventListener("input", () => { f[k] = x.value; sf(); }); return x; };
+      const cb = el("input", {type:"checkbox", "aria-label":"Fact " + (i + 1) + " checked"}); cb.checked = f.ok; cb.addEventListener("change", () => { f.ok = cb.checked; sf(); });
+      return el("div", {class:"frow"}, inp("c", "e.g. Our team won 3–1"), inp("s1", "website or who told you"), inp("s2", "a second source"), el("label", {class:"okbox"}, cb, el("span", null, "OK"))); }));
+  sf();
+}
+function sf(){ store.set("facts", facts); const n = facts.filter(f => f.ok && f.c && f.s1 && f.s2).length; $("#factMsg").textContent = n === 3 ? "All 3 facts checked with 2 sources each. Ready to air." : n + " of 3 facts fully checked (fact, two sources, ticked). If a fact fails, change it in your script."; }
+drawFacts();
+checklist("list2", [
+  ["Fix your facts", "If a fact failed the check, change the caption or record that line again in Chapter 6's tool."],
+  ["Add the label", "Make sure the ending says Made with AI. Add a small \"AI\" label in a corner of scene 2 too."],
+  ["Check the length", "Watch the whole video. Under 50 seconds? Cut anything that drags."],
+  ["Download", "Click Download, choose MP4, and save it in your Evergreen TV folder as segment.mp4."],
+  ["Add it to your corner", "Copy the Gemini prompt on the right, paste it in your page's chat, then download the page into the same folder."],
+  ["Test it", "Open the page from the folder. Does the video play with sound?"]
+]);
+document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => { const s = document.getElementById(b.dataset.copy); copy(s.textContent, s, "Gemini"); }));
+K.start();
+})();
+</script>
+
+<script src="config.js"></script>
+<script src="sync.js"></script>
+</body></html>

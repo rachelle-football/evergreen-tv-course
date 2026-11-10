@@ -1,0 +1,23 @@
+EVERGREEN TV AI COURSE - SETUP (about 20 minutes, once)
+
+1. DATABASE (Supabase, free)
+   - supabase.com > New project (region: Europe Frankfurt).
+   - SQL Editor > New query > paste everything in setup.sql > Run. It should say Success.
+   - Project Settings > API: copy the Project URL and the anon public (or publishable) key.
+     Never use the service_role or secret key.
+
+2. CONNECT THE APP
+   - Open config.js and paste the URL and the key between the quotes:
+       window.EVG_CLOUD = { url: "https://xxxx.supabase.co", key: "eyJ..." };
+   - Without them the app still works, but each computer keeps its own progress and there is no login.
+
+3. PUT IT ONLINE (GitHub Pages, free)
+   - github.com > New repository > name it evergreen-tv-course > Public > Create.
+   - Add file > Upload files > drag in ALL the files from this folder > Commit.
+   - Settings > Pages > Deploy from a branch > main, / (root) > Save.
+   - After 1-2 minutes: https://YOUR-NAME.github.io/evergreen-tv-course/
+
+4. FIRST DAY
+   - Open the link with #teacher at the end, create your teacher account (once).
+   - Type each class's names > Create accounts > give each student their card.
+   - Students open the link, log in, and everything they do is saved to their account.
