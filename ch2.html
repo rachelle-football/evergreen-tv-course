@@ -121,6 +121,7 @@ textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:1
 .board{width:100%;aspect-ratio:1;background:#fff;border:2px dashed #B9C6BF;border-radius:14px;touch-action:none;cursor:crosshair;display:block}
 .boardtools{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
 .labacts{display:grid;gap:8px}
+.labacts .btn{width:100%}
 .btn.teach{background:var(--green);color:#fff}
 .btn.big{font-size:18px;padding:14px 18px}
 .ai{border:2px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px;background:var(--paper);min-height:150px;align-content:start}
@@ -149,6 +150,19 @@ button.thumbx{padding:0;border:0;background:none;border-radius:6px}
 button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 .memnote{font-size:14px;color:var(--muted);margin:0}
 .mine{border-left:4px solid var(--green);padding-left:8px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:15px}
+.chip:hover{border-color:var(--green)}
+.teamnote{background:var(--gold-soft);border-radius:12px;padding:10px 14px;margin:0 0 14px;font-size:16px}
+
+.myproj{margin-bottom:18px;display:grid;gap:10px}
+.teamrow{display:flex;gap:8px;flex-wrap:wrap}
+.teambtn{background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:10px 14px;font-weight:700;font-size:16px;text-align:left}
+.teambtn:hover{border-color:var(--ink)}
+.teambtn[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+.partlbl{display:grid;gap:4px;font-weight:700;font-size:15px}
+.partlbl select{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;max-width:560px}
+.partnow{margin:0;font-size:16px}
 .pdiv{align-self:flex-start;font:700 11px/1 var(--mono);color:var(--muted);padding:10px 2px 0;border-top:4px solid transparent}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -178,8 +192,8 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
   <div class="lower"><div class="no">01</div><div class="name"><h2>Today you teach a real AI</h2><p>Period 1 · 3 minutes</p></div></div>
   <p class="big">Last week you learned that AI learns from examples. Today, you are the one giving the examples.</p>
   <div class="grid g3">
-    <div class="card"><span class="tag">First</span><h3 style="font-size:24px;margin:6px 0">Invent</h3><p style="margin:0">Invent an animal or a character nobody has ever seen. The AI has never seen it either.</p></div>
-    <div class="card"><span class="tag">Then</span><h3 style="font-size:24px;margin:6px 0">Teach</h3><p style="margin:0">Draw it a few times and teach the AI. Watch it go from "no idea" to "I know this!"</p></div>
+    <div class="card"><span class="tag">Team School 🏫</span><h3 style="font-size:24px;margin:6px 0">School objects</h3><p style="margin:0">Teach a real AI to recognise school things it has never seen: a pencil, a book, a backpack…</p></div>
+    <div class="card"><span class="tag">Team Planet 🌍</span><h3 style="font-size:24px;margin:6px 0">Recycling robot</h3><p style="margin:0">Teach a robot to sort waste: a bottle, a can, a banana peel… Watch it go from "no idea" to "I know this!"</p></div>
     <div class="card"><span class="tag">Next period</span><h3 style="font-size:24px;margin:6px 0">Trick</h3><p style="margin:0">Teach it lies on purpose and see what happens. Then fix it.</p></div>
   </div>
 </section>
@@ -203,10 +217,11 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 </section>
 
 <section class="seg" id="seg-3" data-min="30" data-title="Mission: teach your AI" data-period="1" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: teach the AI your character</h2><p>Period 1 · 30 minutes · right here, on this page</p></div></div>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: teach the AI</h2><p>Period 1 · 30 minutes · right here, on this page</p></div></div>
   <div class="mission">
     <div>
-      <p class="lead">Invent an animal or a character nobody has ever seen: a flying TV, a cat with wheels, a pizza monster… This AI has never seen it. Draw it, ask the AI, then teach it.</p>
+      <p class="lead" id="lab1lead">This AI has never seen a pencil, a bottle or a banana peel. You will teach it, the way real engineers do: with examples.</p>
+      <p class="teamnote" id="lab1team"></p>
       <div class="card lab" id="lab1"></div>
       <ol class="checklist" id="list1"></ol>
     </div>
@@ -219,27 +234,25 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
   <div class="lower"><div class="no">04</div><div class="name"><h2>Share your score</h2><p>Period 1 · 5 minutes</p></div></div>
   <p class="big">Who got the highest accuracy? What did they do differently?</p>
   <div class="grid g2">
-    <div class="card"><span class="tag">Ask the class</span><ul class="lead" style="margin:8px 0 0;padding-left:22px"><li>What did the AI say before you taught it?</li><li>How many drawings did it need to learn your character?</li><li>Which drawings fooled it?</li></ul></div>
+    <div class="card"><span class="tag">Ask the class</span><ul class="lead" style="margin:8px 0 0;padding-left:22px"><li>What did the AI say before you taught it?</li><li>How many drawings did it need to learn one thing?</li><li>Which drawings fooled it? Why?</li><li>Planet team: would you trust your robot to sort the school's rubbish?</li></ul></div>
     <div class="card" style="background:var(--gold-soft);border-color:transparent"><span class="tag">Remember for next week</span><p class="lead" style="margin:8px 0 0">An AI is only as good as the examples you give it.</p></div>
   </div>
 </section>
 
 <!-- PERIOD 2 -->
-<section class="seg" id="seg-5" data-min="7" data-title="When AI is unfair" data-period="2" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>When AI is unfair</h2><p>Period 2 · 7 minutes · the lesson</p></div></div>
-  <p class="big">An AI learned "apple" from these examples only. Now we show it a green apple.</p>
-  <div class="grid g2" style="align-items:start">
-    <div class="card">
-      <span class="tag">Training examples</span>
-      <div class="fruits" id="train"></div>
-      <div class="row" style="margin-top:12px"><button class="btn sm" id="testGreen" type="button">Show it a green apple</button><button class="btn sm alt" id="fixData" type="button">Fix the examples</button></div>
-    </div>
-    <div class="card" aria-live="polite" id="aiSays"><span class="tag">The AI says</span><p class="lead muted" style="margin:8px 0 0">Waiting for a test…</p></div>
+<section class="seg" id="seg-5" data-min="10" data-title="When AI is unfair" data-period="2" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>When AI is unfair</h2><p>Period 2 · 10 minutes · try it yourself</p></div></div>
+  <p class="big">This AI learned "tree" from 6 drawings. Look at them in its memory below: every tree is round on top. What happens if you draw a Christmas tree?</p>
+  <div class="grid g3" style="margin-bottom:16px">
+    <div class="card"><span class="tag">Step 1</span><h3 style="font-size:22px;margin:6px 0">Draw a pointy tree</h3><p style="margin:0">Draw a Christmas tree 🎄 (a triangle on a trunk) and press Ask.</p></div>
+    <div class="card"><span class="tag">Step 2</span><h3 style="font-size:22px;margin:6px 0">Watch it fail</h3><p style="margin:0">It does not say tree! Why? It never saw a tree like yours.</p></div>
+    <div class="card"><span class="tag">Step 3</span><h3 style="font-size:22px;margin:6px 0">Fix it</h3><p style="margin:0">Draw 3 pointy trees and press Teach: this is a TREE after each one. Then draw a new one and ask again.</p></div>
   </div>
+  <div class="card lab" id="lab3" style="max-width:780px"></div>
   <div class="def" id="biasDef" hidden>
     <span class="tag">This is called bias</span>
     <p>When the examples are one-sided, the AI is unfair to everything it did not see.</p>
-    <div class="note" style="color:var(--ink);font-size:17px">It happens in real life. In 2018, researchers tested face programs from big companies: they made under 1% mistakes on light-skinned men, and up to 35% on dark-skinned women, because the examples were mostly of light-skinned men. (<a href="https://proceedings.mlr.press/v81/buolamwini18a.html" target="_blank" rel="noopener">Gender Shades study</a>)</div>
+    <div class="note" style="color:var(--ink);font-size:17px">It happens in real life, and not only with trees. In 2018, researchers tested face programs from big companies: they made under 1% mistakes on light-skinned men, and up to 35% on dark-skinned women, because most of their examples were light-skinned men. (<a href="https://proceedings.mlr.press/v81/buolamwini18a.html" target="_blank" rel="noopener">Gender Shades study</a>)</div>
   </div>
 </section>
 
@@ -291,14 +304,14 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
   </div>
 </section>
 
-<section class="seg" id="seg-8" data-min="10" data-title="Pick your segment" data-period="2" hidden>
-  <div class="lower"><div class="no">08</div><div class="name"><h2>Pick your Evergreen TV segment</h2><p>Period 2 · 10 minutes · you keep it until the premiere</p></div></div>
-  <p class="big">From next week, you build one segment of our school news show with real AI. Which one is yours?</p>
-  <div class="pick" id="pick"></div>
+<section class="seg" id="seg-8" data-min="10" data-title="Your team and part" data-period="2" hidden>
+  <div class="lower"><div class="no">08</div><div class="name"><h2>Your team and your part</h2><p>Period 2 · 10 minutes · you keep them until the exhibition</p></div></div>
+  <p class="big">From next week, every lesson builds a piece of your team's website. Check your team and your part.</p>
+  <div class="card myproj" id="proj"></div>
   <div class="card" style="margin-top:16px">
-    <label for="segIdea" class="tag">Your first idea, in one sentence</label>
-    <textarea id="segIdea" placeholder="My segment will…"></textarea>
-    <p class="note" id="pickNote">Tell your teacher your pick before you leave. Two students can share one segment.</p>
+    <label for="segIdea" class="tag">What should the AI of the future do for your part? One sentence.</label>
+    <textarea id="segIdea" placeholder="In my part, AI could…"></textarea>
+    <p class="note">Next week: Prompt Engineering. You will design your part with Gemini, like a real architect.</p>
   </div>
 </section>
 
@@ -312,6 +325,43 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
   </div>
 </nav>
 
+<script>
+window.P = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const store = { raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
+/* ---------- the year project: two teams, each kid owns one part ---------- */
+const TEAMS = {
+  school: {key:"school", name:"Reinvent the School", site:"School 2040", emoji:"🏫", goal:"Design the school of tomorrow",
+    world:"our school, Evergreen, in the year 2040", podcast:"the School 2040 podcast", video:"a promo video for the school of tomorrow", look:"a bright, friendly school in Lebanon in the year 2040",
+    parts:[["The classroom","Where and how we learn: desks, screens, light, sound"],["The library","Books, reading corners, quiet, research"],["The canteen","Healthy food, no waste, where we eat together"],["Playground and sports","Games, fields, breaks, team sports"],["The science lab","Experiments, robots, discovering"],["Art and music studio","Drawing, making, singing, performing"],["Getting to school","Buses, bikes, walking, safety"],["The school day","Timetable, homework, exams, breaks"],["Wellbeing corner","Feeling calm, friendship, getting help"],["The school garden","Plants, outdoor lessons, animals"]]},
+  planet: {key:"planet", name:"The Future of Our Planet", site:"Planet 2050", emoji:"🌍", goal:"Create a better world with AI",
+    world:"planet Earth, and Lebanon, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
+    parts:[["Clean energy","Sun, wind and power for every home"],["Water","Clean water for everyone, saving every drop"],["Waste and recycling","Less trash, sorting, reusing"],["Clean air","No smoke, less pollution, breathing well"],["Transport","Buses, trains, bikes and clean cars"],["Cities and homes","Green buildings, parks, cool streets"],["Food and farming","Growing food, eating well, no food waste"],["Oceans and beaches","Clean sea, no plastic, sea life"],["Forests and animals","Trees, the cedars, wildlife"],["Weather and climate","Heat waves, storms, being ready"]]}
+};
+const rawSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
+function me(){
+  const t = store.raw("ch1-team"), T = TEAMS[t] || null, p = store.raw("ch1-part"), P = T && T.parts.find(x => x[0] === p);
+  return {team:T ? t : null, T, part:P ? P[0] : null, about:P ? P[1] : ""};
+}
+/* a small "my team · my part" bar any chapter can show; changing it is saved for every chapter */
+function picker(box, onChange){
+  function draw(){
+    const m = me();
+    const teamBtns = Object.values(TEAMS).map(T => el("button", {class:"teambtn", type:"button", "aria-pressed":String(m.team === T.key), onclick:() => { rawSet("ch1-team", T.key); if (!TEAMS[T.key].parts.some(x => x[0] === store.raw("ch1-part"))) rawSet("ch1-part", null); draw(); if (onChange) onChange(); }}, T.emoji + " " + T.name));
+    const sel = el("select", {"aria-label":"My part of the project"}, el("option", {value:""}, m.T ? "Choose your part…" : "Choose a team first"), ...(m.T ? m.T.parts.map(([n, d]) => el("option", {value:n}, n + " · " + d)) : []));
+    sel.value = m.part || ""; sel.disabled = !m.T;
+    sel.addEventListener("change", () => { rawSet("ch1-part", sel.value || null); draw(); if (onChange) onChange(); });
+    box.replaceChildren(el("span", {class:"tag"}, "My project"), el("div", {class:"teamrow"}, ...teamBtns), el("label", {class:"partlbl"}, "My part", sel),
+      m.part ? el("p", {class:"partnow"}, "You are building ", el("b", null, m.part), " for ", el("b", null, m.T.site), ".") : el("p", {class:"partnow muted"}, "Pick your team and your part. Ask your teacher if you are not sure."));
+  }
+  draw();
+}
+/* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
+function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
+return {TEAMS, me, picker, fill, rawSet};
+})();
+
+</script>
 <script>
 (function(){
 const $ = s => document.querySelector(s);
@@ -364,14 +414,14 @@ function checklist(id, items){
   return { tick(i){ if (saved[i]) return; const cb = document.getElementById(id + "-" + i); if (!cb) return; cb.checked = true; saved[i] = true; store.set(id, saved); cb.closest("li").classList.add("ok"); } };
 }
 const L1 = checklist("list1", [
-  ["Name your character", "Write its name in the box at the top of the board. Example: flying TV."],
+  ["Pick your first thing", "Click one of the ideas (or write your own) in the box at the top of the board."],
   ["See what the AI knows", "Draw a house. Press Ask the AI. It knows houses, because it learned from example drawings (look at its memory)."],
-  ["Show it your character", "Press Clear. Draw your character and press Ask. It has no idea: it never saw one! Press the green button: No! It's a … Learn it."],
+  ["Show it your thing", "Press Clear. Draw it and press Ask. It has no idea: it never saw one! Press the green button: No! It's a … Learn it."],
   ["Ask it again", "Press Ask me again. Now it says the name YOU gave it. It learned from you!"],
-  ["Teach it 5 drawings", "Draw your character again, a bit different each time (bigger, smaller, another pose) and press Teach. Do it until it has 5. Can it recognise a brand new drawing now?"],
+  ["Teach it 5 drawings", "Draw it again, a bit different each time (bigger, smaller, another pose) and press Teach. Do it until it has 5. Can it recognise a brand new drawing now?"],
   ["Look at what it sees", "Under the answer, look at the little dotted square. The AI does not see your drawing: it sees 784 dots, and compares them with its memory."],
-  ["Score 10 tries", "Draw 10 new drawings: your character, houses, suns, fish… After each answer press Right or Wrong."],
-  ["Bonus: a second character", "Change the name and teach a second character. Can the AI tell your two characters apart?"]
+  ["Score 10 tries", "Draw 10 new drawings: your things, houses, suns, fish… After each answer press Right or Wrong."],
+  ["Teach 2 more things", "Click another idea and teach it the same way. When it knows 3 things, can it tell them all apart?"]
 ]);
 const L2 = checklist("list2", [
   ["Ask the empty brain", "Draw anything and press Ask. It can't answer: it has learned nothing."],
@@ -503,7 +553,7 @@ function drawLab(box, o){
   let strokes = [], cur = null, lastAsk = null, rev = 0, taughtRev = -1;
 
   /* name box (lab 1 only) */
-  const nameIn = o.named ? el("input", {type:"text", maxlength:"24", placeholder:"e.g. flying TV", autocomplete:"off", "aria-label":"Your character's name"}) : null;
+  const nameIn = o.named ? el("input", {type:"text", maxlength:"24", placeholder:o.namePh || "e.g. pencil", autocomplete:"off", "aria-label":o.nameLabel || "What is it?"}) : null;
   if (nameIn){ nameIn.value = store.get(o.nameKey) || ""; nameIn.addEventListener("input", () => { store.set(o.nameKey, nameIn.value.trim()); paintTeach(); if (nameIn.value.trim()) o.on("named"); }); }
   const nm = () => nameIn ? nameIn.value.trim().toLowerCase() : "";
 
@@ -525,6 +575,7 @@ function drawLab(box, o){
   /* the AI's answer box */
   const ai = el("div", {class:"ai", "aria-live":"polite"});
   function say(kind, text, why, extra){
+    const an = t => typeof t === "string" ? t.replace(/\b([Aa]) (?=[aeio])/g, "$1n ") : t; text = an(text); why = an(why);
     ai.className = "ai" + (kind ? " " + kind : "");
     ai.replaceChildren(el("div", {class:"who"}, el("span", {class:"bot", "aria-hidden":"true"}, kind === "think" ? "🤔" : kind === "bad" ? "😵" : "🤖"), el("div", null, el("p", {class:"say"}, text), why ? el("p", {class:"why"}, why) : "")), ...(extra || []));
   }
@@ -545,8 +596,8 @@ function drawLab(box, o){
       el("button", {class:"btn sm alt", type:"button", onclick:() => mark(false)}, "✗ Wrong"));
     lastAsk = {judge, best:r.best};
     const name = nm(), sure = r.list[0][1];
-    const X = [bars, sees, judge];
-    if (o.builtins && name && r.best !== name) X.splice(0, 0, el("button", {class:"btn teach", type:"button", onclick:() => { o.on("learnit"); teach(name); }}, "No! It's a " + name + ". Learn it ✓"));
+    const X = o.nojudge ? [bars, sees] : [bars, sees, judge];
+    if (o.builtins && name && r.best !== name) X.splice(0, 0, el("button", {class:"btn teach", type:"button", onclick:() => { o.on("learnit"); teach(name); }}, "No! It's " + (/^[aeio]/i.test(name) ? "an " : "a ") + name + ". Learn it ✓"));
     if (o.builtins && name && !words.has(name) && r.match < 0.62){
       say("think", "Hmm… I have no idea what this is.", "The closest thing in my memory is a " + r.best + ", but it does not really look like one. I have never seen a " + name + ".", X);
     } else if (o.builtins && name && !words.has(name) && sure >= 0.7){
@@ -568,7 +619,7 @@ function drawLab(box, o){
   }
   function teach(label){
     label = (label || "").trim().toLowerCase();
-    if (!label){ say("think", "What is it called?", "Write your character's name in the box first."); nameIn && nameIn.focus(); return; }
+    if (!label){ say("think", "What is it called?", "Write the word in the box first."); nameIn && nameIn.focus(); return; }
     const raw = DL.raster(strokes);
     if (!raw){ say("think", "Draw it first, then press Teach.", ""); return; }
     if (rev === taughtRev){ say("think", "I already learned this drawing.", "Press Ask to test me, or Clear and draw a new one.", [el("button", {class:"btn sm", type:"button", onclick:ask}, "🤖 Ask me again")]); return; }
@@ -582,7 +633,7 @@ function drawLab(box, o){
   const counts = () => mine.reduce((m, e) => (m[e.l] = (m[e.l] || 0) + 1, m), {});
   function wipe(){
     if (!mine.length){ say("", "My brain is already empty.", ""); return; }
-    mine = []; save(); paintMem(); clear(); say("", "Brain wiped. I know nothing again.", "Now teach me the truth.");
+    mine = []; save(); paintMem(); clear(); say("", o.builtins ? "I forgot everything you taught me." : "Brain wiped. I know nothing again.", o.builtins ? "Now I only know my old examples again." : "Now teach me the truth.");
     o.on("wiped");
   }
 
@@ -596,7 +647,7 @@ function drawLab(box, o){
     const kids = [el("span", {class:"tag"}, "What the AI remembers (its training data)")];
     if (o.builtins){
       const bg = {}; DL.builtins().forEach(e => (bg[e.l] = bg[e.l] || []).push(e));
-      kids.push(el("p", {class:"memnote"}, "Learned before you came:"), ...Object.entries(bg).map(([l, arr]) => el("div", {class:"memrow"}, el("strong", null, l), el("small", null, arr.length + "×"), ...arr.map(e => DL.thumb(e.raw)))));
+      kids.push(el("p", {class:"memnote"}, "Learned before you came:"), ...Object.entries(bg).sort((x, y) => (y[0] === o.focus) - (x[0] === o.focus)).map(([l, arr]) => el("div", {class:"memrow" + (l === o.focus ? " mine" : "")}, el("strong", null, l), el("small", null, arr.length + "×"), ...arr.map(e => DL.thumb(e.raw)))));
       kids.push(el("p", {class:"memnote"}, rows.length ? "Taught by you (click one to make the AI forget it):" : "Taught by you: nothing yet."));
     } else if (!rows.length) kids.push(el("p", {class:"memnote"}, "Empty. This AI has never seen a single example."));
     mem.replaceChildren(...kids, ...rows);
@@ -607,8 +658,8 @@ function drawLab(box, o){
   function paintTeach(){
     const askB = el("button", {class:"btn big", type:"button", onclick:ask}, "🤖 Ask the AI: what is this?");
     const tb = o.labels ? o.labels.map(l => el("button", {class:"btn teach", type:"button", onclick:() => teach(l)}, "Teach: this is a " + l.toUpperCase()))
-                        : [el("button", {class:"btn teach", type:"button", onclick:() => teach(nm())}, "✓ Teach: this is a " + (nm() || "…"))];
-    acts.replaceChildren(askB, ...tb, ...(o.wipe ? [el("button", {class:"btn alt sm", type:"button", onclick:wipe}, "🧹 Wipe the brain")] : []));
+                        : [el("button", {class:"btn teach", type:"button", onclick:() => teach(nm())}, "✓ Teach: this is " + (/^[aeio]/i.test(nm()) ? "an " : "a ") + (nm() || "…"))];
+    acts.replaceChildren(askB, ...tb, ...(o.wipe ? [el("button", {class:"btn alt sm", type:"button", onclick:wipe}, o.builtins ? "🧹 Forget what you taught" : "🧹 Wipe the brain")] : []));
   }
   paintTeach();
   const tools = el("div", {class:"boardtools"},
@@ -616,18 +667,32 @@ function drawLab(box, o){
     el("button", {class:"ghost", type:"button", onclick:() => { strokes.pop(); rev++; paintBoard(); }}, "Undo"));
 
   box.replaceChildren(
-    ...(nameIn ? [el("label", {class:"labname"}, "My character's name", nameIn)] : []),
+    ...(nameIn ? [el("label", {class:"labname"}, o.nameLabel || "What is it?", nameIn)] : []),
+    ...(nameIn && o.chips ? [el("div", {class:"chips"}, el("span", {class:"muted", style:"font-size:14px"}, "Ideas:"), ...o.chips.map(c => el("button", {class:"chip", type:"button", onclick:() => { nameIn.value = c; nameIn.dispatchEvent(new Event("input")); }}, c)))] : []),
     el("div", {class:"labmain"}, el("div", null, cv, tools), el("div", {style:"display:grid;gap:12px"}, acts, ai)),
     mem);
   paintBoard(); paintMem();
-  if (o.builtins) say("", nm() ? "Hi! Draw something and ask me what it is." : "Hi! Give your character a name, then draw it.", "I already know 6 things: sun, house, fish, star, heart and tree.");
+  if (o.hello) say("", o.hello[0], o.hello[1]);
+  else if (o.builtins) say("", nm() ? "Hi! Draw something and ask me what it is." : (o.greet || "Hi! Write a word in the box, then draw it."), "I already know 6 things: sun, house, fish, star, heart and tree.");
   else say("", "Hi, I'm a brand new AI.", mine.length ? "I remember " + mine.length + " drawing" + (mine.length > 1 ? "s" : "") + "." : "My brain is empty.");
   return {counts};
 }
 
-/* lab 1: teach your character */
+/* lab 3: bias, the round-tree AI */
+drawLab($("#lab3"), {
+  key:"brain3", builtins:true, focus:"tree", hello:["Hi! I know what a tree is.", "I learned it from 6 tree drawings. Draw a Christmas tree and test me!"], labels:["tree"], wipe:true, nojudge:true, score:() => false,
+  on(ev, d){ if (ev === "answer" && d.best !== "tree") $("#biasDef").hidden = false; }
+});
+
+/* lab 1: teach the AI your team's things */
+const TEAM = P.me().team === "planet" ? "planet" : P.me().team === "school" ? "school" : null;
+const LAB1 = {
+  school:{chips:["pencil","book","backpack","clock","chair","scissors","ruler"], ph:"e.g. pencil", greet:"Hi! Teach me school objects. Write one in the box, then draw it."},
+  planet:{chips:["bottle","can","banana peel","paper bag","apple core","battery","glass jar"], ph:"e.g. bottle", greet:"Hi! I'm a recycling robot. Teach me kinds of waste: write one in the box, then draw it."},
+  none:{chips:["pencil","book","bottle","can","banana peel","clock"], ph:"e.g. pencil", greet:"Hi! Write a word in the box, then draw it."}
+}[TEAM || "none"];
 const lab1 = drawLab($("#lab1"), {
-  key:"brain1", nameKey:"name", named:true, builtins:true,
+  key:"brain1", nameKey:"name", named:true, builtins:true, chips:LAB1.chips, namePh:LAB1.ph, greet:LAB1.greet, nameLabel:"What are you teaching it?",
   score: right => T1.add(0, right),
   on(ev, d){
     if (ev === "named") L1.tick(0);
@@ -636,7 +701,7 @@ const lab1 = drawLab($("#lab1"), {
     if (ev === "learnit") L1.tick(2);
     if (ev === "answer" && d.name && d.best === d.name) L1.tick(3);
     if (ev === "taught" && d.n >= 5) L1.tick(4);
-    if (ev === "taught" && Object.keys(d.counts).length >= 2) L1.tick(7);
+    if (ev === "taught" && Object.keys(d.counts).length >= 3) L1.tick(7);
   }
 });
 T1.onchange = st => { if (st[0].r + st[0].w >= 10) L1.tick(6); };
@@ -657,38 +722,18 @@ const lab2 = drawLab($("#lab2"), {
 T2.onchange = st => { if (st[0].r + st[0].w >= 5){ L2.tick(3); $("#trickDef").hidden = false; } if (st[1].r + st[1].w >= 5) L2.tick(5); };
 T2.onchange(T2.state());
 
-/* bias demo */
-const RED = "#C8352B", GREEN = "#6BAA3A";
-let fixed = false;
-function apple(col, label){ return el("div", {class:"fruit"}, el("span", {class:"ball", style:"background:" + col}), el("span", {class:"leaf"}), el("small", null, label)); }
-function drawTrain(){ const items = [apple(RED,"apple"), apple(RED,"apple"), apple(RED,"apple"), apple(RED,"apple")]; if (fixed) items.push(apple(GREEN,"apple"), apple(GREEN,"apple")); $("#train").replaceChildren(...items); }
-drawTrain();
-$("#testGreen").onclick = () => {
-  $("#aiSays").replaceChildren(el("span", {class:"tag"}, "The AI says"), el("div", {class:"row", style:"margin-top:10px;align-items:center"}, apple(GREEN, "test"),
-    el("p", {class:"lead", style:"margin:0;flex:1;min-width:0"}, fixed ? "Apple! It saw green apples in the examples, so now it knows apples can be green." : "Not an apple. Every apple it ever saw was red, so it thinks apples must be red.")));
-  $("#aiSays").className = "card " + (fixed ? "good" : "bad");
-  if (!fixed) $("#biasDef").hidden = false;
-};
-$("#fixData").onclick = () => { fixed = true; drawTrain(); $("#testGreen").textContent = "Test the green apple again"; };
-
 /* pick a segment */
-const SEGS = [
-  ["Sports Desk","School match results and world sport"],["Weather Robot","A funny forecast by a robot"],["Tech and AI Corner","One new app or invention, explained"],
-  ["School News","Events, trips, sports day"],["Canteen Review","A funny review of today's food"],["Style and Trends","Fashion and trends for your age"],
-  ["Games and Apps Review","The best game or app this month"],["Interview with a Legend","Interview a famous person played by AI"],["Fake or Real?","Viewers guess what is real and what is AI"],["Funny Ads","Ads for impossible products, made with AI"]
-];
-let mine = store.get("seg");
-function drawPick(){ $("#pick").replaceChildren(...SEGS.map(([n, d]) => el("button", {class:"segcard", type:"button", "aria-pressed": String(mine === n), onclick:() => { mine = n; store.set("seg", n); drawPick(); $("#pickNote").textContent = "Your pick: " + n + ". Tell your teacher before you leave."; }}, el("strong", null, n), el("span", null, d)))); }
-drawPick();
-if (mine) $("#pickNote").textContent = "Your pick: " + mine + ". Tell your teacher before you leave.";
+/* team and part */
+P.picker($("#proj"), () => location.reload());
 const idea = store.get("idea"); if (idea) $("#segIdea").value = idea;
 $("#segIdea").addEventListener("input", () => store.set("idea", $("#segIdea").value));
+{ const m = P.me(); $("#lab1team").textContent = m.team === "school" ? "Team School 🏫: teach it school objects. Goal: it knows 3 school things." : m.team === "planet" ? "Team Planet 🌍: you are building a recycling robot. Goal: it can sort 3 kinds of waste." : "You have not picked a team yet. Pick it in part 08 of this chapter, then come back.";
+  if (m.team === "planet") $("#lab1lead").textContent = "A recycling robot must know a bottle from a banana peel. This one knows nothing about waste yet. You will teach it, the way real engineers do: with examples."; }
 
 const start = segs.findIndex(s => "#" + s.id === location.hash);
 go(start >= 0 ? start : 0);
 })();
 </script>
-
 <script src="config.js"></script>
 <script src="sync.js"></script>
 </body></html>

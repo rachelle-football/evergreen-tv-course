@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
-<title>Chatbots and Prompts</title>
+<title>AI Storytelling</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -157,6 +157,31 @@ input{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--l
 .checklist.compact label{padding:10px 12px}
 .checklist.compact b{font-size:16px;font-family:var(--body)}
 .checklist.compact label::before{font-size:12px;padding:4px 6px}
+
+/* chapter 5 */
+.shot{width:100%;height:auto;border-radius:10px;margin-top:10px;display:block}
+canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:block;margin-top:10px;image-rendering:pixelated}
+.how-list{margin:0;padding-left:22px;display:grid;gap:12px;font-size:19px}
+.g5{grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+.tabs{display:flex;gap:6px;margin:10px 0 2px;flex-wrap:wrap}
+.tab{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:15px;font-weight:700}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.stat b{display:block;font-family:var(--display);font-size:clamp(34px,4vw,48px);line-height:1.1;margin:4px 0 8px;font-variant-numeric:tabular-nums}
+
+/* chapter extras */
+.pdiv{align-self:flex-start;font:700 11px/1 var(--mono);color:var(--muted);padding:10px 2px 0;border-top:4px solid transparent}
+.myproj{margin-bottom:18px;display:grid;gap:10px}
+.teamrow{display:flex;gap:8px;flex-wrap:wrap}
+.teambtn{background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:10px 14px;font-weight:700;font-size:16px;text-align:left}
+.teambtn:hover{border-color:var(--ink)}
+.teambtn[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+.partlbl{display:grid;gap:4px;font-weight:700;font-size:15px}
+.partlbl select{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;max-width:560px}
+.partnow{margin:0;font-size:16px}
+.story span.pt{border-radius:4px;padding:1px 2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.pt-c{background:rgba(224,165,38,.28)}.pt-p{background:rgba(217,65,42,.22)}.pt-f{background:rgba(30,160,100,.25)}.pt-e{background:rgba(120,90,200,.25)}
+.sp{border-left-width:6px}.sp1{border-left-color:#E0A526}.sp2{border-left-color:#D9412A}.sp3{border-left-color:#1EA064}.sp4{border-left-color:#785AC8}
+select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);width:100%;min-width:0}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -170,9 +195,9 @@ input{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--l
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>ON AIR</span><span>Evergreen TV <small>· AI class · Chapter 4: Chatbots and prompts</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 4: AI Storytelling</small></span></div>
     <div class="clock" aria-live="off">
-      <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
+      <span class="lbl muted">Segment time</span><b id="clock">06:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
     </div>
   </div>
@@ -180,93 +205,86 @@ input{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--l
 
 <main class="wrap" id="stage">
 
-<section class="seg" id="seg-1" data-min="5" data-title="Break the bot">
-  <div class="lower"><div class="no">01</div><div class="name"><h2>Break the bot</h2><p>5 minutes · warm-up</p></div></div>
+<section class="seg" id="seg-1" data-min="6" data-title="What makes a story">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>What makes a story?</h2><p>6 minutes · the lesson</p></div></div>
+  <p class="big">A design card says what the future looks like. A story makes people <i>feel</i> it. Every good story has the same 4 parts.</p>
   <div class="grid g2" style="align-items:start">
-    <div>
-      <p class="big">This is RuleBot. Someone wrote every answer it knows, one rule at a time. Can you make it fail?</p>
-      <p class="lead">Try: "hello", "what's the weather?", then ask it anything else.</p>
-      <p class="lead">RuleBot failed <span class="score" id="fails">0</span> times.</p>
-      <div class="card" id="afterBot" hidden style="background:var(--gold-soft);border-color:transparent">
-        <span class="tag">Teacher: now ask Gemini the same question</span>
-        <p class="lead" style="margin:6px 0 0">Gemini answers almost anything. Nobody wrote its answers. It learned from a huge amount of text and predicts the next words, like the game in Chapter 1.</p>
-      </div>
+    <div class="card">
+      <div class="row" id="storyTabs" style="margin-bottom:10px"></div>
+      <h3 id="exTitle" style="font-size:24px;margin:0 0 8px"></h3>
+      <p class="lead story" id="exStory" style="margin:0"></p>
+      <div class="row" style="margin-top:12px"><button class="btn sm" id="showParts" type="button">Show the 4 parts</button></div>
     </div>
-    <div class="card chat">
-      <div class="msgs" id="msgs" aria-live="polite"></div>
-      <form class="row" id="botForm"><input id="botIn" autocomplete="off" placeholder="Type a message…" aria-label="Message to RuleBot"><button class="btn sm" type="submit">Send</button></form>
+    <div class="grid" style="gap:10px">
+      <div class="card sp sp1"><span class="tag">1 · Character</span><p style="margin:4px 0 0">Who is it about? We care about a person, not a building.</p></div>
+      <div class="card sp sp2"><span class="tag">2 · Problem</span><p style="margin:4px 0 0">What goes wrong, or what do they want?</p></div>
+      <div class="card sp sp3"><span class="tag">3 · The future helps</span><p style="margin:4px 0 0">Your design is the hero's secret weapon.</p></div>
+      <div class="card sp sp4"><span class="tag">4 · Ending</span><p style="margin:4px 0 0">How did they change? End with a smile or a surprise.</p></div>
     </div>
   </div>
 </section>
 
-<section class="seg" id="seg-2" data-min="7" data-title="The prompt recipe" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>The prompt recipe</h2><p>7 minutes · the lesson</p></div></div>
-  <div class="grid g2">
-    <div class="card bad"><span class="tag">Weak prompt</span><p class="quote">"Write sports news about our school."</p><p style="margin:0">Gemini does not know your school. So it <b>invents</b> team names, scores and players, and says them as if they were true.</p></div>
-    <div class="card good"><span class="tag">Recipe prompt</span><p class="quote">Role + Task + Context + Format</p><p style="margin:0">You give it the facts, the job and the style. It stops guessing.</p></div>
-  </div>
-  <p class="lead" style="margin-top:18px">Build a recipe prompt together. Change any part and watch the prompt change.</p>
-  <div class="recipe">
-    <label class="ing"><span class="tag">Role · who is it?</span><textarea rows="3" id="rRole">You are a fun TV sports presenter for kids.</textarea></label>
-    <label class="ing"><span class="tag">Task · what should it do?</span><textarea rows="3" id="rTask">Write a 45-second news script for our school sports segment.</textarea></label>
-    <label class="ing"><span class="tag">Context · the facts it can't know</span><textarea rows="3" id="rCtx">Our team, Evergreen Eagles, won 3–1 against Cedar School. Sara scored 2 goals.</textarea></label>
-    <label class="ing"><span class="tag">Format · how should it look?</span><textarea rows="3" id="rFmt">Short sentences, easy English, end with a catchy sign-off.</textarea></label>
-  </div>
-  <pre class="prompt" id="recipeOut"></pre>
-  <div class="row"><button class="btn sm" id="copyRecipe" type="button">Copy prompt</button></div>
-</section>
-
-<section class="seg" id="seg-3" data-min="15" data-title="Mission: your character" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: give your corner a character</h2><p>15 minutes · in Gemini Canvas</p></div></div>
+<section class="seg" id="seg-2" data-min="10" data-title="Your character" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>Invent your character</h2><p>10 minutes · then ask Gemini for help</p></div></div>
+  <div class="card myproj" id="proj"></div>
   <div class="mission">
-    <div><ol class="checklist" id="list1"></ol></div>
-    <aside class="card side">
-      <label class="tag" for="segSel">Your segment</label>
-      <select id="segSel"></select>
-      <label class="tag" for="cName">Character name</label><input id="cName">
-      <label class="tag" for="cPers">Personality</label><input id="cPers">
-      <label class="tag" for="cFacts">5 facts it knows (one per line, your own facts)</label>
-      <textarea id="cFacts" style="min-height:130px"></textarea>
-      <span class="tag">Your character prompt</span>
+    <div class="card">
+      <span class="tag">Your character</span>
+      <div class="recipe" style="margin-top:8px">
+        <label class="ing"><span class="tag">Name (invented)</span><input id="cName" placeholder="e.g. Lina, Karim, Robo-7"></label>
+        <label class="ing"><span class="tag">Who are they?</span><select id="cWho"></select></label>
+        <label class="ing"><span class="tag">Personality (2 words)</span><input id="cPers" placeholder="e.g. shy but curious"></label>
+        <label class="ing"><span class="tag">What do they want?</span><input id="cWant" placeholder="e.g. to win the science fair"></label>
+      </div>
+      <span class="tag" style="display:block;margin-top:12px">Prompt: ask Gemini to bring your character to life</span>
       <pre class="prompt small" id="charOut"></pre>
-      <div class="row"><button class="btn sm" id="copyChar" type="button">Copy my prompt</button></div>
+      <div class="row"><button class="btn sm" id="copyChar" type="button">Copy prompt</button></div>
+    </div>
+    <aside class="card side">
+      <span class="tag">Character card</span>
+      <div id="charCard"></div>
+      <p class="note">Invented names only: never a classmate's or a famous person's name.</p>
     </aside>
   </div>
 </section>
 
-<section class="seg" id="seg-4" data-min="13" data-title="Mission: your script" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Mission: write your script, then catch the AI</h2><p>13 minutes · in Gemini (a new chat, no Canvas)</p></div></div>
+<section class="seg" id="seg-3" data-min="22" data-title="Mission: your story" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: write your story from the future</h2><p>22 minutes · Gemini, then your own words</p></div></div>
   <div class="grid g2" style="align-items:start">
     <div class="card">
-      <span class="tag">1 · Your script prompt (fill in your facts)</span>
-      <label class="ing"><span class="tag">Context: what really happened, or your real topic</span><textarea id="sCtx" style="min-height:90px"></textarea></label>
-      <pre class="prompt small" id="scriptOut"></pre>
-      <div class="row"><button class="btn sm" id="copyScript" type="button">Copy script prompt</button></div>
+      <span class="tag">1 · Your story prompt (made from your design card and your character)</span>
+      <label class="ing" style="margin-top:8px"><span class="tag">The problem in your story</span><input id="sProb" placeholder="e.g. Lina is late and lost on her first day"></label>
+      <pre class="prompt small" id="storyOut"></pre>
+      <div class="row"><button class="btn sm" id="copyStory" type="button">Copy story prompt</button></div>
+      <p class="note" id="noCard"></p>
+      <span class="tag" style="display:block;margin-top:12px">2 · Make it better (copy into the same chat)</span>
+      <div class="row" id="better" style="margin-top:6px"></div>
     </div>
     <div class="card">
-      <span class="tag">2 · Paste Gemini's script here and check it</span>
-      <textarea id="script" style="min-height:150px" placeholder="Paste the script Gemini wrote…"></textarea>
+      <span class="tag">3 · Paste your final story here, then make it yours</span>
+      <label class="ing" style="margin-top:8px"><span class="tag">Title</span><input id="sTitle"></label>
+      <textarea id="story" style="min-height:200px" placeholder="Paste your story, then change at least 3 sentences into your own words…"></textarea>
       <p class="lead" style="margin:8px 0"><span class="score" id="wc">0 words</span> · about <span class="score" id="secs">0 seconds</span> to read aloud <span class="muted" id="fit"></span></p>
-      <span class="tag">3 · Mistake hunt: tick each check</span>
+      <span class="tag">4 · Story check</span>
       <ol class="checklist compact" id="hunt"></ol>
-      <p class="note">Keep this script. In Chapter 6 your presenter will say it in your voice.</p>
+      <p class="note">Keep this story. In Chapter 6 you read it on your team's podcast.</p>
     </div>
   </div>
+  <ol class="checklist" id="list1" style="margin-top:16px"></ol>
 </section>
 
-<section class="seg" id="seg-5" data-min="5" data-title="Share" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Meet the characters</h2><p>5 minutes · share</p></div></div>
-  <p class="big">Two students let the class talk to their character. One student shares the funniest mistake the AI made in their script.</p>
+<section class="seg" id="seg-4" data-min="5" data-title="Read aloud" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Story time</h2><p>5 minutes · 2 readers from each team</p></div></div>
+  <p class="big">Two students from each team read their story. The class listens for the 4 parts.</p>
   <div class="grid g3">
-    <div class="card"><span class="tag">RuleBot vs Gemini</span><p class="lead" style="margin:6px 0 0">RuleBot only knows what someone wrote. Gemini learned from huge amounts of text and predicts words.</p></div>
-    <div class="card"><span class="tag">The recipe</span><p class="lead" style="margin:6px 0 0">Role, Task, Context, Format. Context is the part that stops the AI inventing.</p></div>
-    <div class="card"><span class="tag">The rule</span><p class="lead" style="margin:6px 0 0">AI sounds sure even when it is wrong. You check before you trust.</p></div>
+    <div class="card"><span class="tag">Listen for</span><p class="lead" style="margin:6px 0 0">Who is the character? What is the problem? How does the future help?</p></div>
+    <div class="card"><span class="tag">Ask</span><p class="lead" style="margin:6px 0 0">Which sentence did the writer change into their own words?</p></div>
+    <div class="card"><span class="tag">The rule</span><p class="lead" style="margin:6px 0 0">AI writes fast. You make it true, kind and yours.</p></div>
   </div>
-  <div class="card" style="margin-top:16px;background:var(--gold-soft);border-color:transparent"><span class="tag">Next week</span><p class="lead" style="margin:6px 0 0">Your corner gets pictures made with AI: a studio, a logo and a title card.</p></div>
+  <div class="card" style="margin-top:16px;background:var(--gold-soft);border-color:transparent"><span class="tag">Next week</span><p class="lead" style="margin:6px 0 0">AI Images: you make 3 pictures of your design. Your story will tell you what to draw.</p></div>
 </section>
 
 </main>
-
 <nav class="rail" aria-label="Lesson segments">
   <div class="wrap">
     <button class="btn sm alt" id="prev" type="button" aria-label="Previous segment">←</button>
@@ -275,19 +293,50 @@ input{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--l
   </div>
 </nav>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
-
 <script>
-(function(){
+window.P = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const store = { raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
+/* ---------- the year project: two teams, each kid owns one part ---------- */
+const TEAMS = {
+  school: {key:"school", name:"Reinvent the School", site:"School 2040", emoji:"🏫", goal:"Design the school of tomorrow",
+    world:"our school, Evergreen, in the year 2040", podcast:"the School 2040 podcast", video:"a promo video for the school of tomorrow", look:"a bright, friendly school in Lebanon in the year 2040",
+    parts:[["The classroom","Where and how we learn: desks, screens, light, sound"],["The library","Books, reading corners, quiet, research"],["The canteen","Healthy food, no waste, where we eat together"],["Playground and sports","Games, fields, breaks, team sports"],["The science lab","Experiments, robots, discovering"],["Art and music studio","Drawing, making, singing, performing"],["Getting to school","Buses, bikes, walking, safety"],["The school day","Timetable, homework, exams, breaks"],["Wellbeing corner","Feeling calm, friendship, getting help"],["The school garden","Plants, outdoor lessons, animals"]]},
+  planet: {key:"planet", name:"The Future of Our Planet", site:"Planet 2050", emoji:"🌍", goal:"Create a better world with AI",
+    world:"planet Earth, and Lebanon, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
+    parts:[["Clean energy","Sun, wind and power for every home"],["Water","Clean water for everyone, saving every drop"],["Waste and recycling","Less trash, sorting, reusing"],["Clean air","No smoke, less pollution, breathing well"],["Transport","Buses, trains, bikes and clean cars"],["Cities and homes","Green buildings, parks, cool streets"],["Food and farming","Growing food, eating well, no food waste"],["Oceans and beaches","Clean sea, no plastic, sea life"],["Forests and animals","Trees, the cedars, wildlife"],["Weather and climate","Heat waves, storms, being ready"]]}
+};
+const rawSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
+function me(){
+  const t = store.raw("ch1-team"), T = TEAMS[t] || null, p = store.raw("ch1-part"), P = T && T.parts.find(x => x[0] === p);
+  return {team:T ? t : null, T, part:P ? P[0] : null, about:P ? P[1] : ""};
+}
+/* a small "my team · my part" bar any chapter can show; changing it is saved for every chapter */
+function picker(box, onChange){
+  function draw(){
+    const m = me();
+    const teamBtns = Object.values(TEAMS).map(T => el("button", {class:"teambtn", type:"button", "aria-pressed":String(m.team === T.key), onclick:() => { rawSet("ch1-team", T.key); if (!TEAMS[T.key].parts.some(x => x[0] === store.raw("ch1-part"))) rawSet("ch1-part", null); draw(); if (onChange) onChange(); }}, T.emoji + " " + T.name));
+    const sel = el("select", {"aria-label":"My part of the project"}, el("option", {value:""}, m.T ? "Choose your part…" : "Choose a team first"), ...(m.T ? m.T.parts.map(([n, d]) => el("option", {value:n}, n + " · " + d)) : []));
+    sel.value = m.part || ""; sel.disabled = !m.T;
+    sel.addEventListener("change", () => { rawSet("ch1-part", sel.value || null); draw(); if (onChange) onChange(); });
+    box.replaceChildren(el("span", {class:"tag"}, "My project"), el("div", {class:"teamrow"}, ...teamBtns), el("label", {class:"partlbl"}, "My part", sel),
+      m.part ? el("p", {class:"partnow"}, "You are building ", el("b", null, m.part), " for ", el("b", null, m.T.site), ".") : el("p", {class:"partnow muted"}, "Pick your team and your part. Ask your teacher if you are not sure."));
+  }
+  draw();
+}
+/* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
+function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
+return {TEAMS, me, picker, fill, rawSet};
+})();
+
+window.K = (function(){
 const $ = s => document.querySelector(s);
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
-const store = { get(k){ try { return JSON.parse(localStorage.getItem("ch4-" + k)); } catch(e){ return null; } }, set(k, v){ try { localStorage.setItem("ch4-" + k, JSON.stringify(v)); } catch(e){} } };
-const segs = [...document.querySelectorAll(".seg")];
-let cur = 0;
-
-/* navigation */
-const stepsBox = $("#steps");
-segs.forEach((s, i) => stepsBox.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))));
-const stepBtns = [...stepsBox.children];
+let PFX = "k";
+const store = { get(k){ try { return JSON.parse(localStorage.getItem(PFX + "-" + k)); } catch(e){ return null; } }, set(k, v){ try { localStorage.setItem(PFX + "-" + k, JSON.stringify(v)); } catch(e){} }, raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
+let segs = [], cur = 0, stepBtns = [], left = 0, tick = null, tt;
+const fmt = s => (s < 0 ? "-" : "") + String(Math.floor(Math.abs(s)/60)).padStart(2,"0") + ":" + String(Math.abs(s)%60).padStart(2,"0");
+function resetClock(){ clearInterval(tick); tick = null; left = (+segs[cur].dataset.min) * 60; $("#clock").textContent = fmt(left); $("#clock").classList.remove("late"); $("#clockBtn").textContent = "Start"; }
 function go(i){
   cur = Math.max(0, Math.min(segs.length - 1, i));
   segs.forEach((s, k) => s.hidden = k !== cur);
@@ -297,151 +346,118 @@ function go(i){
   if (location.hash !== "#" + segs[cur].id) history.replaceState(null, "", "#" + segs[cur].id);
   resetClock(); window.scrollTo(0, 0);
 }
-$("#prev").onclick = () => go(cur - 1);
-$("#next").onclick = () => go(cur + 1);
-addEventListener("keydown", e => { if (e.target.matches("textarea,input,select")) return; if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); });
-addEventListener("hashchange", () => { const i = segs.findIndex(s => "#" + s.id === location.hash); if (i >= 0 && i !== cur) go(i); });
-
-/* clock */
-let left = 0, tick = null;
-const fmt = s => (s < 0 ? "-" : "") + String(Math.floor(Math.abs(s)/60)).padStart(2,"0") + ":" + String(Math.abs(s)%60).padStart(2,"0");
-function resetClock(){ clearInterval(tick); tick = null; left = (+segs[cur].dataset.min) * 60; $("#clock").textContent = fmt(left); $("#clock").classList.remove("late"); $("#clockBtn").textContent = "Start"; }
-$("#clockBtn").onclick = () => {
-  if (tick){ clearInterval(tick); tick = null; $("#clockBtn").textContent = "Start"; return; }
-  $("#clockBtn").textContent = "Pause";
-  tick = setInterval(() => { left--; $("#clock").textContent = fmt(left); $("#clock").classList.toggle("late", left < 0); }, 1000);
-};
-
-/* copy */
-let tt;
-function toast(msg){ const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 2200); }
-async function copyText(text, selectEl){
-  try { await navigator.clipboard.writeText(text); toast("Copied. Now paste it into Gemini."); }
-  catch(e){ if (selectEl){ const r = document.createRange(); r.selectNodeContents(selectEl); const s = getSelection(); s.removeAllRanges(); s.addRange(r); } toast("Press Ctrl+C to copy the selected text."); }
+function init(prefix, p2){
+  PFX = prefix; segs = [...document.querySelectorAll(".seg")];
+  const box = $("#steps");
+  segs.forEach((s, i) => { if (p2 && i === p2) box.append(el("span", {class:"pdiv", "aria-hidden":"true"}, "P2")); box.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))); });
+  stepBtns = [...box.querySelectorAll(".step")];
+  $("#prev").onclick = () => go(cur - 1); $("#next").onclick = () => go(cur + 1);
+  addEventListener("keydown", e => { if (e.target.matches("textarea,input,select")) return; if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); });
+  addEventListener("hashchange", () => { const i = segs.findIndex(s => "#" + s.id === location.hash); if (i >= 0 && i !== cur) go(i); });
+  $("#clockBtn").onclick = () => { if (tick){ clearInterval(tick); tick = null; $("#clockBtn").textContent = "Start"; return; } $("#clockBtn").textContent = "Pause"; tick = setInterval(() => { left--; $("#clock").textContent = fmt(left); $("#clock").classList.toggle("late", left < 0); }, 1000); };
 }
-
-/* checklists */
+function start(){ const s = segs.findIndex(x => "#" + x.id === location.hash); go(s >= 0 ? s : 0); }
+function toast(msg){ const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 2400); }
+async function copy(text, selectEl, where){
+  try { await navigator.clipboard.writeText(text); toast("Copied. Now paste it into " + (where || "the AI") + "."); }
+  catch(e){ if (selectEl){ if (selectEl.select) { selectEl.focus(); selectEl.select(); } else { const r = document.createRange(); r.selectNodeContents(selectEl); const s = getSelection(); s.removeAllRanges(); s.addRange(r); } } toast("Press Ctrl+C to copy the selected text."); }
+}
 function checklist(id, items, compact){
   const saved = store.get(id) || [];
   $("#" + id).replaceChildren(...items.map(([title, body], i) => {
     const cb = el("input", {type:"checkbox", id: id + "-" + i}); cb.checked = !!saved[i];
     const li = el("li", {class: cb.checked ? "ok" : ""}, el("label", {for: id + "-" + i}, cb, el("span", null, el("b", null, title), body ? el("span", {class:"how"}, body) : "")));
-    cb.addEventListener("change", () => { saved[i] = cb.checked; store.set(id, saved); li.classList.toggle("ok", cb.checked); });
+    cb.addEventListener("change", () => { saved[i] = cb.checked; store.set(id, saved); li.classList.toggle("ok", cb.checked); $("#" + id).dispatchEvent(new Event("change")); });
     return li; }));
+  return { tick(i){ if (saved[i]) return; const cb = document.getElementById(id + "-" + i); if (!cb) return; cb.checked = true; saved[i] = true; store.set(id, saved); cb.closest("li").classList.add("ok"); $("#" + id).dispatchEvent(new Event("change")); } };
 }
+const {TEAMS, me, picker, fill, rawSet} = window.P;
+return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet};
+})();
 
-/* 1 RuleBot */
-const RULES = [
-  [/\b(hi|hello|hey|salut|marhaba)\b/i, "Hello! I am RuleBot. Ask me about the weather or my name."],
-  [/\bweather\b/i, "The weather is sunny. (I always say sunny. Nobody wrote another rule.)"],
-  [/\b(name|who are you)\b/i, "My name is RuleBot. A person wrote all my answers."],
-  [/\b(bye|goodbye)\b/i, "Goodbye!"]
-];
-let fails = 0;
-function say(who, text){ $("#msgs").append(el("div", {class:"msg " + who}, text)); $("#msgs").scrollTop = 1e9; }
-say("bot", "Hi! I'm RuleBot. I only know a few rules. Try to break me!");
-$("#botForm").addEventListener("submit", e => { e.preventDefault(); const q = $("#botIn").value.trim(); if (!q) return; say("me", q); $("#botIn").value = "";
-  const hit = RULES.find(([re]) => re.test(q));
-  setTimeout(() => { if (hit) say("bot", hit[1]); else { fails++; $("#fails").textContent = fails; say("bot fail", "I don't understand. No one wrote a rule for that."); if (fails >= 2) $("#afterBot").hidden = false; } }, 350); });
+</script>
+<script>
+(function(){
+const {$, el, store, copy, checklist, me, picker} = K;
+K.init("ch4");
 
-/* 2 recipe */
-const rIds = ["rRole","rTask","rCtx","rFmt"];
-function drawRecipe(){ $("#recipeOut").textContent = "Role: " + $("#rRole").value + "\nTask: " + $("#rTask").value + "\nContext: " + $("#rCtx").value + "\nFormat: " + $("#rFmt").value; }
-rIds.forEach(id => $("#" + id).addEventListener("input", drawRecipe)); drawRecipe();
-$("#copyRecipe").onclick = () => copyText($("#recipeOut").textContent, $("#recipeOut"));
-
-/* 3 character */
-const CHAR = {
-  "Sports Desk": ["Coach Kick", "energetic, loves football, cheers a lot", "Our school team is called the Evergreen Eagles.\nTraining is on Tuesday after school.\nOur last match ended 3–1.\nThe best way to warm up is 5 minutes of jogging.\nDrink water before, during and after a match."],
-  "Weather Robot": ["Robo-Cloud", "funny robot, beeps a lot, a bit dramatic about rain", "Lebanon has a rainy winter and a hot, dry summer.\nIt snows on the high mountains in winter.\nAn umbrella is useful from November to March.\nSummer is the best time for the beach.\nA rainbow needs sun and rain at the same time."],
-  "Tech and AI Corner": ["Byte", "curious, explains things simply, loves gadgets", "AI learns from examples.\nA chatbot predicts the next word.\nNever share your password with anyone.\nA strong password is long and mixes words and numbers.\nAI can make mistakes, so check important facts."],
-  "School News": ["Newsy", "friendly reporter, always excited about school events", "Write your school's next event here.\nWrite when the school day starts.\nWrite a club or activity at school.\nWrite the date of the next holiday.\nWrite where students can find the timetable."],
-  "Canteen Review": ["Chef Yum", "a cheerful chef who rates everything with stars", "Write today's canteen dish.\nWrite the most popular snack.\nA balanced lunch has vegetables, protein and grains.\nWater is the best drink with a meal.\nWrite the dish of the week."],
-  "Style and Trends": ["Stella Style", "kind, creative, gives fashion tips for school", "Write this season's favourite colour.\nComfortable shoes are best for school days.\nOne bright item can make a simple outfit fun.\nWrite the school uniform rule.\nRecycle old clothes by giving them away."],
-  "Games and Apps Review": ["Pixel", "a gamer who gives honest reviews and safety tips", "Write your favourite game and its age rating.\nTake a break every 30 minutes of screen time.\nNever chat with strangers in online games.\nWrite a free learning app you like.\nAsk a parent before buying anything in a game."],
-  "Interview with a Legend": ["Your legend's name", "speaks like the famous person, polite and inspiring", "Write when the legend was born.\nWrite their most famous achievement.\nWrite where they lived.\nWrite one problem they had to overcome.\nWrite their advice to young people (from a real source)."],
-  "Fake or Real?": ["Detective Dot", "a sharp detective who loves clues", "AI can make fake photos that look real.\nCheck a story in 2 trusted sources.\nLook at hands and text in a picture for mistakes.\nA voice can be copied by AI.\nIf something makes you very angry or scared, check it first."],
-  "Funny Ads": ["Max Sales", "an over-excited TV salesman who exaggerates everything", "Write your impossible product's name.\nWrite its silliest feature.\nWrite its funny price.\nEvery ad on Evergreen TV says Made with AI.\nWrite your product's slogan."]
+/* 1 example stories with their 4 parts */
+const EX = {
+  school: ["Lina and the Library That Listened", [
+    ["c", "Lina was twelve and she hated reading."], ["p", " Every book felt too long, and the old library was so quiet that she could hear her own yawns."],
+    ["f", " But in 2040, the new library had reading pods. Lina sat in one, and the walls asked her what she loved. \"Football and space,\" she said. The pod lit up with a story about a goalkeeper on the Moon."],
+    ["e", " Lina read until the bell rang. The next day she brought a friend, and they argued about the ending all the way home."]]],
+  planet: ["Karim and the Last Plastic Bottle", [
+    ["c", "Karim was twelve and he lived in Beirut in 2050."], ["p", " One morning on the beach, he found something strange in the sand: a plastic bottle. Nobody had seen one in years."],
+    ["f", " He took it to the recycling robot by the boardwalk. It beeped, scanned the bottle and said, \"Made in 2024. Turning it into a bench.\" The sea behind him was clean and full of fish."],
+    ["e", " Karim smiled. His grandmother had told him the beaches used to be full of bottles. He wrote her a message: \"You were right to clean them.\""]]]
 };
-const sel = $("#segSel");
-Object.keys(CHAR).forEach(n => sel.append(el("option", {value:n}, n)));
-function prevSeg(){ for (const k of ["ch4-seg","ch3-seg","ch2-seg"]) { try { const v = JSON.parse(localStorage.getItem(k)); if (v && CHAR[v]) return v; } catch(e){} } return "Sports Desk"; }
-sel.value = prevSeg();
-function fillChar(fromSaved){
-  const saved = fromSaved ? store.get("char") : null;
-  const d = CHAR[sel.value];
-  $("#cName").value = saved && saved.seg === sel.value ? saved.name : d[0];
-  $("#cPers").value = saved && saved.seg === sel.value ? saved.pers : d[1];
-  $("#cFacts").value = saved && saved.seg === sel.value ? saved.facts : d[2];
-  drawChar();
+let exTeam = me().team || "school", shown = false;
+function drawEx(){
+  const [title, parts] = EX[exTeam];
+  $("#exTitle").textContent = title;
+  $("#exStory").replaceChildren(...parts.map(([k, t]) => el("span", {class: shown ? "pt pt-" + k : ""}, t)));
+  $("#storyTabs").replaceChildren(...Object.entries(EX).map(([k]) => el("button", {class:"btn sm " + (k === exTeam ? "" : "alt"), type:"button", onclick:() => { exTeam = k; drawEx(); }}, k === "school" ? "🏫 School story" : "🌍 Planet story")));
+  $("#showParts").textContent = shown ? "Hide the parts" : "Show the 4 parts";
+}
+$("#showParts").onclick = () => { shown = !shown; drawEx(); };
+drawEx();
+
+/* 2 character */
+const WHO = ["a student in the future", "a new student, first day", "a teacher", "a robot helper", "a grandparent visiting from 2026", "a scientist", "an animal (yes!)"];
+$("#cWho").replaceChildren(...WHO.map(w => el("option", {value:w}, w)));
+const C = store.get("char") || {name:"", who:WHO[0], pers:"", want:""};
+const cmap = {cName:"name", cWho:"who", cPers:"pers", cWant:"want"};
+Object.entries(cmap).forEach(([id, k]) => { $("#" + id).value = C[k] || (id === "cWho" ? WHO[0] : ""); $("#" + id).addEventListener("input", () => { C[k] = $("#" + id).value; store.set("char", C); drawChar(); drawStory(); }); });
+function world(){ const m = me(); return m.T ? m.T.world : "the future"; }
+function charText(){
+  return "Help me invent a character for a short story set in " + world() + ". Name: " + (C.name || "(invent one)") + ". They are " + C.who + ". Personality: " + (C.pers || "you choose") + ". They want: " + (C.want || "you choose") + ".\nGive me 4 short lines: how they look, one habit, one fear, and one funny thing about them. Easy English. The character must be invented, not a real person.";
 }
 function drawChar(){
-  const facts = $("#cFacts").value.split("\n").map(x => x.trim()).filter(Boolean).map(x => "- " + x).join("\n");
-  $("#charOut").textContent = `Add a chat character to my Evergreen TV ${sel.value} page.
-Name: ${$("#cName").value}
-Personality: ${$("#cPers").value}
-Put it in a chat box at the bottom right with a cartoon avatar and a speech bubble.
-It answers visitors' questions using ONLY these facts:
-${facts}
-If it does not know the answer, it says: "I don't know that yet. Ask my creator!"
-Add 3 buttons with example questions. Keep answers short and friendly.`;
-  store.set("char", {seg: sel.value, name: $("#cName").value, pers: $("#cPers").value, facts: $("#cFacts").value});
+  $("#charOut").textContent = charText();
+  $("#charCard").replaceChildren(el("h3", {style:"font-size:26px;margin:4px 0"}, C.name || "Name?"), el("p", {style:"margin:0"}, C.who), C.pers ? el("p", {style:"margin:4px 0 0"}, el("b", null, "Personality: "), C.pers) : "", C.want ? el("p", {style:"margin:4px 0 0"}, el("b", null, "Wants: "), C.want) : "");
 }
-sel.addEventListener("change", () => { store.set("seg", sel.value); fillChar(false); drawScript(); });
-["cName","cPers","cFacts"].forEach(id => $("#" + id).addEventListener("input", drawChar));
-fillChar(true);
-$("#copyChar").onclick = () => copyText($("#charOut").textContent, $("#charOut"));
-checklist("list1", [
-  ["Open last week's page", "In Gemini, open last week's chat from the list on the left. Click your page to open the Canvas."],
-  ["Lost it? Upload your file", "Start a new chat with Canvas, attach your .html file from last week with the + button, and paste the prompt after it."],
-  ["Design your character", "On the right: choose a name and a personality. Replace the example facts with 5 facts you know are true."],
-  ["Copy, paste, build", "Copy your character prompt, paste it in the same chat and press Enter."],
-  ["Test it like a visitor", "Ask your character 3 questions it should know, and 1 it should not know. Does it say \"I don't know that yet\"?"],
-  ["Save the new version", "Download the page again with the same file name."]
-]);
+$("#copyChar").onclick = () => { copy(charText(), $("#charOut"), "Gemini"); L1.tick(1); };
 
-/* 4 script */
-const SCRIPT = {
-  "Sports Desk": ["You are a fun TV sports presenter for kids.", "Our team, Evergreen Eagles, won 3–1 against Cedar School. Sara scored 2 goals."],
-  "Weather Robot": ["You are a funny weather robot presenting the school weather on TV.", "This week: sunny Monday and Tuesday, rain on Wednesday, cold on Thursday, sunny again on Friday."],
-  "Tech and AI Corner": ["You are a friendly tech presenter for kids.", "This week's topic: how AI learns from examples. We trained a real AI in class with our hand signs."],
-  "School News": ["You are a cheerful school news reporter.", "Write your school's real news here: an event, a trip, a competition and its date."],
-  "Canteen Review": ["You are a funny food critic on a kids' TV show.", "Today's dish: write the real dish. Give it stars out of 5 and say why."],
-  "Style and Trends": ["You are a kind style presenter for kids.", "This week's trend: write the trend, the colour of the week, and one tip."],
-  "Games and Apps Review": ["You are an honest game reviewer for kids.", "Game: write the name. Age rating: write it. What you liked and what you did not like."],
-  "Interview with a Legend": ["You are a TV interviewer talking to a famous person from history.", "The legend: write the name. Write 3 true facts about their life from a trusted source."],
-  "Fake or Real?": ["You are a detective presenter of a fake-or-real quiz.", "Write 3 statements: 2 true facts and 1 fake one. Say which is fake at the end."],
-  "Funny Ads": ["You are an over-excited TV salesman.", "The product: write your impossible product, its silly features and its funny price."]
-};
-const sCtx = $("#sCtx");
-function drawScript(keep){
-  const d = SCRIPT[sel.value];
-  if (!keep){ const saved = store.get("sctx"); sCtx.value = saved && saved.seg === sel.value ? saved.text : d[1]; }
-  $("#scriptOut").textContent = `Role: ${d[0]}
-Task: Write a 45-second script for my Evergreen TV ${sel.value} segment.
-Context: ${sCtx.value}
-Format: about 110 words, short sentences, easy English, start with a greeting and end with a catchy sign-off. Use only the facts I gave you.`;
+/* 3 story */
+const S = store.get("story") || {prob:"", title:"", text:""};
+$("#sProb").value = S.prob || ""; $("#sTitle").value = S.title || ""; $("#story").value = S.text || "";
+function card(){ return store.raw("ch3-card") || {}; }
+function storyText(){
+  const m = me(), d = card(), ideas = [d.i1, d.i2, d.i3, d.mine].filter(Boolean);
+  return "Role: You are a children's author who writes about the future.\n" +
+    "Task: Write a short story set in " + world() + ". It happens in " + (m.team === "planet" ? "the world of " : "") + (m.part ? m.part.toLowerCase().replace(/^the /, "the ") : "my part of the project") + (d.name ? ", now called \"" + d.name + "\"" : "") + ".\n" +
+    "Context: The hero is " + (C.name || "my character") + ", " + C.who + (C.pers ? ", who is " + C.pers : "") + (C.want ? " and wants " + C.want : "") + ". " +
+    (S.prob ? "The problem: " + S.prob + ". " : "") +
+    (ideas.length ? "Use these ideas from my design: " + ideas.join("; ") + ". " : "") +
+    "\nFormat: A title, then about 150 words. Beginning, problem, how the future design helps, and an ending with a smile or a surprise. Include one line of dialogue. Easy English for 12-year-olds. No real people's names, nothing scary or violent.";
 }
-sCtx.addEventListener("input", () => { store.set("sctx", {seg: sel.value, text: sCtx.value}); drawScript(true); });
-drawScript();
-$("#copyScript").onclick = () => copyText($("#scriptOut").textContent, $("#scriptOut"));
-const scr = $("#script");
-function count(){ const n = (scr.value.match(/[A-Za-z0-9'’]+/g) || []).length, s = Math.round(n / 2.5); $("#wc").textContent = n + " words"; $("#secs").textContent = s + " seconds";
-  $("#fit").textContent = !n ? "" : s > 50 ? "· too long: ask Gemini to make it shorter" : s < 35 ? "· a bit short: ask for one more line" : "· perfect length"; store.set("script", scr.value); }
-scr.value = store.get("script") || ""; count(); scr.addEventListener("input", count);
-checklist("hunt", [
-  ["Every fact matches what you wrote in Context", ""],
-  ["No invented names, scores, dates or numbers", ""],
-  ["No wrong emoji or picture word (a basketball on a football story?)", ""],
-  ["Nothing private: first names only", ""],
-  ["It sounds like you: change at least one sentence yourself", ""]
+function drawStory(){ $("#storyOut").textContent = storyText(); const d = card(); $("#noCard").textContent = d.name ? "Using your design card: " + d.name + "." : "Tip: your prompt gets better if you fill your design card in Chapter 3."; }
+$("#sProb").addEventListener("input", () => { S.prob = $("#sProb").value; store.set("story", S); drawStory(); });
+$("#copyStory").onclick = () => { copy(storyText(), $("#storyOut"), "Gemini"); L1.tick(3); };
+const BETTER = [["Add a funny moment", "Add one funny moment to the story. Keep it under 160 words."], ["Surprise ending", "Make the ending more surprising, but still happy."], ["More of my design", "Show my design ideas more clearly in the middle of the story."], ["Shorter", "Make it shorter: about 120 words, so I can read it in 1 minute."]];
+$("#better").replaceChildren(...BETTER.map(([n, t]) => el("button", {class:"btn sm alt", type:"button", title:t, onclick:() => { copy(t, null, "the same Gemini chat"); L1.tick(4); }}, "Copy: " + n)));
+function count(){ const w = ($("#story").value.match(/\S+/g) || []).length, s = Math.round(w / 2.3);
+  $("#wc").textContent = w + " words"; $("#secs").textContent = s + " seconds"; $("#fit").textContent = !w ? "" : w < 90 ? "(a bit short)" : w > 190 ? "(too long for the podcast: cut it)" : "(good length)"; return w; }
+$("#story").addEventListener("input", () => { S.text = $("#story").value; store.set("story", S); if (count() > 60) L1.tick(5); });
+$("#sTitle").addEventListener("input", () => { S.title = $("#sTitle").value; store.set("story", S); });
+count();
+checklist("hunt", [["It uses ideas from my design", ""], ["My character is the hero", ""], ["Invented names only, no real people", ""], ["Nothing scary, rude or untrue about real places", ""], ["I changed at least 3 sentences into my own words", ""]], true);
+const L1 = checklist("list1", [
+  ["Pick your team and part", "In part 02, at the top."],
+  ["Bring your character to life", "Copy the character prompt into Gemini. Keep the best lines."],
+  ["Write the problem", "One sentence: what goes wrong in your story?"],
+  ["Ask Gemini for the story", "Copy the story prompt into a new Gemini chat."],
+  ["Make it better", "Use at least one follow-up prompt."],
+  ["Paste and make it yours", "Paste the story, give it a title, change 3 sentences into your own words."]
 ]);
-
-const start = segs.findIndex(s => "#" + s.id === location.hash);
-go(start >= 0 ? start : 0);
+picker($("#proj"), () => { drawChar(); drawStory(); if (me().part) L1.tick(0); });
+if (me().part) L1.tick(0);
+document.addEventListener("input", () => { if ((S.prob || "").trim().length > 5) L1.tick(2); });
+drawChar(); drawStory();
+K.start();
 })();
 </script>
-
 <script src="config.js"></script>
 <script src="sync.js"></script>
 </body></html>

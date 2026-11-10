@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
-<title>Build with a Prompt</title>
+<title>Prompt Engineering</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -139,6 +139,45 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
 .def.warn{border-color:var(--onair);background:var(--onair-soft)}
 .def.warn p{font-size:clamp(19px,2.2vw,24px)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-weight:700;z-index:20;max-width:calc(100% - 32px)}
+
+/* chapter 4 */
+.chat{display:flex;flex-direction:column;gap:10px;min-height:360px}
+.msgs{flex:1;display:flex;flex-direction:column;gap:8px;overflow-y:auto;max-height:380px;padding:4px}
+.msg{max-width:85%;padding:10px 14px;border-radius:14px;font-size:17px}
+.msg.bot{background:var(--paper);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+.msg.bot.fail{border-color:var(--onair);background:var(--onair-soft)}
+.msg.me{background:var(--green);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+input{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);width:100%;min-width:0}
+#botForm{flex-wrap:nowrap}
+.score{font-family:var(--mono);font-weight:700}
+.recipe{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.ing textarea{min-height:0;margin-top:0;font-size:16px}
+.ing{display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+.prompt.small{font-size:13px;max-height:260px;overflow:auto}
+.checklist.compact label{padding:10px 12px}
+.checklist.compact b{font-size:16px;font-family:var(--body)}
+.checklist.compact label::before{font-size:12px;padding:4px 6px}
+
+/* chapter 5 */
+.shot{width:100%;height:auto;border-radius:10px;margin-top:10px;display:block}
+canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:block;margin-top:10px;image-rendering:pixelated}
+.how-list{margin:0;padding-left:22px;display:grid;gap:12px;font-size:19px}
+.g5{grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+.tabs{display:flex;gap:6px;margin:10px 0 2px;flex-wrap:wrap}
+.tab{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:15px;font-weight:700}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.stat b{display:block;font-family:var(--display);font-size:clamp(34px,4vw,48px);line-height:1.1;margin:4px 0 8px;font-variant-numeric:tabular-nums}
+
+/* chapter extras */
+.pdiv{align-self:flex-start;font:700 11px/1 var(--mono);color:var(--muted);padding:10px 2px 0;border-top:4px solid transparent}
+.myproj{margin-bottom:18px;display:grid;gap:10px}
+.teamrow{display:flex;gap:8px;flex-wrap:wrap}
+.teambtn{background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:10px 14px;font-weight:700;font-size:16px;text-align:left}
+.teambtn:hover{border-color:var(--ink)}
+.teambtn[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+.partlbl{display:grid;gap:4px;font-weight:700;font-size:15px}
+.partlbl select{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;max-width:560px}
+.partnow{margin:0;font-size:16px}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -152,7 +191,7 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>ON AIR</span><span>Evergreen TV <small>· AI class · Chapter 3: Build with a prompt</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 3: Prompt Engineering</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -162,84 +201,88 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
 
 <main class="wrap" id="stage">
 
-<section class="seg" id="seg-1" data-min="5" data-title="One sentence">
-  <div class="lower"><div class="no">01</div><div class="name"><h2>One sentence, one website</h2><p>5 minutes · teacher demo</p></div></div>
-  <p class="big">Watch: the teacher types one prompt. In 30 seconds, an AI writes hundreds of lines of code and builds a website.</p>
-  <div class="card">
-    <span class="tag">Teacher: open gemini.google.com, press + then Canvas, and paste</span>
-    <pre class="prompt" id="demoPrompt">Create a colorful webpage for "Evergreen TV – Sports Desk", the sports corner of our school news platform, made by 12-year-old students.
-Include: a big title with a TV logo, a scoreboard for 3 school football matches, a "Player of the Week" card, and a button that shows a random fun sports fact.
-Use bright colors and big fonts.</pre>
-    <div class="row"><button class="btn sm copy" data-copy="demoPrompt" type="button">Copy prompt</button></div>
+<section class="seg" id="seg-1" data-min="5" data-title="Break the bot">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>Break the bot</h2><p>5 minutes · warm-up</p></div></div>
+  <div class="grid g2" style="align-items:start">
+    <div>
+      <p class="big">This is RuleBot. A person wrote every answer it knows, one rule at a time. Can you make it fail?</p>
+      <p class="lead">Try "hello", then "what's the weather?", then ask it anything else.</p>
+      <p class="lead">RuleBot failed <span class="score" id="fails">0</span> times.</p>
+      <div class="card" id="afterBot" hidden style="background:var(--gold-soft);border-color:transparent">
+        <span class="tag">Teacher: now ask Gemini the same question</span>
+        <p class="lead" style="margin:6px 0 0">Gemini answers almost anything. Nobody wrote its answers: it learned from a huge amount of text and predicts the next words. But it only knows what you tell it about YOUR project. That is why the prompt matters.</p>
+      </div>
+    </div>
+    <div class="card chat">
+      <div class="msgs" id="msgs" aria-live="polite"></div>
+      <form class="row" id="botForm"><input id="botIn" autocomplete="off" placeholder="Type a message…" aria-label="Message to RuleBot"><button class="btn sm" type="submit">Send</button></form>
+    </div>
   </div>
-  <p class="lead" style="margin-top:16px">Then ask the class: <b>how many lines of code did the AI write?</b> Open the code view and scroll.</p>
 </section>
 
-<section class="seg" id="seg-2" data-min="5" data-title="You are the director" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>You are the director</h2><p>5 minutes · the lesson</p></div></div>
-  <p class="big">The AI is the programmer. You are the director. It builds exactly what you describe, and guesses the rest.</p>
+<section class="seg" id="seg-2" data-min="8" data-title="The prompt recipe" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>The prompt recipe</h2><p>8 minutes · the lesson</p></div></div>
   <div class="grid g2">
-    <div class="card bad"><span class="tag">Weak prompt</span><p class="quote">"Make a sports website."</p><p class="muted" style="margin:0">The AI has to guess everything: which sport, which teams, what goes on the page, what it looks like.</p></div>
-    <div class="card good"><span class="tag">Director's prompt</span><p class="quote">"Make 'Evergreen TV – Sports Desk' with a scoreboard for 3 school matches, a Player of the Week card and a fun-fact button. Bright colors, big fonts."</p><p class="muted" style="margin:0">The AI knows what to build.</p></div>
+    <div class="card bad"><span class="tag">Weak prompt</span><p class="quote" id="weakQ">"Design a future classroom."</p><p style="margin:0">Gemini does not know your school, your age or your country. So it gives a boring, general answer that could be anywhere.</p></div>
+    <div class="card good"><span class="tag">Recipe prompt</span><p class="quote">Role + Task + Context + Format</p><p style="margin:0">Tell it who to be, what to do, the facts it can't know, and how the answer should look. Now the answer is about YOUR project.</p></div>
   </div>
-  <p class="lead" style="margin-top:18px">A director's prompt has 4 parts:</p>
-  <div class="grid g4">
-    <div class="card part"><b>1. Name</b><span>What is your corner called?</span></div>
-    <div class="card part"><b>2. What's on it</b><span>3 things on the page</span></div>
-    <div class="card part"><b>3. Look</b><span>Colors, fonts, mood</span></div>
-    <div class="card part"><b>4. Action</b><span>What happens when you click</span></div>
+  <p class="lead" style="margin-top:18px">Here is a recipe prompt for your part. Change any line and watch the prompt change.</p>
+  <div class="recipe">
+    <label class="ing"><span class="tag">Role · who is the AI?</span><textarea id="rRole" rows="2"></textarea></label>
+    <label class="ing"><span class="tag">Task · what should it do?</span><textarea id="rTask" rows="2"></textarea></label>
+    <label class="ing"><span class="tag">Context · facts it can't know</span><textarea id="rCtx" rows="3"></textarea></label>
+    <label class="ing"><span class="tag">Format · how should the answer look?</span><textarea id="rFmt" rows="3"></textarea></label>
   </div>
+  <pre class="prompt" id="recipeOut"></pre>
+  <div class="row"><button class="btn sm" id="copyRecipe" type="button">Copy prompt</button><span class="muted" style="font-size:15px">Teacher: paste it in Gemini on the board and compare it with the weak prompt.</span></div>
 </section>
 
-<section class="seg" id="seg-3" data-min="3" data-title="Our platform" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Our platform: Evergreen TV</h2><p>3 minutes · the big picture</p></div></div>
-  <p class="big">Every student builds one corner of Evergreen TV. Your corner grows every week until the platform goes live.</p>
-  <div class="growth">
-    <div class="gstep now"><span class="tag">Today · Ch 3</span><b>The page</b><span>Your corner's first version</span></div>
-    <div class="gstep"><span class="tag">Ch 4</span><b>A character</b><span>Talks to visitors</span></div>
-    <div class="gstep"><span class="tag">Ch 5</span><b>Pictures</b><span>Made with AI</span></div>
-    <div class="gstep"><span class="tag">Ch 6</span><b>A presenter</b><span>Speaks with your voice</span></div>
-    <div class="gstep"><span class="tag">Ch 7</span><b>Video</b><span>Your 45-second segment</span></div>
-    <div class="gstep end"><span class="tag">Ch 9</span><b>Launch</b><span>All corners, one platform</span></div>
-  </div>
-</section>
-
-<section class="seg" id="seg-4" data-min="27" data-title="Mission: build your corner" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Mission: build your corner</h2><p>27 minutes · on your computer</p></div></div>
+<section class="seg" id="seg-3" data-min="22" data-title="Mission: design card" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: design your part with Gemini</h2><p>22 minutes · gemini.google.com</p></div></div>
+  <div class="card myproj" id="proj"></div>
   <div class="mission">
     <div>
-      <ol class="checklist" id="list1"></ol>
+      <div class="card">
+        <span class="tag">1 · Your design brief</span>
+        <label class="ing" style="margin-top:8px"><span class="tag">What is wrong or boring about it today?</span><textarea id="bProb" rows="2" placeholder="e.g. the classroom is hot and we sit all day"></textarea></label>
+        <label class="ing" style="margin-top:8px"><span class="tag">3 things it MUST have in the future</span><textarea id="bMust" rows="3" placeholder="e.g. plants, a reading corner, desks that move"></textarea></label>
+        <label class="ing" style="margin-top:8px"><span class="tag">The feeling: how should people feel there?</span><input id="bFeel" placeholder="e.g. calm and excited to learn"></label>
+        <span class="tag" style="display:block;margin-top:12px">Your prompt</span>
+        <pre class="prompt small" id="briefOut"></pre>
+        <div class="row"><button class="btn sm" id="copyBrief" type="button">Copy my prompt</button></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <span class="tag">2 · Make it better: follow-up prompts</span>
+        <p style="margin:6px 0 10px;font-size:16px">A real prompt engineer never stops at the first answer. Copy one follow-up into the same Gemini chat.</p>
+        <div class="row" id="follow"></div>
+      </div>
+      <ol class="checklist" id="list1" style="margin-top:14px"></ol>
     </div>
-    <aside class="card side">
-      <label class="tag" for="segSel">1 · Your segment</label>
-      <select id="segSel"></select>
-      <span class="tag" style="margin-top:12px">2 · Your starting prompt</span>
-      <textarea id="segPrompt" spellcheck="false" aria-label="Your starting prompt"></textarea>
-      <p class="muted" style="margin:0;font-size:14px">Change anything you like before you copy it. Make it yours.</p>
-      <div class="row"><button class="btn sm" id="copySeg" type="button">Copy my prompt</button></div>
-      <span class="tag" style="margin-top:14px">3 · Improve it: copy one at a time</span>
-      <div id="follow" class="follow"></div>
+    <aside class="card side" id="cardSide">
+      <span class="tag">3 · Your design card (fill it from Gemini's best answer)</span>
+      <label class="tag" for="dName">Name of your design</label><input id="dName" placeholder="e.g. The Garden Classroom">
+      <label class="tag" for="dI1">Big idea 1</label><input id="dI1">
+      <label class="tag" for="dI2">Big idea 2</label><input id="dI2">
+      <label class="tag" for="dI3">Big idea 3</label><input id="dI3">
+      <label class="tag" for="dDay">A day in it (2–3 sentences)</label><textarea id="dDay" rows="3"></textarea>
+      <label class="tag" for="dMine">My own idea that the AI did not have</label><input id="dMine">
+      <div id="cardView"></div>
     </aside>
   </div>
-  <div class="def warn"><span class="tag">Safety rule</span><p>Your page can be seen by anyone with the link. First names only. No photos of people, no phone numbers, no addresses.</p></div>
 </section>
 
-<section class="seg" id="seg-5" data-min="5" data-title="Show your corner" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Show your corner</h2><p>5 minutes · 3 students present</p></div></div>
-  <p class="big">Three students show their corner. The class checks it with these questions.</p>
+<section class="seg" id="seg-4" data-min="5" data-title="Gallery" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Design gallery</h2><p>5 minutes · 2 students from each team</p></div></div>
+  <p class="big">Two students from each team read their design card. The class asks one question each.</p>
   <div class="grid g3">
-    <div class="card"><span class="tag">Does it work?</span><p class="lead" style="margin:6px 0 0">Click every button. Does each one do something?</p></div>
-    <div class="card"><span class="tag">Is it clear?</span><p class="lead" style="margin:6px 0 0">Can a visitor tell in 5 seconds what this corner is about?</p></div>
-    <div class="card"><span class="tag">Is it safe?</span><p class="lead" style="margin:6px 0 0">First names only, no photos of people, nothing private.</p></div>
+    <div class="card"><span class="tag">Ask</span><p class="lead" style="margin:6px 0 0">Is it possible? What would it cost? Who would build it?</p></div>
+    <div class="card"><span class="tag">Ask</span><p class="lead" style="margin:6px 0 0">Which idea came from the AI, and which came from you?</p></div>
+    <div class="card"><span class="tag">Remember</span><p class="lead" style="margin:6px 0 0">The AI gives ideas. You choose, change and decide. You are the designer.</p></div>
   </div>
-  <div class="card" style="margin-top:16px;background:var(--gold-soft);border-color:transparent">
-    <span class="tag">Remember</span>
-    <p class="lead" style="margin:6px 0 0">You wrote zero lines of code, but every idea on the page is yours. Next week your corner gets a character who talks to visitors.</p>
-  </div>
+  <div class="card" style="margin-top:16px;background:var(--gold-soft);border-color:transparent"><span class="tag">Next week</span><p class="lead" style="margin:6px 0 0">AI Storytelling: a character from the future visits your design, and you write their story.</p></div>
 </section>
 
 </main>
-
 <nav class="rail" aria-label="Lesson segments">
   <div class="wrap">
     <button class="btn sm alt" id="prev" type="button" aria-label="Previous segment">←</button>
@@ -248,19 +291,50 @@ Use bright colors and big fonts.</pre>
   </div>
 </nav>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
-
 <script>
-(function(){
+window.P = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const store = { raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
+/* ---------- the year project: two teams, each kid owns one part ---------- */
+const TEAMS = {
+  school: {key:"school", name:"Reinvent the School", site:"School 2040", emoji:"🏫", goal:"Design the school of tomorrow",
+    world:"our school, Evergreen, in the year 2040", podcast:"the School 2040 podcast", video:"a promo video for the school of tomorrow", look:"a bright, friendly school in Lebanon in the year 2040",
+    parts:[["The classroom","Where and how we learn: desks, screens, light, sound"],["The library","Books, reading corners, quiet, research"],["The canteen","Healthy food, no waste, where we eat together"],["Playground and sports","Games, fields, breaks, team sports"],["The science lab","Experiments, robots, discovering"],["Art and music studio","Drawing, making, singing, performing"],["Getting to school","Buses, bikes, walking, safety"],["The school day","Timetable, homework, exams, breaks"],["Wellbeing corner","Feeling calm, friendship, getting help"],["The school garden","Plants, outdoor lessons, animals"]]},
+  planet: {key:"planet", name:"The Future of Our Planet", site:"Planet 2050", emoji:"🌍", goal:"Create a better world with AI",
+    world:"planet Earth, and Lebanon, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
+    parts:[["Clean energy","Sun, wind and power for every home"],["Water","Clean water for everyone, saving every drop"],["Waste and recycling","Less trash, sorting, reusing"],["Clean air","No smoke, less pollution, breathing well"],["Transport","Buses, trains, bikes and clean cars"],["Cities and homes","Green buildings, parks, cool streets"],["Food and farming","Growing food, eating well, no food waste"],["Oceans and beaches","Clean sea, no plastic, sea life"],["Forests and animals","Trees, the cedars, wildlife"],["Weather and climate","Heat waves, storms, being ready"]]}
+};
+const rawSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
+function me(){
+  const t = store.raw("ch1-team"), T = TEAMS[t] || null, p = store.raw("ch1-part"), P = T && T.parts.find(x => x[0] === p);
+  return {team:T ? t : null, T, part:P ? P[0] : null, about:P ? P[1] : ""};
+}
+/* a small "my team · my part" bar any chapter can show; changing it is saved for every chapter */
+function picker(box, onChange){
+  function draw(){
+    const m = me();
+    const teamBtns = Object.values(TEAMS).map(T => el("button", {class:"teambtn", type:"button", "aria-pressed":String(m.team === T.key), onclick:() => { rawSet("ch1-team", T.key); if (!TEAMS[T.key].parts.some(x => x[0] === store.raw("ch1-part"))) rawSet("ch1-part", null); draw(); if (onChange) onChange(); }}, T.emoji + " " + T.name));
+    const sel = el("select", {"aria-label":"My part of the project"}, el("option", {value:""}, m.T ? "Choose your part…" : "Choose a team first"), ...(m.T ? m.T.parts.map(([n, d]) => el("option", {value:n}, n + " · " + d)) : []));
+    sel.value = m.part || ""; sel.disabled = !m.T;
+    sel.addEventListener("change", () => { rawSet("ch1-part", sel.value || null); draw(); if (onChange) onChange(); });
+    box.replaceChildren(el("span", {class:"tag"}, "My project"), el("div", {class:"teamrow"}, ...teamBtns), el("label", {class:"partlbl"}, "My part", sel),
+      m.part ? el("p", {class:"partnow"}, "You are building ", el("b", null, m.part), " for ", el("b", null, m.T.site), ".") : el("p", {class:"partnow muted"}, "Pick your team and your part. Ask your teacher if you are not sure."));
+  }
+  draw();
+}
+/* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
+function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
+return {TEAMS, me, picker, fill, rawSet};
+})();
+
+window.K = (function(){
 const $ = s => document.querySelector(s);
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
-const store = { get(k){ try { return JSON.parse(localStorage.getItem("ch3-" + k)); } catch(e){ return null; } }, set(k, v){ try { localStorage.setItem("ch3-" + k, JSON.stringify(v)); } catch(e){} } };
-const segs = [...document.querySelectorAll(".seg")];
-let cur = 0;
-
-/* navigation */
-const stepsBox = $("#steps");
-segs.forEach((s, i) => stepsBox.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))));
-const stepBtns = [...stepsBox.children];
+let PFX = "k";
+const store = { get(k){ try { return JSON.parse(localStorage.getItem(PFX + "-" + k)); } catch(e){ return null; } }, set(k, v){ try { localStorage.setItem(PFX + "-" + k, JSON.stringify(v)); } catch(e){} }, raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
+let segs = [], cur = 0, stepBtns = [], left = 0, tick = null, tt;
+const fmt = s => (s < 0 ? "-" : "") + String(Math.floor(Math.abs(s)/60)).padStart(2,"0") + ":" + String(Math.abs(s)%60).padStart(2,"0");
+function resetClock(){ clearInterval(tick); tick = null; left = (+segs[cur].dataset.min) * 60; $("#clock").textContent = fmt(left); $("#clock").classList.remove("late"); $("#clockBtn").textContent = "Start"; }
 function go(i){
   cur = Math.max(0, Math.min(segs.length - 1, i));
   segs.forEach((s, k) => s.hidden = k !== cur);
@@ -270,90 +344,122 @@ function go(i){
   if (location.hash !== "#" + segs[cur].id) history.replaceState(null, "", "#" + segs[cur].id);
   resetClock(); window.scrollTo(0, 0);
 }
-$("#prev").onclick = () => go(cur - 1);
-$("#next").onclick = () => go(cur + 1);
-addEventListener("keydown", e => { if (e.target.matches("textarea,input,select")) return; if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); });
-addEventListener("hashchange", () => { const i = segs.findIndex(s => "#" + s.id === location.hash); if (i >= 0 && i !== cur) go(i); });
-
-/* clock */
-let left = 0, tick = null;
-const fmt = s => (s < 0 ? "-" : "") + String(Math.floor(Math.abs(s)/60)).padStart(2,"0") + ":" + String(Math.abs(s)%60).padStart(2,"0");
-function resetClock(){ clearInterval(tick); tick = null; left = (+segs[cur].dataset.min) * 60; $("#clock").textContent = fmt(left); $("#clock").classList.remove("late"); $("#clockBtn").textContent = "Start"; }
-$("#clockBtn").onclick = () => {
-  if (tick){ clearInterval(tick); tick = null; $("#clockBtn").textContent = "Start"; return; }
-  $("#clockBtn").textContent = "Pause";
-  tick = setInterval(() => { left--; $("#clock").textContent = fmt(left); $("#clock").classList.toggle("late", left < 0); }, 1000);
-};
-
-/* copy helper */
-let tt;
-function toast(msg){ const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 2200); }
-async function copyText(text, selectEl){
-  try { await navigator.clipboard.writeText(text); toast("Copied. Now paste it into Gemini."); }
-  catch(e){ if (selectEl){ selectEl.focus(); if (selectEl.select) selectEl.select(); else { const r = document.createRange(); r.selectNodeContents(selectEl); const s = getSelection(); s.removeAllRanges(); s.addRange(r); } } toast("Press Ctrl+C to copy the selected text."); }
+function init(prefix, p2){
+  PFX = prefix; segs = [...document.querySelectorAll(".seg")];
+  const box = $("#steps");
+  segs.forEach((s, i) => { if (p2 && i === p2) box.append(el("span", {class:"pdiv", "aria-hidden":"true"}, "P2")); box.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))); });
+  stepBtns = [...box.querySelectorAll(".step")];
+  $("#prev").onclick = () => go(cur - 1); $("#next").onclick = () => go(cur + 1);
+  addEventListener("keydown", e => { if (e.target.matches("textarea,input,select")) return; if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); });
+  addEventListener("hashchange", () => { const i = segs.findIndex(s => "#" + s.id === location.hash); if (i >= 0 && i !== cur) go(i); });
+  $("#clockBtn").onclick = () => { if (tick){ clearInterval(tick); tick = null; $("#clockBtn").textContent = "Start"; return; } $("#clockBtn").textContent = "Pause"; tick = setInterval(() => { left--; $("#clock").textContent = fmt(left); $("#clock").classList.toggle("late", left < 0); }, 1000); };
 }
-document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => { const src = document.getElementById(b.dataset.copy); copyText(src.textContent, src); }));
-
-/* checklist */
-function checklist(id, items){
+function start(){ const s = segs.findIndex(x => "#" + x.id === location.hash); go(s >= 0 ? s : 0); }
+function toast(msg){ const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 2400); }
+async function copy(text, selectEl, where){
+  try { await navigator.clipboard.writeText(text); toast("Copied. Now paste it into " + (where || "the AI") + "."); }
+  catch(e){ if (selectEl){ if (selectEl.select) { selectEl.focus(); selectEl.select(); } else { const r = document.createRange(); r.selectNodeContents(selectEl); const s = getSelection(); s.removeAllRanges(); s.addRange(r); } } toast("Press Ctrl+C to copy the selected text."); }
+}
+function checklist(id, items, compact){
   const saved = store.get(id) || [];
   $("#" + id).replaceChildren(...items.map(([title, body], i) => {
     const cb = el("input", {type:"checkbox", id: id + "-" + i}); cb.checked = !!saved[i];
-    const li = el("li", {class: cb.checked ? "ok" : ""}, el("label", {for: id + "-" + i}, cb, el("span", null, el("b", null, title), el("span", {class:"how"}, body))));
-    cb.addEventListener("change", () => { saved[i] = cb.checked; store.set(id, saved); li.classList.toggle("ok", cb.checked); });
+    const li = el("li", {class: cb.checked ? "ok" : ""}, el("label", {for: id + "-" + i}, cb, el("span", null, el("b", null, title), body ? el("span", {class:"how"}, body) : "")));
+    cb.addEventListener("change", () => { saved[i] = cb.checked; store.set(id, saved); li.classList.toggle("ok", cb.checked); $("#" + id).dispatchEvent(new Event("change")); });
     return li; }));
+  return { tick(i){ if (saved[i]) return; const cb = document.getElementById(id + "-" + i); if (!cb) return; cb.checked = true; saved[i] = true; store.set(id, saved); cb.closest("li").classList.add("ok"); $("#" + id).dispatchEvent(new Event("change")); } };
 }
-checklist("list1", [
-  ["Open Gemini with Canvas", "Go to gemini.google.com. Press the + next to the message box, then choose Canvas."],
-  ["Pick your segment", "Choose your segment in the prompt box (next to this list, or below it on a small screen). Your starting prompt appears."],
-  ["Make the prompt yours", "Change at least one thing: a colour, a name, a button idea. Then press Copy my prompt."],
-  ["Paste and build", "Paste into Gemini and press Enter. Wait about 30 seconds. Your page appears on the right."],
-  ["Test every button", "Click everything. Write down one thing that does not work or that you want to change."],
-  ["Improve it twice", "Copy one improvement prompt, paste it in the same chat, press Enter. Then do a second one, or write your own."],
-  ["Save your corner", "In the Canvas panel, find Download (the arrow icon) and save the file. Name it with your segment and first name, for example sports_ghadi.html."],
-  ["Hand it in", "Give the file to your teacher the way they ask (Google Classroom or a USB stick)."]
-]);
+const {TEAMS, me, picker, fill, rawSet} = window.P;
+return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet};
+})();
 
-/* segment prompts */
-const BASE = (name, corner, inc, look) => `Create a colorful webpage called "Evergreen TV – ${name}", the ${corner} corner of our school's news platform, made by a 12-year-old student.
-Include: ${inc}
-Look: ${look}, big fonts, and it must work well on a phone.
-Rules: no real full names, no photos of real people.`;
-const SEGS = {
-  "Sports Desk": BASE("Sports Desk", "sports", "a scoreboard for 3 school football matches with made-up team names, a \"Player of the Week\" card, and a button that shows a random fun sports fact.", "bright green and yellow, like a stadium"),
-  "Weather Robot": BASE("Weather Robot", "weather", "a friendly robot character with a speech bubble, 5 forecast cards for the school week with a funny comment on each, and a button \"What should I wear today?\" that gives a silly answer.", "sky blue and white, cheerful"),
-  "Tech and AI Corner": BASE("Tech and AI Corner", "technology", "3 \"Gadget of the Week\" cards, a \"Did you know?\" button with random tech facts, and a poll \"Would you use it?\" that counts the votes.", "dark blue with neon accents, futuristic"),
-  "School News": BASE("School News", "school news", "a countdown to the next school event, 3 news cards with short headlines, and a list of this month's events.", "school colours, clean and clear"),
-  "Canteen Review": BASE("Canteen Review", "food review", "today's menu where visitors can give each dish 1 to 5 stars, a \"Dish of the Week\" card, and a vote button that shows the live count.", "warm orange and cream, like a café"),
-  "Style and Trends": BASE("Style and Trends", "style", "a lookbook of 4 outfit cards, a \"Mix and Match\" button that combines a random top, bottom and shoes, and a \"Colour of the Week\" box.", "soft pastel colours, elegant"),
-  "Games and Apps Review": BASE("Games and Apps Review", "games and apps", "3 review cards with star ratings, and a 3-question quiz \"Which game fits you?\" that shows a result at the end.", "arcade style, purple and pink"),
-  "Interview with a Legend": BASE("Interview with a Legend", "interview", "a profile card of a famous inventor or athlete from history, 5 interview questions as cards that flip to show the answers, and a short timeline of their life.", "classic, like a magazine"),
-  "Fake or Real?": BASE("Fake or Real?", "fake-or-real game", "a game with 5 surprising statements, \"Real\" and \"Fake\" buttons for each, the right answer with a short explanation, and a final score.", "mysterious, black and gold"),
-  "Funny Ads": BASE("Funny Ads", "funny ads", "an ad page for an impossible product (for example a backpack that does your homework), a list of its silly features, a funny price, a \"Buy now\" button that shows a joke, and a \"Made with AI\" label.", "loud and colourful, like a TV commercial")
-};
-const FOLLOW = [
-  "Make the title bigger and add a small animation when the page opens.",
-  "Add a dark mode button.",
-  "Add a footer that says: Made with AI by Evergreen TV.",
-  "Make it look better on a phone.",
-  "Add one more button that does something fun, and surprise me."
+</script>
+<script>
+(function(){
+const {$, el, store, copy, checklist, fill, me, picker} = K;
+K.init("ch3");
+
+/* 1 RuleBot */
+const RULES = [
+  [/\b(hi|hello|hey|salut|marhaba)\b/i, "Hello! I am RuleBot. Ask me about the weather or my name."],
+  [/\bweather\b/i, "The weather is sunny. (I always say sunny. Nobody wrote another rule.)"],
+  [/\b(name|who are you)\b/i, "My name is RuleBot. A person wrote all my answers."],
+  [/\b(bye|goodbye)\b/i, "Goodbye!"]
 ];
-const sel = $("#segSel"), ta = $("#segPrompt");
-Object.keys(SEGS).forEach(n => sel.append(el("option", {value:n}, n)));
-const savedSeg = store.get("seg") || (function(){ try { return JSON.parse(localStorage.getItem("ch2-seg")); } catch(e){ return null; } })();
-if (savedSeg && SEGS[savedSeg]) sel.value = savedSeg;
-const savedPrompt = store.get("prompt");
-ta.value = savedPrompt && savedPrompt.seg === sel.value ? savedPrompt.text : SEGS[sel.value];
-sel.addEventListener("change", () => { store.set("seg", sel.value); ta.value = SEGS[sel.value]; store.set("prompt", {seg: sel.value, text: ta.value}); });
-ta.addEventListener("input", () => store.set("prompt", {seg: sel.value, text: ta.value}));
-$("#copySeg").onclick = () => copyText(ta.value, ta);
-$("#follow").replaceChildren(...FOLLOW.map(f => el("button", {class:"fchip", type:"button", onclick:() => copyText(f)}, el("span", null, f), el("small", null, "Copy"))));
+let fails = 0;
+function say(who, text){ $("#msgs").append(el("div", {class:"msg " + who}, text)); $("#msgs").scrollTop = 1e9; }
+say("bot", "Hi! I'm RuleBot. I only know a few rules. Try to break me!");
+$("#botForm").addEventListener("submit", e => { e.preventDefault(); const q = $("#botIn").value.trim(); if (!q) return; say("me", q); $("#botIn").value = "";
+  const hit = RULES.find(([re]) => re.test(q));
+  setTimeout(() => { if (hit) say("bot", hit[1]); else { fails++; $("#fails").textContent = fails; say("bot fail", "I don't understand. No one wrote a rule for that."); if (fails >= 2) $("#afterBot").hidden = false; } }, 350); });
 
-const start = segs.findIndex(s => "#" + s.id === location.hash);
-go(start >= 0 ? start : 0);
+/* 2 recipe, per team */
+const REC = {
+  school: ["You are an architect who designs schools of the future.", "Design {part} of our school in the year 2040.", "Our school is Evergreen, in Lebanon. The students are 12 years old. It must be safe, fun, good for the planet and possible to build.", "Give it a name, 3 big ideas (one sentence each), and a short paragraph: a day in it. Easy English, under 150 words."],
+  planet: ["You are a scientist and city designer who plans a better future for the planet.", "Design the future of {part} in Lebanon in the year 2050.", "The plan is for students who are 12 years old. It must be realistic, good for people and nature, and use real ideas that exist today.", "Give it a name, 3 big ideas (one sentence each), and a short paragraph: a day in 2050. Easy English, under 150 words."]
+};
+const ids = ["rRole","rTask","rCtx","rFmt"];
+function team(){ return me().team || "school"; }
+function loadRecipe(){ const saved = store.get("recipe"); const d = REC[team()].map(fill); ids.forEach((id, i) => $("#" + id).value = saved && saved.team === team() && saved.v[i] != null ? saved.v[i] : d[i]); $("#weakQ").textContent = team() === "planet" ? "\"Design the future of " + (me().part || "water").toLowerCase() + ".\"" : "\"Design a future " + (me().part || "classroom").replace(/^The /, "").toLowerCase() + ".\""; drawRecipe(); }
+function drawRecipe(){ $("#recipeOut").textContent = "Role: " + $("#rRole").value + "\nTask: " + $("#rTask").value + "\nContext: " + $("#rCtx").value + "\nFormat: " + $("#rFmt").value; }
+ids.forEach(id => $("#" + id).addEventListener("input", () => { drawRecipe(); store.set("recipe", {team:team(), v:ids.map(i => $("#" + i).value)}); }));
+$("#copyRecipe").onclick = () => copy($("#recipeOut").textContent, $("#recipeOut"), "Gemini");
+
+/* 3 design brief */
+const B = store.get("brief") || {prob:"", must:"", feel:""};
+const bmap = {bProb:"prob", bMust:"must", bFeel:"feel"};
+Object.entries(bmap).forEach(([id, k]) => { $("#" + id).value = B[k] || ""; $("#" + id).addEventListener("input", () => { B[k] = $("#" + id).value; store.set("brief", B); drawBrief(); }); });
+function briefText(){
+  const m = me(), T = m.T || K.TEAMS.school;
+  const role = T.key === "planet" ? "You are a scientist and city designer who plans a better future for the planet." : "You are an architect who designs schools of the future.";
+  const task = T.key === "planet" ? "Design the future of " + (m.part || "my part") + " (" + (m.about || "") + ") in Lebanon in the year 2050." : "Design " + (m.part ? m.part.replace(/^The /, "the ") : "my part of the school") + " (" + (m.about || "") + ") for our school, Evergreen in Lebanon, in the year 2040.";
+  return "Role: " + role + "\nTask: " + task +
+    "\nContext: I am 12 years old and I am in the team \"" + T.name + "\"." +
+    (B.prob ? " Today the problem is: " + B.prob + "." : "") +
+    (B.must ? " It must have: " + B.must + "." : "") +
+    (B.feel ? " People should feel " + B.feel + " there." : "") +
+    " It must be safe, possible to build, and good for people and the planet." +
+    "\nFormat: Give my design a catchy name, then 3 big ideas (one sentence each), then \"A day in it\": 3 sentences about a student visiting it. Easy English, under 150 words. Do not use real people's names.";
+}
+function drawBrief(){ $("#briefOut").textContent = briefText(); }
+$("#copyBrief").onclick = () => { if (!me().part){ K.toast("Pick your team and your part first (at the top)."); return; } copy(briefText(), $("#briefOut"), "Gemini"); L1.tick(3); };
+const FOLLOW = [
+  ["More surprising", "Make big idea 2 more surprising and creative, but still possible."],
+  ["Possible in Lebanon", "Change anything that would be too expensive or impossible in Lebanon. Keep the best ideas."],
+  ["Good for the planet", "How can my design save energy, water or waste? Add one idea."],
+  ["What could go wrong?", "What could go wrong with my design? Give 2 problems and a fix for each."],
+  ["For everyone", "How can my design work for a student in a wheelchair or a student who can't see well?"]
+];
+$("#follow").replaceChildren(...FOLLOW.map(([n, t]) => el("button", {class:"btn sm alt", type:"button", title:t, onclick:() => copy(t, null, "the same Gemini chat")}, "Copy: " + n)));
+const L1 = checklist("list1", [
+  ["Pick your team and part", "At the top of this mission. Your prompt changes when you pick."],
+  ["Fill your brief", "The problem today, 3 must-haves and the feeling. Your own words."],
+  ["Open Gemini", "Go to gemini.google.com with your school account. Start a new chat."],
+  ["Paste your prompt", "Copy my prompt, paste it in Gemini, press Enter."],
+  ["Use 2 follow-ups", "Copy 2 follow-up prompts into the same chat. Which answer is best?"],
+  ["Fill your design card", "Copy the best parts into the card on the right. Change words so it sounds like you."],
+  ["Add your own idea", "One idea the AI did not have. This is what makes it yours."]
+]);
+const D = store.get("card") || {};
+const dmap = {dName:"name", dI1:"i1", dI2:"i2", dI3:"i3", dDay:"day", dMine:"mine"};
+Object.entries(dmap).forEach(([id, k]) => { $("#" + id).value = D[k] || ""; $("#" + id).addEventListener("input", () => { D[k] = $("#" + id).value; store.set("card", D); drawCard(); }); });
+function drawCard(){
+  const m = me(), filled = Object.values(dmap).filter(k => (D[k] || "").trim()).length;
+  $("#cardView").replaceChildren(el("div", {class:"card", style:"margin-top:8px;background:var(--green-soft);border-color:var(--green)"},
+    el("span", {class:"tag"}, (m.T ? m.T.site : "My project") + " · " + (m.part || "my part")),
+    el("h3", {style:"font-size:24px;margin:4px 0 8px"}, D.name || "Your design name"),
+    el("ul", {style:"margin:0;padding-left:20px;font-size:16px"}, ...[D.i1, D.i2, D.i3, D.mine].filter(Boolean).map(x => el("li", null, x))),
+    D.day ? el("p", {style:"margin:8px 0 0;font-size:16px"}, D.day) : "",
+    el("p", {class:"muted", style:"margin:8px 0 0;font-size:14px"}, filled + " of 6 filled · saved to your account")));
+}
+function ticks(){ if (me().part) L1.tick(0); if ((B.prob || "").trim() && (B.must || "").trim()) L1.tick(1); if (Object.values(dmap).filter(k => (D[k] || "").trim()).length >= 4) L1.tick(5); if ((D.mine || "").trim().length > 5) L1.tick(6); }
+document.addEventListener("input", ticks);
+function all(){ loadRecipe(); drawBrief(); drawCard(); ticks(); }
+picker($("#proj"), all);
+all();
+K.start();
 })();
 </script>
-
 <script src="config.js"></script>
 <script src="sync.js"></script>
 </body></html>

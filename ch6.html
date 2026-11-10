@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
-<title>AI Voices</title>
+<title>AI Voice</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -170,6 +170,14 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 
 /* chapter extras */
 .pdiv{align-self:flex-start;font:700 11px/1 var(--mono);color:var(--muted);padding:10px 2px 0;border-top:4px solid transparent}
+.myproj{margin-bottom:18px;display:grid;gap:10px}
+.teamrow{display:flex;gap:8px;flex-wrap:wrap}
+.teambtn{background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:10px 14px;font-weight:700;font-size:16px;text-align:left}
+.teambtn:hover{border-color:var(--ink)}
+.teambtn[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+.partlbl{display:grid;gap:4px;font-weight:700;font-size:15px}
+.partlbl select{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;max-width:560px}
+.partnow{margin:0;font-size:16px}
 .q{margin-bottom:12px}.opts{display:flex;flex-wrap:wrap;gap:8px}
 .opt{background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:9px 14px;text-align:left}
 .opt.right{border-color:var(--green);background:var(--green-soft)}.opt.wrong{border-color:var(--onair);background:var(--onair-soft)}
@@ -191,7 +199,7 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>ON AIR</span><span>Evergreen TV <small>· AI class · Chapter 6: AI voices</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 6: AI Voice</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -229,37 +237,30 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
   <div class="def" style="margin-top:16px"><span class="tag">Our voice rules</span><p>Never clone a voice without permission. A voice alone proves nothing. Agree a family safe word.</p></div>
 </section>
 
-<section class="seg" id="seg-3" data-min="28" data-title="Mission: your presenter" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: your presenter speaks with your voice</h2><p>28 minutes · Adobe Express</p></div></div>
+<section class="seg" id="seg-3" data-min="28" data-title="Mission: podcast clip" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: your clip for the team podcast</h2><p>28 minutes · your voice, Adobe Express</p></div></div>
+  <div class="card myproj" id="proj"></div>
   <div class="mission">
     <div><ol class="checklist" id="list1"></ol></div>
     <aside class="card side">
-      <label class="tag" for="segSel">Your segment</label>
-      <select id="segSel"></select>
-      <span class="tag">Character ideas for your segment</span>
+      <span class="tag">Your podcast host</span>
       <p id="charIdea" class="lead" style="margin:0;font-size:17px"></p>
-      <label class="tag" for="script">Your script from Chapter 4</label>
-      <textarea id="script" style="min-height:150px" placeholder="Paste your 45-second script here…"></textarea>
-      <div class="row"><button class="btn sm" id="tpBtn" type="button">Practise with the teleprompter</button></div>
+      <label class="tag" for="script">Your podcast script (from your Chapter 4 story)</label>
+      <textarea id="script" style="min-height:200px"></textarea>
+      <p class="muted" style="margin:0;font-size:15px"><span id="wc">0 words</span> · about <span id="secs">0</span> seconds. Aim for 40 to 70 seconds.</p>
+      <div class="row"><button class="btn sm" id="tpBtn" type="button">Practise with the teleprompter</button><button class="ghost" id="rebuild" type="button">Rebuild from my story</button></div>
     </aside>
-  </div>
-  <div class="card" style="margin-top:16px">
-    <span class="tag">Step 8 · prompt for Gemini (adds your presenter to your corner)</span>
-    <pre class="prompt small" id="addOut">My presenter video is called presenter.mp4 and it will be in the same folder as my page.
-Add a video player for presenter.mp4 near the top of my page, under the title, with a play button and a caption: "Presented by my AI character, voiced by me."
-Keep everything else on my page the same.</pre>
-    <div class="row"><button class="btn sm copy" data-copy="addOut" type="button">Copy Gemini prompt</button></div>
   </div>
   <p class="note">No microphone on your computer? In step 5, choose the upload option instead and use a recording your teacher made with you on a class device. Your voice stays in your Adobe project only.</p>
 </section>
 
-<section class="seg" id="seg-4" data-min="5" data-title="Premiere" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Meet the presenters</h2><p>5 minutes · 3 students play their presenter</p></div></div>
-  <p class="big">Three presenters go on air. After each one, the class answers: did the character fit the segment? Could you hear every word?</p>
+<section class="seg" id="seg-4" data-min="5" data-title="Podcast premiere" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Podcast premiere</h2><p>5 minutes · one clip from each team</p></div></div>
+  <p class="big">One clip from each team goes on air. The class answers: could you hear every word? Did you feel the future?</p>
   <div class="grid g3">
-    <div class="card"><span class="tag">The AI did</span><p class="lead" style="margin:6px 0 0">Moved the character's mouth, eyes and body to match your voice.</p></div>
-    <div class="card"><span class="tag">You did</span><p class="lead" style="margin:6px 0 0">The script, the voice, the acting, and the choice of character and studio.</p></div>
-    <div class="card"><span class="tag">Next week</span><p class="lead" style="margin:6px 0 0">Everything comes together into your 45-second segment video.</p></div>
+    <div class="card"><span class="tag">The AI did</span><p class="lead" style="margin:6px 0 0">Moved the host's mouth, eyes and body to match your voice.</p></div>
+    <div class="card"><span class="tag">You did</span><p class="lead" style="margin:6px 0 0">The story, the voice, the acting, and the choice of host.</p></div>
+    <div class="card"><span class="tag">Next week</span><p class="lead" style="margin:6px 0 0">AI Video: 30 seconds of video for your part, with your pictures and your voice.</p></div>
   </div>
 </section>
 
@@ -280,6 +281,41 @@ Keep everything else on my page the same.</pre>
 </nav>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <script>
+window.P = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const store = { raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
+/* ---------- the year project: two teams, each kid owns one part ---------- */
+const TEAMS = {
+  school: {key:"school", name:"Reinvent the School", site:"School 2040", emoji:"🏫", goal:"Design the school of tomorrow",
+    world:"our school, Evergreen, in the year 2040", podcast:"the School 2040 podcast", video:"a promo video for the school of tomorrow", look:"a bright, friendly school in Lebanon in the year 2040",
+    parts:[["The classroom","Where and how we learn: desks, screens, light, sound"],["The library","Books, reading corners, quiet, research"],["The canteen","Healthy food, no waste, where we eat together"],["Playground and sports","Games, fields, breaks, team sports"],["The science lab","Experiments, robots, discovering"],["Art and music studio","Drawing, making, singing, performing"],["Getting to school","Buses, bikes, walking, safety"],["The school day","Timetable, homework, exams, breaks"],["Wellbeing corner","Feeling calm, friendship, getting help"],["The school garden","Plants, outdoor lessons, animals"]]},
+  planet: {key:"planet", name:"The Future of Our Planet", site:"Planet 2050", emoji:"🌍", goal:"Create a better world with AI",
+    world:"planet Earth, and Lebanon, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
+    parts:[["Clean energy","Sun, wind and power for every home"],["Water","Clean water for everyone, saving every drop"],["Waste and recycling","Less trash, sorting, reusing"],["Clean air","No smoke, less pollution, breathing well"],["Transport","Buses, trains, bikes and clean cars"],["Cities and homes","Green buildings, parks, cool streets"],["Food and farming","Growing food, eating well, no food waste"],["Oceans and beaches","Clean sea, no plastic, sea life"],["Forests and animals","Trees, the cedars, wildlife"],["Weather and climate","Heat waves, storms, being ready"]]}
+};
+const rawSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
+function me(){
+  const t = store.raw("ch1-team"), T = TEAMS[t] || null, p = store.raw("ch1-part"), P = T && T.parts.find(x => x[0] === p);
+  return {team:T ? t : null, T, part:P ? P[0] : null, about:P ? P[1] : ""};
+}
+/* a small "my team · my part" bar any chapter can show; changing it is saved for every chapter */
+function picker(box, onChange){
+  function draw(){
+    const m = me();
+    const teamBtns = Object.values(TEAMS).map(T => el("button", {class:"teambtn", type:"button", "aria-pressed":String(m.team === T.key), onclick:() => { rawSet("ch1-team", T.key); if (!TEAMS[T.key].parts.some(x => x[0] === store.raw("ch1-part"))) rawSet("ch1-part", null); draw(); if (onChange) onChange(); }}, T.emoji + " " + T.name));
+    const sel = el("select", {"aria-label":"My part of the project"}, el("option", {value:""}, m.T ? "Choose your part…" : "Choose a team first"), ...(m.T ? m.T.parts.map(([n, d]) => el("option", {value:n}, n + " · " + d)) : []));
+    sel.value = m.part || ""; sel.disabled = !m.T;
+    sel.addEventListener("change", () => { rawSet("ch1-part", sel.value || null); draw(); if (onChange) onChange(); });
+    box.replaceChildren(el("span", {class:"tag"}, "My project"), el("div", {class:"teamrow"}, ...teamBtns), el("label", {class:"partlbl"}, "My part", sel),
+      m.part ? el("p", {class:"partnow"}, "You are building ", el("b", null, m.part), " for ", el("b", null, m.T.site), ".") : el("p", {class:"partnow muted"}, "Pick your team and your part. Ask your teacher if you are not sure."));
+  }
+  draw();
+}
+/* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
+function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
+return {TEAMS, me, picker, fill, rawSet};
+})();
+
 window.K = (function(){
 const $ = s => document.querySelector(s);
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
@@ -318,13 +354,12 @@ function checklist(id, items, compact){
   $("#" + id).replaceChildren(...items.map(([title, body], i) => {
     const cb = el("input", {type:"checkbox", id: id + "-" + i}); cb.checked = !!saved[i];
     const li = el("li", {class: cb.checked ? "ok" : ""}, el("label", {for: id + "-" + i}, cb, el("span", null, el("b", null, title), body ? el("span", {class:"how"}, body) : "")));
-    cb.addEventListener("change", () => { saved[i] = cb.checked; store.set(id, saved); li.classList.toggle("ok", cb.checked); });
+    cb.addEventListener("change", () => { saved[i] = cb.checked; store.set(id, saved); li.classList.toggle("ok", cb.checked); $("#" + id).dispatchEvent(new Event("change")); });
     return li; }));
+  return { tick(i){ if (saved[i]) return; const cb = document.getElementById(id + "-" + i); if (!cb) return; cb.checked = true; saved[i] = true; store.set(id, saved); cb.closest("li").classList.add("ok"); $("#" + id).dispatchEvent(new Event("change")); } };
 }
-const SEGS = ["Sports Desk","Weather Robot","Tech and AI Corner","School News","Canteen Review","Style and Trends","Games and Apps Review","Interview with a Legend","Fake or Real?","Funny Ads"];
-function prevSeg(){ for (const k of [PFX + "-seg","ch5-seg","ch4-seg","ch3-seg","ch2-seg"]) { const v = store.raw(k); if (v && SEGS.includes(v)) return v; } return "Sports Desk"; }
-function segSelect(sel, onChange){ SEGS.forEach(n => sel.append(el("option", {value:n}, n))); sel.value = prevSeg(); sel.addEventListener("change", () => { store.set("seg", sel.value); if (onChange) onChange(); }); }
-return {$, el, store, init, start, toast, copy, checklist, SEGS, segSelect, prevSeg};
+const {TEAMS, me, picker, fill, rawSet} = window.P;
+return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet};
 })();
 
 </script>
@@ -345,25 +380,29 @@ $("#scen").replaceChildren(...SC.map(([q, opts, ok, why]) => { const w = el("p",
   const bs = opts.map((o, i) => el("button", {class:"opt", type:"button", onclick:() => { if (done) return; done = true; bs[ok].classList.add("right"); if (i !== ok) bs[i].classList.add("wrong"); w.textContent = why; }}, o));
   return el("div", {class:"card q"}, el("p", {class:"lead", style:"margin:0 0 10px;font-weight:700"}, q), el("div", {class:"opts"}, bs), w); }));
 
-const CHAR = {"Sports Desk":"a sporty kid, a lion, or an energetic robot","Weather Robot":"a robot, a cloud character, or a bird","Tech and AI Corner":"a robot or an alien","School News":"a friendly kid reporter or an owl","Canteen Review":"a chef, a cat or a monster","Style and Trends":"a stylish kid or a fox","Games and Apps Review":"a gamer kid or a dragon","Interview with a Legend":"a kid reporter (the legend is played by your script)","Fake or Real?":"a detective-style animal","Funny Ads":"a loud, funny monster or a salesman"};
-const sel = $("#segSel");
-K.segSelect(sel, () => { $("#charIdea").textContent = CHAR[sel.value]; });
-$("#charIdea").textContent = CHAR[sel.value];
+const raw = k => K.store.raw(k);
+function hostIdea(){ const c = raw("ch4-char") || {}, m = K.me();
+  $("#charIdea").textContent = c.name ? "Your story character, " + c.name + " (" + (c.who || "") + "), can be your host. Or choose any Adobe character that fits " + (m.part || "your part") + "." : "Pick an Adobe character that fits " + (m.part || "your part") + ": a robot, an animal, a kid from the future…"; }
+function scriptFromStory(){ const m = K.me(), T = m.T || K.TEAMS.school, st = raw("ch4-story") || {};
+  return "Welcome to " + T.podcast + "! Today: " + (m.part || "my part") + (st.title ? ". Here is my story: " + st.title + "." : ".") + "\n\n" + (st.text || "(Paste your story from Chapter 4 here.)") + "\n\nThat was " + (m.part || "my part") + ", from " + T.site + ". See you in the future!"; }
 const scr = $("#script");
-scr.value = store.get("script") || K.store.raw("ch4-script") || "";
-scr.addEventListener("input", () => store.set("script", scr.value));
+scr.value = store.get("script") || scriptFromStory();
+function wc(){ const w = (scr.value.match(/\S+/g) || []).length; $("#wc").textContent = w + " words"; $("#secs").textContent = Math.round(w / 2.3); }
+scr.addEventListener("input", () => { store.set("script", scr.value); wc(); });
+$("#rebuild").onclick = () => { scr.value = scriptFromStory(); store.set("script", scr.value); wc(); };
+K.picker($("#proj"), () => { hostIdea(); if (!store.get("script")){ scr.value = scriptFromStory(); wc(); } });
+hostIdea(); wc();
 
 checklist("list1", [
-  ["Practise first", "Paste your script on the right and press Practise with the teleprompter. Read it aloud twice. Aim for about 45 seconds."],
+  ["Check your script", "On the right: your story with a podcast welcome and goodbye. Cut it if it is longer than 70 seconds."],
+  ["Practise", "Press Practise with the teleprompter. Read it aloud twice, like a radio host: smile, clear, not too fast."],
   ["Open Animate from audio", "In Adobe Express, type Animate from audio in the big box at the top (or find it under Quick edits, View all)."],
-  ["Choose your character", "Pick a character that fits your segment. The ideas on the right can help."],
-  ["Add your studio", "Under Background, choose Upload and pick studio.png from your Evergreen TV folder (from Chapter 5). If there is no Upload option, pick any studio background: you will add your own picture in Chapter 7."],
-  ["Record your script", "Press Record, allow the microphone, and read your script like a TV presenter: smile, speak clearly, not too fast."],
-  ["Watch and redo", "Play it back. Mistake or too quiet? Record again. You can try as many times as you want."],
-  ["Download", "Press Download and save it in your Evergreen TV folder as presenter.mp4."],
-  ["Add it to your corner", "Open your page in Gemini, copy the prompt below and paste it. Download the page into the same folder and check the video plays."]
+  ["Choose your host", "Pick a character that fits your part. Your story character is a great choice."],
+  ["Add your picture", "Under Background, choose Upload and pick hero.png from your AI Creators folder (Chapter 5). No Upload option? Pick any background."],
+  ["Record your voice", "Press Record, allow the microphone, and read your script."],
+  ["Listen and redo", "Too fast? Too quiet? A mistake? Record again. Real podcasters do many takes."],
+  ["Download", "Save it in your AI Creators folder as podcast.mp4. It goes on your web page in Chapter 8."]
 ]);
-document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => { const s = document.getElementById(b.dataset.copy); copy(s.textContent, s, "Gemini"); }));
 
 /* teleprompter */
 let tpTimer = null, t0 = 0;
@@ -380,7 +419,6 @@ addEventListener("keydown", e => { if (e.key === "Escape" && !$("#tp").hidden) c
 K.start();
 })();
 </script>
-
 <script src="config.js"></script>
 <script src="sync.js"></script>
 </body></html>

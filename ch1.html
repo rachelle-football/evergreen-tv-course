@@ -144,11 +144,23 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
 .step[aria-current="step"]{border-top-color:var(--onair);color:var(--ink);font-weight:700}
 @media (max-width:700px){.bug small{display:none}.step .t{display:none}.clock .lbl{display:none}body{font-size:17px}.lead{font-size:18px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.myproj{margin-bottom:18px;display:grid;gap:10px}
+.teamrow{display:flex;gap:8px;flex-wrap:wrap}
+.teambtn{background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:10px 14px;font-weight:700;font-size:16px;text-align:left}
+.teambtn:hover{border-color:var(--ink)}
+.teambtn[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+.partlbl{display:grid;gap:4px;font-weight:700;font-size:15px}
+.partlbl select{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;max-width:560px}
+.partnow{margin:0;font-size:16px}
+.road{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));margin-top:12px}
+.road div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:15px}
+.road b{display:block;font-family:var(--display);font-size:17px}
+.teamcard h3{font-size:26px;margin:6px 0}
 </style>
 
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>ON AIR</span><span>Evergreen TV <small>· AI class · Chapter 1: Meet AI</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 1: Meet AI</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -277,16 +289,39 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
 </section>
 
 <!-- 7 -->
-<section class="seg" id="seg-7" data-min="7" data-title="Quiz and your idea" hidden>
-  <div class="lower"><div class="no">07</div><div class="name"><h2>Quick quiz</h2><p>7 minutes · then your idea</p></div></div>
+<section class="seg" id="seg-7" data-min="5" data-title="Quick quiz" hidden>
+  <div class="lower"><div class="no">07</div><div class="name"><h2>Quick quiz</h2><p>5 minutes</p></div></div>
   <div id="quiz"></div>
   <p class="lead"><span class="score" id="quizScore">0 of 5</span></p>
+</section>
+
+<!-- 8 -->
+<section class="seg" id="seg-8" data-min="8" data-title="Your mission" hidden>
+  <div class="lower"><div class="no">08</div><div class="name"><h2>Your mission this year: AI Creator</h2><p>8 minutes · pick your team and your part</p></div></div>
+  <p class="big">The class splits into two teams. Each team builds a real website with AI, full of pictures, stories, a podcast and a video. Everything is made by you.</p>
+  <div class="grid g2">
+    <div class="card teamcard"><span class="tag">Team 1 · 🏫 School 2040</span><h3>Reinvent the School</h3><p style="margin:0">Design the school of tomorrow: classrooms, the library, the canteen, the playground, how we learn.</p></div>
+    <div class="card teamcard"><span class="tag">Team 2 · 🌍 Planet 2050</span><h3>The Future of Our Planet</h3><p style="margin:0">Create a better world with AI: clean energy, water, less waste, clean air, the cedars and the sea.</p></div>
+  </div>
+  <div class="card myproj" id="proj" style="margin-top:16px"></div>
   <div class="card">
-    <span class="tag">Your turn</span>
-    <h3 style="font-size:24px;margin:6px 0 10px">If you could build anything with AI, what would it be?</h3>
-    <label for="idea" class="muted" style="font-size:15px">Write one sentence. (First name only if you share it.)</label>
-    <textarea id="idea" placeholder="I would build an AI that…"></textarea>
-    <p class="note">Next week: Inside AI. You will train a real AI with your own examples.</p>
+    <span class="tag">Your first idea</span>
+    <h3 style="font-size:24px;margin:6px 0 10px">What would your part look like in the future?</h3>
+    <label for="idea" class="muted" style="font-size:15px">Write one sentence. Be bold!</label>
+    <textarea id="idea" placeholder="In the future, my part will…"></textarea>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <span class="tag">What you will make for your part, chapter by chapter</span>
+    <div class="road">
+      <div><b>2 · AI Training</b>Teach a real AI to recognise things</div>
+      <div><b>3 · Prompts</b>Your design card, made with Gemini</div>
+      <div><b>4 · Story</b>A short story from the future</div>
+      <div><b>5 · Pictures</b>3 AI pictures of your part</div>
+      <div><b>6 · Voice</b>Your clip for the team podcast</div>
+      <div><b>7 · Video</b>30 seconds of video</div>
+      <div><b>8 · Website</b>Your page on the team website</div>
+      <div><b>9 · Exhibition</b>Launch day!</div>
+    </div>
   </div>
 </section>
 
@@ -300,6 +335,43 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
   </div>
 </nav>
 
+<script>
+window.P = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const store = { raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
+/* ---------- the year project: two teams, each kid owns one part ---------- */
+const TEAMS = {
+  school: {key:"school", name:"Reinvent the School", site:"School 2040", emoji:"🏫", goal:"Design the school of tomorrow",
+    world:"our school, Evergreen, in the year 2040", podcast:"the School 2040 podcast", video:"a promo video for the school of tomorrow", look:"a bright, friendly school in Lebanon in the year 2040",
+    parts:[["The classroom","Where and how we learn: desks, screens, light, sound"],["The library","Books, reading corners, quiet, research"],["The canteen","Healthy food, no waste, where we eat together"],["Playground and sports","Games, fields, breaks, team sports"],["The science lab","Experiments, robots, discovering"],["Art and music studio","Drawing, making, singing, performing"],["Getting to school","Buses, bikes, walking, safety"],["The school day","Timetable, homework, exams, breaks"],["Wellbeing corner","Feeling calm, friendship, getting help"],["The school garden","Plants, outdoor lessons, animals"]]},
+  planet: {key:"planet", name:"The Future of Our Planet", site:"Planet 2050", emoji:"🌍", goal:"Create a better world with AI",
+    world:"planet Earth, and Lebanon, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
+    parts:[["Clean energy","Sun, wind and power for every home"],["Water","Clean water for everyone, saving every drop"],["Waste and recycling","Less trash, sorting, reusing"],["Clean air","No smoke, less pollution, breathing well"],["Transport","Buses, trains, bikes and clean cars"],["Cities and homes","Green buildings, parks, cool streets"],["Food and farming","Growing food, eating well, no food waste"],["Oceans and beaches","Clean sea, no plastic, sea life"],["Forests and animals","Trees, the cedars, wildlife"],["Weather and climate","Heat waves, storms, being ready"]]}
+};
+const rawSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
+function me(){
+  const t = store.raw("ch1-team"), T = TEAMS[t] || null, p = store.raw("ch1-part"), P = T && T.parts.find(x => x[0] === p);
+  return {team:T ? t : null, T, part:P ? P[0] : null, about:P ? P[1] : ""};
+}
+/* a small "my team · my part" bar any chapter can show; changing it is saved for every chapter */
+function picker(box, onChange){
+  function draw(){
+    const m = me();
+    const teamBtns = Object.values(TEAMS).map(T => el("button", {class:"teambtn", type:"button", "aria-pressed":String(m.team === T.key), onclick:() => { rawSet("ch1-team", T.key); if (!TEAMS[T.key].parts.some(x => x[0] === store.raw("ch1-part"))) rawSet("ch1-part", null); draw(); if (onChange) onChange(); }}, T.emoji + " " + T.name));
+    const sel = el("select", {"aria-label":"My part of the project"}, el("option", {value:""}, m.T ? "Choose your part…" : "Choose a team first"), ...(m.T ? m.T.parts.map(([n, d]) => el("option", {value:n}, n + " · " + d)) : []));
+    sel.value = m.part || ""; sel.disabled = !m.T;
+    sel.addEventListener("change", () => { rawSet("ch1-part", sel.value || null); draw(); if (onChange) onChange(); });
+    box.replaceChildren(el("span", {class:"tag"}, "My project"), el("div", {class:"teamrow"}, ...teamBtns), el("label", {class:"partlbl"}, "My part", sel),
+      m.part ? el("p", {class:"partnow"}, "You are building ", el("b", null, m.part), " for ", el("b", null, m.T.site), ".") : el("p", {class:"partnow muted"}, "Pick your team and your part. Ask your teacher if you are not sure."));
+  }
+  draw();
+}
+/* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
+function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part || "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
+return {TEAMS, me, picker, fill, rawSet};
+})();
+
+</script>
 <script>
 (function(){
 const $ = s => document.querySelector(s);
@@ -417,6 +489,7 @@ let qz = 0;
 QUIZ.forEach(([q, opts, ok, why]) => { const w = el("p", {class:"why"}); let done = false;
   const bs = opts.map((o, i) => el("button", {class:"opt", type:"button", onclick:() => { if (done) return; done = true; bs[ok].classList.add("right"); if (i !== ok) bs[i].classList.add("wrong"); else { qz++; $("#quizScore").textContent = qz + " of 5"; } w.textContent = why; }}, o));
   $("#quiz").append(el("div", {class:"card q"}, el("h3", null, q), el("div", {class:"opts"}, bs), w)); });
+P.picker(document.getElementById("proj"));
 try { const d = localStorage.getItem("meet-ai-idea"); if (d) $("#idea").value = d; } catch(e) {}
 $("#idea").addEventListener("input", () => { try { localStorage.setItem("meet-ai-idea", $("#idea").value); } catch(e) {} });
 
@@ -424,7 +497,6 @@ const start = segs.findIndex(s => "#" + s.id === location.hash);
 go(start >= 0 ? start : 0);
 })();
 </script>
-
 <script src="config.js"></script>
 <script src="sync.js"></script>
 </body></html>

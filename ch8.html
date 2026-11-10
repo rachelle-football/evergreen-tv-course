@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
-<title>Test and Fix</title>
+<title>Website Building</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -170,6 +170,14 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 
 /* chapter extras */
 .pdiv{align-self:flex-start;font:700 11px/1 var(--mono);color:var(--muted);padding:10px 2px 0;border-top:4px solid transparent}
+.myproj{margin-bottom:18px;display:grid;gap:10px}
+.teamrow{display:flex;gap:8px;flex-wrap:wrap}
+.teambtn{background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:10px 14px;font-weight:700;font-size:16px;text-align:left}
+.teambtn:hover{border-color:var(--ink)}
+.teambtn[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+.partlbl{display:grid;gap:4px;font-weight:700;font-size:15px}
+.partlbl select{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;max-width:560px}
+.partnow{margin:0;font-size:16px}
 .chk{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px}
 .chk>div:first-child{display:flex;flex-direction:column;gap:2px;min-width:0}
 .chk b{font-family:var(--display);font-size:19px}.chk .muted{font-size:15px}
@@ -191,7 +199,7 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>ON AIR</span><span>Evergreen TV <small>· AI class · Chapter 8: Test and fix</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 8: Website Building</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -199,22 +207,59 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
   </div>
 </header>
 <main class="wrap" id="stage">
-<section class="seg" id="seg-1" data-min="5" data-title="Why test?">
-  <div class="lower"><div class="no">01</div><div class="name"><h2>Why real apps get tested</h2><p>5 minutes · the lesson</p></div></div>
-  <p class="big">Every app on your phone was tested by real people before you got it. They always find things the makers missed.</p>
-  <div class="grid g3">
-    <div class="card"><span class="tag">Makers think</span><p class="lead" style="margin:6px 0 0">"Everyone will see the button."</p><p class="muted" style="margin:6px 0 0">A tester can't find it on a phone.</p></div>
-    <div class="card"><span class="tag">Makers think</span><p class="lead" style="margin:6px 0 0">"The text is easy to read."</p><p class="muted" style="margin:6px 0 0">A tester can't read yellow on white.</p></div>
-    <div class="card"><span class="tag">Makers think</span><p class="lead" style="margin:6px 0 0">"The chatbot knows everything."</p><p class="muted" style="margin:6px 0 0">A tester asks one question and it invents an answer.</p></div>
+
+<section class="seg" id="seg-1" data-min="6" data-title="You are the director">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>You are the director</h2><p>Period 1 · 6 minutes · teacher demo, then the lesson</p></div></div>
+  <p class="big">Watch: the teacher types one prompt in Gemini Canvas. In 30 seconds, the AI writes hundreds of lines of code and builds a web page.</p>
+  <div class="card">
+    <span class="tag">Teacher: open gemini.google.com, press + then Canvas, and paste</span>
+    <pre class="prompt" id="demoPrompt">Create a colourful one-page website called "School 2040: The Sky Playground", made by a 12-year-old student.
+Include: a big title, 3 cards with big ideas (a rooftop garden, a climbing wall, a rain-water fountain), and a button that shows a random fun fact about playgrounds.
+Bright colours, big fonts, works on a phone.</pre>
+    <div class="row"><button class="btn sm" id="copyDemo" type="button">Copy prompt</button></div>
   </div>
-  <div class="def"><span class="tag">Today</span><p>You test a classmate's corner, they test yours, then you fix yours with prompts.</p></div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card bad"><span class="tag">Weak prompt</span><p class="quote">"Make a website about water."</p><p class="muted" style="margin:0">The AI guesses everything: what goes on it, the colours, the text. It is not YOUR page.</p></div>
+    <div class="card good"><span class="tag">Director's prompt</span><p class="quote">Name + what's on it + look + action</p><p class="muted" style="margin:0">You give it your design, your story and your files. The AI is the programmer. You are the director.</p></div>
+  </div>
 </section>
 
-<section class="seg" id="seg-2" data-min="15" data-title="Mission: be a tester" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>Mission: test a classmate's corner</h2><p>15 minutes · swap computers</p></div></div>
+<section class="seg" id="seg-2" data-min="4" data-title="Your page plan" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>Your page: everything you made comes together</h2><p>Period 1 · 4 minutes · check you have everything</p></div></div>
+  <p class="big">Your page is one part of your team's website. Here is what goes on it. Green means you already have it.</p>
+  <div class="grid g3" id="plan"></div>
+  <p class="note">Missing something? Your teacher will help you make it quickly, or leave it out. The page still works.</p>
+</section>
+
+<section class="seg" id="seg-3" data-min="25" data-title="Mission: build your page" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: build your page with Gemini Canvas</h2><p>Period 1 · 25 minutes · gemini.google.com</p></div></div>
+  <div class="card myproj" id="proj"></div>
   <div class="mission">
     <div>
-      <label class="tag" for="who">Whose corner are you testing? (first name)</label>
+      <ol class="checklist" id="list1"></ol>
+      <div class="card" style="margin-top:14px">
+        <span class="tag">Make it better (copy into the same chat)</span>
+        <div class="row" id="better" style="margin-top:8px"></div>
+      </div>
+    </div>
+    <aside class="card side">
+      <label class="tag" for="colours">Colours and mood</label>
+      <input id="colours">
+      <label class="tag" for="extra">One interactive thing</label>
+      <select id="extra"></select>
+      <span class="tag">Your director's prompt (made from all your work)</span>
+      <pre class="prompt small" id="pageOut"></pre>
+      <div class="row"><button class="btn sm" id="copyPage" type="button">Copy my prompt</button></div>
+      <p class="muted" style="margin:0;font-size:14px">Save the page as <b id="pageFile">part_name.html</b> in your AI Creators folder, next to your pictures and videos.</p>
+    </aside>
+  </div>
+</section>
+
+<section class="seg" id="seg-4" data-min="15" data-title="Mission: be a tester" data-p="2" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Mission: test a classmate's page</h2><p>Period 2 · 15 minutes · swap computers</p></div></div>
+  <div class="mission">
+    <div>
+      <label class="tag" for="who">Whose page are you testing? (first name)</label>
       <input id="who" placeholder="e.g. Sara" style="margin:6px 0 14px">
       <div id="checks"></div>
       <label class="tag" for="star">⭐ One star: something that really works</label>
@@ -226,15 +271,14 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
   </div>
 </section>
 
-<section class="seg" id="seg-3" data-min="20" data-title="Mission: fix yours" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: fix your corner with prompts</h2><p>20 minutes · Gemini and Adobe Express</p></div></div>
-  <p class="big">Read the feedback card your tester showed you. Pick up to 3 fixes, fill in the blanks, copy the prompt into your page's Gemini chat.</p>
+<section class="seg" id="seg-5" data-min="15" data-title="Mission: fix yours" data-p="2" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: fix your page with prompts</h2><p>Period 2 · 15 minutes · the same Gemini chat</p></div></div>
+  <p class="big">Read the feedback card your tester showed you. Pick up to 3 fixes, fill in the blanks, and copy each prompt into your page's Gemini chat.</p>
   <div class="grid g2" id="fixes"></div>
-  <ol class="checklist" id="list1" style="margin-top:16px"></ol>
 </section>
 
-<section class="seg" id="seg-4" data-min="5" data-title="Launch checklist" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Launch checklist</h2><p>5 minutes · is your corner ready to go live?</p></div></div>
+<section class="seg" id="seg-6" data-min="5" data-title="Launch checklist" data-p="2" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>Launch checklist</h2><p>Period 2 · 5 minutes · is your page ready to go live?</p></div></div>
   <div class="mission">
     <ol class="checklist" id="launch"></ol>
     <aside class="card side" id="ready"></aside>
@@ -250,6 +294,41 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 </nav>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <script>
+window.P = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const store = { raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
+/* ---------- the year project: two teams, each kid owns one part ---------- */
+const TEAMS = {
+  school: {key:"school", name:"Reinvent the School", site:"School 2040", emoji:"🏫", goal:"Design the school of tomorrow",
+    world:"our school, Evergreen, in the year 2040", podcast:"the School 2040 podcast", video:"a promo video for the school of tomorrow", look:"a bright, friendly school in Lebanon in the year 2040",
+    parts:[["The classroom","Where and how we learn: desks, screens, light, sound"],["The library","Books, reading corners, quiet, research"],["The canteen","Healthy food, no waste, where we eat together"],["Playground and sports","Games, fields, breaks, team sports"],["The science lab","Experiments, robots, discovering"],["Art and music studio","Drawing, making, singing, performing"],["Getting to school","Buses, bikes, walking, safety"],["The school day","Timetable, homework, exams, breaks"],["Wellbeing corner","Feeling calm, friendship, getting help"],["The school garden","Plants, outdoor lessons, animals"]]},
+  planet: {key:"planet", name:"The Future of Our Planet", site:"Planet 2050", emoji:"🌍", goal:"Create a better world with AI",
+    world:"planet Earth, and Lebanon, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
+    parts:[["Clean energy","Sun, wind and power for every home"],["Water","Clean water for everyone, saving every drop"],["Waste and recycling","Less trash, sorting, reusing"],["Clean air","No smoke, less pollution, breathing well"],["Transport","Buses, trains, bikes and clean cars"],["Cities and homes","Green buildings, parks, cool streets"],["Food and farming","Growing food, eating well, no food waste"],["Oceans and beaches","Clean sea, no plastic, sea life"],["Forests and animals","Trees, the cedars, wildlife"],["Weather and climate","Heat waves, storms, being ready"]]}
+};
+const rawSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
+function me(){
+  const t = store.raw("ch1-team"), T = TEAMS[t] || null, p = store.raw("ch1-part"), P = T && T.parts.find(x => x[0] === p);
+  return {team:T ? t : null, T, part:P ? P[0] : null, about:P ? P[1] : ""};
+}
+/* a small "my team · my part" bar any chapter can show; changing it is saved for every chapter */
+function picker(box, onChange){
+  function draw(){
+    const m = me();
+    const teamBtns = Object.values(TEAMS).map(T => el("button", {class:"teambtn", type:"button", "aria-pressed":String(m.team === T.key), onclick:() => { rawSet("ch1-team", T.key); if (!TEAMS[T.key].parts.some(x => x[0] === store.raw("ch1-part"))) rawSet("ch1-part", null); draw(); if (onChange) onChange(); }}, T.emoji + " " + T.name));
+    const sel = el("select", {"aria-label":"My part of the project"}, el("option", {value:""}, m.T ? "Choose your part…" : "Choose a team first"), ...(m.T ? m.T.parts.map(([n, d]) => el("option", {value:n}, n + " · " + d)) : []));
+    sel.value = m.part || ""; sel.disabled = !m.T;
+    sel.addEventListener("change", () => { rawSet("ch1-part", sel.value || null); draw(); if (onChange) onChange(); });
+    box.replaceChildren(el("span", {class:"tag"}, "My project"), el("div", {class:"teamrow"}, ...teamBtns), el("label", {class:"partlbl"}, "My part", sel),
+      m.part ? el("p", {class:"partnow"}, "You are building ", el("b", null, m.part), " for ", el("b", null, m.T.site), ".") : el("p", {class:"partnow muted"}, "Pick your team and your part. Ask your teacher if you are not sure."));
+  }
+  draw();
+}
+/* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
+function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
+return {TEAMS, me, picker, fill, rawSet};
+})();
+
 window.K = (function(){
 const $ = s => document.querySelector(s);
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
@@ -288,27 +367,92 @@ function checklist(id, items, compact){
   $("#" + id).replaceChildren(...items.map(([title, body], i) => {
     const cb = el("input", {type:"checkbox", id: id + "-" + i}); cb.checked = !!saved[i];
     const li = el("li", {class: cb.checked ? "ok" : ""}, el("label", {for: id + "-" + i}, cb, el("span", null, el("b", null, title), body ? el("span", {class:"how"}, body) : "")));
-    cb.addEventListener("change", () => { saved[i] = cb.checked; store.set(id, saved); li.classList.toggle("ok", cb.checked); });
+    cb.addEventListener("change", () => { saved[i] = cb.checked; store.set(id, saved); li.classList.toggle("ok", cb.checked); $("#" + id).dispatchEvent(new Event("change")); });
     return li; }));
+  return { tick(i){ if (saved[i]) return; const cb = document.getElementById(id + "-" + i); if (!cb) return; cb.checked = true; saved[i] = true; store.set(id, saved); cb.closest("li").classList.add("ok"); $("#" + id).dispatchEvent(new Event("change")); } };
 }
-const SEGS = ["Sports Desk","Weather Robot","Tech and AI Corner","School News","Canteen Review","Style and Trends","Games and Apps Review","Interview with a Legend","Fake or Real?","Funny Ads"];
-function prevSeg(){ for (const k of [PFX + "-seg","ch5-seg","ch4-seg","ch3-seg","ch2-seg"]) { const v = store.raw(k); if (v && SEGS.includes(v)) return v; } return "Sports Desk"; }
-function segSelect(sel, onChange){ SEGS.forEach(n => sel.append(el("option", {value:n}, n))); sel.value = prevSeg(); sel.addEventListener("change", () => { store.set("seg", sel.value); if (onChange) onChange(); }); }
-return {$, el, store, init, start, toast, copy, checklist, SEGS, segSelect, prevSeg};
+const {TEAMS, me, picker, fill, rawSet} = window.P;
+return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet};
 })();
 
 </script>
 <script>
 (function(){
-const {$, el, store, copy, checklist} = K;
-K.init("ch8");
+const {$, el, store, copy, checklist, me, picker} = K;
+K.init("ch8", 3);
+const raw = k => store.raw(k);
+$("#copyDemo").onclick = () => copy($("#demoPrompt").textContent, $("#demoPrompt"), "Gemini Canvas");
+
+/* page plan */
+function have(){
+  const d = raw("ch3-card") || {}, st = raw("ch4-story") || {}, l5 = raw("ch5-list1") || [], l6 = raw("ch6-list1") || [], l7 = raw("ch7-list2") || [];
+  return [
+    ["Title and big picture", "hero.png from Chapter 5", !!l5[5]],
+    ["Your design card", "Name, 3 big ideas, a day in it (Chapter 3)", !!(d.name && d.i1)],
+    ["Your story", "From Chapter 4", !!(st.text && st.text.length > 40)],
+    ["2 more pictures", "detail.png and character.png", !!l5[6]],
+    ["Your podcast clip", "podcast.mp4 from Chapter 6", !!l6[7]],
+    ["Your video", "video.mp4 from Chapter 7", !!l7[4]],
+    ["Made with AI", "A label on everything AI made", true]
+  ];
+}
+function drawPlan(){ $("#plan").replaceChildren(...have().map(([n, d, ok]) => el("div", {class:"card " + (ok ? "good" : "")}, el("span", {class:"tag"}, ok ? "✓ Ready" : "To check"), el("h3", {style:"font-size:21px;margin:4px 0"}, n), el("p", {class:"muted", style:"margin:0"}, d)))); }
+
+/* director's prompt from all the work */
+const EXTRA = ["a quiz with 3 questions about my design", "a before/after slider: today vs the future", "a button that shows a random fun fact", "a poll: would you like this in real life?", "a mini game: match the problem to the solution"];
+$("#extra").replaceChildren(...EXTRA.map(x => el("option", {value:x}, x)));
+const O = store.get("opts") || {};
+function defCol(){ return me().team === "planet" ? "blue and green, fresh and hopeful" : "green and sunny yellow, bright and friendly"; }
+function slug(s){ return (s || "").toLowerCase().replace(/^the /, "").split(/\s+/)[0].replace(/[^a-z0-9]/g, "") || "part"; }
+function pageText(){
+  const m = me(), T = m.T || K.TEAMS.school, d = raw("ch3-card") || {}, st = raw("ch4-story") || {}, c = raw("ch4-char") || {};
+  const ideas = [d.i1, d.i2, d.i3, d.mine].filter(Boolean);
+  return `Create a one-page website for "${T.site}: ${d.name || m.part || "my part"}", made by a 12-year-old student in the team "${T.name}".
+It is my part of our team website: ${m.part || "my part"} (${m.about || ""}).
+
+Put these sections on the page, in this order:
+1. A big title with the picture hero.png behind it.
+2. My design: ${ideas.length ? ideas.map(x => "\"" + x + "\"").join(", ") : "(3 big ideas)"}, each in its own card.${d.day ? `\n   A day in it: "${d.day}"` : ""}
+3. My story${st.title ? `, called "${st.title}"` : ""}, with the picture character.png next to it. Here is the story:
+"${(st.text || "(my story)").trim()}"
+4. The picture detail.png with a short caption.
+5. A video player for podcast.mp4 with the title "Listen: my podcast clip".
+6. A video player for video.mp4 with the title "Watch: my 30-second video".
+7. ${$("#extra").value}.
+8. A footer: "Made with AI by EB7 · ${T.site}". Under every picture and video, a small label: Made with AI.
+
+The pictures and videos will be in the same folder as the page, with exactly these file names.
+Look: ${$("#colours").value || defCol()}. Big fonts, easy to read, works well on a phone. Do not invent facts or real people's names.`;
+}
+function drawPage(){ $("#pageOut").textContent = pageText(); $("#pageFile").textContent = slug(me().part) + "_" + "yourname.html"; }
+$("#colours").value = O.colours || defCol();
+if (O.extra) $("#extra").value = O.extra;
+$("#colours").addEventListener("input", () => { O.colours = $("#colours").value; store.set("opts", O); drawPage(); });
+$("#extra").addEventListener("change", () => { O.extra = $("#extra").value; store.set("opts", O); drawPage(); });
+$("#copyPage").onclick = () => { if (!me().part){ K.toast("Pick your team and your part first (at the top)."); return; } copy(pageText(), $("#pageOut"), "Gemini Canvas"); L1.tick(2); };
+const BETTER = [["Magazine look", "Make my page look like a colourful magazine page, but keep all my text the same."], ["Phone check", "Make sure the whole page fits a phone screen: nothing too wide, nothing overlapping."], ["Add animations", "Add gentle animations when the cards appear. Nothing flashing."], ["Easier to read", "Make all the text bigger and the colours stronger so it is easy to read."]];
+$("#better").replaceChildren(...BETTER.map(([n, t]) => el("button", {class:"btn sm alt", type:"button", title:t, onclick:() => { copy(t, null, "the same Gemini chat"); L1.tick(4); }}, "Copy: " + n)));
+const L1 = checklist("list1", [
+  ["Check your team and part", "At the top. Your prompt is made from your design card, your story and your file names."],
+  ["Open Gemini with Canvas", "Go to gemini.google.com. Press the + next to the message box, then choose Canvas."],
+  ["Paste your prompt", "Copy my prompt (on the right), paste it in Gemini and press Enter. Wait about 30 seconds."],
+  ["Look at the preview", "Your pictures and videos will not show yet: they are on your computer, not in Gemini. That is normal."],
+  ["Improve it twice", "Copy 2 improvement prompts into the same chat, or write your own."],
+  ["Download the page", "In the Canvas panel, find Download (the arrow icon) and save the file in your AI Creators folder with the name shown on the right."],
+  ["Open it from the folder", "Double-click the page in your folder. Now your pictures and videos appear. Do they all work?"]
+]);
+picker($("#proj"), () => { drawPage(); drawPlan(); if (me().part) L1.tick(0); });
+if (me().part) L1.tick(0);
+drawPage(); drawPlan();
+
+/* tester */
 const CHECKS = [
   ["works", "Every button works", "Click everything on the page."],
-  ["clear", "Clear in 5 seconds", "Can you tell what this corner is about right away?"],
-  ["char", "The character answers well", "Ask 3 questions, including one it should NOT know. Does it say \"I don't know\"?"],
-  ["pics", "Pictures fit the segment", "Studio, logo, title: do they look right? Any AI mistakes left?"],
-  ["video", "The video plays", "With sound, under 50 seconds, labelled Made with AI."],
-  ["safe", "Safe", "First names only, no photos of people, nothing private."]
+  ["clear", "Clear in 5 seconds", "Can you tell right away which part of the future this page is about?"],
+  ["media", "Pictures and videos show", "All 3 pictures, the podcast and the video. With sound."],
+  ["story", "The story and design make sense", "Read the design cards and the story. Anything confusing or impossible?"],
+  ["phone", "Works on a small screen", "Make the window narrow. Does it still fit?"],
+  ["safe", "Honest and safe", "Labelled Made with AI, first names only, no photos of real people."]
 ];
 const T = store.get("test") || {who:"", star:"", wish:"", s:{}};
 function drawChecks(){
@@ -319,8 +463,8 @@ function drawChecks(){
 function drawCard(){
   const scored = CHECKS.filter(([k]) => T.s[k]), pts = scored.reduce((a, [k]) => a + T.s[k], 0);
   const low = CHECKS.filter(([k]) => T.s[k] && T.s[k] < 3).map(([, n]) => n);
-  const txt = "Feedback for " + (T.who || "my classmate") + "'s corner\n" + CHECKS.map(([k, n]) => "- " + n + ": " + (T.s[k] ? "★".repeat(T.s[k]) + "☆".repeat(3 - T.s[k]) : "not tested")).join("\n") + "\nStar: " + (T.star || "…") + "\nWish: " + (T.wish || "…");
-  $("#cardBox").replaceChildren(el("span", {class:"tag"}, "Feedback card"), el("h3", {style:"font-size:24px;margin:4px 0"}, (T.who || "Your classmate") + "'s corner"),
+  const txt = "Feedback for " + (T.who || "my classmate") + "'s page\n" + CHECKS.map(([k, n]) => "- " + n + ": " + (T.s[k] ? "★".repeat(T.s[k]) + "☆".repeat(3 - T.s[k]) : "not tested")).join("\n") + "\nStar: " + (T.star || "…") + "\nWish: " + (T.wish || "…");
+  $("#cardBox").replaceChildren(el("span", {class:"tag"}, "Feedback card"), el("h3", {style:"font-size:24px;margin:4px 0"}, (T.who || "Your classmate") + "'s page"),
     el("div", {class:"big-num"}, pts + " / " + CHECKS.length * 3), el("p", {class:"muted", style:"margin:0"}, scored.length + " of " + CHECKS.length + " checks done"),
     low.length ? el("p", {style:"margin:8px 0 0"}, el("b", null, "Needs work: "), low.join(", ")) : "",
     T.star ? el("p", {style:"margin:8px 0 0"}, el("b", null, "⭐ "), T.star) : "", T.wish ? el("p", {style:"margin:4px 0 0"}, el("b", null, "🔧 "), T.wish) : "",
@@ -331,32 +475,27 @@ function save(){ store.set("test", T); drawCard(); }
 ["who","star","wish"].forEach(id => { $("#" + id).value = T[id] || ""; $("#" + id).addEventListener("input", () => { T[id] = $("#" + id).value; save(); }); });
 drawChecks(); drawCard();
 
+/* fixes */
 const FIX = [
-  ["A button does nothing", "When I click the \"___\" button, nothing happens. Make it ___.", "e.g. show a random fact"],
-  ["Hard to read", "The ___ is hard to read. Make the text bigger and change the colours so it is easy to read on any screen.", "e.g. scoreboard"],
-  ["Broken on a phone", "On a phone, the ___ looks broken (too wide / overlapping). Fix it so the whole page fits a phone screen.", "e.g. top menu"],
-  ["The character invented something", "My character said \"___\", which is wrong. Change its facts: ___. If it does not know, it must say \"I don't know that yet.\"", "e.g. training is on Friday"],
+  ["A button does nothing", "When I click the \"___\" button, nothing happens. Make it ___.", "e.g. show a fun fact"],
+  ["Hard to read", "The ___ is hard to read. Make the text bigger and change the colours so it is easy to read on any screen.", "e.g. story section"],
+  ["Broken on a phone", "On a phone, the ___ looks broken (too wide or overlapping). Fix it so the whole page fits a phone screen.", "e.g. idea cards"],
+  ["A picture or video is missing", "The ___ does not show. Make sure the page uses the file name ___ exactly, in the same folder as the page.", "e.g. video player, video.mp4"],
   ["Something is missing", "Add ___ to my page, in the same style as the rest. Keep everything else the same.", "e.g. a poll"],
-  ["The video does not play", "The video segment.mp4 does not play. Make sure the video player uses the file name segment.mp4 exactly, with controls and sound.", ""]
+  ["Something is not true", "The page says \"___\", which is not right. Change it to: ___.", "e.g. the fact in the quiz"]
 ];
 $("#fixes").replaceChildren(...FIX.map(([title, tpl, eg], i) => { const t = el("textarea", {rows:"4", "aria-label":title}); const saved = store.get("fix" + i); t.value = saved != null ? saved : tpl; t.addEventListener("input", () => store.set("fix" + i, t.value));
-  return el("div", {class:"card"}, el("span", {class:"tag"}, title), t, eg ? el("p", {class:"muted", style:"margin:4px 0 8px;font-size:14px"}, "Replace each ___ (" + eg + ")") : el("p", {style:"margin:4px 0 8px"}), el("button", {class:"btn sm", type:"button", onclick:() => { if (/___/.test(t.value)){ K.toast("Fill in every ___ first."); t.focus(); return; } copy(t.value, t, "Gemini"); }}, "Copy fix prompt")); }));
-checklist("list1", [
-  ["Open your page's chat", "In Gemini, open the chat where you built your corner, so it remembers your page."],
-  ["Fix one thing at a time", "Paste one fix prompt, press Enter, and check that the fix worked before the next one."],
-  ["Video fixes", "If the problem is in your video, fix it in Adobe Express and download segment.mp4 again."],
-  ["Save the new version", "Download the page into your Evergreen TV folder with the same file name."],
-  ["Ask your tester again", "Show your tester the fixed part. Did it get a 3-star now?"]
-]);
-const L = [["Every button works",""],["My character says \"I don't know\" when it should",""],["My 3 pictures show on the page",""],["My segment video plays with sound",""],["Every fact is checked",""],["Everything AI-made is labelled Made with AI",""],["First names only, no photos of people",""],["All my files are in one Evergreen TV folder: the page, 3 pictures, presenter.mp4, segment.mp4",""]];
+  return el("div", {class:"card"}, el("span", {class:"tag"}, title), t, el("p", {class:"muted", style:"margin:4px 0 8px;font-size:14px"}, "Replace each ___ (" + eg + ")"), el("button", {class:"btn sm", type:"button", onclick:() => { if (/___/.test(t.value)){ K.toast("Fill in every ___ first."); t.focus(); return; } copy(t.value, t, "Gemini"); }}, "Copy fix prompt")); }));
+
+/* launch */
+const L = [["Every button works",""],["My 3 pictures show on the page",""],["My podcast clip and my video play with sound",""],["Every fact is checked",""],["Everything AI-made is labelled Made with AI",""],["First names only, no photos of real people",""],["It works on a phone",""],["All my files are in one AI Creators folder: the page, hero.png, detail.png, character.png, podcast.mp4, video.mp4",""]];
 checklist("launch", L);
 function ready(){ const n = [...document.querySelectorAll("#launch input")].filter(x => x.checked).length;
-  $("#ready").replaceChildren(el("span", {class:"tag"}, "Status"), el("div", {class:"big-num"}, n + " / " + L.length), n === L.length ? el("p", {class:"lead", style:"margin:0;color:var(--green);font-weight:700"}, "Ready for launch! Hand your Evergreen TV folder to your teacher.") : el("p", {class:"lead", style:"margin:0"}, "Tick every line before launch day.")); }
-document.querySelector("#launch").addEventListener("change", ready); ready();
+  $("#ready").replaceChildren(el("span", {class:"tag"}, "Status"), el("div", {class:"big-num"}, n + " / " + L.length), n === L.length ? el("p", {class:"lead", style:"margin:0;color:var(--green);font-weight:700"}, "Ready for launch! Hand your AI Creators folder to your teacher.") : el("p", {class:"lead", style:"margin:0"}, "Tick every line before launch day.")); }
+$("#launch").addEventListener("change", ready); ready();
 K.start();
 })();
 </script>
-
 <script src="config.js"></script>
 <script src="sync.js"></script>
 </body></html>

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Evergreen TV AI Course</title>
+<title>AI Creators · EB7</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
@@ -207,7 +207,7 @@ td.ok{background:var(--green-soft);font-weight:700;text-align:center}td.part{bac
 </head><body>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>ON AIR</span><span>Evergreen TV <small>· AI course</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 course</small></span></div>
     <div class="who" id="who"></div>
   </div>
 </header>
@@ -231,23 +231,23 @@ const ERR = c => ({wrong_login:"Wrong username or password. Check with your teac
 
 /* ---------- course data in this browser ---------- */
 const CH = [
-  {n:1, t:"Meet AI", s:"1", f:"ch1.html", learn:"What AI is, where it hides, how it learns", lists:[], extra: d => d["meet-ai-idea"] ? 1 : 0, of:1},
-  {n:2, t:"Inside AI", s:"2–3", f:"ch2.html", learn:"Teach a real AI your own character, then trick it", lists:[["ch2-list1",8],["ch2-list2",6],["ch2-list3",6]]},
-  {n:3, t:"Build with a Prompt", s:"4", f:"ch3.html", learn:"Build your Evergreen TV corner with Gemini", lists:[["ch3-list1",8]]},
-  {n:4, t:"Chatbots and Prompts", s:"5", f:"ch4.html", learn:"Give your corner a character, write your script", lists:[["ch4-list1",6],["ch4-hunt",5]]},
-  {n:5, t:"AI Pictures", s:"6", f:"ch5.html", learn:"Studio, logo and title card with Adobe Express", lists:[["ch5-list1",8]]},
-  {n:6, t:"AI Voices", s:"7", f:"ch6.html", learn:"Your presenter speaks with your voice", lists:[["ch6-list1",8]]},
-  {n:7, t:"Video and Fakes", s:"8–9", f:"ch7.html", learn:"Make, fact-check and label your segment", lists:[["ch7-list1",8],["ch7-list2",6]]},
-  {n:8, t:"Test and Fix", s:"10", f:"ch8.html", learn:"Test a classmate's corner, fix yours", lists:[["ch8-list1",5],["ch8-launch",8]]},
-  {n:9, t:"The Expo", s:"11–12", f:"ch9.html", learn:"Your pitch and the premiere", lists:[["ch9-rehearse",4]], extra: d => (pj(d["ch9-pitch"]) && Object.values(pj(d["ch9-pitch"])).filter(v => (v || "").trim()).length >= 3 ? 1 : 0) + (d["ch9-job"] ? 1 : 0), of:2}
+  {n:1, t:"Meet AI", s:"1", f:"ch1.html", learn:"What AI is, how it learns. Pick your team and your part", lists:[], extra: d => (d["meet-ai-idea"] ? 1 : 0) + (pj(d["ch1-part"]) ? 1 : 0), of:2},
+  {n:2, t:"AI Training", s:"2–3", f:"ch2.html", learn:"Teach a real AI: school objects or a recycling robot", lists:[["ch2-list1",8],["ch2-list2",6],["ch2-list3",6]]},
+  {n:3, t:"Prompt Engineering", s:"4", f:"ch3.html", learn:"Design your part with Gemini: your design card", lists:[["ch3-list1",7]]},
+  {n:4, t:"AI Storytelling", s:"5", f:"ch4.html", learn:"A story from the future, with your own character", lists:[["ch4-list1",6],["ch4-hunt",5]]},
+  {n:5, t:"AI Images", s:"6", f:"ch5.html", learn:"3 pictures of your design with Adobe Express", lists:[["ch5-list1",8]]},
+  {n:6, t:"AI Voice", s:"7", f:"ch6.html", learn:"Your clip for the team podcast, in your own voice", lists:[["ch6-list1",8]]},
+  {n:7, t:"AI Video", s:"8–9", f:"ch7.html", learn:"30 seconds of video, fact-checked and labelled", lists:[["ch7-list1",8],["ch7-list2",6]]},
+  {n:8, t:"Website Building", s:"10–11", f:"ch8.html", learn:"Your page on the team website, tested and fixed", lists:[["ch8-list1",7],["ch8-launch",8]]},
+  {n:9, t:"The Exhibition", s:"12–13", f:"ch9.html", learn:"Your pitch, and both websites go live", lists:[["ch9-rehearse",4]], extra: d => (pj(d["ch9-pitch"]) && Object.values(pj(d["ch9-pitch"])).filter(v => (v || "").trim()).length >= 3 ? 1 : 0) + (d["ch9-job"] ? 1 : 0), of:2}
 ];
 function pj(v){ if (v == null) return null; if (typeof v !== "string") return v; try { return JSON.parse(v); } catch(e){ return v; } }
 function progress(d){ return CH.map(c => { let done = 0, total = c.of || 0; c.lists.forEach(([k, n]) => { total += n; const a = pj(d[k]); if (Array.isArray(a)) done += a.filter(Boolean).length; }); if (c.extra) done += c.extra(d); return total ? Math.min(100, Math.round(done / total * 100)) : 0; }); }
 function localData(){ const o = {}; for (let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); if (RX.test(k)) o[k] = localStorage.getItem(k); } return o; }
 function clearLocal(){ const ks = []; for (let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); if (RX.test(k)) ks.push(k); } ks.forEach(k => localStorage.removeItem(k)); }
 function restore(course){ clearLocal(); Object.entries(course || {}).forEach(([k, v]) => { if (RX.test(k)) try { localStorage.setItem(k, typeof v === "string" ? v : JSON.stringify(v)); } catch(e) {} }); }
-const SEGKEYS = ["ch5-seg","ch4-seg","ch3-seg","ch2-seg"];
-function segOf(d){ for (const k of SEGKEYS){ const v = pj(d[k]); if (v) return v; } return null; }
+const SITES = {school:"🏫 School 2040", planet:"🌍 Planet 2050"};
+function segOf(d){ const t = pj(d["ch1-team"]), p = pj(d["ch1-part"]); return SITES[t] ? SITES[t] + (p ? " · " + p : "") : null; }
 
 /* ---------- header ---------- */
 function top(){
@@ -263,7 +263,7 @@ function renderLogin(){
   const p = el("input", {id:"lp", type:"password", autocomplete:"current-password", placeholder:"e.g. cedar-42"});
   const err = el("div"), btn = el("button", {class:"btn", type:"submit"}, "Let's go!");
   $("#app").replaceChildren(el("section", {class:"login"},
-    el("div", {class:"hero"}, el("span", {class:"tag", style:"color:#FFC93C"}, "EB7 · Think, Train, Test"), el("h1", null, "Evergreen TV ", el("span", null, "AI course")), el("p", null, "Log in with the card your teacher gave you. Everything you do is saved to your account.")),
+    el("div", {class:"hero"}, el("span", {class:"tag", style:"color:#FFC93C"}, "EB7 · Learn AI, build the future"), el("h1", null, "AI ", el("span", null, "Creators")), el("p", null, "Log in with the card your teacher gave you. Everything you do is saved to your account.")),
     el("div", {class:"card"}, el("form", {class:"form", onsubmit: async e => { e.preventDefault(); err.replaceChildren(); if (!u.value.trim() || !p.value){ err.replaceChildren(el("div", {class:"fb no"}, "Type your username and password.")); return; }
         btn.disabled = true; btn.textContent = "Opening…";
         try { const r = await rpc("ailab_student_login", {p_user:u.value.trim(), p_pass:p.value}); ACC = {token:r.token, username:r.username, name:r.name, cls:r.class || ""}; localStorage.setItem(SESS, JSON.stringify(ACC)); restore(r.course); top(); route(); toast("Hi " + ACC.name + "!"); }
@@ -285,8 +285,8 @@ function renderHome(){
   const next = CH.find((c, i) => pr[i] < 100) || CH[CH.length - 1];
   $("#app").replaceChildren(
     el("section", {class:"welcome"},
-      el("div", null, el("span", {class:"tag"}, "12 sessions · 9 chapters"), el("h1", null, ACC ? "Hi " + ACC.name + "!" : "Evergreen TV AI course"),
-        el("p", {class:"lead"}, seg ? "Your segment: " + seg + ". Every chapter adds one part to your corner of Evergreen TV." : "Every chapter teaches one AI skill and adds one part to your corner of Evergreen TV.")),
+      el("div", null, el("span", {class:"tag"}, "13 sessions · 9 chapters"), el("h1", null, ACC ? "Hi " + ACC.name + "!" : "AI Creators"),
+        el("p", {class:"lead"}, seg ? "Your project: " + seg + ". Every chapter adds one piece to your page of the team website." : "Two teams, two websites: School 2040 and Planet 2050. Pick your team and your part in Chapter 1.")),
       el("div", {class:"card total"}, el("span", {class:"tag"}, "Your course"), el("b", null, all + "%"), el("div", {class:"bar"}, el("i", {style:"width:" + all + "%"})),
         el("a", {class:"btn", href:next.f}, (all ? "Continue: " : "Start: ") + "Chapter " + next.n))),
     el("div", {class:"chapters"}, ...CH.map((c, i) => el("a", {class:"ch" + (pr[i] === 100 ? " done" : ""), href:c.f},
@@ -333,13 +333,14 @@ function hub(tok){
   }
   function drawCards(){ const url = location.href.split("#")[0];
     cardsOut.replaceChildren(!cards.length ? "" : el("div", {class:"card", style:"margin-top:14px"}, el("h3", null, "Login cards"), el("p", {class:"muted"}, "Copy or write these down now: passwords are stored locked and can't be shown again. You can always make a new one."),
-      el("div", {class:"lcards"}, ...cards.map(c => el("div", {class:"lcard"}, el("span", {class:"tag"}, "Evergreen TV · " + (c.class || "")), el("b", null, c.name), el("span", null, "Username: ", el("strong", null, c.username)), el("span", null, "Password: ", el("strong", null, c.password)), el("small", null, url)))))); }
+      el("div", {class:"lcards"}, ...cards.map(c => el("div", {class:"lcard"}, el("span", {class:"tag"}, "AI Creators · " + (c.class || "")), el("b", null, c.name), el("span", null, "Username: ", el("strong", null, c.username)), el("span", null, "Password: ", el("strong", null, c.password)), el("small", null, url)))))); }
   const btn2 = (label, sure, fn) => { let armed = false; const b = el("button", {class:"ghost", type:"button", onclick:() => { if (!armed){ armed = true; b.textContent = sure; setTimeout(() => { armed = false; b.textContent = label; }, 3000); } else fn(); }}, label); return b; };
   const ago = t => { if (!t) return "never"; const m = (Date.now() - new Date(t)) / 60000; return m < 60 ? Math.round(m) + " min ago" : m < 1440 ? Math.round(m / 60) + " h ago" : Math.round(m / 1440) + " days ago"; };
-  function work(s){ const d = s.course || {}, ch = pj(d["ch4-char"]) || {}, pitch = pj(d["ch9-pitch"]) || {}, t1 = pj(d["ch2-tally1"]), acc = Array.isArray(t1) && t1[0] && (t1[0].r + t1[0].w) ? Math.round(t1[0].r / (t1[0].r + t1[0].w) * 100) + "%" : "—";
+  function work(s){ const d = s.course || {}, ch = pj(d["ch4-char"]) || {}, card = pj(d["ch3-card"]) || {}, st = pj(d["ch4-story"]) || {}, pitch = pj(d["ch9-pitch"]) || {}, t1 = pj(d["ch2-tally1"]), acc = Array.isArray(t1) && t1[0] && (t1[0].r + t1[0].w) ? Math.round(t1[0].r / (t1[0].r + t1[0].w) * 100) + "%" : "—";
     const item = (k, v) => v ? el("div", {class:"wk"}, el("span", {class:"tag"}, k), el("p", null, String(v))) : null;
-    const items = [item("Segment", segOf(d)), item("Chapter 1 idea", pj(d["meet-ai-idea"])), item("Chapter 2 AI accuracy", acc !== "—" ? acc : null), item("Character", ch.name ? ch.name + ": " + (ch.pers || "") : null),
-      item("Script", pj(d["ch6-script"]) || pj(d["ch4-script"])), item("Pitch", ["p1","p2","p3","p4","p5"].map(k => pitch[k]).filter(Boolean).join(" ")), item("Expo job", pj(d["ch9-job"]))].filter(Boolean);
+    const items = [item("Team and part", segOf(d)), item("Chapter 1 idea", pj(d["meet-ai-idea"])), item("Chapter 2 AI accuracy", acc !== "—" ? acc : null),
+      item("Design card", card.name ? card.name + ": " + [card.i1, card.i2, card.i3, card.mine].filter(Boolean).join(" · ") : null), item("Character", ch.name ? ch.name + " (" + (ch.who || "") + ")" + (ch.pers ? ": " + ch.pers : "") : null),
+      item("Story", st.text ? (st.title ? st.title + ": " : "") + st.text : null), item("Pitch", ["p1","p2","p3","p4","p5"].map(k => pitch[k]).filter(Boolean).join(" ")), item("Exhibition job", pj(d["ch9-job"]))].filter(Boolean);
     return el("div", {class:"work"}, ...(items.length ? items : [el("p", {class:"muted"}, "No work saved yet.")])); }
   function draw(){
     const classes = [...new Set(list.map(s => s.class_name || ""))].sort(), shown = list.filter(s => !filter || s.class_name === filter);
@@ -351,7 +352,7 @@ function hub(tok){
       el("div", {class:"tbl"}, el("table", null,
         el("tr", null, ...["Student","Username", ...CH.map(c => "Ch" + c.n), "Overall","Last active",""].map(h => el("th", null, h))),
         ...shown.flatMap(s => { const pr = progress(s.course || {}), all = Math.round(pr.reduce((a, b) => a + b, 0) / pr.length);
-          const row = el("tr", null, el("td", null, el("b", null, s.display_name), el("br"), el("small", {class:"muted"}, s.class_name)), el("td", null, s.username),
+          const row = el("tr", null, el("td", null, el("b", null, s.display_name), el("br"), el("small", {class:"muted"}, s.class_name), segOf(s.course || {}) ? [el("br"), el("small", null, segOf(s.course || {}))] : ""), el("td", null, s.username),
             ...pr.map(p => el("td", {class: p === 100 ? "ok" : p ? "part" : ""}, p === 100 ? "✓" : p ? p + "%" : "·")), el("td", null, el("b", null, all + "%")),
             el("td", null, el("small", null, ago([s.course_at, s.updated_at, s.last_login].filter(Boolean).sort().pop()))),
             el("td", null, el("div", {class:"row", style:"flex-wrap:nowrap"}, el("button", {class:"ghost", type:"button", onclick:() => { open = open === s.username ? null : s.username; draw(); }}, open === s.username ? "Hide work" : "See work"),
@@ -360,7 +361,7 @@ function hub(tok){
           return open === s.username ? [row, el("tr", null, el("td", {colspan: String(CH.length + 5)}, work(s)))] : [row]; })))));
   }
   function csv(rows){ const q = v => '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"';
-    const lines = [["name","class","username", ...CH.map(c => "chapter " + c.n + " %"), "overall %", "segment"].map(q).join(",")].concat(rows.map(s => { const pr = progress(s.course || {}); return [s.display_name, s.class_name, s.username, ...pr, Math.round(pr.reduce((a, b) => a + b, 0) / pr.length), segOf(s.course || {}) || ""].map(q).join(","); }));
+    const lines = [["name","class","username", ...CH.map(c => "chapter " + c.n + " %"), "overall %", "team and part"].map(q).join(",")].concat(rows.map(s => { const pr = progress(s.course || {}); return [s.display_name, s.class_name, s.username, ...pr, Math.round(pr.reduce((a, b) => a + b, 0) / pr.length), segOf(s.course || {}) || ""].map(q).join(","); }));
     const text = "﻿" + lines.join("\n");
     navigator.clipboard.writeText(text).then(() => toast("CSV copied. Paste it into Excel or Google Sheets."), () => toast("Copy failed. Try again.")); }
   $("#app").replaceChildren(

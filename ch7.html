@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
-<title>Video and Fakes</title>
+<title>AI Video</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -170,6 +170,14 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 
 /* chapter extras */
 .pdiv{align-self:flex-start;font:700 11px/1 var(--mono);color:var(--muted);padding:10px 2px 0;border-top:4px solid transparent}
+.myproj{margin-bottom:18px;display:grid;gap:10px}
+.teamrow{display:flex;gap:8px;flex-wrap:wrap}
+.teambtn{background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:10px 14px;font-weight:700;font-size:16px;text-align:left}
+.teambtn:hover{border-color:var(--ink)}
+.teambtn[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+.partlbl{display:grid;gap:4px;font-weight:700;font-size:15px}
+.partlbl select{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;max-width:560px}
+.partnow{margin:0;font-size:16px}
 .quote{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.3;margin:6px 0 14px}
 .verdict{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:16px}
 .verdict.h{background:var(--green-soft)}.verdict.a{background:var(--onair-soft)}
@@ -199,7 +207,7 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>ON AIR</span><span>Evergreen TV <small>· AI class · Chapter 7: Video and fakes</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 7: AI Video</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -243,8 +251,8 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 </section>
 
 <section class="seg" id="seg-3" data-min="10" data-title="Storyboard" data-p="1" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: plan your segment</h2><p>Period 1 · 10 minutes · on this page</p></div></div>
-  <p class="big">Every TV segment starts on paper. Plan your 4 scenes. Aim for 45 seconds in total.</p>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: plan your 30 seconds</h2><p>Period 1 · 10 minutes · on this page</p></div></div>
+  <p class="big" id="vidGoal">Every film starts on paper. Plan your 5 scenes. Aim for 30 seconds in total.</p>
   <div class="board" id="board"></div>
   <p class="lead" style="margin-top:14px">Total: <span class="score" id="total">0 s</span> <span class="muted" id="totalMsg"></span></p>
 </section>
@@ -254,8 +262,8 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
   <div class="mission">
     <div><ol class="checklist" id="list1"></ol></div>
     <aside class="card side">
-      <span class="tag">Your files (Evergreen TV folder)</span>
-      <ul class="files"><li><b>title.png</b> · Chapter 5</li><li><b>studio.png</b> · Chapter 5</li><li><b>logo.png</b> · Chapter 5</li><li><b>presenter.mp4</b> · Chapter 6</li></ul>
+      <span class="tag">Your files (AI Creators folder)</span>
+      <ul class="files"><li><b>hero.png</b> · Chapter 5</li><li><b>detail.png</b> · Chapter 5</li><li><b>character.png</b> · Chapter 5</li><li><b>podcast.mp4</b> · Chapter 6</li></ul>
       <span class="tag">Your plan</span>
       <ol class="mini" id="miniPlan"></ol>
     </aside>
@@ -264,34 +272,31 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 
 <section class="seg" id="seg-5" data-min="10" data-title="Fact check" data-p="2" hidden>
   <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: fact-check before it airs</h2><p>Period 2 · 10 minutes · real newsrooms do this</p></div></div>
-  <p class="big">Write the 3 most important facts in your segment. Find each one on 2 trusted websites, or in what really happened at school.</p>
+  <p class="big">Write the 3 most important facts in your video (numbers, science, how things work today). Find each one on 2 trusted websites.</p>
   <div class="facts" id="facts"></div>
   <p class="lead" id="factMsg" style="margin-top:12px"></p>
 </section>
 
 <section class="seg" id="seg-6" data-min="20" data-title="Mission: finish" data-p="2" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>Mission: finish, label, publish</h2><p>Period 2 · 20 minutes · Adobe Express, then Gemini</p></div></div>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>Mission: finish and label</h2><p>Period 2 · 20 minutes · Adobe Express</p></div></div>
   <div class="mission">
     <div><ol class="checklist" id="list2"></ol></div>
     <aside class="card side">
-      <span class="tag">Prompt for Gemini (adds your segment to your corner)</span>
-      <pre class="prompt small" id="addOut">My finished segment video is called segment.mp4 and it will be in the same folder as my page.
-Replace the presenter video with a big video player for segment.mp4, at the top of my page, with the caption: "Evergreen TV · Made with AI".
-Keep everything else on my page the same.</pre>
-      <div class="row"><button class="btn sm copy" data-copy="addOut" type="button">Copy Gemini prompt</button></div>
+      <span class="tag">Why we label</span>
+      <p class="lead" style="margin:0;font-size:17px">You just learned how easy it is to fake a video. Honest creators always say what was made with AI. Your ending scene says it, and so does your website.</p>
     </aside>
   </div>
 </section>
 
 <section class="seg" id="seg-7" data-min="15" data-title="Mini premiere" data-p="2" hidden>
   <div class="lower"><div class="no">07</div><div class="name"><h2>Mini premiere</h2><p>Period 2 · 15 minutes · the class watches</p></div></div>
-  <p class="big">Watch 4 or 5 finished segments. After each one, one student gives a star and a wish.</p>
+  <p class="big">Watch 2 videos from each team. After each one, one student gives a star and a wish.</p>
   <div class="grid g3">
     <div class="card"><span class="tag">A star</span><p class="lead" style="margin:6px 0 0">One thing that really works.</p></div>
     <div class="card"><span class="tag">A wish</span><p class="lead" style="margin:6px 0 0">One thing to fix next week.</p></div>
     <div class="card"><span class="tag">The 4 S check</span><p class="lead" style="margin:6px 0 0">Is it labelled Made with AI? Are the facts checked?</p></div>
   </div>
-  <div class="card" style="margin-top:16px;background:var(--gold-soft);border-color:transparent"><span class="tag">Next week</span><p class="lead" style="margin:6px 0 0">Test and fix: a classmate tests your whole corner, and you make it better.</p></div>
+  <div class="card" style="margin-top:16px;background:var(--gold-soft);border-color:transparent"><span class="tag">Next week</span><p class="lead" style="margin:6px 0 0">Website: everything you made goes on your page of the team website.</p></div>
 </section>
 </main>
 <nav class="rail" aria-label="Lesson segments">
@@ -303,6 +308,41 @@ Keep everything else on my page the same.</pre>
 </nav>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <script>
+window.P = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const store = { raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
+/* ---------- the year project: two teams, each kid owns one part ---------- */
+const TEAMS = {
+  school: {key:"school", name:"Reinvent the School", site:"School 2040", emoji:"🏫", goal:"Design the school of tomorrow",
+    world:"our school, Evergreen, in the year 2040", podcast:"the School 2040 podcast", video:"a promo video for the school of tomorrow", look:"a bright, friendly school in Lebanon in the year 2040",
+    parts:[["The classroom","Where and how we learn: desks, screens, light, sound"],["The library","Books, reading corners, quiet, research"],["The canteen","Healthy food, no waste, where we eat together"],["Playground and sports","Games, fields, breaks, team sports"],["The science lab","Experiments, robots, discovering"],["Art and music studio","Drawing, making, singing, performing"],["Getting to school","Buses, bikes, walking, safety"],["The school day","Timetable, homework, exams, breaks"],["Wellbeing corner","Feeling calm, friendship, getting help"],["The school garden","Plants, outdoor lessons, animals"]]},
+  planet: {key:"planet", name:"The Future of Our Planet", site:"Planet 2050", emoji:"🌍", goal:"Create a better world with AI",
+    world:"planet Earth, and Lebanon, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
+    parts:[["Clean energy","Sun, wind and power for every home"],["Water","Clean water for everyone, saving every drop"],["Waste and recycling","Less trash, sorting, reusing"],["Clean air","No smoke, less pollution, breathing well"],["Transport","Buses, trains, bikes and clean cars"],["Cities and homes","Green buildings, parks, cool streets"],["Food and farming","Growing food, eating well, no food waste"],["Oceans and beaches","Clean sea, no plastic, sea life"],["Forests and animals","Trees, the cedars, wildlife"],["Weather and climate","Heat waves, storms, being ready"]]}
+};
+const rawSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
+function me(){
+  const t = store.raw("ch1-team"), T = TEAMS[t] || null, p = store.raw("ch1-part"), P = T && T.parts.find(x => x[0] === p);
+  return {team:T ? t : null, T, part:P ? P[0] : null, about:P ? P[1] : ""};
+}
+/* a small "my team · my part" bar any chapter can show; changing it is saved for every chapter */
+function picker(box, onChange){
+  function draw(){
+    const m = me();
+    const teamBtns = Object.values(TEAMS).map(T => el("button", {class:"teambtn", type:"button", "aria-pressed":String(m.team === T.key), onclick:() => { rawSet("ch1-team", T.key); if (!TEAMS[T.key].parts.some(x => x[0] === store.raw("ch1-part"))) rawSet("ch1-part", null); draw(); if (onChange) onChange(); }}, T.emoji + " " + T.name));
+    const sel = el("select", {"aria-label":"My part of the project"}, el("option", {value:""}, m.T ? "Choose your part…" : "Choose a team first"), ...(m.T ? m.T.parts.map(([n, d]) => el("option", {value:n}, n + " · " + d)) : []));
+    sel.value = m.part || ""; sel.disabled = !m.T;
+    sel.addEventListener("change", () => { rawSet("ch1-part", sel.value || null); draw(); if (onChange) onChange(); });
+    box.replaceChildren(el("span", {class:"tag"}, "My project"), el("div", {class:"teamrow"}, ...teamBtns), el("label", {class:"partlbl"}, "My part", sel),
+      m.part ? el("p", {class:"partnow"}, "You are building ", el("b", null, m.part), " for ", el("b", null, m.T.site), ".") : el("p", {class:"partnow muted"}, "Pick your team and your part. Ask your teacher if you are not sure."));
+  }
+  draw();
+}
+/* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
+function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
+return {TEAMS, me, picker, fill, rawSet};
+})();
+
 window.K = (function(){
 const $ = s => document.querySelector(s);
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
@@ -341,13 +381,12 @@ function checklist(id, items, compact){
   $("#" + id).replaceChildren(...items.map(([title, body], i) => {
     const cb = el("input", {type:"checkbox", id: id + "-" + i}); cb.checked = !!saved[i];
     const li = el("li", {class: cb.checked ? "ok" : ""}, el("label", {for: id + "-" + i}, cb, el("span", null, el("b", null, title), body ? el("span", {class:"how"}, body) : "")));
-    cb.addEventListener("change", () => { saved[i] = cb.checked; store.set(id, saved); li.classList.toggle("ok", cb.checked); });
+    cb.addEventListener("change", () => { saved[i] = cb.checked; store.set(id, saved); li.classList.toggle("ok", cb.checked); $("#" + id).dispatchEvent(new Event("change")); });
     return li; }));
+  return { tick(i){ if (saved[i]) return; const cb = document.getElementById(id + "-" + i); if (!cb) return; cb.checked = true; saved[i] = true; store.set(id, saved); cb.closest("li").classList.add("ok"); $("#" + id).dispatchEvent(new Event("change")); } };
 }
-const SEGS = ["Sports Desk","Weather Robot","Tech and AI Corner","School News","Canteen Review","Style and Trends","Games and Apps Review","Interview with a Legend","Fake or Real?","Funny Ads"];
-function prevSeg(){ for (const k of [PFX + "-seg","ch5-seg","ch4-seg","ch3-seg","ch2-seg"]) { const v = store.raw(k); if (v && SEGS.includes(v)) return v; } return "Sports Desk"; }
-function segSelect(sel, onChange){ SEGS.forEach(n => sel.append(el("option", {value:n}, n))); sel.value = prevSeg(); sel.addEventListener("change", () => { store.set("seg", sel.value); if (onChange) onChange(); }); }
-return {$, el, store, init, start, toast, copy, checklist, SEGS, segSelect, prevSeg};
+const {TEAMS, me, picker, fill, rawSet} = window.P;
+return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet};
 })();
 
 </script>
@@ -371,11 +410,14 @@ $("#fr").replaceChildren(...FR.map(([t, real, why]) => { const v = el("div"); le
   return el("div", {class:"card"}, el("p", {class:"quote"}, t), el("div", {class:"row"}, el("button", {class:"btn sm alt", type:"button", onclick:() => pick(true)}, "Real"), el("button", {class:"btn sm alt", type:"button", onclick:() => pick(false)}, "Fake")), v); }));
 
 /* storyboard */
+const card = K.store.raw("ch3-card") || {}, M = K.me(), TT = M.T || K.TEAMS.school;
+$("#vidGoal").textContent = "Your video: " + (TT.key === "planet" ? "a short environmental documentary" : "a promo for the school of tomorrow") + " about " + (M.part ? M.part.toLowerCase() : "your part") + ". Plan your 5 scenes. Aim for 30 seconds in total.";
 const DEF = [
-  {name:"Title", what:"title.png with my segment name on it", secs:3},
-  {name:"Presenter", what:"presenter.mp4: my character says my script", secs:30},
-  {name:"Picture", what:"studio.png or logo.png with one fact as a caption", secs:7},
-  {name:"Ending", what:"Evergreen TV · Made with AI · my first name", secs:5}
+  {name:"Title", what:"hero.png with the title: " + (card.name || "the name of my design"), secs:3},
+  {name:"Podcast", what:"the best 15 seconds of podcast.mp4", secs:15},
+  {name:"Close-up", what:"detail.png with one fact as a caption", secs:5},
+  {name:"Character", what:"character.png with one line: why the future is better", secs:4},
+  {name:"Ending", what:TT.site + " · Made with AI · my first name", secs:3}
 ];
 const plan = store.get("plan") || DEF.map(x => Object.assign({}, x));
 function drawBoard(){
@@ -389,44 +431,42 @@ function drawBoard(){
   save();
 }
 function save(){ store.set("plan", plan); const t = plan.reduce((a, s) => a + (+s.secs || 0), 0); $("#total").textContent = t + " s";
-  $("#totalMsg").textContent = t > 50 ? "· too long, cut something" : t < 35 ? "· a bit short" : "· good length";
+  $("#totalMsg").textContent = t > 40 ? "· too long, cut something" : t < 22 ? "· a bit short" : "· good length";
   $("#miniPlan").replaceChildren(...plan.map(s => el("li", null, el("b", null, s.name + " (" + s.secs + " s): "), s.what))); }
 drawBoard();
 
 checklist("list1", [
-  ["Start a video", "In Adobe Express, click Create video, then choose to start from scratch with a 16:9 (wide) size."],
-  ["Upload your files", "Click Upload (or Media, then Upload) and add title.png, studio.png, logo.png and presenter.mp4 from your Evergreen TV folder."],
-  ["Scene 1: title", "Put title.png in the first scene. Add a text with your segment name. Set it to about 3 seconds."],
-  ["Scene 2: presenter", "Add a new scene with the + button and put presenter.mp4 in it."],
-  ["Scene 3: picture", "Add a scene with studio.png or logo.png and write one fact from your script as a caption."],
-  ["Scene 4: ending", "Add a scene with the text: Evergreen TV · Made with AI · your first name."],
+  ["Start a video", "In Adobe Express, click Create video, then start from scratch with a 16:9 (wide) size."],
+  ["Upload your files", "Click Upload (or Media, then Upload) and add hero.png, detail.png, character.png and podcast.mp4 from your AI Creators folder."],
+  ["Scene 1: title", "Put hero.png in the first scene. Add the name of your design as a big title. About 3 seconds."],
+  ["Scene 2: your voice", "Add a scene with the + button and put podcast.mp4 in it. Trim it to the best 15 seconds."],
+  ["Scene 3: close-up", "Add detail.png and write one fact as a caption."],
+  ["Scenes 4 and 5", "character.png with one short line, then the ending: your team site, Made with AI, your first name."],
   ["Music, quietly", "Add a music track from Adobe's library. Make it quiet so your voice is clear."],
   ["Watch it once", "Press Play and watch your first cut from start to end. Your project saves by itself in Adobe."]
 ]);
 /* fact check */
 const facts = store.get("facts") || [{c:"", s1:"", s2:"", ok:false},{c:"", s1:"", s2:"", ok:false},{c:"", s1:"", s2:"", ok:false}];
 function drawFacts(){
-  $("#facts").replaceChildren(el("div", {class:"frow head"}, el("span", null, "Fact in my segment"), el("span", null, "Source 1"), el("span", null, "Source 2"), el("span", null, "Checked")),
+  $("#facts").replaceChildren(el("div", {class:"frow head"}, el("span", null, "Fact in my video"), el("span", null, "Source 1"), el("span", null, "Source 2"), el("span", null, "Checked")),
     ...facts.map((f, i) => { const inp = (k, ph) => { const x = el("input", {placeholder:ph, "aria-label": k + " " + (i + 1)}); x.value = f[k]; x.addEventListener("input", () => { f[k] = x.value; sf(); }); return x; };
       const cb = el("input", {type:"checkbox", "aria-label":"Fact " + (i + 1) + " checked"}); cb.checked = f.ok; cb.addEventListener("change", () => { f.ok = cb.checked; sf(); });
-      return el("div", {class:"frow"}, inp("c", "e.g. Our team won 3–1"), inp("s1", "website or who told you"), inp("s2", "a second source"), el("label", {class:"okbox"}, cb, el("span", null, "OK"))); }));
+      return el("div", {class:"frow"}, inp("c", TT.key === "planet" ? "e.g. Lebanon has about 300 sunny days a year" : "e.g. Students learn better with daylight"), inp("s1", "website or who told you"), inp("s2", "a second source"), el("label", {class:"okbox"}, cb, el("span", null, "OK"))); }));
   sf();
 }
 function sf(){ store.set("facts", facts); const n = facts.filter(f => f.ok && f.c && f.s1 && f.s2).length; $("#factMsg").textContent = n === 3 ? "All 3 facts checked with 2 sources each. Ready to air." : n + " of 3 facts fully checked (fact, two sources, ticked). If a fact fails, change it in your script."; }
 drawFacts();
 checklist("list2", [
-  ["Fix your facts", "If a fact failed the check, change the caption or record that line again in Chapter 6's tool."],
-  ["Add the label", "Make sure the ending says Made with AI. Add a small \"AI\" label in a corner of scene 2 too."],
-  ["Check the length", "Watch the whole video. Under 50 seconds? Cut anything that drags."],
-  ["Download", "Click Download, choose MP4, and save it in your Evergreen TV folder as segment.mp4."],
-  ["Add it to your corner", "Copy the Gemini prompt on the right, paste it in your page's chat, then download the page into the same folder."],
-  ["Test it", "Open the page from the folder. Does the video play with sound?"]
+  ["Fix your facts", "If a fact failed the check, change the caption, or say it differently."],
+  ["Add the label", "The ending says Made with AI. Add a small \"AI\" label in a corner of the scenes made by AI."],
+  ["Check the length", "Watch the whole video. About 30 seconds? Cut anything that drags."],
+  ["Check the sound", "Can you hear every word over the music?"],
+  ["Download", "Click Download, choose MP4, and save it in your AI Creators folder as video.mp4."],
+  ["Show a friend", "Does your friend understand your design in 30 seconds? If not, change one scene."]
 ]);
-document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => { const s = document.getElementById(b.dataset.copy); copy(s.textContent, s, "Gemini"); }));
 K.start();
 })();
 </script>
-
 <script src="config.js"></script>
 <script src="sync.js"></script>
 </body></html>

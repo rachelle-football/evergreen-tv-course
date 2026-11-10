@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
-<title>The Expo</title>
+<title>The Exhibition</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -170,6 +170,14 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 
 /* chapter extras */
 .pdiv{align-self:flex-start;font:700 11px/1 var(--mono);color:var(--muted);padding:10px 2px 0;border-top:4px solid transparent}
+.myproj{margin-bottom:18px;display:grid;gap:10px}
+.teamrow{display:flex;gap:8px;flex-wrap:wrap}
+.teambtn{background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:10px 14px;font-weight:700;font-size:16px;text-align:left}
+.teambtn:hover{border-color:var(--ink)}
+.teambtn[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+.partlbl{display:grid;gap:4px;font-weight:700;font-size:15px}
+.partlbl select{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;max-width:560px}
+.partnow{margin:0;font-size:16px}
 .pitchform{display:grid;gap:10px}
 .ing{display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
 .pitch{font-family:var(--display);font-size:21px;font-weight:600;line-height:1.4;margin:6px 0 10px}
@@ -205,7 +213,7 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>ON AIR</span><span>Evergreen TV <small>· AI class · Chapter 9: The Expo</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 9: The Exhibition</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -215,11 +223,11 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 <main class="wrap" id="stage">
 <section class="seg" id="seg-1" data-min="3" data-title="Launch week">
   <div class="lower"><div class="no">01</div><div class="name"><h2>Launch week</h2><p>Period 1 · 3 minutes</p></div></div>
-  <p class="big">Your corners are ready. Next week, Evergreen TV goes live for parents and the school, and you present your part.</p>
+  <p class="big">Your pages are ready. Next week both team websites go live for parents and the school: 🏫 School 2040 and 🌍 Planet 2050.</p>
   <div class="grid g3">
-    <div class="card"><span class="tag">The platform</span><p class="lead" style="margin:6px 0 0">One home page with Episode 1 at the top and a tile for every corner.</p></div>
-    <div class="card"><span class="tag">Episode 1</span><p class="lead" style="margin:6px 0 0">Your teacher joins all the segments into one show of a few minutes.</p></div>
-    <div class="card"><span class="tag">You</span><p class="lead" style="margin:6px 0 0">Stand by your corner and explain it in 30 seconds.</p></div>
+    <div class="card"><span class="tag">Two websites</span><p class="lead" style="margin:6px 0 0">Each team has a home page with a tile for every part. Click a tile, and you see that student's page.</p></div>
+    <div class="card"><span class="tag">Two trailers</span><p class="lead" style="margin:6px 0 0">Your teacher joins the best videos of each team into a 2-minute trailer.</p></div>
+    <div class="card"><span class="tag">You</span><p class="lead" style="margin:6px 0 0">Stand by your page and explain your part in 30 seconds.</p></div>
   </div>
 </section>
 
@@ -227,11 +235,11 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
   <div class="lower"><div class="no">02</div><div class="name"><h2>Mission: write your 30-second pitch</h2><p>Period 1 · 17 minutes · on this page</p></div></div>
   <div class="mission">
     <div class="pitchform">
-      <label class="ing"><span class="tag">1 · My corner</span><input id="p1" placeholder="e.g. I made the Sports Desk of Evergreen TV."></label>
-      <label class="ing"><span class="tag">2 · What the AI did</span><input id="p2" placeholder="e.g. Gemini wrote the code, Adobe drew the studio and moved my presenter."></label>
-      <label class="ing"><span class="tag">3 · What I did</span><input id="p3" placeholder="e.g. I had the idea, wrote the facts, voiced the presenter and fixed the AI's mistakes."></label>
-      <label class="ing"><span class="tag">4 · What surprised me</span><input id="p4" placeholder="e.g. The AI drew an American football when I said football."></label>
-      <label class="ing"><span class="tag">5 · Try it!</span><input id="p5" placeholder="e.g. Ask my Coach Kick character a question."></label>
+      <label class="ing"><span class="tag">1 · My part</span><input id="p1" placeholder="e.g. I designed the library of School 2040: the Story Cave."></label>
+      <label class="ing"><span class="tag">2 · What the AI did</span><input id="p2" placeholder="e.g. Gemini helped me with ideas and wrote the code, Adobe drew my pictures."></label>
+      <label class="ing"><span class="tag">3 · What I did</span><input id="p3" placeholder="e.g. I chose the ideas, wrote my story, recorded my voice and fixed the AI's mistakes."></label>
+      <label class="ing"><span class="tag">4 · What surprised me</span><input id="p4" placeholder="e.g. The AI drew only boys in my library until I changed my prompt."></label>
+      <label class="ing"><span class="tag">5 · Try it!</span><input id="p5" placeholder="e.g. Watch my 30-second video, or take my quiz."></label>
     </div>
     <aside class="card side">
       <span class="tag">Your pitch</span>
@@ -244,12 +252,12 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 
 <section class="seg" id="seg-3" data-min="15" data-title="Rehearse" hidden>
   <div class="lower"><div class="no">03</div><div class="name"><h2>Rehearse in pairs</h2><p>Period 1 · 15 minutes</p></div></div>
-  <p class="big">Say your pitch to a partner with your corner open on the screen. Then swap. Your partner checks these 4 things.</p>
+  <p class="big">Say your pitch to a partner with your page open on the screen. Then swap. Your partner checks these 4 things.</p>
   <ol class="checklist" id="rehearse"></ol>
 </section>
 
 <section class="seg" id="seg-4" data-min="10" data-title="Expo jobs" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Pick your Expo job</h2><p>Period 1 · 10 minutes · everyone also presents their own corner</p></div></div>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Pick your Expo job</h2><p>Period 1 · 10 minutes · everyone also presents their own page</p></div></div>
   <div class="pick" id="jobs"></div>
   <p class="lead" id="jobMsg" style="margin-top:14px"></p>
 </section>
@@ -259,25 +267,27 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
   <div class="runsheet" id="run"></div>
   <div class="card" style="margin-top:16px">
     <span class="tag">Host script (opening)</span>
-    <pre class="prompt" id="hostScript">Good morning everyone, and welcome to the launch of Evergreen TV!
-We are EB7, and for the last 12 weeks we learned how AI really works.
-We trained AIs, caught them making mistakes, and used them to build our own TV platform.
-Everything you will see was directed by us and made with AI, and every fact was checked by us.
-Please put your phones on silent. Lights down: here is Episode 1!</pre>
+    <pre class="prompt" id="hostScript">Good morning everyone, and welcome to the AI Creators Exhibition!
+We are EB7, and this year we learned how AI really works.
+We trained AIs, caught them making mistakes, and used them as a tool to imagine a better future.
+Team 1 reinvented our school: welcome to School 2040.
+Team 2 designed the future of our planet: welcome to Planet 2050.
+Every idea was chosen by us, everything AI-made is labelled, and every fact was checked by us.
+Please put your phones on silent. Lights down: here are our trailers!</pre>
     <div class="row"><button class="btn sm copy" data-copy="hostScript" type="button">Copy host script</button></div>
   </div>
 </section>
 
 <section class="seg" id="seg-6" data-min="20" data-title="Teacher: build the platform" data-p="2" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>Teacher tool: build the platform home page</h2><p>Before premiere day · about 20 minutes</p></div></div>
-  <p class="lead">Add one line per corner. This makes the Evergreen TV home page (index.html) with Episode 1 at the top and a tile for every student's corner.</p>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>Teacher tool: build the two websites</h2><p>Before premiere day · about 20 minutes</p></div></div>
+  <p class="lead">Add one line per student. This makes 3 pages: <b>index.html</b> (the entrance, with both teams), <b>school.html</b> and <b>planet.html</b> (a trailer and a tile for every part).</p>
   <div class="grid g2" style="align-items:start">
     <div class="card">
-      <div class="crow head"><span>First name</span><span>Segment</span><span>Folder / page file</span><span></span></div>
+      <div class="crow head"><span>First name</span><span>Team and part</span><span>Folder / page file</span><span></span></div>
       <div id="rows"></div>
-      <div class="row" style="margin-top:10px"><button class="btn sm alt" id="addRow" type="button">+ Add a corner</button></div>
-      <label class="tag" for="epFile" style="display:block;margin-top:14px">Episode 1 video file</label><input id="epFile" value="episode.mp4">
-      <div class="row" style="margin-top:12px"><button class="btn sm" id="copyHome" type="button">Copy index.html code</button></div>
+      <div class="row" style="margin-top:10px"><button class="btn sm alt" id="addRow" type="button">+ Add a student</button></div>
+      <p class="muted" style="font-size:15px;margin:14px 0 0">Trailer files: <b>school-trailer.mp4</b> and <b>planet-trailer.mp4</b></p>
+      <div class="row" style="margin-top:12px"><button class="btn sm" id="copyIndex" type="button">Copy index.html</button><button class="btn sm" id="copySchool" type="button">Copy school.html</button><button class="btn sm" id="copyPlanet" type="button">Copy planet.html</button></div>
     </div>
     <div class="card">
       <span class="tag">Preview</span>
@@ -297,6 +307,41 @@ Please put your phones on silent. Lights down: here is Episode 1!</pre>
 </nav>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <script>
+window.P = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const store = { raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
+/* ---------- the year project: two teams, each kid owns one part ---------- */
+const TEAMS = {
+  school: {key:"school", name:"Reinvent the School", site:"School 2040", emoji:"🏫", goal:"Design the school of tomorrow",
+    world:"our school, Evergreen, in the year 2040", podcast:"the School 2040 podcast", video:"a promo video for the school of tomorrow", look:"a bright, friendly school in Lebanon in the year 2040",
+    parts:[["The classroom","Where and how we learn: desks, screens, light, sound"],["The library","Books, reading corners, quiet, research"],["The canteen","Healthy food, no waste, where we eat together"],["Playground and sports","Games, fields, breaks, team sports"],["The science lab","Experiments, robots, discovering"],["Art and music studio","Drawing, making, singing, performing"],["Getting to school","Buses, bikes, walking, safety"],["The school day","Timetable, homework, exams, breaks"],["Wellbeing corner","Feeling calm, friendship, getting help"],["The school garden","Plants, outdoor lessons, animals"]]},
+  planet: {key:"planet", name:"The Future of Our Planet", site:"Planet 2050", emoji:"🌍", goal:"Create a better world with AI",
+    world:"planet Earth, and Lebanon, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
+    parts:[["Clean energy","Sun, wind and power for every home"],["Water","Clean water for everyone, saving every drop"],["Waste and recycling","Less trash, sorting, reusing"],["Clean air","No smoke, less pollution, breathing well"],["Transport","Buses, trains, bikes and clean cars"],["Cities and homes","Green buildings, parks, cool streets"],["Food and farming","Growing food, eating well, no food waste"],["Oceans and beaches","Clean sea, no plastic, sea life"],["Forests and animals","Trees, the cedars, wildlife"],["Weather and climate","Heat waves, storms, being ready"]]}
+};
+const rawSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
+function me(){
+  const t = store.raw("ch1-team"), T = TEAMS[t] || null, p = store.raw("ch1-part"), P = T && T.parts.find(x => x[0] === p);
+  return {team:T ? t : null, T, part:P ? P[0] : null, about:P ? P[1] : ""};
+}
+/* a small "my team · my part" bar any chapter can show; changing it is saved for every chapter */
+function picker(box, onChange){
+  function draw(){
+    const m = me();
+    const teamBtns = Object.values(TEAMS).map(T => el("button", {class:"teambtn", type:"button", "aria-pressed":String(m.team === T.key), onclick:() => { rawSet("ch1-team", T.key); if (!TEAMS[T.key].parts.some(x => x[0] === store.raw("ch1-part"))) rawSet("ch1-part", null); draw(); if (onChange) onChange(); }}, T.emoji + " " + T.name));
+    const sel = el("select", {"aria-label":"My part of the project"}, el("option", {value:""}, m.T ? "Choose your part…" : "Choose a team first"), ...(m.T ? m.T.parts.map(([n, d]) => el("option", {value:n}, n + " · " + d)) : []));
+    sel.value = m.part || ""; sel.disabled = !m.T;
+    sel.addEventListener("change", () => { rawSet("ch1-part", sel.value || null); draw(); if (onChange) onChange(); });
+    box.replaceChildren(el("span", {class:"tag"}, "My project"), el("div", {class:"teamrow"}, ...teamBtns), el("label", {class:"partlbl"}, "My part", sel),
+      m.part ? el("p", {class:"partnow"}, "You are building ", el("b", null, m.part), " for ", el("b", null, m.T.site), ".") : el("p", {class:"partnow muted"}, "Pick your team and your part. Ask your teacher if you are not sure."));
+  }
+  draw();
+}
+/* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
+function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
+return {TEAMS, me, picker, fill, rawSet};
+})();
+
 window.K = (function(){
 const $ = s => document.querySelector(s);
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
@@ -335,13 +380,12 @@ function checklist(id, items, compact){
   $("#" + id).replaceChildren(...items.map(([title, body], i) => {
     const cb = el("input", {type:"checkbox", id: id + "-" + i}); cb.checked = !!saved[i];
     const li = el("li", {class: cb.checked ? "ok" : ""}, el("label", {for: id + "-" + i}, cb, el("span", null, el("b", null, title), body ? el("span", {class:"how"}, body) : "")));
-    cb.addEventListener("change", () => { saved[i] = cb.checked; store.set(id, saved); li.classList.toggle("ok", cb.checked); });
+    cb.addEventListener("change", () => { saved[i] = cb.checked; store.set(id, saved); li.classList.toggle("ok", cb.checked); $("#" + id).dispatchEvent(new Event("change")); });
     return li; }));
+  return { tick(i){ if (saved[i]) return; const cb = document.getElementById(id + "-" + i); if (!cb) return; cb.checked = true; saved[i] = true; store.set(id, saved); cb.closest("li").classList.add("ok"); $("#" + id).dispatchEvent(new Event("change")); } };
 }
-const SEGS = ["Sports Desk","Weather Robot","Tech and AI Corner","School News","Canteen Review","Style and Trends","Games and Apps Review","Interview with a Legend","Fake or Real?","Funny Ads"];
-function prevSeg(){ for (const k of [PFX + "-seg","ch5-seg","ch4-seg","ch3-seg","ch2-seg"]) { const v = store.raw(k); if (v && SEGS.includes(v)) return v; } return "Sports Desk"; }
-function segSelect(sel, onChange){ SEGS.forEach(n => sel.append(el("option", {value:n}, n))); sel.value = prevSeg(); sel.addEventListener("change", () => { store.set("seg", sel.value); if (onChange) onChange(); }); }
-return {$, el, store, init, start, toast, copy, checklist, SEGS, segSelect, prevSeg};
+const {TEAMS, me, picker, fill, rawSet} = window.P;
+return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet};
 })();
 
 </script>
@@ -362,77 +406,91 @@ $("#pTimer").onclick = () => { if (pt){ clearInterval(pt); pt = null; $("#pTimer
 checklist("rehearse", [
   ["Under 30 seconds", "Your partner times you."],
   ["Loud and clear", "Could your partner hear every word?"],
-  ["Shows the screen", "You point at your corner while you talk."],
+  ["Shows the screen", "You point at your page while you talk."],
   ["Says who did what", "You say clearly what the AI did and what you did."]
 ]);
 /* jobs */
-const JOBS = [["Host","Opens the show with the host script and introduces Episode 1."],["Tech crew","Plays Episode 1 and keeps the platform open on the big screen."],["Guide","Walks visitors from corner to corner."],["Live demo","Builds a page live from a visitor's idea with Gemini Canvas."],["Fake or Real? booth","Challenges parents to spot AI-made pictures and fake facts."],["Greeter","Welcomes guests at the door and gives them the platform link."]];
+const JOBS = [["Host","Opens the exhibition with the host script and introduces the two trailers."],["Tech crew","Plays the trailers and keeps both websites open on the big screens."],["Guide","Walks visitors through the School 2040 zone and the Planet 2050 zone."],["Live demo","Builds a page live from a visitor's idea with Gemini Canvas."],["AI challenge booth","Parents draw waste for the recycling robot (Chapter 2) and play Fake or Real."],["Greeter","Welcomes guests at the door and gives them the website link."]];
 let job = store.get("job");
-function drawJobs(){ $("#jobs").replaceChildren(...JOBS.map(([n, d]) => el("button", {class:"segcard", type:"button", "aria-pressed": String(job === n), onclick:() => { job = n; store.set("job", n); drawJobs(); }}, el("strong", null, n), el("span", null, d)))); $("#jobMsg").textContent = job ? "Your job: " + job + ". Tell your teacher." : "Two or three students per job. Everyone also stands by their own corner."; }
+function drawJobs(){ $("#jobs").replaceChildren(...JOBS.map(([n, d]) => el("button", {class:"segcard", type:"button", "aria-pressed": String(job === n), onclick:() => { job = n; store.set("job", n); drawJobs(); }}, el("strong", null, n), el("span", null, d)))); $("#jobMsg").textContent = job ? "Your job: " + job + ". Tell your teacher." : "Two or three students per job. Everyone also stands by their own page."; }
 drawJobs();
 /* run sheet */
-const RUN = [["0:00","Welcome","Hosts read the opening script."],["0:05","Episode 1","Tech crew plays the full episode on the big screen."],["0:12","Corner walk","Visitors visit the corners. Each student gives their 30-second pitch and lets visitors try the character."],["0:30","Live demo","A visitor suggests an idea; the demo team builds it live with one prompt."],["0:38","Fake or Real? challenge","Parents vote on 5 items; the class reveals the answers and the 4 S check."],["0:43","Thank you","Hosts thank guests and give everyone the platform link."]];
+const RUN = [["0:00","Welcome","Hosts read the opening script."],["0:04","Two trailers","Tech crew plays the School 2040 trailer, then the Planet 2050 trailer."],["0:10","Gallery walk","Visitors walk through both zones. Each student gives their 30-second pitch with their page open."],["0:28","Live demo","A visitor suggests an idea; the demo team designs it live with one prompt."],["0:36","AI challenge","Visitors try to fool the recycling robot and vote in Fake or Real. The class explains bias and the 4 S check."],["0:43","Thank you","Hosts thank guests and give everyone the website link."]];
 $("#run").replaceChildren(...RUN.map(([t, n, d]) => el("div", {class:"runrow"}, el("time", null, t), el("div", null, el("b", null, n), el("span", null, d)))));
 document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => { const s = document.getElementById(b.dataset.copy); copy(s.textContent, s, "your notes"); }));
-/* platform builder */
-const SEGS = K.SEGS;
-const rows = store.get("rows") || [{n:"Sara", s:"Sports Desk", f:"sara-sports/sports_sara.html"},{n:"Karim", s:"Weather Robot", f:"karim-weather/weather_karim.html"},{n:"Lea", s:"Canteen Review", f:"lea-canteen/canteen_lea.html"}];
+/* two websites builder */
+const TEAMS = K.TEAMS;
+const rows = store.get("rows2") || [{n:"Sara", t:"school", p:"The library", f:"sara-library/library_sara.html"},{n:"Karim", t:"planet", p:"Water", f:"karim-water/water_karim.html"},{n:"Lea", t:"planet", p:"Clean energy", f:"lea-energy/energy_lea.html"}];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-function drawRows(){
-  $("#rows").replaceChildren(...rows.map((r, i) => { const inp = (k, ph) => { const x = el("input", {placeholder:ph, "aria-label":ph + " " + (i + 1)}); x.value = r[k]; x.addEventListener("input", () => { r[k] = x.value; save(); }); return x; };
-    const s = el("select", {"aria-label":"Segment " + (i + 1)}, ...SEGS.map(n => el("option", {value:n, selected: n === r.s ? "" : null}, n))); s.addEventListener("change", () => { r.s = s.value; save(); });
-    return el("div", {class:"crow"}, inp("n", "First name"), s, inp("f", "folder/page.html"), el("button", {class:"ghost", type:"button", "aria-label":"Remove corner " + (i + 1), onclick:() => { rows.splice(i, 1); drawRows(); save(); }}, "✕")); }));
-}
-function homeHTML(){
-  const ep = esc($("#epFile").value || "episode.mp4");
-  const tiles = rows.filter(r => r.n && r.f).map(r => `    <a class="tile" href="${esc(r.f)}"><b>${esc(r.s)}</b><span>by ${esc(r.n)}</span><em>Open corner →</em></a>`).join("\n");
-  return `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Evergreen TV</title>
-<style>
-body{margin:0;font-family:system-ui,sans-serif;background:#F4F6F2;color:#13221C}
-header{background:#13221C;color:#fff;padding:18px 16px;display:flex;align-items:center;gap:12px}
-header b{background:#D9412A;padding:4px 8px;border-radius:4px;font-size:13px;letter-spacing:.1em}
-h1{margin:0;font-size:28px}
+const CSS = `body{margin:0;font-family:system-ui,sans-serif;background:#F4F6F2;color:#13221C}
+header{padding:22px 16px;color:#fff}header a{color:#fff}
+h1{margin:0;font-size:32px}header p{margin:4px 0 0;opacity:.9}
 main{max-width:1100px;margin:0 auto;padding:20px 16px 40px}
 video{width:100%;border-radius:14px;background:#000;display:block}
-.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));margin-top:24px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));margin-top:16px}
 .tile{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid #D7DFD9;border-radius:14px;padding:16px;color:inherit;text-decoration:none}
 .tile:hover{border-color:#1E7A55}.tile b{font-size:20px}.tile span{color:#56665E}.tile em{margin-top:8px;color:#1E7A55;font-style:normal;font-weight:700}
-footer{text-align:center;color:#56665E;font-size:14px;padding:20px}
+.big{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.door{display:block;border-radius:18px;padding:28px;color:#fff;text-decoration:none}.door b{font-size:30px;display:block}.door span{font-size:18px}
+footer{text-align:center;color:#56665E;font-size:14px;padding:20px}`;
+const COL = {school:"#1E7A55", planet:"#1F5FA8"};
+function page(title, body){ return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title}</title>
+<style>
+${CSS}
 </style></head><body>
-<header><b>ON AIR</b><h1>Evergreen TV</h1></header>
+${body}
+<footer>Made by EB7 with AI · everything AI-made is labelled · every fact checked by us</footer>
+</body></html>`; }
+function teamHTML(t){
+  const T = TEAMS[t];
+  const tiles = rows.filter(r => r.t === t && r.n && r.f).map(r => `    <a class="tile" href="${esc(r.f)}"><b>${esc(r.p)}</b><span>by ${esc(r.n)}</span><em>Open →</em></a>`).join("\n");
+  return page(T.site, `<header style="background:${COL[t]}"><a href="index.html">← AI Creators</a><h1>${T.emoji} ${T.site}</h1><p>${T.name}: ${T.goal}</p></header>
 <main>
-  <h2>Episode 1</h2>
-  <video src="${ep}" controls></video>
-  <h2>Our corners</h2>
+  <h2>Our trailer</h2>
+  <video src="${t}-trailer.mp4" controls></video>
+  <h2>Our parts</h2>
   <div class="grid">
 ${tiles}
   </div>
-</main>
-<footer>Made by EB7 with AI · every fact checked by us</footer>
-</body></html>`;
+</main>`);
 }
-function save(){ store.set("rows", rows); $("#homeCode").textContent = homeHTML();
-  $("#preview").replaceChildren(el("div", {class:"hp-top"}, el("b", null, "ON AIR"), el("span", null, "Evergreen TV")), el("div", {class:"hp-video"}, "▶ Episode 1 · " + ($("#epFile").value || "episode.mp4")),
-    el("div", {class:"hp-grid"}, ...rows.filter(r => r.n).map(r => el("div", {class:"hp-tile"}, el("b", null, r.s), el("span", null, "by " + r.n))))); }
-$("#addRow").onclick = () => { rows.push({n:"", s:SEGS[0], f:""}); drawRows(); save(); };
-$("#epFile").addEventListener("input", save);
-$("#copyHome").onclick = () => copy($("#homeCode").textContent, $("#homeCode"), "a file called index.html");
+function indexHTML(){
+  return page("AI Creators · EB7", `<header style="background:#13221C"><h1>AI Creators · EB7</h1><p>Two teams imagined a better future with AI.</p></header>
+<main>
+  <div class="big">
+    <a class="door" style="background:${COL.school}" href="school.html"><b>🏫 School 2040</b><span>Reinvent the School</span></a>
+    <a class="door" style="background:${COL.planet}" href="planet.html"><b>🌍 Planet 2050</b><span>The Future of Our Planet</span></a>
+  </div>
+</main>`);
+}
+function drawRows(){
+  $("#rows").replaceChildren(...rows.map((r, i) => { const inp = (k, ph) => { const x = el("input", {placeholder:ph, "aria-label":ph + " " + (i + 1)}); x.value = r[k] || ""; x.addEventListener("input", () => { r[k] = x.value; save(); }); return x; };
+    const s = el("select", {"aria-label":"Team and part " + (i + 1)}, ...Object.values(TEAMS).map(T => el("optgroup", {label:T.site}, ...T.parts.map(([p]) => el("option", {value:T.key + "|" + p, selected: r.t === T.key && r.p === p ? "" : null}, T.emoji + " " + p)))));
+    s.addEventListener("change", () => { const [t, p] = s.value.split("|"); r.t = t; r.p = p; save(); });
+    return el("div", {class:"crow"}, inp("n", "First name"), s, inp("f", "folder/page.html"), el("button", {class:"ghost", type:"button", "aria-label":"Remove student " + (i + 1), onclick:() => { rows.splice(i, 1); drawRows(); save(); }}, "✕")); }));
+}
+function save(){ store.set("rows2", rows);
+  $("#preview").replaceChildren(...["school","planet"].map(t => el("div", {style:"margin-bottom:10px"}, el("div", {class:"hp-top", style:"background:" + COL[t]}, el("span", null, TEAMS[t].emoji + " " + TEAMS[t].site)),
+    el("div", {class:"hp-grid"}, ...rows.filter(r => r.t === t && r.n).map(r => el("div", {class:"hp-tile"}, el("b", null, r.p), el("span", null, "by " + r.n))))))); }
+$("#addRow").onclick = () => { rows.push({n:"", t:"school", p:TEAMS.school.parts[0][0], f:""}); drawRows(); save(); };
+$("#copyIndex").onclick = () => copy(indexHTML(), null, "a file called index.html");
+$("#copySchool").onclick = () => copy(teamHTML("school"), null, "a file called school.html");
+$("#copyPlanet").onclick = () => copy(teamHTML("planet"), null, "a file called planet.html");
 drawRows(); save();
 checklist("gh", [
-  ["Collect the folders", "Get each student's Evergreen TV folder (page, 3 pictures, presenter.mp4, segment.mp4). Rename each folder like sara-sports."],
-  ["Make Episode 1", "In Adobe Express, start a new video, upload every segment.mp4 in your running order, add a title and an ending, and download it as episode.mp4."],
-  ["Create the repo", "On github.com, create a public repository called evergreen-tv."],
-  ["Upload everything", "Add file, then Upload files: drag in all student folders and episode.mp4. Commit. GitHub's upload page takes files up to 25 MB each, so download long videos from Adobe at 720p."],
-  ["Add the home page", "Press Copy index.html code above. On GitHub: Add file, Create new file, name it index.html, paste, Commit."],
-  ["Switch it on", "Settings, then Pages: deploy from the main branch, root folder. After 1 to 2 minutes the platform is live at yourname.github.io/evergreen-tv."],
-  ["Test on a phone", "Open the link on a phone. Does every tile open its corner? Does Episode 1 play?"]
+  ["Collect the folders", "Get each student's AI Creators folder (page, hero.png, detail.png, character.png, podcast.mp4, video.mp4). Rename each folder like sara-library."],
+  ["Make the 2 trailers", "In Adobe Express, upload the best video.mp4 files of each team, add a title and an ending, and download school-trailer.mp4 and planet-trailer.mp4."],
+  ["Create the repo", "On github.com, create a public repository called ai-creators."],
+  ["Upload everything", "Add file, then Upload files: drag in all student folders and both trailers. Commit. GitHub's upload page takes files up to 25 MB each, so download long videos from Adobe at 720p."],
+  ["Add the 3 home pages", "Press Copy index.html above. On GitHub: Add file, Create new file, name it index.html, paste, Commit. Do the same for school.html and planet.html."],
+  ["Switch it on", "Settings, then Pages: deploy from the main branch, root folder. After 1 to 2 minutes the websites are live at yourname.github.io/ai-creators."],
+  ["Test on a phone", "Open the link on a phone. Do both doors work? Does every tile open its page? Do the trailers play?"]
 ]);
 K.start();
 })();
 </script>
-
 <script src="config.js"></script>
 <script src="sync.js"></script>
 </body></html>

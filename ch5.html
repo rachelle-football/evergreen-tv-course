@@ -177,10 +177,18 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .step[aria-current="step"]{border-top-color:var(--onair);color:var(--ink);font-weight:700}
 @media (max-width:700px){.bug small{display:none}.step .t{display:none}.clock .lbl{display:none}body{font-size:17px}.lead{font-size:18px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.myproj{margin-bottom:18px;display:grid;gap:10px}
+.teamrow{display:flex;gap:8px;flex-wrap:wrap}
+.teambtn{background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:10px 14px;font-weight:700;font-size:16px;text-align:left}
+.teambtn:hover{border-color:var(--ink)}
+.teambtn[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+.partlbl{display:grid;gap:4px;font-weight:700;font-size:15px}
+.partlbl select{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;max-width:560px}
+.partnow{margin:0;font-size:16px}
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>ON AIR</span><span>Evergreen TV <small>· AI class · Chapter 5: AI pictures</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 5: AI Images</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -226,7 +234,7 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
   <p class="lead" style="margin-top:16px">So your prompt must leave less to guess. A strong picture prompt has 5 ingredients:</p>
   <div class="grid g5">
     <div class="card part"><b>Subject</b><span>What is in it: "a round black and white soccer ball"</span></div>
-    <div class="card part"><b>Setting</b><span>Where: "a TV studio with a big screen"</span></div>
+    <div class="card part"><b>Setting</b><span>Where: "a classroom full of plants"</span></div>
     <div class="card part"><b>Style</b><span>Cartoon, 3D, watercolour, pixel art</span></div>
     <div class="card part"><b>Light</b><span>Bright, sunset, neon, night</span></div>
     <div class="card part"><b>Camera</b><span>Close-up, wide shot, from above</span></div>
@@ -234,13 +242,13 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 </section>
 
 <section class="seg" id="seg-3" data-min="28" data-title="Mission: your 3 pictures" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: 3 pictures for your corner</h2><p>28 minutes · Adobe Express, then Gemini</p></div></div>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: 3 pictures of your design</h2><p>28 minutes · Adobe Express</p></div></div>
+  <div class="card myproj" id="proj"></div>
   <div class="mission">
     <div><ol class="checklist" id="list1"></ol></div>
     <aside class="card side">
-      <label class="tag" for="segSel">Your segment</label>
-      <select id="segSel"></select>
       <div class="tabs" role="tablist" id="picTabs"></div>
+      <p class="muted" id="kindHelp" style="margin:0;font-size:15px"></p>
       <label class="tag" for="fSubject">Subject</label><input id="fSubject">
       <label class="tag" for="fSetting">Setting</label><input id="fSetting">
       <label class="tag" for="fStyle">Style</label><input id="fStyle">
@@ -248,14 +256,9 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
       <label class="tag" for="fCamera">Camera</label><input id="fCamera">
       <span class="tag">Your prompt for Adobe Express</span>
       <pre class="prompt small" id="picOut"></pre>
-      <div class="row"><button class="btn sm" id="copyPic" type="button">Copy picture prompt</button></div>
-      <p class="muted" style="margin:0;font-size:14px">Save it as <b id="fileName">studio.png</b></p>
+      <div class="row"><button class="btn sm" id="copyPic" type="button">Copy picture prompt</button><button class="ghost" id="resetPic" type="button">Start again from my design</button></div>
+      <p class="muted" style="margin:0;font-size:14px">Save it as <b id="fileName">hero.png</b> in your <b>AI Creators</b> folder</p>
     </aside>
-  </div>
-  <div class="card" style="margin-top:16px">
-    <span class="tag">Step 7 · prompt for Gemini (adds your pictures to your corner)</span>
-    <pre class="prompt small" id="addOut"></pre>
-    <div class="row"><button class="btn sm" id="copyAdd" type="button">Copy Gemini prompt</button></div>
   </div>
   <div class="def warn"><span class="tag">Credits are limited</span><p>Each picture uses Adobe credits. Think before you press Enter: aim for 2 tries per picture.</p></div>
 </section>
@@ -267,7 +270,7 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
   <p class="lead" id="countMsg" style="margin-top:14px"></p>
   <div class="card" style="margin-top:14px;background:var(--gold-soft);border-color:transparent">
     <span class="tag">Remember</span>
-    <p class="lead" style="margin:6px 0 0">The AI fills every gap in your words with what it saw most often. Be precise, check what it decided, and fix it with your prompt. Next week your corner gets a presenter.</p>
+    <p class="lead" style="margin:6px 0 0">The AI fills every gap in your words with what it saw most often. Be precise, check what it decided, and fix it with your prompt. Next week: AI Voice. You record your story for your team’s podcast.</p>
   </div>
 </section>
 
@@ -282,6 +285,43 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 </nav>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
+<script>
+window.P = (function(){
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const store = { raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
+/* ---------- the year project: two teams, each kid owns one part ---------- */
+const TEAMS = {
+  school: {key:"school", name:"Reinvent the School", site:"School 2040", emoji:"🏫", goal:"Design the school of tomorrow",
+    world:"our school, Evergreen, in the year 2040", podcast:"the School 2040 podcast", video:"a promo video for the school of tomorrow", look:"a bright, friendly school in Lebanon in the year 2040",
+    parts:[["The classroom","Where and how we learn: desks, screens, light, sound"],["The library","Books, reading corners, quiet, research"],["The canteen","Healthy food, no waste, where we eat together"],["Playground and sports","Games, fields, breaks, team sports"],["The science lab","Experiments, robots, discovering"],["Art and music studio","Drawing, making, singing, performing"],["Getting to school","Buses, bikes, walking, safety"],["The school day","Timetable, homework, exams, breaks"],["Wellbeing corner","Feeling calm, friendship, getting help"],["The school garden","Plants, outdoor lessons, animals"]]},
+  planet: {key:"planet", name:"The Future of Our Planet", site:"Planet 2050", emoji:"🌍", goal:"Create a better world with AI",
+    world:"planet Earth, and Lebanon, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
+    parts:[["Clean energy","Sun, wind and power for every home"],["Water","Clean water for everyone, saving every drop"],["Waste and recycling","Less trash, sorting, reusing"],["Clean air","No smoke, less pollution, breathing well"],["Transport","Buses, trains, bikes and clean cars"],["Cities and homes","Green buildings, parks, cool streets"],["Food and farming","Growing food, eating well, no food waste"],["Oceans and beaches","Clean sea, no plastic, sea life"],["Forests and animals","Trees, the cedars, wildlife"],["Weather and climate","Heat waves, storms, being ready"]]}
+};
+const rawSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
+function me(){
+  const t = store.raw("ch1-team"), T = TEAMS[t] || null, p = store.raw("ch1-part"), P = T && T.parts.find(x => x[0] === p);
+  return {team:T ? t : null, T, part:P ? P[0] : null, about:P ? P[1] : ""};
+}
+/* a small "my team · my part" bar any chapter can show; changing it is saved for every chapter */
+function picker(box, onChange){
+  function draw(){
+    const m = me();
+    const teamBtns = Object.values(TEAMS).map(T => el("button", {class:"teambtn", type:"button", "aria-pressed":String(m.team === T.key), onclick:() => { rawSet("ch1-team", T.key); if (!TEAMS[T.key].parts.some(x => x[0] === store.raw("ch1-part"))) rawSet("ch1-part", null); draw(); if (onChange) onChange(); }}, T.emoji + " " + T.name));
+    const sel = el("select", {"aria-label":"My part of the project"}, el("option", {value:""}, m.T ? "Choose your part…" : "Choose a team first"), ...(m.T ? m.T.parts.map(([n, d]) => el("option", {value:n}, n + " · " + d)) : []));
+    sel.value = m.part || ""; sel.disabled = !m.T;
+    sel.addEventListener("change", () => { rawSet("ch1-part", sel.value || null); draw(); if (onChange) onChange(); });
+    box.replaceChildren(el("span", {class:"tag"}, "My project"), el("div", {class:"teamrow"}, ...teamBtns), el("label", {class:"partlbl"}, "My part", sel),
+      m.part ? el("p", {class:"partnow"}, "You are building ", el("b", null, m.part), " for ", el("b", null, m.T.site), ".") : el("p", {class:"partnow muted"}, "Pick your team and your part. Ask your teacher if you are not sure."));
+  }
+  draw();
+}
+/* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
+function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
+return {TEAMS, me, picker, fill, rawSet};
+})();
+
+</script>
 <script>
 (function(){
 const $ = s => document.querySelector(s);
@@ -348,61 +388,46 @@ frame(0);
 let running = false;
 $("#denoise").onclick = () => { if (running) return; running = true; let k = 0; const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; const go2 = () => { k++; frame(k); if (k < 30) setTimeout(go2, reduce ? 0 : 120); else { running = false; $("#denoise").textContent = "Again"; } }; go2(); };
 
-/* 3 picture builder */
-const SEG = {
-  "Sports Desk": ["a round black and white soccer ball on a big screen", "trophy and stadium"],
-  "Weather Robot": ["a friendly round robot weather presenter with a cloud on its head", "sun and cloud"],
-  "Tech and AI Corner": ["glowing gadgets and a small friendly robot on a desk", "lightbulb and circuit"],
-  "School News": ["a school building on a big screen with balloons", "newspaper and school bag"],
-  "Canteen Review": ["colourful plates of food with star ratings floating above them", "chef hat and fork"],
-  "Style and Trends": ["a runway with colourful outfits on mannequins", "hanger and sparkle"],
-  "Games and Apps Review": ["a giant game controller and floating app icons", "game controller"],
-  "Interview with a Legend": ["two armchairs facing each other under spotlights, no people", "microphone and star"],
-  "Fake or Real?": ["a giant magnifying glass over two photos, one real and one fake", "magnifying glass and question mark"],
-  "Funny Ads": ["a silly invented product on a shiny stage with confetti", "megaphone and price tag"]
-};
+/* 3 picture builder: made from your design card and your character */
+const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const KINDS = {
-  studio: {label:"Studio", file:"studio.png", make:(s,f) => `a TV studio for a school ${s} show, ${f.subject}, no people`},
-  logo: {label:"Logo", file:"logo.png", make:(s,f) => `a simple flat logo icon for a kids' TV segment called ${s}, ${f.subject}, bold shapes, white background, no text, no letters`},
-  title: {label:"Title card", file:"title.png", make:(s,f) => `a wide colourful title card background for the ${s} segment, ${f.subject}, empty space in the middle for a title, no text, no letters`}
+  hero: {label:"1 · Big picture", file:"hero.png", help:"The whole design, seen from far. It goes at the top of your web page."},
+  detail: {label:"2 · Close-up", file:"detail.png", help:"One of your big ideas, seen up close."},
+  character: {label:"3 · Your character", file:"character.png", help:"The hero of your story, inside your design. A cartoon, never a real person."}
 };
-const sel = $("#segSel"); Object.keys(SEG).forEach(n => sel.append(el("option", {value:n}, n)));
-function prevSeg(){ for (const k of ["ch5-seg","ch4-seg","ch3-seg","ch2-seg"]) { try { const v = JSON.parse(localStorage.getItem(k)); if (v && SEG[v]) return v; } catch(e){} } return "Sports Desk"; }
-sel.value = prevSeg();
-let kind = "studio";
+let kind = "hero";
 const fields = ["Subject","Setting","Style","Light","Camera"];
-function defaults(){ const s = SEG[sel.value];
-  return {studio:{Subject:s[0], Setting:"a bright TV studio with a news desk and a big screen", Style:"cartoon", Light:"bright and colourful", Camera:"wide shot"},
-          logo:{Subject:s[1], Setting:"plain white background", Style:"flat vector icon", Light:"bright", Camera:"centred"},
-          title:{Subject:s[1], Setting:"a colourful TV graphic", Style:"cartoon", Light:"bright", Camera:"wide banner"}}[kind]; }
-function load(){ const saved = store.get("pic-" + sel.value + "-" + kind); const d = saved || defaults(); fields.forEach(f => $("#f" + f).value = d[f]); draw(); }
+function defaults(){
+  const m = P.me(), T = m.T || P.TEAMS.school, d = raw("ch3-card") || {}, c = raw("ch4-char") || {}, part = (m.part || "my part").toLowerCase();
+  const place = (d.name ? d.name + ", " : "") + (T.key === "planet" ? "the future of " + part : part + " of a school") + (T.key === "planet" ? " in Lebanon in 2050" : " in 2040");
+  return {
+    hero: {Subject: place + (d.i1 ? ", " + d.i1.toLowerCase() : ""), Setting: T.look, Style: "colourful 3D cartoon", Light: "bright and sunny", Camera: "wide shot"},
+    detail: {Subject: d.i2 || d.i1 || m.about || part, Setting: "inside " + (d.name || place), Style: "colourful 3D cartoon", Light: "bright", Camera: "close-up"},
+    character: {Subject: "a cartoon character: " + (c.who || "a student in the future") + (c.pers ? ", looks " + c.pers : "") + ", friendly face", Setting: "inside " + (d.name || place), Style: "colourful 3D cartoon", Light: "warm and bright", Camera: "medium shot"}
+  }[kind];
+}
+function load(){ const saved = store.get("pic-" + kind); const d = saved || defaults(); fields.forEach(f => $("#f" + f).value = d[f]); draw(); }
 function draw(){
   const f = {}; fields.forEach(x => f[x.toLowerCase()] = $("#f" + x).value.trim());
-  const base = KINDS[kind].make(sel.value, f);
-  $("#picOut").textContent = `Generate an image: ${base}. Setting: ${f.setting}. Style: ${f.style}. Light: ${f.light}. Camera: ${f.camera}. For kids.`;
-  $("#fileName").textContent = KINDS[kind].file;
-  const o = {}; fields.forEach(x => o[x] = $("#f" + x).value); store.set("pic-" + sel.value + "-" + kind, o);
+  $("#picOut").textContent = `Generate an image: ${f.subject}. Setting: ${f.setting}. Style: ${f.style}. Light: ${f.light}. Camera: ${f.camera}. For kids, no text, no letters, no real people.`;
+  $("#fileName").textContent = KINDS[kind].file; $("#kindHelp").textContent = KINDS[kind].help;
 }
+function save(){ const o = {}; fields.forEach(x => o[x] = $("#f" + x).value); store.set("pic-" + kind, o); }
 function tabs(){ $("#picTabs").replaceChildren(...Object.keys(KINDS).map(k => el("button", {type:"button", role:"tab", "aria-selected": String(k === kind), class:"tab", onclick:() => { kind = k; tabs(); load(); }}, KINDS[k].label))); }
-fields.forEach(f => $("#f" + f).addEventListener("input", draw));
-sel.addEventListener("change", () => { store.set("seg", sel.value); load(); });
+fields.forEach(f => $("#f" + f).addEventListener("input", () => { draw(); save(); }));
+$("#resetPic").onclick = () => { store.set("pic-" + kind, null); load(); };
+P.picker($("#proj"), () => { load(); });
 tabs(); load();
 $("#copyPic").onclick = () => copyText($("#picOut").textContent, $("#picOut"), "Adobe Express");
-$("#addOut").textContent = `I made 3 pictures for my page. They will be in the same folder as the page:
-- studio.png: use it as the background of the top of the page
-- logo.png: put it next to the title, small and round
-- title.png: use it as a wide banner under the title
-Keep everything else on my page the same.`;
-$("#copyAdd").onclick = () => copyText($("#addOut").textContent, $("#addOut"), "Gemini");
 checklist("list1", [
+  ["Check your team and part", "At the top. The prompts are made from your design card (Chapter 3) and your character (Chapter 4)."],
   ["Open Adobe Express", "Go to new.express.adobe.com and sign in with your school account."],
-  ["Picture 1: the studio", "On the right, choose Studio. Change the ingredients if you want, press Copy picture prompt, paste it in the big box at the top of Adobe Express and press Enter."],
-  ["Be a detective", "Look at the 4 pictures. Did the AI add things you did not ask for? Wrong ball, only boys, strange hands, messy letters?"],
+  ["Picture 1: the big picture", "On the right, choose 1 · Big picture. Change the ingredients if you want, press Copy picture prompt, paste it in the big box at the top of Adobe Express and press Enter."],
+  ["Be a detective", "Look at the 4 pictures. Did the AI add things you did not ask for? Only boys? Strange hands? Messy letters? Something impossible?"],
   ["Fix it with words", "Change one ingredient to fix what is wrong, and try again. Two tries per picture."],
-  ["Download the best one", "Click your favourite picture, choose Download, and save it in a folder called Evergreen TV as studio.png."],
-  ["Pictures 2 and 3", "Do the same with Logo (save as logo.png) and Title card (save as title.png)."],
-  ["Add them to your corner", "Open your page in Gemini (last week's chat). Copy the Gemini prompt below the list and paste it. Download the new page into the same Evergreen TV folder."],
-  ["Check it", "Open the page from the folder. Do your 3 pictures show? If not, check the file names match exactly."]
+  ["Download the best one", "Click your favourite, choose Download, and save it in a folder called AI Creators as hero.png."],
+  ["Pictures 2 and 3", "Do the same with 2 · Close-up (detail.png) and 3 · Your character (character.png)."],
+  ["Label it", "Everything made by AI gets the label Made with AI on your website (Chapter 8)."]
 ]);
 
 /* 4 class count */
@@ -417,7 +442,6 @@ const start = segs.findIndex(s => "#" + s.id === location.hash);
 go(start >= 0 ? start : 0);
 })();
 </script>
-
 <script src="config.js"></script>
 <script src="sync.js"></script>
 </body></html>
