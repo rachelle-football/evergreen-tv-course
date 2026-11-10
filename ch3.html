@@ -265,21 +265,23 @@ img.fprev{background:var(--paper)}
   </div>
 </section>
 
-<section class="seg" id="seg-2" data-min="8" data-title="The prompt recipe" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>The prompt recipe</h2><p>8 minutes · the lesson</p></div></div>
+<section class="seg" id="seg-2" data-min="3" data-title="The prompt recipe" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>The prompt recipe</h2><p>3 minutes · the lesson</p></div></div>
   <div class="grid g2">
     <div class="card bad"><span class="tag">Weak prompt</span><p class="quote" id="weakQ">"Design a future classroom."</p><p style="margin:0">Gemini does not know your school, your age or your country. So it gives a boring, general answer that could be anywhere.</p></div>
     <div class="card good"><span class="tag">Recipe prompt</span><p class="quote">Role + Task + Context + Format</p><p style="margin:0">Tell it who to be, what to do, the facts it can't know, and how the answer should look. Now the answer is about YOUR project.</p></div>
   </div>
-  <p class="lead" style="margin-top:18px">Build your recipe in 4 clicks: one choice in each box. <b>This is the start of YOUR mission prompt:</b> in part 03 you add the details and send it to Gemini.</p>
-  <div class="recipe" id="recB"></div>
-  <span class="tag" style="display:block;margin-top:14px">Your recipe prompt</span>
-  <pre class="prompt" id="recipeOut"></pre>
-  <div class="row"><button class="btn sm" id="copyRecipe" type="button">Copy prompt</button><span class="muted" style="font-size:15px">Teacher: paste the weak prompt, then this one, each in a new Gemini chat on the board, and compare.</span></div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><span class="tag">🎭 Role</span><p style="margin:6px 0 0"><b>Who should the AI be?</b> "You are a robot engineer."</p></div>
+    <div class="card"><span class="tag">🎯 Task</span><p style="margin:6px 0 0"><b>What should it do?</b> "Design the playground of our school in 2040."</p></div>
+    <div class="card"><span class="tag">📚 Context</span><p style="margin:6px 0 0"><b>The facts it can't know:</b> "I am 12. I live in Lebanon. There is no space to play."</p></div>
+    <div class="card"><span class="tag">📋 Format</span><p style="margin:6px 0 0"><b>How should the answer look?</b> "A name, 3 big ideas, and a day in it."</p></div>
+  </div>
+  <p class="lead" style="margin-top:16px">In part 03 you build <b>your</b> prompt with these 4 parts, just by clicking.</p>
 </section>
 
-<section class="seg" id="seg-3" data-min="27" data-title="Mission: design card" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: design your part with Gemini</h2><p>27 minutes · gemini.google.com</p></div></div>
+<section class="seg" id="seg-3" data-min="32" data-title="Mission: design card" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: design your part with Gemini</h2><p>32 minutes · gemini.google.com</p></div></div>
   <div class="card myproj" id="proj"></div>
   <div class="mission">
     <div>
@@ -487,7 +489,7 @@ function folder(box, now){
     let files = []; let err = ""; try { files = await list(true); } catch(e){ err = MSG[e.code] || ""; }
     const P = plan(), have = s => files.find(f => f.slot === s.slot), n = P.filter(have).length;
     box.replaceChildren(...[el("span", {class:"tag"}, "📁 My folder · saved in the app"),
-      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc()) ? addBtn(s) : el("small", null, "Ch " + s.ch)); })),
+      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc() && (!now || s.ch <= now)) ? addBtn(s) : el("small", null, f || !now || s.ch <= now ? "Ch " + s.ch : "later · Ch " + s.ch)); })),
       el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, on() ? n + " of " + P.length + " saved. Your teacher can see your folder." : "Log in from the class link to save your files in the app."),
       err ? el("p", {class:"fmsg no"}, err) : null,
       on() && files.length ? el("div", {class:"row", style:"margin-top:6px"}, el("button", {class:"btn sm alt", type:"button", onclick:() => zip(files, (acc() && acc().username) || "my-folder")}, "⬇ Download my whole folder")) : null].filter(Boolean));
@@ -677,16 +679,10 @@ function briefText(){
 }
 let briefUI;
 function drawBrief(){ window.B.show($("#briefOut"), BSPEC, B, briefText()); window.B.meter($("#briefP"), BSPEC, B); window.B.lock($("#copyBrief"), BSPEC, B); }
-function onBrief(redraw){ store.set("brief2", B); if (redraw){ briefUI.draw(); if (typeof recUI !== "undefined" && recUI) recUI.draw(); } drawBrief(); drawRecipe(); drawCard(); ticks(); }
+function onBrief(redraw){ store.set("brief2", B); if (redraw){ briefUI.draw(); } drawBrief(); drawCard(); ticks(); }
 briefUI = window.B.make($("#briefB"), BSPEC, B, onBrief);
 /* 2 recipe: the same choices, the first 4 ingredients */
-const RSPEC = BSPEC.filter(x => ["role","place","ctx","format"].includes(x.id));
-let recUI;
-function drawRecipe(){ window.B.show($("#recipeOut"), RSPEC, B, briefText()); window.B.lock($("#copyRecipe"), RSPEC, B); }
-function onRec(redraw){ store.set("brief2", B); if (redraw){ recUI.draw(); briefUI.draw(); } drawRecipe(); drawBrief(); drawCard(); ticks(); }
-recUI = window.B.make($("#recB"), RSPEC, B, onRec);
-function loadRecipe(){ recUI.draw(); drawRecipe(); $("#weakQ").textContent = team() === "planet" ? "\"Design the future of transport.\"" : "\"Design a future classroom.\""; }
-$("#copyRecipe").onclick = () => { if (window.B.guard(RSPEC, B, $("#recB"), K.toast)) copy(briefText(), $("#recipeOut"), "a NEW Gemini chat"); };
+function loadRecipe(){ $("#weakQ").textContent = team() === "planet" ? "\"Design the future of transport.\"" : "\"Design a future classroom.\""; }
 $("#copyBrief").onclick = () => { if (!window.B.guard(BSPEC, B, $("#briefB"), K.toast)) return; copy(briefText(), $("#briefOut"), "a NEW Gemini chat"); L1.tick(3); };
 const FOLLOW = [
   ["More surprising", "Make big idea 2 more surprising and creative, but still possible."],
