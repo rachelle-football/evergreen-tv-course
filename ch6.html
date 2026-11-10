@@ -192,6 +192,17 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .power b{font-size:28px;color:var(--gold);letter-spacing:2px}
 .power .muted{font-size:14px}
 .bstep{font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin:4px 0 -6px}
+#recB{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}
+#recB .bsec{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+#recB .bsec h4{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.files2{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px}
+.files2 li{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:15px}
+.files2 li.ok{background:var(--green-soft);border-color:var(--green)}
+.files2 li.now{border:2px solid var(--gold)}
+.files2 li b{color:var(--green)}
+.files2 code{font:700 14px var(--mono)}
+.files2 small{color:var(--muted);font-family:var(--mono);font-size:12px}
+.howsave{margin-top:8px;font-size:15px}.howsave summary{cursor:pointer;font-weight:700;color:var(--green)}.howsave ol{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
 .q{margin-bottom:12px}.opts{display:flex;flex-wrap:wrap;gap:8px}
 .opt{background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:9px 14px;text-align:left}
 .opt.right{border-color:var(--green);background:var(--green-soft)}.opt.wrong{border-color:var(--onair);background:var(--onair-soft)}
@@ -271,6 +282,7 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
       <textarea id="script" style="min-height:200px" placeholder="Paste your podcast script here, then make it sound like you…"></textarea>
       <p class="muted" style="margin:0;font-size:15px"><span id="wc">0 words</span> · about <span id="secs">0</span> seconds.</p>
       <div class="row"><button class="btn sm" id="tpBtn" type="button">Practise with the teleprompter</button></div>
+      <div id="filesBox" style="margin-top:8px"></div>
     </aside>
   </div>
   <p class="note">No microphone on your computer? In step 5, choose the upload option instead and use a recording your teacher made with you on a class device. Your voice stays in your Adobe project only.</p>
@@ -333,9 +345,28 @@ function picker(box, onChange){
   }
   draw();
 }
+/* the kid's AI Creators folder in Google Drive: what is in it, made in which chapter */
+const FILES = [
+  ["hero.png", 5, "Big picture", () => (store.raw("ch5-list1") || [])[5]],
+  ["detail.png", 5, "Close-up picture", () => (store.raw("ch5-list1") || [])[6]],
+  ["character.png", 5, "Character picture", () => (store.raw("ch5-list1") || [])[6]],
+  ["podcast.mp4", 6, "Podcast clip", () => (store.raw("ch6-list1") || [])[7]],
+  ["video.mp4", 7, "30-second video", () => (store.raw("ch7-list2") || [])[4]],
+  ["my page (.html)", 8, "Web page", () => (store.raw("ch8-list1") || [])[5]]
+];
+function files(box, now){
+  const n = FILES.filter(f => f[3]()).length;
+  box.replaceChildren(el("span", {class:"tag"}, "📁 My AI Creators folder · Google Drive"),
+    el("ul", {class:"files2"}, ...FILES.map(([f, ch, what, ok]) => el("li", {class:(ok() ? "ok" : "") + (ch === now ? " now" : "")}, el("b", null, ok() ? "✓" : ch === now ? "→" : "○"), el("span", null, el("code", null, f), " ", what), el("small", null, "Ch " + ch)))),
+    el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, n + " of " + FILES.length + " files saved. Everything goes on your web page in Chapter 8."),
+    el("details", {class:"howsave"}, el("summary", null, "How do I save a file in my folder?"),
+      el("ol", null, el("li", null, "In Adobe Express, press Download. The file goes to your computer's Downloads."),
+        el("li", null, "Open Downloads and rename the file exactly as in the list (for example hero.png)."),
+        el("li", null, "Go to drive.google.com, open your AI Creators folder, press New, then File upload, and pick the file."))));
+}
 /* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
 function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
-return {TEAMS, me, picker, fill, rawSet};
+return {TEAMS, me, picker, fill, rawSet, files, FILES};
 })();
 
 /* options that fit each part: places, things and looks */
@@ -444,8 +475,8 @@ function checklist(id, items, compact){
     return li; }));
   return { tick(i){ if (saved[i]) return; const cb = document.getElementById(id + "-" + i); if (!cb) return; cb.checked = true; saved[i] = true; store.set(id, saved); cb.closest("li").classList.add("ok"); $("#" + id).dispatchEvent(new Event("change")); } };
 }
-const {TEAMS, me, picker, fill, rawSet} = window.P;
-return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet};
+const {TEAMS, me, picker, fill, rawSet, files} = window.P;
+return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet, files};
 })();
 
 </script>
@@ -508,9 +539,9 @@ checklist("list1", [
   ["Practise", "Press Practise with the teleprompter. Read it aloud twice, like a radio host: smile, clear, not too fast."],
   ["Open Animate from audio", "In Adobe Express, type Animate from audio in the big box at the top (or find it under Quick edits, View all)."],
   ["Choose your host", "Pick a character that fits your world. Your story character is a great choice."],
-  ["Add your picture", "Under Background, choose Upload and pick hero.png from your AI Creators folder (Chapter 5). No Upload option? Pick any background."],
+  ["Add your picture", "First download hero.png from your AI Creators folder in Google Drive. Then, under Background, choose Upload and pick it. No Upload option? Pick any background."],
   ["Record your voice", "Press Record, allow the microphone, and read your script. Too fast, too quiet, a mistake? Record again: real podcasters do many takes."],
-  ["Download", "Save it in your AI Creators folder as podcast.mp4. It goes on your web page in Chapter 8."]
+  ["Save it", "Press Download. Rename the file podcast.mp4 and upload it to your AI Creators folder in Google Drive. It goes on your web page in Chapter 8."]
 ]);
 
 /* teleprompter */
@@ -525,6 +556,7 @@ $("#tpGo").onclick = () => {
   tpTimer = setInterval(() => { const e = (Date.now() - t0) / 1000; $("#tpTime").textContent = Math.round(e) + " s"; box.scrollTop = Math.min(max, max * e / secs); if (e > secs + 3){ clearInterval(tpTimer); tpTimer = null; $("#tpGo").textContent = "Again"; } }, 100);
 };
 addEventListener("keydown", e => { if (e.key === "Escape" && !$("#tp").hidden) closeTp(); });
+K.files($("#filesBox"), 6); $("#list1").addEventListener("change", () => K.files($("#filesBox"), 6));
 K.start();
 })();
 </script>

@@ -192,6 +192,17 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .power b{font-size:28px;color:var(--gold);letter-spacing:2px}
 .power .muted{font-size:14px}
 .bstep{font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin:4px 0 -6px}
+#recB{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}
+#recB .bsec{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+#recB .bsec h4{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.files2{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px}
+.files2 li{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:15px}
+.files2 li.ok{background:var(--green-soft);border-color:var(--green)}
+.files2 li.now{border:2px solid var(--gold)}
+.files2 li b{color:var(--green)}
+.files2 code{font:700 14px var(--mono)}
+.files2 small{color:var(--muted);font-family:var(--mono);font-size:12px}
+.howsave{margin-top:8px;font-size:15px}.howsave summary{cursor:pointer;font-weight:700;color:var(--green)}.howsave ol{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
 .quote{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.3;margin:6px 0 14px}
 .verdict{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:16px}
 .verdict.h{background:var(--green-soft)}.verdict.a{background:var(--onair-soft)}
@@ -278,8 +289,7 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
   <div class="mission">
     <div><ol class="checklist" id="list1"></ol></div>
     <aside class="card side">
-      <span class="tag">Your files (AI Creators folder)</span>
-      <ul class="files"><li><b>hero.png</b> · Chapter 5</li><li><b>detail.png</b> · Chapter 5</li><li><b>character.png</b> · Chapter 5</li><li><b>podcast.mp4</b> · Chapter 6</li></ul>
+      <div id="filesBox"></div>
       <span class="tag">Your plan</span>
       <ol class="mini" id="miniPlan"></ol>
     </aside>
@@ -354,9 +364,28 @@ function picker(box, onChange){
   }
   draw();
 }
+/* the kid's AI Creators folder in Google Drive: what is in it, made in which chapter */
+const FILES = [
+  ["hero.png", 5, "Big picture", () => (store.raw("ch5-list1") || [])[5]],
+  ["detail.png", 5, "Close-up picture", () => (store.raw("ch5-list1") || [])[6]],
+  ["character.png", 5, "Character picture", () => (store.raw("ch5-list1") || [])[6]],
+  ["podcast.mp4", 6, "Podcast clip", () => (store.raw("ch6-list1") || [])[7]],
+  ["video.mp4", 7, "30-second video", () => (store.raw("ch7-list2") || [])[4]],
+  ["my page (.html)", 8, "Web page", () => (store.raw("ch8-list1") || [])[5]]
+];
+function files(box, now){
+  const n = FILES.filter(f => f[3]()).length;
+  box.replaceChildren(el("span", {class:"tag"}, "📁 My AI Creators folder · Google Drive"),
+    el("ul", {class:"files2"}, ...FILES.map(([f, ch, what, ok]) => el("li", {class:(ok() ? "ok" : "") + (ch === now ? " now" : "")}, el("b", null, ok() ? "✓" : ch === now ? "→" : "○"), el("span", null, el("code", null, f), " ", what), el("small", null, "Ch " + ch)))),
+    el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, n + " of " + FILES.length + " files saved. Everything goes on your web page in Chapter 8."),
+    el("details", {class:"howsave"}, el("summary", null, "How do I save a file in my folder?"),
+      el("ol", null, el("li", null, "In Adobe Express, press Download. The file goes to your computer's Downloads."),
+        el("li", null, "Open Downloads and rename the file exactly as in the list (for example hero.png)."),
+        el("li", null, "Go to drive.google.com, open your AI Creators folder, press New, then File upload, and pick the file."))));
+}
 /* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
 function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
-return {TEAMS, me, picker, fill, rawSet};
+return {TEAMS, me, picker, fill, rawSet, files, FILES};
 })();
 
 /* options that fit each part: places, things and looks */
@@ -465,8 +494,8 @@ function checklist(id, items, compact){
     return li; }));
   return { tick(i){ if (saved[i]) return; const cb = document.getElementById(id + "-" + i); if (!cb) return; cb.checked = true; saved[i] = true; store.set(id, saved); cb.closest("li").classList.add("ok"); $("#" + id).dispatchEvent(new Event("change")); } };
 }
-const {TEAMS, me, picker, fill, rawSet} = window.P;
-return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet};
+const {TEAMS, me, picker, fill, rawSet, files} = window.P;
+return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet, files};
 })();
 
 </script>
@@ -491,7 +520,7 @@ $("#fr").replaceChildren(...FR.map(([t, real, why]) => { const v = el("div"); le
 
 /* storyboard */
 const card = K.store.raw("ch3-card") || {}, M = K.me(), TT = M.T || K.TEAMS.school;
-$("#vidGoal").textContent = "Your video: " + (TT.key === "planet" ? "a short environmental documentary" : "a promo for the school of tomorrow") + " about " + (M.part ? M.part.toLowerCase() : "your part") + ". Plan your 5 scenes. Aim for 30 seconds in total.";
+$("#vidGoal").textContent = "Your " + (K.store.raw("ch7-vplan") && K.store.raw("ch7-vplan").len || "30 seconds") + " video about " + (card.name || "your design") + ". Choose below, press Make my storyboard, then change anything you want.";
 const DEF = [
   {name:"Title", what:"hero.png with the title: " + (card.name || "the name of my design"), secs:3},
   {name:"Podcast", what:"the best 15 seconds of podcast.mp4", secs:15},
@@ -549,7 +578,7 @@ function applyPlan(){
   drawBoard();
 }
 let vidUI;
-function drawVid(){ $("#vidOut").textContent = vidText(); window.B.meter($("#vidP"), VSPEC, V); }
+function drawVid(){ $("#vidGoal").textContent = "Your " + (V.len || "30 seconds") + " video about " + (card.name || "your design") + ". Choose below, press Make my storyboard, then change anything you want."; $("#vidOut").textContent = vidText(); window.B.meter($("#vidP"), VSPEC, V); }
 function onVid(redraw){ store.set("vplan", V); if (redraw) vidUI.draw(); drawVid(); }
 vidUI = window.B.make($("#vidB"), VSPEC, V, onVid);
 $("#applyPlan").onclick = () => { if (!V.type){ K.toast("Choose the kind of video first."); return; } applyPlan(); K.toast("Your storyboard is ready below. Change anything you want."); };
@@ -558,7 +587,7 @@ drawVid();
 
 checklist("list1", [
   ["Start a video", "In Adobe Express, click Create video, then start from scratch with a 16:9 (wide) size."],
-  ["Upload your files", "Click Upload (or Media, then Upload) and add hero.png, detail.png, character.png and podcast.mp4 from your AI Creators folder."],
+  ["Get your files", "Download hero.png, detail.png, character.png and podcast.mp4 from your AI Creators folder in Google Drive. In Adobe, click Upload (or Media, then Upload) and add all 4."],
   ["Scene 1: opening", "Put hero.png in the first scene and make your opening (title, question or countdown). Use your storyboard."],
   ["Scene 2: your voice", "Add a scene with the + button and put podcast.mp4 in it. Trim it to the best 15 seconds."],
   ["Scene 3: close-up", "Add detail.png and write one fact as a caption."],
@@ -569,22 +598,23 @@ checklist("list1", [
 /* fact check */
 const facts = store.get("facts") || [{c:"", s1:"", s2:"", ok:false},{c:"", s1:"", s2:"", ok:false},{c:"", s1:"", s2:"", ok:false}];
 function drawFacts(){
-  $("#facts").replaceChildren(el("div", {class:"frow head"}, el("span", null, "Fact in my segment"), el("span", null, "Source 1"), el("span", null, "Source 2"), el("span", null, "Checked")),
+  $("#facts").replaceChildren(el("div", {class:"frow head"}, el("span", null, "Fact in my video"), el("span", null, "Source 1"), el("span", null, "Source 2"), el("span", null, "Checked")),
     ...facts.map((f, i) => { const inp = (k, ph) => { const x = el("input", {placeholder:ph, "aria-label": k + " " + (i + 1)}); x.value = f[k]; x.addEventListener("input", () => { f[k] = x.value; sf(); }); return x; };
       const cb = el("input", {type:"checkbox", "aria-label":"Fact " + (i + 1) + " checked"}); cb.checked = f.ok; cb.addEventListener("change", () => { f.ok = cb.checked; sf(); });
       return el("div", {class:"frow"}, inp("c", TT.key === "planet" ? "e.g. Lebanon has about 300 sunny days a year" : "e.g. Students learn better with daylight"), inp("s1", "website or who told you"), inp("s2", "a second source"), el("label", {class:"okbox"}, cb, el("span", null, "OK"))); }));
   sf();
 }
-function sf(){ store.set("facts", facts); const n = facts.filter(f => f.ok && f.c && f.s1 && f.s2).length; $("#factMsg").textContent = n === 3 ? "All 3 facts checked with 2 sources each. Ready to air." : n + " of 3 facts fully checked (fact, two sources, ticked). If a fact fails, change it in your script."; }
+function sf(){ store.set("facts", facts); const n = facts.filter(f => f.ok && f.c && f.s1 && f.s2).length; $("#factMsg").textContent = n === 3 ? "All 3 facts checked with 2 sources each. Ready to air." : n + " of 3 facts fully checked (fact, two sources, ticked). If a fact fails, change your caption."; }
 drawFacts();
 checklist("list2", [
   ["Fix your facts", "If a fact failed the check, change the caption, or say it differently."],
   ["Add the label", "The ending says Made with AI. Add a small \"AI\" label in a corner of the scenes made by AI."],
   ["Check the length", "Watch the whole video. About 30 seconds? Cut anything that drags."],
   ["Check the sound", "Can you hear every word over the music?"],
-  ["Download", "Click Download, choose MP4, and save it in your AI Creators folder as video.mp4."],
+  ["Save it", "Click Download and choose MP4. Rename the file video.mp4 and upload it to your AI Creators folder in Google Drive."],
   ["Show a friend", "Does your friend understand your design in 30 seconds? If not, change one scene."]
 ]);
+K.files($("#filesBox"), 7); document.addEventListener("change", () => K.files($("#filesBox"), 7));
 K.start();
 })();
 </script>

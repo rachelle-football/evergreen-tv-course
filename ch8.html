@@ -192,6 +192,17 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .power b{font-size:28px;color:var(--gold);letter-spacing:2px}
 .power .muted{font-size:14px}
 .bstep{font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin:4px 0 -6px}
+#recB{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}
+#recB .bsec{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+#recB .bsec h4{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.files2{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px}
+.files2 li{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:15px}
+.files2 li.ok{background:var(--green-soft);border-color:var(--green)}
+.files2 li.now{border:2px solid var(--gold)}
+.files2 li b{color:var(--green)}
+.files2 code{font:700 14px var(--mono)}
+.files2 small{color:var(--muted);font-family:var(--mono);font-size:12px}
+.howsave{margin-top:8px;font-size:15px}.howsave summary{cursor:pointer;font-weight:700;color:var(--green)}.howsave ol{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
 .chk{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px}
 .chk>div:first-child{display:flex;flex-direction:column;gap:2px;min-width:0}
 .chk b{font-family:var(--display);font-size:19px}.chk .muted{font-size:15px}
@@ -242,6 +253,7 @@ Bright colours, big fonts, works on a phone.</pre>
   <div class="lower"><div class="no">02</div><div class="name"><h2>Your page: everything you made comes together</h2><p>Period 1 · 4 minutes · check you have everything</p></div></div>
   <p class="big">Your page is one part of your team's website. Here is what goes on it. Green means you already have it.</p>
   <div class="grid g3" id="plan"></div>
+  <div class="card" id="filesBox" style="margin-top:14px;max-width:640px"></div>
   <p class="note">Missing something? Your teacher will help you make it quickly, or leave it out. The page still works.</p>
 </section>
 
@@ -265,7 +277,7 @@ Bright colours, big fonts, works on a phone.</pre>
       <span class="tag">Your director's prompt (made from all your work)</span>
       <pre class="prompt small" id="pageOut"></pre>
       <div class="row"><button class="btn sm" id="copyPage" type="button">Copy my prompt</button></div>
-      <p class="muted" style="margin:0;font-size:14px">Save the page as <b id="pageFile">part_name.html</b> in your AI Creators folder, next to your pictures and videos.</p>
+      <p class="muted" style="margin:0;font-size:14px">Name the page <b id="pageFile">part_name.html</b> and put it in your AI Creators folder in Google Drive, next to your pictures and videos.</p>
     </aside>
   </div>
 </section>
@@ -288,8 +300,17 @@ Bright colours, big fonts, works on a phone.</pre>
 
 <section class="seg" id="seg-5" data-min="20" data-title="Mission: fix yours" data-p="2" hidden>
   <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: fix your page with prompts</h2><p>Period 2 · 20 minutes · the same Gemini chat</p></div></div>
-  <p class="big">Read the feedback card your tester showed you. Pick up to 3 fixes, fill in the blanks, and copy each prompt into your page's Gemini chat.</p>
-  <div class="grid g2" id="fixes"></div>
+  <p class="big">Read the feedback card your tester showed you. Choose what is wrong and how to fix it: the fix prompt writes itself. Copy it into your page's Gemini chat. One fix at a time!</p>
+  <div class="mission">
+    <div class="card"><div class="builder" id="fixB"></div></div>
+    <aside class="card side">
+      <div class="power" id="fixP"></div>
+      <span class="tag">Your fix prompt</span>
+      <pre class="prompt small" id="fixOut"></pre>
+      <div class="row"><button class="btn sm" id="copyFix" type="button">Copy fix prompt</button><button class="ghost" id="nextFix" type="button">Next fix</button></div>
+      <p class="muted" style="margin:0;font-size:14px">Fixes done: <b id="fixN">0</b></p>
+    </aside>
+  </div>
 </section>
 
 <section class="seg" id="seg-6" data-min="5" data-title="Launch checklist" data-p="2" hidden>
@@ -339,9 +360,28 @@ function picker(box, onChange){
   }
   draw();
 }
+/* the kid's AI Creators folder in Google Drive: what is in it, made in which chapter */
+const FILES = [
+  ["hero.png", 5, "Big picture", () => (store.raw("ch5-list1") || [])[5]],
+  ["detail.png", 5, "Close-up picture", () => (store.raw("ch5-list1") || [])[6]],
+  ["character.png", 5, "Character picture", () => (store.raw("ch5-list1") || [])[6]],
+  ["podcast.mp4", 6, "Podcast clip", () => (store.raw("ch6-list1") || [])[7]],
+  ["video.mp4", 7, "30-second video", () => (store.raw("ch7-list2") || [])[4]],
+  ["my page (.html)", 8, "Web page", () => (store.raw("ch8-list1") || [])[5]]
+];
+function files(box, now){
+  const n = FILES.filter(f => f[3]()).length;
+  box.replaceChildren(el("span", {class:"tag"}, "📁 My AI Creators folder · Google Drive"),
+    el("ul", {class:"files2"}, ...FILES.map(([f, ch, what, ok]) => el("li", {class:(ok() ? "ok" : "") + (ch === now ? " now" : "")}, el("b", null, ok() ? "✓" : ch === now ? "→" : "○"), el("span", null, el("code", null, f), " ", what), el("small", null, "Ch " + ch)))),
+    el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, n + " of " + FILES.length + " files saved. Everything goes on your web page in Chapter 8."),
+    el("details", {class:"howsave"}, el("summary", null, "How do I save a file in my folder?"),
+      el("ol", null, el("li", null, "In Adobe Express, press Download. The file goes to your computer's Downloads."),
+        el("li", null, "Open Downloads and rename the file exactly as in the list (for example hero.png)."),
+        el("li", null, "Go to drive.google.com, open your AI Creators folder, press New, then File upload, and pick the file."))));
+}
 /* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
 function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
-return {TEAMS, me, picker, fill, rawSet};
+return {TEAMS, me, picker, fill, rawSet, files, FILES};
 })();
 
 /* options that fit each part: places, things and looks */
@@ -450,8 +490,8 @@ function checklist(id, items, compact){
     return li; }));
   return { tick(i){ if (saved[i]) return; const cb = document.getElementById(id + "-" + i); if (!cb) return; cb.checked = true; saved[i] = true; store.set(id, saved); cb.closest("li").classList.add("ok"); $("#" + id).dispatchEvent(new Event("change")); } };
 }
-const {TEAMS, me, picker, fill, rawSet} = window.P;
-return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet};
+const {TEAMS, me, picker, fill, rawSet, files} = window.P;
+return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet, files};
 })();
 
 </script>
@@ -519,8 +559,8 @@ const L1 = checklist("list1", [
   ["Paste your prompt", "Copy my prompt (on the right), paste it in Gemini and press Enter. Wait about 30 seconds."],
   ["Look at the preview", "Your pictures and videos will not show yet: they are on your computer, not in Gemini. That is normal."],
   ["Improve it twice", "Copy 2 improvement prompts into the same chat, or write your own."],
-  ["Download the page", "In the Canvas panel, find Download (the arrow icon) and save the file in your AI Creators folder with the name shown on the right."],
-  ["Open it from the folder", "Double-click the page in your folder. Now your pictures and videos appear. Do they all work?"]
+  ["Save the page", "In the Canvas panel, find Download (the arrow icon). Rename the file with the name shown on the right and upload it to your AI Creators folder in Google Drive."],
+  ["See it with everything", "In Google Drive, right-click your AI Creators folder and press Download. Open the zip, then double-click your page. Now your pictures and videos appear. Do they all work?"]
 ]);
 picker($("#proj"), () => { drawPage(); drawPlan(); });
 document.addEventListener("click", () => { if (W.theme && W.colours) L1.tick(0); });
@@ -556,24 +596,33 @@ function save(){ store.set("test", T); drawCard(); }
 ["who","star","wish"].forEach(id => { $("#" + id).value = T[id] || ""; $("#" + id).addEventListener("input", () => { T[id] = $("#" + id).value; save(); }); });
 drawChecks(); drawCard();
 
-/* fixes */
-const FIX = [
-  ["A button does nothing", "When I click the \"___\" button, nothing happens. Make it ___.", "e.g. show a fun fact"],
-  ["Hard to read", "The ___ is hard to read. Make the text bigger and change the colours so it is easy to read on any screen.", "e.g. story section"],
-  ["Broken on a phone", "On a phone, the ___ looks broken (too wide or overlapping). Fix it so the whole page fits a phone screen.", "e.g. idea cards"],
-  ["A picture or video is missing", "The ___ does not show. Make sure the page uses the file name ___ exactly, in the same folder as the page.", "e.g. video player, video.mp4"],
-  ["Something is missing", "Add ___ to my page, in the same style as the rest. Keep everything else the same.", "e.g. a poll"],
-  ["Something is not true", "The page says \"___\", which is not right. Change it to: ___.", "e.g. the fact in the quiz"]
+/* fixes: choose, the prompt writes itself */
+const FSPEC = [
+  {id:"what", icon:"🐞", title:"What is wrong?", one:true, opts:["a button does nothing","it is hard to read","it looks broken on a phone","a picture or video does not show","something is missing","something is not true","it looks boring"]},
+  {id:"where", icon:"📍", title:"Where?", one:true, opts:["the title","the idea cards","the story","the pictures","the podcast player","the video player","the quiz or game","the whole page"]},
+  {id:"how", icon:"🔧", title:"How should it be fixed?", max:2, opts:["make the text bigger","use stronger colours","make it fit a phone screen","use the exact file names (hero.png, podcast.mp4…)","add gentle animations","make it look like the rest of the page","make the button work"]},
+  {id:"detail", title:"✏️ Say exactly what you see (optional)", text:true, ph:"e.g. the Start quiz button does nothing when I click it"}
 ];
-$("#fixes").replaceChildren(...FIX.map(([title, tpl, eg], i) => { const t = el("textarea", {rows:"4", "aria-label":title}); const saved = store.get("fix" + i); t.value = saved != null ? saved : tpl; t.addEventListener("input", () => store.set("fix" + i, t.value));
-  return el("div", {class:"card"}, el("span", {class:"tag"}, title), t, el("p", {class:"muted", style:"margin:4px 0 8px;font-size:14px"}, "Replace each ___ (" + eg + ")"), el("button", {class:"btn sm", type:"button", onclick:() => { if (/___/.test(t.value)){ K.toast("Fill in every ___ first."); t.focus(); return; } copy(t.value, t, "Gemini"); }}, "Copy fix prompt")); }));
+const F = Object.assign({what:"", where:"", how:[], detail:""}, store.get("fixB") || {});
+function fixText(){ const j = window.B.join;
+  return "On my page, " + (F.where || "something") + ": " + (F.what || "there is a problem") + "." + ((F.detail || "").trim() ? " " + F.detail.trim().charAt(0).toUpperCase() + F.detail.trim().slice(1).replace(/\.?$/, ".") : "") +
+    "\nPlease fix it" + (F.how.length ? ": " + j(F.how) : "") + ".\nKeep everything else on my page exactly the same.";
+}
+let fixUI;
+function drawFix(){ $("#fixOut").textContent = fixText(); window.B.meter($("#fixP"), FSPEC, F); $("#fixN").textContent = store.get("fixes") || 0; }
+function onFix(redraw){ store.set("fixB", F); if (redraw) fixUI.draw(); drawFix(); }
+fixUI = window.B.make($("#fixB"), FSPEC, F, onFix);
+$("#copyFix").onclick = () => { if (!F.what || !F.where){ K.toast("Choose what is wrong and where first."); return; } copy(fixText(), $("#fixOut"), "your page's Gemini chat"); };
+$("#nextFix").onclick = () => { store.set("fixes", (store.get("fixes") || 0) + 1); F.what = ""; F.where = ""; F.how = []; F.detail = ""; onFix(true); K.toast("Fix counted. Choose the next one."); };
+drawFix();
 
 /* launch */
-const L = [["Every button works",""],["My 3 pictures show on the page",""],["My podcast clip and my video play with sound",""],["Every fact is checked",""],["Everything AI-made is labelled Made with AI",""],["First names only, no photos of real people",""],["It works on a phone",""],["All my files are in one AI Creators folder: the page, hero.png, detail.png, character.png, podcast.mp4, video.mp4",""]];
+const L = [["Every button works",""],["My 3 pictures show on the page",""],["My podcast clip and my video play with sound",""],["Every fact is checked",""],["Everything AI-made is labelled Made with AI",""],["First names only, no photos of real people",""],["It works on a phone",""],["All 6 files are in my AI Creators folder in Google Drive, shared with my teacher",""]];
 checklist("launch", L);
 function ready(){ const n = [...document.querySelectorAll("#launch input")].filter(x => x.checked).length;
-  $("#ready").replaceChildren(el("span", {class:"tag"}, "Status"), el("div", {class:"big-num"}, n + " / " + L.length), n === L.length ? el("p", {class:"lead", style:"margin:0;color:var(--green);font-weight:700"}, "Ready for launch! Hand your AI Creators folder to your teacher.") : el("p", {class:"lead", style:"margin:0"}, "Tick every line before launch day.")); }
+  $("#ready").replaceChildren(el("span", {class:"tag"}, "Status"), el("div", {class:"big-num"}, n + " / " + L.length), n === L.length ? el("p", {class:"lead", style:"margin:0;color:var(--green);font-weight:700"}, "Ready for launch! Your teacher takes your AI Creators folder from Google Drive.") : el("p", {class:"lead", style:"margin:0"}, "Tick every line before launch day.")); }
 $("#launch").addEventListener("change", ready); ready();
+K.files($("#filesBox"), 8); document.addEventListener("change", () => K.files($("#filesBox"), 8));
 K.start();
 })();
 </script>

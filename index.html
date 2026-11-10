@@ -293,6 +293,9 @@ function renderHome(){
       el("span", {class:"num"}, pr[i] === 100 ? "✓" : String(c.n)),
       el("span", {class:"body"}, el("span", {class:"tag"}, "Session " + c.s), el("b", null, c.t), el("span", {class:"learn"}, c.learn), el("span", {class:"bar sm"}, el("i", {style:"width:" + pr[i] + "%"}))),
       el("span", {class:"pct"}, pr[i] + "%")))),
+    (() => { const L = k => pj(d[k]) || [], F = [["hero.png",5,L("ch5-list1")[5]],["detail.png",5,L("ch5-list1")[6]],["character.png",5,L("ch5-list1")[6]],["podcast.mp4",6,L("ch6-list1")[7]],["video.mp4",7,L("ch7-list2")[4]],["my page (.html)",8,L("ch8-list1")[5]]];
+      return el("div", {class:"card extra"}, el("span", {class:"tag"}, "📁 My AI Creators folder · Google Drive"), el("b", null, F.filter(f => f[2]).length + " of 6 project files saved"),
+        el("span", {class:"muted"}, F.map(f => (f[2] ? "✓ " : "○ ") + f[0] + " (Ch " + f[1] + ")").join("   ·   "))); })(),
     el("a", {class:"card extra", href:"ai-lab.html"}, el("span", {class:"tag"}, "Extra practice"), el("b", null, "AI Lab games"), el("span", {class:"muted"}, "10 mini missions: train a classifier, build a guessing machine, be a neuron, and more. Same login."))
   );
 }

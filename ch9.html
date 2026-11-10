@@ -192,6 +192,17 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .power b{font-size:28px;color:var(--gold);letter-spacing:2px}
 .power .muted{font-size:14px}
 .bstep{font:700 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin:4px 0 -6px}
+#recB{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}
+#recB .bsec{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+#recB .bsec h4{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.files2{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px}
+.files2 li{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:15px}
+.files2 li.ok{background:var(--green-soft);border-color:var(--green)}
+.files2 li.now{border:2px solid var(--gold)}
+.files2 li b{color:var(--green)}
+.files2 code{font:700 14px var(--mono)}
+.files2 small{color:var(--muted);font-family:var(--mono);font-size:12px}
+.howsave{margin-top:8px;font-size:15px}.howsave summary{cursor:pointer;font-weight:700;color:var(--green)}.howsave ol{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
 .pitchform{display:grid;gap:10px}
 .ing{display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
 .pitch{font-family:var(--display);font-size:21px;font-weight:600;line-height:1.4;margin:6px 0 10px}
@@ -302,7 +313,7 @@ Please put your phones on silent. Lights down: here are our trailers!</pre>
       <div class="crow head"><span>First name</span><span>Team and part</span><span>Folder / page file</span><span></span></div>
       <div id="rows"></div>
       <div class="row" style="margin-top:10px"><button class="btn sm alt" id="addRow" type="button">+ Add a student</button></div>
-      <p class="muted" style="font-size:15px;margin:14px 0 0">Trailer files: <b>school-trailer.mp4</b> and <b>planet-trailer.mp4</b></p>
+      <p class="muted" style="font-size:15px;margin:14px 0 0">Team files you make: <b>school-trailer.mp4</b>, <b>planet-trailer.mp4</b>, <b>school-podcast.mp4</b>, <b>planet-podcast.mp4</b></p>
       <div class="row" style="margin-top:12px"><button class="btn sm" id="copyIndex" type="button">Copy index.html</button><button class="btn sm" id="copySchool" type="button">Copy school.html</button><button class="btn sm" id="copyPlanet" type="button">Copy planet.html</button></div>
     </div>
     <div class="card">
@@ -353,9 +364,28 @@ function picker(box, onChange){
   }
   draw();
 }
+/* the kid's AI Creators folder in Google Drive: what is in it, made in which chapter */
+const FILES = [
+  ["hero.png", 5, "Big picture", () => (store.raw("ch5-list1") || [])[5]],
+  ["detail.png", 5, "Close-up picture", () => (store.raw("ch5-list1") || [])[6]],
+  ["character.png", 5, "Character picture", () => (store.raw("ch5-list1") || [])[6]],
+  ["podcast.mp4", 6, "Podcast clip", () => (store.raw("ch6-list1") || [])[7]],
+  ["video.mp4", 7, "30-second video", () => (store.raw("ch7-list2") || [])[4]],
+  ["my page (.html)", 8, "Web page", () => (store.raw("ch8-list1") || [])[5]]
+];
+function files(box, now){
+  const n = FILES.filter(f => f[3]()).length;
+  box.replaceChildren(el("span", {class:"tag"}, "📁 My AI Creators folder · Google Drive"),
+    el("ul", {class:"files2"}, ...FILES.map(([f, ch, what, ok]) => el("li", {class:(ok() ? "ok" : "") + (ch === now ? " now" : "")}, el("b", null, ok() ? "✓" : ch === now ? "→" : "○"), el("span", null, el("code", null, f), " ", what), el("small", null, "Ch " + ch)))),
+    el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, n + " of " + FILES.length + " files saved. Everything goes on your web page in Chapter 8."),
+    el("details", {class:"howsave"}, el("summary", null, "How do I save a file in my folder?"),
+      el("ol", null, el("li", null, "In Adobe Express, press Download. The file goes to your computer's Downloads."),
+        el("li", null, "Open Downloads and rename the file exactly as in the list (for example hero.png)."),
+        el("li", null, "Go to drive.google.com, open your AI Creators folder, press New, then File upload, and pick the file."))));
+}
 /* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
 function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
-return {TEAMS, me, picker, fill, rawSet};
+return {TEAMS, me, picker, fill, rawSet, files, FILES};
 })();
 
 /* options that fit each part: places, things and looks */
@@ -464,8 +494,8 @@ function checklist(id, items, compact){
     return li; }));
   return { tick(i){ if (saved[i]) return; const cb = document.getElementById(id + "-" + i); if (!cb) return; cb.checked = true; saved[i] = true; store.set(id, saved); cb.closest("li").classList.add("ok"); $("#" + id).dispatchEvent(new Event("change")); } };
 }
-const {TEAMS, me, picker, fill, rawSet} = window.P;
-return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet};
+const {TEAMS, me, picker, fill, rawSet, files} = window.P;
+return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fill, rawSet, files};
 })();
 
 </script>
@@ -517,7 +547,7 @@ let job = store.get("job");
 function drawJobs(){ $("#jobs").replaceChildren(...JOBS.map(([n, d]) => el("button", {class:"segcard", type:"button", "aria-pressed": String(job === n), onclick:() => { job = n; store.set("job", n); drawJobs(); }}, el("strong", null, n), el("span", null, d)))); $("#jobMsg").textContent = job ? "Your job: " + job + ". Tell your teacher." : "Two or three students per job. Everyone also stands by their own page."; }
 drawJobs();
 /* run sheet */
-const RUN = [["0:00","Welcome","Hosts read the opening script."],["0:04","Two trailers","Tech crew plays the School 2040 trailer, then the Planet 2050 trailer."],["0:10","Gallery walk","Visitors walk through both zones. Each student gives their 30-second pitch with their page open."],["0:28","Live demo","A visitor suggests an idea; the demo team designs it live with one prompt."],["0:36","AI challenge","Visitors try to fool the recycling robot and vote in Fake or Real. The class explains bias and the 4 S check."],["0:43","Thank you","Hosts thank guests and give everyone the website link."]];
+const RUN = [["0:00","Welcome","Hosts read the opening script."],["0:04","Two trailers","Tech crew plays the School 2040 trailer, then the Planet 2050 trailer."],["0:10","Gallery walk","Visitors walk through both zones while the team podcasts play. Each student gives their 30-second pitch with their page open."],["0:28","Live demo","A visitor suggests an idea; the demo team designs it live with one prompt."],["0:36","AI challenge","Visitors try to fool the recycling robot and vote in Fake or Real. The class explains bias and the 4 S check."],["0:43","Thank you","Hosts thank guests and give everyone the website link."]];
 $("#run").replaceChildren(...RUN.map(([t, n, d]) => el("div", {class:"runrow"}, el("time", null, t), el("div", null, el("b", null, n), el("span", null, d)))));
 document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => { const s = document.getElementById(b.dataset.copy); copy(s.textContent, s, "your notes"); }));
 /* two websites builder */
@@ -552,6 +582,8 @@ function teamHTML(t){
 <main>
   <h2>Our trailer</h2>
   <video src="${t}-trailer.mp4" controls></video>
+  <h2>Our podcast: ${T.podcast.replace(/^the /, "")}</h2>
+  <video src="${t}-podcast.mp4" controls></video>
   <h2>Our parts</h2>
   <div class="grid">
 ${tiles}
@@ -582,13 +614,14 @@ $("#copySchool").onclick = () => copy(teamHTML("school"), null, "a file called s
 $("#copyPlanet").onclick = () => copy(teamHTML("planet"), null, "a file called planet.html");
 drawRows(); save();
 checklist("gh", [
-  ["Collect the folders", "Get each student's AI Creators folder (page, hero.png, detail.png, character.png, podcast.mp4, video.mp4). Rename each folder like sara-library."],
+  ["Collect the folders", "Every student shared their AI Creators folder with you on Google Drive (Chapter 5). Right-click each folder, press Download, and unzip it. Rename each folder like sara-library and check the 6 files are inside."],
   ["Make the 2 trailers", "In Adobe Express, upload the best video.mp4 files of each team, add a title and an ending, and download school-trailer.mp4 and planet-trailer.mp4."],
+  ["Make the 2 team podcasts", "In Adobe Express, put all the podcast.mp4 clips of one team one after the other, add a short intro, and download school-podcast.mp4. Do the same for planet-podcast.mp4."],
   ["Create the repo", "On github.com, create a public repository called ai-creators."],
-  ["Upload everything", "Add file, then Upload files: drag in all student folders and both trailers. Commit. GitHub's upload page takes files up to 25 MB each, so download long videos from Adobe at 720p."],
+  ["Upload everything", "Add file, then Upload files: drag in all student folders, both trailers and both podcasts. Commit. GitHub's upload page takes files up to 25 MB each, so download long videos from Adobe at 720p."],
   ["Add the 3 home pages", "Press Copy index.html above. On GitHub: Add file, Create new file, name it index.html, paste, Commit. Do the same for school.html and planet.html."],
   ["Switch it on", "Settings, then Pages: deploy from the main branch, root folder. After 1 to 2 minutes the websites are live at yourname.github.io/ai-creators."],
-  ["Test on a phone", "Open the link on a phone. Do both doors work? Does every tile open its page? Do the trailers play?"]
+  ["Test on a phone", "Open the link on a phone. Do both doors work? Does every tile open its page? Do the trailers and podcasts play?"]
 ]);
 K.start();
 })();

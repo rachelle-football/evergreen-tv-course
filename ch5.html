@@ -207,6 +207,14 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
 .power .muted{font-size:14px}
 .cat.mine{border:2px solid var(--green);background:var(--green-soft)}
 .cat.mine.on{background:var(--green-soft)}
+.files2{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px}
+.files2 li{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:15px}
+.files2 li.ok{background:var(--green-soft);border-color:var(--green)}
+.files2 li.now{border:2px solid var(--gold)}
+.files2 li b{color:var(--green)}
+.files2 code{font:700 14px var(--mono)}
+.files2 small{color:var(--muted);font-family:var(--mono);font-size:12px}
+.howsave{margin-top:8px;font-size:15px}.howsave summary{cursor:pointer;font-weight:700;color:var(--green)}.howsave ol{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
 </style>
 <header class="top">
   <div class="wrap">
@@ -280,7 +288,7 @@ canvas#noise{width:100%;max-width:360px;height:auto;border-radius:10px;display:b
       <p class="muted" style="margin:0;font-size:14px">Save it as <b id="fileName">hero.png</b> in your <b>AI Creators</b> folder</p>
     </aside>
   </div>
-  <ol class="checklist" id="list1" style="margin-top:16px"></ol>
+  <div class="grid g2" style="margin-top:16px;align-items:start"><ol class="checklist" id="list1"></ol><div class="card" id="filesBox"></div></div>
   <div class="def warn"><span class="tag">Credits are limited</span><p>Each picture uses Adobe credits. Build a strong prompt first: aim for 2 tries per picture.</p></div>
 </section>
 
@@ -337,9 +345,28 @@ function picker(box, onChange){
   }
   draw();
 }
+/* the kid's AI Creators folder in Google Drive: what is in it, made in which chapter */
+const FILES = [
+  ["hero.png", 5, "Big picture", () => (store.raw("ch5-list1") || [])[5]],
+  ["detail.png", 5, "Close-up picture", () => (store.raw("ch5-list1") || [])[6]],
+  ["character.png", 5, "Character picture", () => (store.raw("ch5-list1") || [])[6]],
+  ["podcast.mp4", 6, "Podcast clip", () => (store.raw("ch6-list1") || [])[7]],
+  ["video.mp4", 7, "30-second video", () => (store.raw("ch7-list2") || [])[4]],
+  ["my page (.html)", 8, "Web page", () => (store.raw("ch8-list1") || [])[5]]
+];
+function files(box, now){
+  const n = FILES.filter(f => f[3]()).length;
+  box.replaceChildren(el("span", {class:"tag"}, "📁 My AI Creators folder · Google Drive"),
+    el("ul", {class:"files2"}, ...FILES.map(([f, ch, what, ok]) => el("li", {class:(ok() ? "ok" : "") + (ch === now ? " now" : "")}, el("b", null, ok() ? "✓" : ch === now ? "→" : "○"), el("span", null, el("code", null, f), " ", what), el("small", null, "Ch " + ch)))),
+    el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, n + " of " + FILES.length + " files saved. Everything goes on your web page in Chapter 8."),
+    el("details", {class:"howsave"}, el("summary", null, "How do I save a file in my folder?"),
+      el("ol", null, el("li", null, "In Adobe Express, press Download. The file goes to your computer's Downloads."),
+        el("li", null, "Open Downloads and rename the file exactly as in the list (for example hero.png)."),
+        el("li", null, "Go to drive.google.com, open your AI Creators folder, press New, then File upload, and pick the file."))));
+}
 /* fill {part}, {site}, {world}, {about}, {look}, {podcast}, {video}, {team} in a text */
 function fill(t){ const m = me(), T = m.T || TEAMS.school; return t.replace(/\{part\}/g, m.part ? m.part.replace(/^The /, "the ") : "my part").replace(/\{site\}/g, T.site).replace(/\{world\}/g, T.world).replace(/\{about\}/g, m.about || "").replace(/\{look\}/g, T.look).replace(/\{podcast\}/g, T.podcast).replace(/\{video\}/g, T.video).replace(/\{team\}/g, T.name); }
-return {TEAMS, me, picker, fill, rawSet};
+return {TEAMS, me, picker, fill, rawSet, files, FILES};
 })();
 
 /* options that fit each part: places, things and looks */
@@ -521,16 +548,17 @@ $("#copyPic").onclick = () => { if (!S.place){ toast("First choose where it is (
 P.picker($("#proj"), () => { draw(); });
 tabs(); draw();
 checklist("list1", [
-  ["Check your team", "At the top: School 2040 or Planet 2050. The places change with your team."],
+  ["Make your AI Creators folder", "Once only: go to drive.google.com with your school account, press New, then New folder, and call it AI Creators. Right-click it, press Share, and add your teacher. All your pictures and videos go in this folder."],
   ["Build picture 1", "Choose where it is, then pick robots, vehicles, buildings, magic… and how they look. Add your own crazy idea. Aim for 4 stars or more."],
   ["Open Adobe Express", "Go to new.express.adobe.com and sign in with your school account. Press Copy picture prompt, paste it in the big box at the top and press Enter."],
   ["Be a detective", "Look at the 4 pictures. Did the AI add things you did not ask for? Only boys? Strange hands? Messy letters?"],
   ["Fix it with your choices", "Change your choices to fix what is wrong, copy again and try again. Two tries per picture."],
-  ["Download the best one", "Click your favourite, choose Download, and save it in a folder called AI Creators as hero.png."],
-  ["Pictures 2 and 3", "Do the same with 2 · Close-up (detail.png) and 3 · Character (character.png)."],
+  ["Save the best one", "Click your favourite and press Download. Rename the file hero.png and upload it to your AI Creators folder in Google Drive (see the box on the right)."],
+  ["Pictures 2 and 3", "Do the same with 2 · Close-up (save it as detail.png) and 3 · Character (save it as character.png), in the same folder."],
   ["Label it", "Everything made by AI gets the label Made with AI on your website (Chapter 8)."]
 ]);
-
+P.files($("#filesBox"), 5);
+$("#list1").addEventListener("change", () => P.files($("#filesBox"), 5));
 /* 4 class count */
 const C = store.get("count") || {boys:0, girls:0, none:0};
 function drawCount(){ const total = C.boys + C.girls;
