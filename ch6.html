@@ -228,9 +228,12 @@ img.fprev{background:var(--paper)}
 .opt.right{border-color:var(--green);background:var(--green-soft)}.opt.wrong{border-color:var(--onair);background:var(--onair-soft)}
 .why{font-size:15px;color:var(--muted);margin:8px 0 0}
 .teacher{margin-top:16px}.teacher summary{cursor:pointer}
-.tp{position:fixed;inset:0;z-index:30;background:rgba(5,10,8,.92);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.tp{position:fixed;inset:0;z-index:60;background:#050a08;display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .tp-in{width:min(900px,100%);display:grid;gap:14px}
 .tp-text{height:min(55vh,420px);overflow:hidden;color:#fff;font:700 clamp(28px,4vw,46px)/1.35 var(--display);padding:20px 0;border-block:2px solid #333;white-space:pre-wrap}
+
+.tp-text{white-space:normal}.tp-text .tpl{margin:0 0 .45em}.tp-text .tpl.gap{height:.4em}.tp-text .tpw{display:block;font:700 15px/1.2 var(--mono,monospace);letter-spacing:.08em;margin-bottom:2px}.tp-text .tps{font:600 18px/1.3 var(--body,sans-serif);color:#8a8a8a;font-style:italic;margin:0 .35em;white-space:nowrap}.tp-text .tpsay{color:#fff}
+.tp #tpGo{background:#1E7A55;color:#fff;border-color:#1E7A55}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -283,7 +286,7 @@ img.fprev{background:var(--paper)}
 </section>
 
 <section class="seg" id="seg-3" data-min="28" data-title="Mission: podcast clip" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: your clip for the team podcast</h2><p>28 minutes · your voice, Adobe Express</p></div></div>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: your clip for the team podcast</h2><p>28 minutes · Gemini writes, Adobe Firefly speaks, Adobe Express animates</p></div></div>
   <div class="card myproj" id="proj"></div>
   <div class="card" style="margin-bottom:16px">
     <span class="tag">1 · Build your podcast script prompt: choose, and it writes itself</span>
@@ -300,24 +303,26 @@ img.fprev{background:var(--paper)}
       <span class="tag">Your podcast host</span>
       <p id="charIdea" class="lead" style="margin:0;font-size:17px"></p>
       <label class="tag" for="script">2 · Paste the script Gemini wrote</label>
-      <textarea id="script" style="min-height:200px" placeholder="Paste your podcast script here, then make it sound like you…"></textarea>
+      <textarea id="script" style="min-height:200px" placeholder="Paste your podcast script here, then change any line to make it yours…"></textarea>
       <p class="muted" style="margin:0;font-size:15px"><span id="wc">0 words</span> · about <span id="secs">0</span> seconds.</p>
-      <div class="row"><button class="btn sm" id="tpBtn" type="button">Practise with the teleprompter</button></div>
+      <span class="tag" style="margin-top:8px">3 · Make the AI voice, then the animated host</span>
+      <div class="row" style="flex-wrap:wrap"><button class="btn sm" id="copyScript" type="button">Copy script for the AI voice</button><a class="btn sm alt" style="text-decoration:none" href="https://firefly.adobe.com/" target="_blank" rel="noopener">🔊 Open Firefly: make the voice ↗</a><a class="btn sm alt" style="text-decoration:none" href="https://express.adobe.com/home/tools/animate-from-audio" target="_blank" rel="noopener">🎭 Open Adobe: Animate characters ↗</a><button id="tpBtn" type="button" hidden></button></div>
+      <p class="muted" style="margin:0;font-size:14px">The copy button removes names and [sounds], so the AI voice reads only the story words.</p>
       <span class="tag" style="margin-top:8px">Save your podcast in your folder</span>
       <div id="podSlot"></div>
       <div id="filesBox" style="margin-top:8px"></div>
     </aside>
   </div>
-  <p class="note">No microphone on your computer? In the Record step, choose the upload option instead and use a recording your teacher made with you on a class device. Your voice stays in your Adobe project only.</p>
+  <p class="note">🔒 Nobody records their own voice in this chapter. An AI voice reads your script: you choose which voice fits your host. Firefly gives a few free voice generations each day, so check your script before you press Generate.</p>
 </section>
 
 <section class="seg" id="seg-4" data-min="5" data-title="Podcast premiere" hidden>
   <div class="lower"><div class="no">04</div><div class="name"><h2>Podcast premiere</h2><p>5 minutes · one clip from each team</p></div></div>
   <p class="big">One clip from each team goes on air. The class answers: could you hear every word? Did you feel the future?</p>
   <div class="grid g3">
-    <div class="card"><span class="tag">The AI did</span><p class="lead" style="margin:6px 0 0">Moved the host's mouth, eyes and body to match your voice.</p></div>
-    <div class="card"><span class="tag">You did</span><p class="lead" style="margin:6px 0 0">The story, the voice, the acting, and the choice of host.</p></div>
-    <div class="card"><span class="tag">Next week</span><p class="lead" style="margin:6px 0 0">AI Video: 30 seconds of video for your part, with your pictures and your voice.</p></div>
+    <div class="card"><span class="tag">The AI did</span><p class="lead" style="margin:6px 0 0">Made the voice from your text, and moved the host's mouth, eyes and body to match it.</p></div>
+    <div class="card"><span class="tag">You did</span><p class="lead" style="margin:6px 0 0">The story, the script, the choice of voice and host. The AI only performed it.</p></div>
+    <div class="card"><span class="tag">Next week</span><p class="lead" style="margin:6px 0 0">AI Video: 30 seconds of video for your part, with your pictures and your podcast.</p></div>
   </div>
 </section>
 
@@ -472,7 +477,7 @@ function slotBox(box, s, onDone){
     try { await upload(file, s.slot, s.label); msg.textContent = "✓ Saved in your folder!"; msg.className = "fmsg ok"; await draw(); if (onDone) onDone(s.slot); document.dispatchEvent(new CustomEvent("evg-files", {detail:"slot"})); }
     catch(e){ msg.textContent = MSG[e.code] || ("Problem: " + (e.code || "unknown")); msg.className = "fmsg no"; }
   });
-  box.classList.add("fslot");
+  box.classList.add("fslot"); box.dataset.slot = s.slot;
   ready().then(draw);
   document.addEventListener("evg-files", e => { if (e.detail !== "slot") draw(); });
   return {draw};
@@ -488,7 +493,7 @@ function folder(box, now){
     let files = []; let err = ""; try { files = await list(true); } catch(e){ err = MSG[e.code] || ""; }
     const P = plan(), have = s => files.find(f => f.slot === s.slot), n = P.filter(have).length;
     box.replaceChildren(...[el("span", {class:"tag"}, "📁 My folder · saved in the app"),
-      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc() && (!now || s.ch <= now)) ? addBtn(s) : el("small", null, f || !now || s.ch <= now ? "Ch " + s.ch : "later · Ch " + s.ch)); })),
+      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc() && (!now || s.ch <= now) && !(box.closest("dialog") == null && document.querySelector('.fslot[data-slot="' + s.slot + '"]'))) ? addBtn(s) : el("small", null, f || !now || s.ch <= now ? (!f && document.querySelector('.fslot[data-slot="' + s.slot + '"]') ? "↑ Upload above" : "Ch " + s.ch) : "later · Ch " + s.ch)); })),
       el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, on() ? n + " of " + P.length + " saved. Your teacher can see your folder." : "Log in from the class link to save your files in the app."),
       err ? el("p", {class:"fmsg no"}, err) : null,
       on() && files.length ? el("div", {class:"row", style:"margin-top:6px"}, el("button", {class:"btn sm alt", type:"button", onclick:() => zip(files, (acc() && acc().username) || "my-folder")}, "⬇ Download my whole folder")) : null].filter(Boolean));
@@ -642,24 +647,24 @@ $("#scen").replaceChildren(...SC.map(([q, opts, ok, why]) => { const w = el("p",
 const raw = k => K.store.raw(k);
 const J = window.B.join;
 const PSPEC = [
-  {id:"show", icon:"🎙️", title:"Kind of show", one:true, opts:["a news show from the future","an interview with my character","a radio drama with sound effects","a \"did you know?\" facts show","a sports-commentator style show","a calm bedtime-story podcast"]},
-  {id:"open", icon:"👋", title:"How does it start?", one:true, opts:["a big welcome with the podcast name","a sound effect and a big hello","a question to the listeners","a countdown from 3"]},
+  {id:"show", icon:"🎙️", title:"Kind of show", one:true, opts:["a news show from the future","my character tells the story","a mystery story with a twist","a \"did you know?\" facts show","a sports-commentator style show","a calm bedtime-story podcast"]},
+  {id:"open", icon:"👋", title:"How does it start?", one:true, opts:["a big welcome with the podcast name","a big hello and a surprising fact","a question to the listeners","a countdown from 3"]},
   {id:"tone", icon:"🎭", title:"Tone", one:true, opts:["excited","calm","funny","mysterious"]},
-  {id:"voices", icon:"🗣️", title:"Who talks?", one:true, opts:["only me","me and my story character","me and a robot co-host"]},
+  {id:"voice", icon:"🔊", title:"Which AI voice will read it?", name:"AI voice", one:true, opts:["a cheerful kid","a deep radio presenter","a calm storyteller","a funny robot"]},
   {id:"end", icon:"🏁", title:"How does it end?", one:true, opts:["a question for the listeners","a challenge: do one thing this week","a joke","\"See you in the future!\""]},
   {id:"len", icon:"⏱️", title:"Length", one:true, opts:["40 seconds","60 seconds","90 seconds"]},
-  {id:"idea", title:"✨ Your own idea", text:true, ph:"e.g. the robot co-host keeps getting the facts wrong", hint:"makes it yours"}
+  {id:"idea", title:"✨ Your own idea", text:true, ph:"e.g. the host keeps getting the facts wrong, then fixes them", hint:"makes it yours"}
 ];
-const PS = Object.assign({show:"", open:"", tone:"", voices:"", end:"", len:"60 seconds", idea:""}, store.get("pod") || {});
+const PS = Object.assign({show:"", open:"", tone:"", voice:"", end:"", len:"60 seconds", idea:""}, store.get("pod") || {});
 function podText(){
   const m = K.me(), T = m.T || K.TEAMS.school, st = raw("ch4-story") || {}, c = raw("ch4-char") || {}, secs = parseInt(PS.len) || 60;
   return "Role: You are a script writer for a kids' podcast.\n" +
     "Task: Turn my story into a " + (PS.len || "60 seconds").replace(" seconds", "-second") + " script for " + T.podcast + (PS.show ? ", made as " + PS.show : "") + ".\n" +
     "Context: My story" + (st.title ? " \"" + st.title + "\"" : "") + ": " + (st.text ? "\"" + st.text.trim() + "\"" : "(my story from Chapter 4)") + "\n" +
     (PS.open ? "Start with " + PS.open + ". " : "") + (PS.tone ? "The tone is " + PS.tone + ". " : "") +
-    (PS.voices ? "Who talks: " + PS.voices + (PS.voices.includes("character") && c.name ? " (" + c.name + ")" : "") + ". " : "") + (PS.voices && PS.voices.includes("character") && c.more && c.more.talk ? "My character talks like this: " + c.more.talk + " " : "") +
+    (PS.voice ? "One AI voice reads the whole script: " + PS.voice + (c.name && /character/.test(PS.show) ? ", as " + c.name : "") + ". " : "") + (/character/.test(PS.show) && c.more && c.more.talk ? "My character talks like this: " + c.more.talk + " " : "") +
     (PS.end ? "End with " + PS.end + ". " : "") + ((PS.idea || "").trim() ? "My own idea: " + PS.idea.trim() + ". " : "") +
-    "\nFormat: About " + Math.round(secs * 2.3 / 10) * 10 + " words. Short lines with the speaker's name before each line, and sound effects in [brackets]. Easy English for 12-year-olds. No real people's names.";
+    "\nFormat: About " + Math.round(secs * 2.3 / 10) * 10 + " words. Write ONLY the words the AI voice will say aloud: no speaker names, no sound effects, no [brackets], no emojis, no stage directions. Short sentences that are easy to say. Easy English for 12-year-olds. No real people's names.";
 }
 let podUI;
 function drawPod(){ window.B.show($("#podOut"), PSPEC, PS, podText()); window.B.meter($("#podP"), PSPEC, PS); window.B.lock($("#copyPod"), PSPEC, PS); }
@@ -675,26 +680,47 @@ scr.addEventListener("input", () => { store.set("script", scr.value); wc(); });
 K.picker($("#proj"), () => { hostIdea(); drawPod(); });
 hostIdea(); wc(); drawPod();
 
+
+/* the AI voice must read only the story words: remove names, [sounds], emojis and stars */
+function voiceText(t){ return t.split(/\r?\n/).map(l => l.replace(/\*\*/g, "").replace(/^\s*[A-Za-z][\w .'-]{0,24}\s*:\s*/, "").replace(/\[[^\]]*\]/g, "").replace(/\([^)]*(sound|sfx|music|laugh|pause)[^)]*\)/gi, "").replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "").replace(/\s{2,}/g, " ").trim()).filter(Boolean).join("\n"); }
+$("#copyScript").onclick = () => { const t = scr.value.trim(); if (!t){ K.toast("Paste the script Gemini wrote first."); scr.focus(); return; }
+  copy(voiceText(t), scr, "Firefly, in Generate speech"); };
 checklist("list1", [
-  ["Build your script prompt", "Choose the kind of show, the start, the tone, who talks and the ending. Copy the prompt into Gemini."],
-  ["Paste and make it yours", "Paste Gemini's script on the right. Change any line that does not sound like you."],
-  ["Practise", "Press Practise with the teleprompter. Read it aloud twice, like a radio host: smile, clear, not too fast."],
-  ["Open Animate from audio", "In Adobe Express, type Animate from audio in the big box at the top (or find it under Quick edits, View all)."],
+  ["Build your script prompt", "Choose the kind of show, the start, the tone, the AI voice and the ending. Copy the prompt into a NEW Gemini chat."],
+  ["Paste and make it yours", "Paste Gemini's script on the right. Change any line that does not sound like your story."],
+  ["Make the AI voice", "Press Copy script for the AI voice, then Open Firefly. In Firefly: Audio, then Generate speech. Paste, choose a voice that fits your host, press Generate, listen, then Download."],
+  ["Open Animate characters", "Press Open Adobe: Animate characters (or in Adobe Express: + on the left, Quick actions, Animate characters)."],
   ["Choose your host", "Pick a character that fits your world. Your story character is a great choice."],
-  ["Add your picture", "Under Background, choose Upload and pick your big picture (the file called big). Not on this computer? Press ⬇ Download my whole folder on the right first. No Upload option? Pick any background."],
-  ["Record your voice", "Press Record, allow the microphone, and read your script. Too fast, too quiet, a mistake? Record again: real podcasters do many takes."],
+  ["Add your picture", "Under Background, choose Upload and pick your big picture (the file called big). Not on this computer? Press ⬇ Download my whole folder on the right first."],
+  ["Add the AI voice", "Under the audio, choose browse (upload), not Record. Pick the voice file you downloaded from Firefly. Watch your host talk! Adobe may write captions: check them and fix any wrong word."],
   ["Save it", "Press Download in Adobe. Then press ⬆ Upload on the right and choose the file. It is saved in your folder and goes on your web page in Chapter 8."]
 ]);
 
 /* teleprompter */
 let tpTimer = null, t0 = 0;
 function closeTp(){ clearInterval(tpTimer); tpTimer = null; $("#tp").hidden = true; $("#tpGo").textContent = "Start"; }
-$("#tpBtn").onclick = () => { const txt = scr.value.trim(); if (!txt){ K.toast("Paste your script first."); scr.focus(); return; } $("#tpText").textContent = txt; $("#tpText").scrollTop = 0; $("#tpTime").textContent = "0 s"; $("#tp").hidden = false; };
+$("#tpBtn").onclick = () => { const txt = scr.value.trim(); if (!txt){ K.toast("Paste your script first."); scr.focus(); return; } fillTp(txt); $("#tpText").scrollTop = 0; $("#tpTime").textContent = "0 s"; $("#tp").hidden = false; };
 $("#tpClose").onclick = closeTp;
+/* teleprompter: names small and coloured (who speaks), [sounds] grey (do not read), only the words to say are big */
+const SPK = ["#7ee0b0", "#ffcf6b", "#9ec5ff", "#ff9ec7"], spkC = {};
+function sayOnly(t){ return t.split(/\r?\n/).map(l => l.replace(/\*\*/g, "").replace(/^\s*[A-Za-z][\w .'-]{0,24}\s*:\s*/, "").replace(/\[[^\]]*\]/g, "")).join(" "); }
+function fillTp(txt){
+  const box = $("#tpText"); box.replaceChildren();
+  txt.split(/\r?\n/).forEach(line => {
+    const l = line.replace(/\*\*/g, "").trim(); const row = document.createElement("div"); row.className = "tpl";
+    if (!l){ row.className = "tpl gap"; box.append(row); return; }
+    const m = l.match(/^([A-Za-z][\w .'-]{0,24})\s*:\s*(.*)$/); let rest = l;
+    if (m){ const who = m[1].trim().toUpperCase(); spkC[who] = spkC[who] || SPK[Object.keys(spkC).length % SPK.length];
+      const n = document.createElement("span"); n.className = "tpw"; n.style.color = spkC[who]; n.textContent = who + " (don't read the name)"; row.append(n); rest = m[2]; }
+    rest.split(/(\[[^\]]*\])/).forEach(part => { if (!part) return; const sp = document.createElement("span");
+      if (/^\[.*\]$/.test(part)){ sp.className = "tps"; sp.textContent = part + " sound, don't read"; } else { sp.className = "tpsay"; sp.textContent = part; } row.append(sp); });
+    box.append(row);
+  });
+}
 $("#tpGo").onclick = () => {
   if (tpTimer){ closeTp(); $("#tp").hidden = false; return; }
   const box = $("#tpText"); box.scrollTop = 0; t0 = Date.now(); $("#tpGo").textContent = "Stop";
-  const words = (scr.value.match(/\S+/g) || []).length, secs = Math.max(10, words / 2.5), max = box.scrollHeight - box.clientHeight;
+  const words = (sayOnly(scr.value).match(/\S+/g) || []).length, secs = Math.max(10, words / 2.5), max = box.scrollHeight - box.clientHeight;
   tpTimer = setInterval(() => { const e = (Date.now() - t0) / 1000; $("#tpTime").textContent = Math.round(e) + " s"; box.scrollTop = Math.min(max, max * e / secs); if (e > secs + 3){ clearInterval(tpTimer); tpTimer = null; $("#tpGo").textContent = "Again"; } }, 100);
 };
 addEventListener("keydown", e => { if (e.key === "Escape" && !$("#tp").hidden) closeTp(); });

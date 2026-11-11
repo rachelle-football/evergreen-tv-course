@@ -491,7 +491,7 @@ function slotBox(box, s, onDone){
     try { await upload(file, s.slot, s.label); msg.textContent = "✓ Saved in your folder!"; msg.className = "fmsg ok"; await draw(); if (onDone) onDone(s.slot); document.dispatchEvent(new CustomEvent("evg-files", {detail:"slot"})); }
     catch(e){ msg.textContent = MSG[e.code] || ("Problem: " + (e.code || "unknown")); msg.className = "fmsg no"; }
   });
-  box.classList.add("fslot");
+  box.classList.add("fslot"); box.dataset.slot = s.slot;
   ready().then(draw);
   document.addEventListener("evg-files", e => { if (e.detail !== "slot") draw(); });
   return {draw};
@@ -507,7 +507,7 @@ function folder(box, now){
     let files = []; let err = ""; try { files = await list(true); } catch(e){ err = MSG[e.code] || ""; }
     const P = plan(), have = s => files.find(f => f.slot === s.slot), n = P.filter(have).length;
     box.replaceChildren(...[el("span", {class:"tag"}, "📁 My folder · saved in the app"),
-      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc() && (!now || s.ch <= now)) ? addBtn(s) : el("small", null, f || !now || s.ch <= now ? "Ch " + s.ch : "later · Ch " + s.ch)); })),
+      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc() && (!now || s.ch <= now) && !(box.closest("dialog") == null && document.querySelector('.fslot[data-slot="' + s.slot + '"]'))) ? addBtn(s) : el("small", null, f || !now || s.ch <= now ? (!f && document.querySelector('.fslot[data-slot="' + s.slot + '"]') ? "↑ Upload above" : "Ch " + s.ch) : "later · Ch " + s.ch)); })),
       el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, on() ? n + " of " + P.length + " saved. Your teacher can see your folder." : "Log in from the class link to save your files in the app."),
       err ? el("p", {class:"fmsg no"}, err) : null,
       on() && files.length ? el("div", {class:"row", style:"margin-top:6px"}, el("button", {class:"btn sm alt", type:"button", onclick:() => zip(files, (acc() && acc().username) || "my-folder")}, "⬇ Download my whole folder")) : null].filter(Boolean));
