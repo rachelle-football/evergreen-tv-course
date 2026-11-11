@@ -253,7 +253,7 @@ img.fprev{background:var(--paper)}
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 7: AI Video</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 6: AI Video</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -428,6 +428,7 @@ window.PICKINDS = {
   inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
 };
 window.F = (function(){
+const DN = n => n >= 7 ? n - 1 : n; /* the voice chapter was removed: file ch7 is Chapter 6, ch8 is 7, ch9 is 8 */
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
@@ -500,14 +501,14 @@ function slotBox(box, s, onDone){
 function plan(){
   const kinds = raw("ch5-pics") || ["big","close","char"], K = window.PICKINDS || {};
   return kinds.map(k => ({slot:k, label:(K[k] && K[k].label) || k, ch:5, accept:"image/*"})).concat([
-    {slot:"podcast", label:"Podcast clip", ch:6, accept:"video/*,audio/*"}, {slot:"video", label:"My video", ch:7, accept:"video/*"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
+    {slot:"video", label:"My video", ch:7, accept:"video/*"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
 }
 function folder(box, now){
   async function draw(){
     let files = []; let err = ""; try { files = await list(true); } catch(e){ err = MSG[e.code] || ""; }
     const P = plan(), have = s => files.find(f => f.slot === s.slot), n = P.filter(have).length;
     box.replaceChildren(...[el("span", {class:"tag"}, "📁 My folder · saved in the app"),
-      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc() && (!now || s.ch <= now) && !(box.closest("dialog") == null && document.querySelector('.fslot[data-slot="' + s.slot + '"]'))) ? addBtn(s) : el("small", null, f || !now || s.ch <= now ? (!f && document.querySelector('.fslot[data-slot="' + s.slot + '"]') ? "↑ Upload above" : "Ch " + s.ch) : "later · Ch " + s.ch)); })),
+      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc() && (!now || s.ch <= now) && !(box.closest("dialog") == null && document.querySelector('.fslot[data-slot="' + s.slot + '"]'))) ? addBtn(s) : el("small", null, f || !now || s.ch <= now ? (!f && document.querySelector('.fslot[data-slot="' + s.slot + '"]') ? "↑ Upload above" : "Ch " + DN(s.ch)) : "later · Ch " + DN(s.ch))); })),
       el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, on() ? n + " of " + P.length + " saved. Your teacher can see your folder." : "Log in from the class link to save your files in the app."),
       err ? el("p", {class:"fmsg no"}, err) : null,
       on() && files.length ? el("div", {class:"row", style:"margin-top:6px"}, el("button", {class:"btn sm alt", type:"button", onclick:() => zip(files, (acc() && acc().username) || "my-folder")}, "⬇ Download my whole folder")) : null].filter(Boolean));
@@ -664,13 +665,12 @@ $("#fr").replaceChildren(...FR.map(([t, real, why]) => { const v = el("div"); le
 const card = K.store.raw("ch3-card") || {}, M = K.me(), TT = M.T || K.TEAMS.school;
 $("#vidGoal").textContent = "Your " + (K.store.raw("ch7-vplan") && K.store.raw("ch7-vplan").len || "30 seconds") + " video about " + (card.name || "your design") + ". Choose below, press Make my storyboard, then change anything you want.";
 const PK = window.PICKINDS, MYP = (K.store.raw("ch5-pics") || ["big","close","char"]).filter(k => PK[k]);
-const FILES7 = MYP.map(k => [k + ".png", PK[k].label]).concat([["podcast.mp4", "my podcast clip"], ["", "text only (no file)"]]);
+const FILES7 = MYP.map(k => [k + ".png", PK[k].label]).concat([["", "text only (no file)"]]);
 const OKF = FILES7.map(f => f[0]), MYF7 = {};
 const oldPlan = x => !Array.isArray(x) || !x.length || x.some(y => (y.file && !OKF.includes(y.file)) || /\b(hero|detail|character|title|studio|logo)\.png\b/.test(y.what || ""));
 const DEF = [
-  {name:"Opening", file:MYP[0] + ".png", what:"the title: " + (card.name || "the name of my design"), secs:3},
-  {name:"Voice", file:"podcast.mp4", what:"the best 15 seconds of my podcast", secs:15},
-  ...MYP.slice(1, 3).map(k => ({name:PK[k].label, file:k + ".png", what:"one short caption", secs:4})),
+  {name:"Opening", file:MYP[0] + ".png", what:"the title: " + (card.name || "the name of my design"), secs:4},
+  ...MYP.slice(1, 5).map(k => ({name:PK[k].label, file:k + ".png", what:"one short caption", secs:Math.max(4, Math.round(22 / Math.max(1, MYP.length - 1)))})),
   {name:"Ending", file:"", what:TT.site + " · Made with AI · my first name", secs:3}
 ];
 function drawBoard(){
@@ -705,7 +705,7 @@ const VSPEC = [
   {id:"type", icon:"🎬", title:"Kind of video", one:true, opts:["a promo advert","a short documentary","a news report from the future","a movie trailer","a before-and-after video"]},
   {id:"open", icon:"🚀", title:"How does it start?", one:true, opts:["a big title on my best picture","a question on a black screen","a countdown 3-2-1","a sound and a fast zoom"]},
   {id:"music", icon:"🎵", title:"Music", one:true, opts:["epic","happy","calm","mysterious","electronic future beats"]},
-  {id:"caps", icon:"🔤", title:"Captions", one:true, opts:["big bold words","short facts","questions to the viewer","no captions, only my voice"]},
+  {id:"caps", icon:"🔤", title:"Captions", one:true, opts:["big bold words","short facts","questions to the viewer","one sentence that tells my story"]},
   {id:"end", icon:"🏁", title:"How does it end?", one:true, opts:["a slogan","a question to the viewer","a call to action","only \"Made with AI\" and my name"]},
   {id:"len", icon:"⏱️", title:"Length", one:true, opts:["20 seconds","30 seconds","40 seconds"]},
   {id:"idea", title:"✨ Your own idea", text:true, ph:"e.g. the video starts in 2026 and jumps to the future", hint:"makes it yours"}
@@ -716,7 +716,7 @@ function vidText(){
   const st = K.store.raw("ch4-story") || {};
   return "Role: You are a video director who makes short videos for kids.\n" +
     "Task: Plan " + (V.type || "a short video") + " of " + (V.len || "30 seconds") + " for " + TT.site + (card.name ? " about my design \"" + card.name + "\"" : "") + ".\n" +
-    "Context: My files are " + MYP.map(k => nm7(k + ".png") + " (" + PK[k].label.toLowerCase() + ")").join(", ") + " and " + nm7("podcast.mp4") + " (my voice)." +
+    "Context: My files are " + MYP.map(k => nm7(k + ".png") + " (" + PK[k].label.toLowerCase() + ")").join(", ") + ". There is no voice: the captions tell the story, with music under them." +
     (card.i1 ? " My big ideas: " + [card.i1, card.i2, card.i3].filter(Boolean).join("; ") + "." : "") + (st.title ? " My story is called \"" + st.title + "\"." : "") +
     (V.open ? " It starts with " + V.open + "." : "") + (V.music ? " Music: " + V.music + "." : "") + (V.caps ? " Captions: " + V.caps + "." : "") + (V.end ? " It ends with " + V.end + "." : "") +
     ((V.idea || "").trim() ? " My own idea: " + V.idea.trim() + "." : "") +
@@ -732,7 +732,7 @@ function capFor(kind, n){
   const ch = K.store.raw("ch4-char") || {}, nm = card.name || "my design", ideas = [card.i1, card.i2, card.i3, card.mine].filter(Boolean);
   const idea = ideas.length ? six(ideas[n % ideas.length]) : nm;
   const base = {big:nm, close:idea, char:ch.name ? "Meet " + ch.name + (ch.who ? ", " + six(ch.who, 5).toLowerCase() : "") : "Meet our hero", robot:idea, poster:nm, before:"Today or " + (TT.key === "planet" ? "2050" : "2040") + "?", map:"Welcome to " + nm, inside:"Step inside " + nm}[kind] || idea;
-  if (V.caps === "no captions, only my voice") return "no caption, only my voice";
+  if (V.caps === "one sentence that tells my story") return kind === "char" ? (ch.name ? ch.name + " is the hero of " + nm : "Our hero lives in " + nm) : kind === "big" || kind === "map" ? "Welcome to " + nm + ", my design" : base;
   if (V.caps === "questions to the viewer") return kind === "before" ? base : kind === "char" ? (ch.name ? "Would you play with " + ch.name + "?" : "Would you join our hero?") : kind === "big" || kind === "poster" || kind === "map" || kind === "inside" ? "Would you come to " + nm + "?" : base + ". Would you try it?";
   if (V.caps === "short facts") return kind === "char" || kind === "before" ? base : "Fact: " + base;
   return base.toUpperCase() === base ? base : base + "!";
@@ -750,10 +750,10 @@ function applyPlan(){
   const total = parseInt(V.len) || 30, k = total / 30, r = x => Math.max(2, Math.round(x * k));
   const sl = slogans();
   plan.length = 0;
-  plan.push({name:"Opening", file:nm7(MYP[0] + ".png"), what:(V.open || "a big title on my best picture") + " · " + (card.name || "my design"), secs:r(4)});
-  plan.push({name:"Voice", file:nm7("podcast.mp4"), what:"the best part of my podcast · " + (V.music || "quiet") + " music under it", secs:r(12)});
-  MYP.slice(1, 4).forEach((p, n) => plan.push({name:PK[p].label, file:nm7(p + ".png"), what:capFor(p, n), secs:r(4)}));
-  plan.push({name:"Ending", file:"", what:(sl[0] ? "“" + sl[0] + "” · " : "") + TT.site + " · Made with AI · my first name", secs:r(3)});
+  plan.push({name:"Opening", file:nm7(MYP[0] + ".png"), what:(V.open || "a big title on my best picture") + " · " + (card.name || "my design") + " · " + (V.music || "quiet") + " music starts", secs:r(4)});
+  const rest = MYP.slice(1, 5), each = Math.max(3, Math.round((total - r(4) - r(4)) / Math.max(1, rest.length)));
+  rest.forEach((p, n) => plan.push({name:PK[p].label, file:nm7(p + ".png"), what:capFor(p, n), secs:Math.min(10, each)}));
+  plan.push({name:"Ending", file:"", what:(sl[0] ? "“" + sl[0] + "” · " : "") + TT.site + " · Made with AI · my first name", secs:r(4)});
   drawBoard(); drawSlogans(sl);
 }
 let vidUI;
@@ -797,7 +797,7 @@ $("#fillBoard").onclick = () => {
   const t = $("#vidPaste").value.trim(); if (!t){ K.toast("Paste Gemini's answer in the box first."); $("#vidPaste").focus(); return; }
   const r = parseBoard(t);
   if (r.scenes.length < 2){ K.toast("I could not find the table. Paste the answer to the video prompt (the table with Scene, File, Caption, Seconds)."); return; }
-  const names = {podcast:"Voice"};
+  const names = {};
   plan.length = 0;
   r.scenes.slice(0, 8).forEach((x, i, a) => plan.push({name:i === 0 ? "Opening" : i === a.length - 1 && !x.file ? "Ending" : names[x.file.replace(/\.\w+$/, "")] || (x.file && PK[x.file.replace(/\.\w+$/, "")] ? PK[x.file.replace(/\.\w+$/, "")].label : "Scene " + (i + 1)), file:x.file, what:x.cap, secs:x.secs}));
   if (plan.length < 3) plan.push({name:"Ending", file:"", what:TT.site + " · Made with AI · my first name", secs:3});
@@ -815,12 +815,11 @@ $("#vidPaste").addEventListener("paste", () => setTimeout(() => { if ($("#vidPas
 
 checklist("list1", [
   ["Start a video", "In Adobe Express, click Create video, then start from scratch with a 16:9 (wide) size."],
-  ["Get your files", "In the box on the right, press ⬇ Download my whole folder and open the zip. In Adobe, click Upload (or Media, then Upload) and add your pictures and podcast.mp4."],
+  ["Get your files", "In the box on the right, press ⬇ Download my whole folder and open the zip. In Adobe, click Upload (or Media, then Upload) and add your pictures."],
   ["Scene 1: opening", "Put the picture of scene 1 in the first scene and make your opening (title, question or countdown). Follow your storyboard."],
-  ["Scene 2: your voice", "Add a scene with the + button and put podcast.mp4 in it. Trim it to the best part."],
   ["The next scenes", "Add each scene of your storyboard with its picture and caption."],
   ["The ending", "Last scene: your slogan, your team site, Made with AI and your first name."],
-  ["Music, quietly", "Add a music track from Adobe's library. Make it quiet so your voice is clear."],
+  ["Music", "Add a music track from Adobe's library that fits your mood. Your captions tell the story, the music gives the feeling."],
   ["Watch it once", "Press Play and watch your first cut from start to end. Your project saves by itself in Adobe."]
 ]);
 /* fact check */
@@ -835,10 +834,10 @@ function drawFacts(){
 function sf(){ store.set("facts", facts); const n = facts.filter(f => f.ok && f.c && f.s1 && f.s2).length; $("#factMsg").textContent = n === 3 ? "All 3 facts checked with 2 sources each. Ready to air." : n + " of 3 facts fully checked (fact, two sources, ticked). If a fact fails, change your caption."; }
 drawFacts();
 checklist("list2", [
-  ["Fix your facts", "If a fact failed the check, change the caption, or say it differently."],
+  ["Fix your facts", "If a fact failed the check, change the caption or remove it."],
   ["Add the label", "The ending says Made with AI. Add a small \"AI\" label in a corner of the scenes made by AI."],
   ["Check the length", "Watch the whole video. About 30 seconds? Cut anything that drags."],
-  ["Check the sound", "Can you hear every word over the music?"],
+  ["Check the captions", "Can you read every caption before it disappears? Big letters, not too many words."],
   ["Save it", "Click Download and choose MP4. Then press ⬆ Upload in the box on the right and choose the file. It is saved in your folder."],
   ["Show a friend", "Does your friend understand your design in 30 seconds? If not, change one scene."]
 ]);

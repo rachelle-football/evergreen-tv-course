@@ -7,9 +7,8 @@
     3:[{after:3, need:["card"]}],
     4:[{after:2, need:["card"]}, {after:3, need:["story"]}],
     5:[{after:2, need:["card"]}, {after:3, need:["pics"]}],
-    6:[{after:2, need:["story", "pics"]}, {after:3, need:["podcast"]}],
-    7:[{after:2, need:["pics", "podcast"]}, {after:6, need:["video"]}],
-    8:[{after:2, need:["card", "story", "pics", "podcast", "video"]}, {after:3, need:["page"]}],
+    7:[{after:2, need:["pics"]}, {after:6, need:["video"]}],
+    8:[{after:2, need:["card", "story", "pics", "video"]}, {after:3, need:["page"]}],
     9:[{after:1, need:["page"]}]
   }[CH];
   if (!RULES) return;
@@ -25,14 +24,13 @@
       if (m.length) out.push({kind:"text", ch:3, text:"Your design card (Chapter 3) needs " + m.join(", ") + ".", href:"ch3.html#seg-3"}); }
     if (need.includes("story")){ const s = raw("ch4-story") || {}, c = raw("ch4-char") || {}; const m = [!c.name && "your character's name", !(s.title || "").trim() && "a title", words(s.text) < 40 && "the story itself (at least 40 words)"].filter(Boolean);
       if (m.length) out.push({kind:"text", ch:4, text:"Your story (Chapter 4) needs " + m.join(", ") + ".", href:"ch4.html#seg-" + (c.name ? 3 : 2)}); }
-    const fileNeed = need.filter(n => ["pics", "podcast", "video", "page"].includes(n));
+    const fileNeed = need.filter(n => ["pics", "video", "page"].includes(n));
     if (fileNeed.length && filesOn()){
       let fs = []; try { fs = await window.F.list(true); } catch(e){ return out; }
       const has = s => fs.some(f => f.slot === s);
       if (fileNeed.includes("pics")){ const m = PICK().filter(k => !has(k)); if (m.length) out.push({kind:"file", ch:5, text:"Pictures not saved yet (Chapter 5): " + m.map(LABEL).join(", ") + "."}); }
-      if (fileNeed.includes("podcast") && !has("podcast")) out.push({kind:"file", ch:6, text:"Your podcast clip is not saved yet (Chapter 6)."});
-      if (fileNeed.includes("video") && !has("video")) out.push({kind:"file", ch:7, text:"Your video is not saved yet (Chapter 7)."});
-      if (fileNeed.includes("page") && !has("page")) out.push({kind:"file", ch:8, text:"Your web page is not saved yet (Chapter 8)."});
+      if (fileNeed.includes("video") && !has("video")) out.push({kind:"file", ch:7, text:"Your video is not saved yet (Chapter 6)."});
+      if (fileNeed.includes("page") && !has("page")) out.push({kind:"file", ch:8, text:"Your web page is not saved yet (Chapter 7)."});
     }
     return out;
   }
@@ -80,7 +78,7 @@
     const again = document.createElement("button"); again.className = "btn"; again.type = "button"; again.textContent = "Check again";
     again.onclick = async () => { const mm = await missing([...new Set(RULES.filter(r => target >= r.after).flatMap(r => r.need))]); if (!mm.length){ dlg.close(); pass = true; try { redo(); } finally { pass = false; } } else show(mm, target, redo); };
     act.append(again);
-    links.forEach(x => { const a = document.createElement("a"); a.className = "btn alt"; a.href = x.href; a.textContent = "Open Chapter " + x.ch; act.append(a); });
+    links.forEach(x => { const a = document.createElement("a"); a.className = "btn alt"; a.href = x.href; a.textContent = "Open Chapter " + (x.ch >= 7 ? x.ch - 1 : x.ch); act.append(a); });
     const stay = document.createElement("button"); stay.className = "btn alt"; stay.type = "button"; stay.textContent = "Stay here"; stay.onclick = () => dlg.close(); act.append(stay);
     box.append(act); dlg.append(box);
     if (!dlg.open) dlg.showModal();

@@ -313,7 +313,7 @@ img.fprev{background:var(--paper)}
   <p class="lead" id="countMsg" style="margin-top:14px"></p>
   <div class="card" style="margin-top:14px;background:var(--gold-soft);border-color:transparent">
     <span class="tag">Remember</span>
-    <p class="lead" style="margin:6px 0 0">The AI fills every gap in your words with what it saw most often. Be precise, check what it decided, and fix it with your prompt. Next week: AI Voice. An AI voice and an animated host turn your story into a podcast clip.</p>
+    <p class="lead" style="margin:6px 0 0">The AI fills every gap in your words with what it saw most often. Be precise, check what it decided, and fix it with your prompt. Next week: AI Video. Your pictures become a 30-second video of your design.</p>
   </div>
 </section>
 
@@ -400,6 +400,7 @@ window.PICKINDS = {
   inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
 };
 window.F = (function(){
+const DN = n => n >= 7 ? n - 1 : n; /* the voice chapter was removed: file ch7 is Chapter 6, ch8 is 7, ch9 is 8 */
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
@@ -472,14 +473,14 @@ function slotBox(box, s, onDone){
 function plan(){
   const kinds = raw("ch5-pics") || ["big","close","char"], K = window.PICKINDS || {};
   return kinds.map(k => ({slot:k, label:(K[k] && K[k].label) || k, ch:5, accept:"image/*"})).concat([
-    {slot:"podcast", label:"Podcast clip", ch:6, accept:"video/*,audio/*"}, {slot:"video", label:"My video", ch:7, accept:"video/*"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
+    {slot:"video", label:"My video", ch:7, accept:"video/*"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
 }
 function folder(box, now){
   async function draw(){
     let files = []; let err = ""; try { files = await list(true); } catch(e){ err = MSG[e.code] || ""; }
     const P = plan(), have = s => files.find(f => f.slot === s.slot), n = P.filter(have).length;
     box.replaceChildren(...[el("span", {class:"tag"}, "📁 My folder · saved in the app"),
-      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc() && (!now || s.ch <= now) && !(box.closest("dialog") == null && document.querySelector('.fslot[data-slot="' + s.slot + '"]'))) ? addBtn(s) : el("small", null, f || !now || s.ch <= now ? (!f && document.querySelector('.fslot[data-slot="' + s.slot + '"]') ? "↑ Upload above" : "Ch " + s.ch) : "later · Ch " + s.ch)); })),
+      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc() && (!now || s.ch <= now) && !(box.closest("dialog") == null && document.querySelector('.fslot[data-slot="' + s.slot + '"]'))) ? addBtn(s) : el("small", null, f || !now || s.ch <= now ? (!f && document.querySelector('.fslot[data-slot="' + s.slot + '"]') ? "↑ Upload above" : "Ch " + DN(s.ch)) : "later · Ch " + DN(s.ch))); })),
       el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, on() ? n + " of " + P.length + " saved. Your teacher can see your folder." : "Log in from the class link to save your files in the app."),
       err ? el("p", {class:"fmsg no"}, err) : null,
       on() && files.length ? el("div", {class:"row", style:"margin-top:6px"}, el("button", {class:"btn sm alt", type:"button", onclick:() => zip(files, (acc() && acc().username) || "my-folder")}, "⬇ Download my whole folder")) : null].filter(Boolean));
@@ -688,7 +689,7 @@ checklist("list1", [
   ["Fix it with your choices", "Change your choices to fix what is wrong, copy again and try again. Two tries per picture."],
   ["Save the best one", "Click your favourite and press Download. Then, under your prompt, press ⬆ Upload and choose the file. It is saved in your folder in the app."],
   ["Make all your pictures", "Do the same for every picture you chose (the tabs at the top). Each one has its own Upload."],
-  ["Label it", "Everything made by AI gets the label Made with AI on your website (Chapter 8)."]
+  ["Label it", "Everything made by AI gets the label Made with AI on your website (Chapter 7)."]
 ]);
 folderUI = F.folder($("#filesBox"), 5);
 function tickL(i){ const cb = document.getElementById("list1-" + i); if (cb && !cb.checked){ cb.checked = true; cb.dispatchEvent(new Event("change", {bubbles:true})); } }

@@ -2,6 +2,7 @@
    a reminder at the top of every mission, and the project strip (what you have, what you make today). */
 (function(){
   const CH = +((location.pathname.match(/ch(\d)\.html/) || [])[1] || 0);
+  const DN = n => n >= 7 ? n - 1 : n; /* the voice chapter was removed: file ch7 is Chapter 6, ch8 is 7, ch9 is 8 */
   const B = {
     1:{goal:"Discover what AI really is, and choose your part of the project.",
        make:[["🧭", "Your team and your part"], ["💡", "Your first idea for it"]],
@@ -21,24 +22,19 @@
        make:[["🦸", "Your character card"], ["📖", "Your story (about 150 words) with a title"]],
        steps:["Learn the 4 parts of a story", "Invent your character, Gemini adds details", "Click to build your story prompt, Gemini writes it", "Paste it, give it a title, change 3 sentences into your own words", "Read it to the class"],
        done:"Your story has a title and at least 40 words. You cannot go on before that.",
-       missions:{2:"Your output: your character card. Your hero appears in your story, your pictures and your podcast.", 3:"Your output: your story, set in your design. You will read it in your podcast (Chapter 6)."}},
+       missions:{2:"Your output: your character card. Your hero appears in your story, your pictures and your video.", 3:"Your output: your story, set in your design. It goes on your web page (Chapter 7)."}},
     5:{goal:"Make 3 to 5 AI pictures of your design, and save them in your folder.",
        make:[["🖼️", "3 to 5 pictures you choose (big picture, close-up, character…)"]],
        steps:["Spot what the AI decides by itself", "Learn the 5 ingredients of a picture prompt", "Choose which pictures you will make", "For each picture: click, copy, make it in Adobe Express, download", "Save each picture with ⬆ Upload"],
        done:"Every picture you chose is saved in your folder (green ✓). You cannot go on before that.",
-       missions:{3:"Your output: your pictures, saved in your folder. They go into your podcast, your video and your web page."}},
-    6:{goal:"Turn your story into a 60-second podcast clip, read by an AI voice and an animated host.",
-       make:[["🎙️", "podcast.mp4: an animated host says your script with an AI voice, your big picture behind"]],
-       steps:["Guess: real voice or AI voice?", "Learn how AI makes voices, and the voice rules", "Click to build your script prompt (your story is inside), Gemini writes it", "Adobe Firefly turns your script into an AI voice", "Adobe Express makes your host talk: download, save with ⬆ Upload"],
-       done:"Your podcast clip is saved in your folder. You cannot go on before that.",
-       missions:{3:"Your output: podcast.mp4, saved in your folder. It goes into your video and your web page."}},
+       missions:{3:"Your output: your pictures, saved in your folder. They go into your video and your web page."}},
     7:{goal:"Make a 30-second video of your design, fact-checked and labelled.",
-       make:[["🎬", "video.mp4: your pictures, your podcast, captions and music, 30 seconds"]],
+       make:[["🎬", "video.mp4: your pictures, captions and music, 30 seconds"]],
        steps:["Spot fake facts and AI videos", "Make your storyboard: it fills by itself from your work", "Build the video in Adobe Express, scene by scene", "Fact-check it, add the Made with AI label", "Download it and save it with ⬆ Upload"],
        done:"Your video is saved in your folder. You cannot go on before that.",
        missions:{3:"Your output: your storyboard, the plan of your video, scene by scene.", 4:"Your output: the first cut of your video in Adobe Express. Follow Your plan, one line = one scene.", 6:"Your output: video.mp4, saved in your folder. It goes on your web page."}},
     8:{goal:"Build your page of the team website, with everything you made.",
-       make:[["🌐", "page.html: your design, story, pictures, podcast and video on one page"]],
+       make:[["🌐", "page.html: your design, story, pictures and video on one page"]],
        steps:["Watch: Gemini Canvas builds a page in 30 seconds", "Check you have all your pieces", "Click to build your director's prompt, Gemini Canvas builds your page", "Download it, save it with ⬆ Upload", "A classmate tests it, you fix it with prompts"],
        done:"Your page is saved in your folder, and the launch checklist is 8 of 8.",
        missions:{3:"Your output: page.html, saved in your folder. It goes on the team website.", 4:"Your output: a feedback card for a classmate: a star and a wish.", 5:"Your output: a better page. Save it again with Replace when you are done."}},
@@ -65,13 +61,13 @@
   document.head.append(css);
   const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.textContent = h; return e; };
   /* the 7 pieces of every student's project */
-  const PIECES = [["card", "📝", "Design card", 3], ["story", "📖", "Story", 4], ["pics", "🖼️", "Pictures", 5], ["podcast", "🎙️", "Podcast", 6], ["video", "🎬", "Video", 7], ["page", "🌐", "Web page", 8], ["pitch", "🎤", "Pitch", 9]];
+  const PIECES = [["card", "📝", "Design card", 3], ["story", "📖", "Story", 4], ["pics", "🖼️", "Pictures", 5], ["video", "🎬", "Video", 7], ["page", "🌐", "Web page", 8], ["pitch", "🎤", "Pitch", 9]];
   async function have(){
     const c = raw("ch3-card") || {}, s = raw("ch4-story") || {}, p = raw("ch9-pitch") || {};
     const h = {card:!!(c.name && c.i1 && c.i2 && c.i3), story:!!((s.title || "").trim() && words(s.text) >= 40), pitch:["p1", "p2", "p3", "p4", "p5"].filter(k => (p[k] || "").trim()).length >= 4};
     if (window.F && window.F.on && window.F.on() && raw("ai-lab-session")){
       try { const fs = await window.F.list(true), k = raw("ch5-pics"), want = Array.isArray(k) && k.length ? k : ["big", "close", "char"], ok = x => fs.some(f => f.slot === x);
-        h.pics = want.every(ok); h.podcast = ok("podcast"); h.video = ok("video"); h.page = ok("page"); } catch(e){}
+        h.pics = want.every(ok); h.video = ok("video"); h.page = ok("page"); } catch(e){}
     }
     return h;
   }
@@ -79,13 +75,13 @@
     const box = el("div", "pstrip"); box.append(el("span", "lbl", "My project"));
     const draw = async () => { const h = await have();
       box.replaceChildren(el("span", "lbl", "My project"), ...PIECES.map(([k, ic, name, ch]) => { const d = el("span", "ps" + (h[k] ? " ok" : "") + (ch === CH ? " now" : ""));
-        d.append(el("span", null, h[k] ? "✓" : ic), el("span", null, name + (ch === CH && !h[k] ? " · today" : ""))); d.title = "Chapter " + ch; return d; })); };
+        d.append(el("span", null, h[k] ? "✓" : ic), el("span", null, name + (ch === CH && !h[k] ? " · today" : ""))); d.title = "Chapter " + DN(ch); return d; })); };
     draw(); document.addEventListener("evg-files", draw); addEventListener("hashchange", () => setTimeout(draw, 200));
     return box;
   }
   function brief(){
     const b = el("section", "mbrief"); b.setAttribute("aria-label", "Today's mission");
-    const h = el("div", "mh"); h.append(el("b", null, "🎯 Today's mission · Chapter " + CH)); b.append(h, el("p", "goal", B.goal));
+    const h = el("div", "mh"); h.append(el("b", null, "🎯 Today's mission · Chapter " + DN(CH))); b.append(h, el("p", "goal", B.goal));
     const g = el("div", "mgrid");
     const c1 = el("div"); c1.append(el("h4", null, "You will make")); B.make.forEach(([i, t]) => { const o = el("p", "out"); o.append(el("span", null, i), el("b", null, t)); c1.append(o); });
     const c2 = el("div"); c2.append(el("h4", null, "Steps")); const ol = el("ol"); B.steps.forEach(s => ol.append(el("li", null, s))); c2.append(ol);
