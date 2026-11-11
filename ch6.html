@@ -308,7 +308,7 @@ img.fprev{background:var(--paper)}
       <div id="filesBox" style="margin-top:8px"></div>
     </aside>
   </div>
-  <p class="note">No microphone on your computer? In step 5, choose the upload option instead and use a recording your teacher made with you on a class device. Your voice stays in your Adobe project only.</p>
+  <p class="note">No microphone on your computer? In the Record step, choose the upload option instead and use a recording your teacher made with you on a class device. Your voice stays in your Adobe project only.</p>
 </section>
 
 <section class="seg" id="seg-4" data-min="5" data-title="Podcast premiere" hidden>
@@ -347,7 +347,7 @@ const TEAMS = {
     world:"our school, Evergreen, in the year 2040", podcast:"the School 2040 podcast", video:"a promo video for the school of tomorrow", look:"a bright, friendly school in Lebanon in the year 2040",
     parts:[["The classroom","Where and how we learn: desks, screens, light, sound"],["The library","Books, reading corners, quiet, research"],["The canteen","Healthy food, no waste, where we eat together"],["Playground and sports","Games, fields, breaks, team sports"],["The science lab","Experiments, robots, discovering"],["Art and music studio","Drawing, making, singing, performing"],["Getting to school","Buses, bikes, walking, safety"],["The school day","Timetable, homework, exams, breaks"],["Wellbeing corner","Feeling calm, friendship, getting help"],["The school garden","Plants, outdoor lessons, animals"]]},
   planet: {key:"planet", name:"The Future of Our Planet", site:"Planet 2050", emoji:"🌍", goal:"Create a better world with AI",
-    world:"planet Earth, and Lebanon, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
+    world:"Lebanon, on planet Earth, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
     parts:[["Clean energy","Sun, wind and power for every home"],["Water","Clean water for everyone, saving every drop"],["Waste and recycling","Less trash, sorting, reusing"],["Clean air","No smoke, less pollution, breathing well"],["Transport","Buses, trains, bikes and clean cars"],["Cities and homes","Green buildings, parks, cool streets"],["Food and farming","Growing food, eating well, no food waste"],["Oceans and beaches","Clean sea, no plastic, sea life"],["Forests and animals","Trees, the cedars, wildlife"],["Weather and climate","Heat waves, storms, being ready"]]}
 };
 const rawSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
@@ -488,7 +488,7 @@ function folder(box, now){
     let files = []; let err = ""; try { files = await list(true); } catch(e){ err = MSG[e.code] || ""; }
     const P = plan(), have = s => files.find(f => f.slot === s.slot), n = P.filter(have).length;
     box.replaceChildren(...[el("span", {class:"tag"}, "📁 My folder · saved in the app"),
-      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc()) ? addBtn(s) : el("small", null, "Ch " + s.ch)); })),
+      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc() && (!now || s.ch <= now)) ? addBtn(s) : el("small", null, f || !now || s.ch <= now ? "Ch " + s.ch : "later · Ch " + s.ch)); })),
       el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, on() ? n + " of " + P.length + " saved. Your teacher can see your folder." : "Log in from the class link to save your files in the app."),
       err ? el("p", {class:"fmsg no"}, err) : null,
       on() && files.length ? el("div", {class:"row", style:"margin-top:6px"}, el("button", {class:"btn sm alt", type:"button", onclick:() => zip(files, (acc() && acc().username) || "my-folder")}, "⬇ Download my whole folder")) : null].filter(Boolean));
@@ -659,7 +659,7 @@ function podText(){
     (PS.open ? "Start with " + PS.open + ". " : "") + (PS.tone ? "The tone is " + PS.tone + ". " : "") +
     (PS.voices ? "Who talks: " + PS.voices + (PS.voices.includes("character") && c.name ? " (" + c.name + ")" : "") + ". " : "") + (PS.voices && PS.voices.includes("character") && c.more && c.more.talk ? "My character talks like this: " + c.more.talk + " " : "") +
     (PS.end ? "End with " + PS.end + ". " : "") + ((PS.idea || "").trim() ? "My own idea: " + PS.idea.trim() + ". " : "") +
-    "\nFormat: About " + Math.round(secs * 2.3) + " words. Short lines with the speaker's name before each line, and sound effects in [brackets]. Easy English for 12-year-olds. No real people's names.";
+    "\nFormat: About " + Math.round(secs * 2.3 / 10) * 10 + " words. Short lines with the speaker's name before each line, and sound effects in [brackets]. Easy English for 12-year-olds. No real people's names.";
 }
 let podUI;
 function drawPod(){ window.B.show($("#podOut"), PSPEC, PS, podText()); window.B.meter($("#podP"), PSPEC, PS); window.B.lock($("#copyPod"), PSPEC, PS); }
@@ -681,7 +681,7 @@ checklist("list1", [
   ["Practise", "Press Practise with the teleprompter. Read it aloud twice, like a radio host: smile, clear, not too fast."],
   ["Open Animate from audio", "In Adobe Express, type Animate from audio in the big box at the top (or find it under Quick edits, View all)."],
   ["Choose your host", "Pick a character that fits your world. Your story character is a great choice."],
-  ["Add your picture", "Under Background, choose Upload and pick your big picture (big.png). Not on this computer? Press ⬇ Download my whole folder on the right first. No Upload option? Pick any background."],
+  ["Add your picture", "Under Background, choose Upload and pick your big picture (the file called big). Not on this computer? Press ⬇ Download my whole folder on the right first. No Upload option? Pick any background."],
   ["Record your voice", "Press Record, allow the microphone, and read your script. Too fast, too quiet, a mistake? Record again: real podcasters do many takes."],
   ["Save it", "Press Download in Adobe. Then press ⬆ Upload on the right and choose the file. It is saved in your folder and goes on your web page in Chapter 8."]
 ]);
@@ -704,4 +704,6 @@ K.start();
 </script>
 <script src="config.js"></script>
 <script src="sync.js"></script>
+<script src="gate.js"></script>
+<script src="brief.js"></script>
 </body></html>

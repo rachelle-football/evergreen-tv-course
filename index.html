@@ -283,7 +283,7 @@ async function logout(){
 /* ---------- student home ---------- */
 function renderHome(){
   const d = localData(), pr = progress(d), seg = segOf(d), all = Math.round(pr.reduce((a, b) => a + b, 0) / pr.length);
-  const next = CH.find((c, i) => pr[i] < 100) || CH[CH.length - 1];
+  const lastI = pr.reduce((a, v, i) => v > 0 ? i : a, -1), next = lastI < 0 ? CH[0] : pr[lastI] < 100 ? CH[lastI] : CH[Math.min(lastI + 1, CH.length - 1)];
   $("#app").replaceChildren(
     el("section", {class:"welcome"},
       el("div", null, el("span", {class:"tag"}, "13 sessions · 9 chapters"), el("h1", null, ACC ? "Hi " + ACC.name + "!" : "AI Creators"),
@@ -351,6 +351,9 @@ function hub(tok){
       !rows.length ? el("p", {class:"muted"}, "No files yet. Students upload their pictures in Chapter 5.") :
       el("div", {class:"folders"}, ...Object.entries(by).map(([u, v]) => { const b = el("button", {class:"btn sm alt", type:"button", onclick:() => zipFolders([[u, v.files]], u, b)}, "⬇ Folder");
         return el("div", {class:"fold"}, el("div", {class:"row", style:"justify-content:space-between"}, el("div", null, el("b", null, v.name), el("br"), el("small", {class:"muted"}, u + " · " + v.cls + " · " + mb(v.files.reduce((a, f) => a + (+f.size || 0), 0)))), b),
+          (() => { const PIC = ["big","close","char","robot","poster","before","map","inside"], has = k => v.files.some(f => f.slot === k), np = v.files.filter(f => PIC.includes(f.slot)).length;
+            const miss = [np < 3 && "pictures (" + np + " of 3)", !has("podcast") && "podcast", !has("video") && "video", !has("page") && "web page"].filter(Boolean);
+            return el("p", {style:"margin:6px 0;font-size:14px;font-weight:600;color:" + (miss.length ? "#b42318" : "#1e7a4f")}, miss.length ? "Missing: " + miss.join(", ") : "✓ Project complete"); })(),
           el("div", {class:"thumbs"}, ...v.files.map(f => el("a", {href:FURL(f.path), target:"_blank", rel:"noopener", title:f.label, class:"th"}, /^image\//.test(f.mime) ? el("img", {src:FURL(f.path), alt:f.label, loading:"lazy"}) : el("span", null, /^video|^audio/.test(f.mime) ? "🎬" : "📄"), el("small", null, fname(f)))))); }))));
   }
 

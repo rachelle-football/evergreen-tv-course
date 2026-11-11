@@ -295,8 +295,8 @@ img.fprev{background:var(--paper)}
         <p class="newchat">🆕 Paste it in a <b>NEW</b> Gemini chat (press <b>New chat</b> first), so Gemini does not mix it with your other work.</p>
       </div>
       <div class="card" style="margin-top:14px">
-        <span class="tag">2 · Make it better: follow-up prompts</span>
-        <p style="margin:6px 0 10px;font-size:16px">A real prompt engineer never stops at the first answer. Copy one follow-up into the same Gemini chat.</p>
+        <span class="tag">2 · Optional: make it better with a follow-up prompt</span>
+        <p style="margin:6px 0 10px;font-size:16px">Not happy with the answer? Copy one follow-up into the same Gemini chat. Happy with it? Skip this and go to 3.</p>
         <div class="row" id="follow"></div>
       </div>
       <ol class="checklist" id="list1" style="margin-top:14px"></ol>
@@ -348,7 +348,7 @@ const TEAMS = {
     world:"our school, Evergreen, in the year 2040", podcast:"the School 2040 podcast", video:"a promo video for the school of tomorrow", look:"a bright, friendly school in Lebanon in the year 2040",
     parts:[["The classroom","Where and how we learn: desks, screens, light, sound"],["The library","Books, reading corners, quiet, research"],["The canteen","Healthy food, no waste, where we eat together"],["Playground and sports","Games, fields, breaks, team sports"],["The science lab","Experiments, robots, discovering"],["Art and music studio","Drawing, making, singing, performing"],["Getting to school","Buses, bikes, walking, safety"],["The school day","Timetable, homework, exams, breaks"],["Wellbeing corner","Feeling calm, friendship, getting help"],["The school garden","Plants, outdoor lessons, animals"]]},
   planet: {key:"planet", name:"The Future of Our Planet", site:"Planet 2050", emoji:"🌍", goal:"Create a better world with AI",
-    world:"planet Earth, and Lebanon, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
+    world:"Lebanon, on planet Earth, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
     parts:[["Clean energy","Sun, wind and power for every home"],["Water","Clean water for everyone, saving every drop"],["Waste and recycling","Less trash, sorting, reusing"],["Clean air","No smoke, less pollution, breathing well"],["Transport","Buses, trains, bikes and clean cars"],["Cities and homes","Green buildings, parks, cool streets"],["Food and farming","Growing food, eating well, no food waste"],["Oceans and beaches","Clean sea, no plastic, sea life"],["Forests and animals","Trees, the cedars, wildlife"],["Weather and climate","Heat waves, storms, being ready"]]}
 };
 const rawSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
@@ -675,7 +675,7 @@ function briefText(){
     (B.feel.length ? " People should feel " + j(B.feel) + " there." : "") +
     ((B.idea || "").trim() ? " My own idea: " + B.idea.trim() + "." : "") +
     " Be creative and surprising, but it must be safe and good for people and the planet.\n" +
-    "Format: Start with \"Name:\" and a catchy name for my design. Then \"Big ideas:\" with 3 numbered ideas, one sentence each. Then \"A day in it:\" " + (B.format || "a day in it, as a short story") + ", 3 to 4 sentences. Easy English, under 150 words. Do not use real people's names.";
+    "Format: Start with \"Name:\" and a catchy name for my design. Then \"Big ideas:\" with 3 numbered ideas, one sentence each. Then \"A day in it:\" " + (B.format || "a day in it, as a short story").replace(/^a day in it, as /, "") + ", 3 to 4 sentences. Easy English, under 150 words. Do not use real people's names.";
 }
 let briefUI;
 function drawBrief(){ window.B.show($("#briefOut"), BSPEC, B, briefText()); window.B.meter($("#briefP"), BSPEC, B); window.B.lock($("#copyBrief"), BSPEC, B); }
@@ -697,7 +697,7 @@ const L1 = checklist("list1", [
   ["Build your prompt", "Choose a role, what you design, the problem, the must-haves, the feeling and the format. Add your crazy idea. Aim for 5 stars."],
   ["Open Gemini", "Go to gemini.google.com with your school account. Start a new chat."],
   ["Paste your prompt", "Copy my prompt, paste it in Gemini, press Enter."],
-  ["Use 2 follow-ups", "Copy 2 follow-up prompts into the same chat. Which answer is best?"],
+  ["Make it better (optional)", "Not happy with the answer? Copy one follow-up prompt into the same chat, then keep the best answer."],
   ["Fill your design card", "Copy Gemini's best answer, paste it in the card on the right and press Fill my card. Then change words so it sounds like you."],
   ["Add your own idea", "One idea the AI did not have. This is what makes it yours."]
 ]);
@@ -750,4 +750,6 @@ K.start();
 </script>
 <script src="config.js"></script>
 <script src="sync.js"></script>
+<script src="gate.js"></script>
+<script src="brief.js"></script>
 </body></html>

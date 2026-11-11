@@ -308,7 +308,7 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
       <div class="row"><button class="btn sm" id="copyStory" type="button">Copy story prompt</button></div>
       <p class="newchat">🆕 Paste it in a <b>NEW</b> Gemini chat (press <b>New chat</b> first), so Gemini does not mix it with your other work.</p>
       <p class="note" id="noCard"></p>
-      <span class="tag" style="display:block;margin-top:12px">2 · Make it better (copy into the same chat)</span>
+      <span class="tag" style="display:block;margin-top:12px">2 · Optional: make it better (copy into the same chat)</span>
       <div class="row" id="better" style="margin-top:6px"></div>
     </div>
     <div class="card">
@@ -361,7 +361,7 @@ const TEAMS = {
     world:"our school, Evergreen, in the year 2040", podcast:"the School 2040 podcast", video:"a promo video for the school of tomorrow", look:"a bright, friendly school in Lebanon in the year 2040",
     parts:[["The classroom","Where and how we learn: desks, screens, light, sound"],["The library","Books, reading corners, quiet, research"],["The canteen","Healthy food, no waste, where we eat together"],["Playground and sports","Games, fields, breaks, team sports"],["The science lab","Experiments, robots, discovering"],["Art and music studio","Drawing, making, singing, performing"],["Getting to school","Buses, bikes, walking, safety"],["The school day","Timetable, homework, exams, breaks"],["Wellbeing corner","Feeling calm, friendship, getting help"],["The school garden","Plants, outdoor lessons, animals"]]},
   planet: {key:"planet", name:"The Future of Our Planet", site:"Planet 2050", emoji:"🌍", goal:"Create a better world with AI",
-    world:"planet Earth, and Lebanon, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
+    world:"Lebanon, on planet Earth, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
     parts:[["Clean energy","Sun, wind and power for every home"],["Water","Clean water for everyone, saving every drop"],["Waste and recycling","Less trash, sorting, reusing"],["Clean air","No smoke, less pollution, breathing well"],["Transport","Buses, trains, bikes and clean cars"],["Cities and homes","Green buildings, parks, cool streets"],["Food and farming","Growing food, eating well, no food waste"],["Oceans and beaches","Clean sea, no plastic, sea life"],["Forests and animals","Trees, the cedars, wildlife"],["Weather and climate","Heat waves, storms, being ready"]]}
 };
 const rawSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
@@ -502,7 +502,7 @@ function folder(box, now){
     let files = []; let err = ""; try { files = await list(true); } catch(e){ err = MSG[e.code] || ""; }
     const P = plan(), have = s => files.find(f => f.slot === s.slot), n = P.filter(have).length;
     box.replaceChildren(...[el("span", {class:"tag"}, "📁 My folder · saved in the app"),
-      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc()) ? addBtn(s) : el("small", null, "Ch " + s.ch)); })),
+      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc() && (!now || s.ch <= now)) ? addBtn(s) : el("small", null, f || !now || s.ch <= now ? "Ch " + s.ch : "later · Ch " + s.ch)); })),
       el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, on() ? n + " of " + P.length + " saved. Your teacher can see your folder." : "Log in from the class link to save your files in the app."),
       err ? el("p", {class:"fmsg no"}, err) : null,
       on() && files.length ? el("div", {class:"row", style:"margin-top:6px"}, el("button", {class:"btn sm alt", type:"button", onclick:() => zip(files, (acc() && acc().username) || "my-folder")}, "⬇ Download my whole folder")) : null].filter(Boolean));
@@ -733,17 +733,17 @@ function card(){ return store.raw("ch3-card") || {}; }
 function storyText(){
   const d = card(), ideas = [d.i1, d.i2, d.i3, d.mine].filter(Boolean), helps = S.helps.filter(h => h !== "my design ideas from Chapter 3");
   return "Role: You are a children's author who writes exciting stories about the future.\n" +
-    "Task: Write " + (S.genre ? (/^[aeiou]/.test(S.genre) ? "an " : "a ") + S.genre + " story" : "a short story") + " set in " + world() + ".\n" +
+    "Task: Write " + (S.genre ? (/^[aeiou]/.test(S.genre) ? "an " : "a ") + S.genre + " story" : "a short story") + " set in " + (d.name ? d.name + ", my design for " + world() + (ideas.length ? ". This place has: " + ideas.map(x => x.trim().replace(/[.!]+$/, "")).join("; ") : "") : world()) + ".\n" +
     "Context: The hero is " + (C.name || "my character") + ", " + (C.who || "a kid from the future") + (C.pers.length ? ", who is " + J(C.pers) : "") + (C.power ? ", with " + C.power : "") + (C.want ? ", and wants " + C.want : "") + "." +
     (C.more && Object.values(C.more).some(Boolean) ? " More about the hero: " + MORE.filter(([k]) => C.more[k]).map(([k, , label]) => label + ": " + C.more[k].trim().replace(/([^.!?"”])$/, "$1.")).join(" ") : "") +
     (S.prob ? " The problem: " + S.prob + "." : "") +
     (helps.length ? " What helps: " + J(helps) + "." : "") +
-    (S.helps.includes("my design ideas from Chapter 3") && ideas.length ? " Use these ideas from my design" + (d.name ? " \"" + d.name + "\"" : "") + ": " + ideas.map(x => x.trim().replace(/[.!]+$/, "")).join("; ") + "." : "") +
+    (S.helps.includes("my design ideas from Chapter 3") ? (d.name ? " The ideas of " + d.name + " help the hero solve the problem." : " The ideas of my design help the hero solve the problem.") : "") +
     ((S.idea || "").trim() ? " My own idea: " + S.idea.trim() + "." : "") +
     "\nFormat: A title, then " + (S.len || "about 150 words") + ". Beginning, problem, how the future helps, and " + (S.ending || "a happy ending") + "." + (S.talk ? " Include some dialogue." : "") + (S.joke ? " Add one funny moment." : "") + " Easy English for 12-year-olds. No real people's names, nothing scary or violent.";
 }
 let storyUI;
-function drawStory(){ window.B.show($("#storyOut"), SSPEC, S, storyText()); window.B.meter($("#storyP"), SSPEC, S); window.B.lock($("#copyStory"), SSPEC, S); const d = card(); $("#noCard").textContent = d.name ? "Your design card from Chapter 3: " + d.name + "." : "Tip: fill your design card in Chapter 3, then choose \"my design ideas from Chapter 3\"."; }
+function drawStory(){ window.B.show($("#storyOut"), SSPEC, S, storyText()); window.B.meter($("#storyP"), SSPEC, S); window.B.lock($("#copyStory"), SSPEC, S); const d = card(); $("#noCard").textContent = d.name ? "📍 Your story happens in " + d.name + ", your design from Chapter 3. Its big ideas are already in the prompt." : "⚠ Your design card (Chapter 3) is empty: fill it first, your story happens inside your design."; }
 function onStory(redraw){ store.set("story", S); if (redraw) storyUI.draw(); drawStory(); if (S.prob) L1.tick(2); }
 storyUI = window.B.make($("#storyB"), SSPEC, S, onStory);
 $("#copyStory").onclick = () => { if (!window.B.guard(SSPEC, S, $("#storyB"), K.toast)) return; copy(storyText(), $("#storyOut"), "a NEW Gemini chat"); L1.tick(3); };
@@ -762,7 +762,7 @@ const L1 = checklist("list1", [
   ["Build your character", "Choose who they are, their look, personality, gadget, what they want and what they fear. Copy the prompt into Gemini, then paste its answer back here."],
   ["Build your story", "Choose the kind of story, the problem, what helps, the ending. Aim for 5 stars."],
   ["Ask Gemini for the story", "Copy the story prompt into a new Gemini chat."],
-  ["Make it better", "Use at least one follow-up prompt."],
+  ["Make it better (optional)", "Not happy with the story? Copy one follow-up prompt into the same chat."],
   ["Paste and make it yours", "Paste the story, give it a title, change 3 sentences into your own words."]
 ]);
 picker($("#proj"), () => { storyUI.draw(); drawChar(); drawStory(); if (me().team) L1.tick(0); });
@@ -773,4 +773,6 @@ K.start();
 </script>
 <script src="config.js"></script>
 <script src="sync.js"></script>
+<script src="gate.js"></script>
+<script src="brief.js"></script>
 </body></html>

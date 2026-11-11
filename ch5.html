@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
-<title>AI Pictures</title>
+<title>AI Images</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -338,7 +338,7 @@ const TEAMS = {
     world:"our school, Evergreen, in the year 2040", podcast:"the School 2040 podcast", video:"a promo video for the school of tomorrow", look:"a bright, friendly school in Lebanon in the year 2040",
     parts:[["The classroom","Where and how we learn: desks, screens, light, sound"],["The library","Books, reading corners, quiet, research"],["The canteen","Healthy food, no waste, where we eat together"],["Playground and sports","Games, fields, breaks, team sports"],["The science lab","Experiments, robots, discovering"],["Art and music studio","Drawing, making, singing, performing"],["Getting to school","Buses, bikes, walking, safety"],["The school day","Timetable, homework, exams, breaks"],["Wellbeing corner","Feeling calm, friendship, getting help"],["The school garden","Plants, outdoor lessons, animals"]]},
   planet: {key:"planet", name:"The Future of Our Planet", site:"Planet 2050", emoji:"🌍", goal:"Create a better world with AI",
-    world:"planet Earth, and Lebanon, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
+    world:"Lebanon, on planet Earth, in the year 2050", podcast:"the Planet 2050 awareness podcast", video:"a short environmental documentary", look:"a green, clean future Lebanon in the year 2050",
     parts:[["Clean energy","Sun, wind and power for every home"],["Water","Clean water for everyone, saving every drop"],["Waste and recycling","Less trash, sorting, reusing"],["Clean air","No smoke, less pollution, breathing well"],["Transport","Buses, trains, bikes and clean cars"],["Cities and homes","Green buildings, parks, cool streets"],["Food and farming","Growing food, eating well, no food waste"],["Oceans and beaches","Clean sea, no plastic, sea life"],["Forests and animals","Trees, the cedars, wildlife"],["Weather and climate","Heat waves, storms, being ready"]]}
 };
 const rawSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
@@ -479,7 +479,7 @@ function folder(box, now){
     let files = []; let err = ""; try { files = await list(true); } catch(e){ err = MSG[e.code] || ""; }
     const P = plan(), have = s => files.find(f => f.slot === s.slot), n = P.filter(have).length;
     box.replaceChildren(...[el("span", {class:"tag"}, "📁 My folder · saved in the app"),
-      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc()) ? addBtn(s) : el("small", null, "Ch " + s.ch)); })),
+      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc() && (!now || s.ch <= now)) ? addBtn(s) : el("small", null, f || !now || s.ch <= now ? "Ch " + s.ch : "later · Ch " + s.ch)); })),
       el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, on() ? n + " of " + P.length + " saved. Your teacher can see your folder." : "Log in from the class link to save your files in the app."),
       err ? el("p", {class:"fmsg no"}, err) : null,
       on() && files.length ? el("div", {class:"row", style:"margin-top:6px"}, el("button", {class:"btn sm alt", type:"button", onclick:() => zip(files, (acc() && acc().username) || "my-folder")}, "⬇ Download my whole folder")) : null].filter(Boolean));
@@ -625,7 +625,7 @@ function prompt(){
   const things = cats().map(c => { const k = (S.pick[c.id] || []).filter(x => c.kinds.includes(x)); if (!k.length) return null; const l = S.look[c.id]; return join(k) + (l ? " (" + l + ")" : ""); }).filter(Boolean);
   const who = PICS(pic).who ? (S.who || "a friendly cartoon kid from the future") : "";
   const lines = [];
-  lines.push(PICS(pic).who ? `A cartoon character: ${who}, in ${S.place || "a futuristic place"} ${when}.` : `A stunning picture of ${S.place || "a futuristic place"} ${when}.`);
+  lines.push(PICS(pic).who ? `A cartoon character: ${who.trim().replace(/[.,;!]+$/, "")}, in ${S.place || "a futuristic place"} ${when}.` : `A stunning picture of ${S.place || "a futuristic place"} ${when}.`);
   if (things.length) lines.push("In the picture: " + things.join("; ") + ".");
   if (PICS(pic).extra) lines.push("Picture type: " + PICS(pic).extra + ".");
   if (S.idea.trim()) lines.push("Special idea: " + S.idea.trim() + ".");
@@ -669,11 +669,11 @@ function drawPower(){ const p = power(); $("#power").replaceChildren(el("span", 
 function chooser(){
   $("#picKinds").replaceChildren(el("h4", null, "Which pictures will you make? ", el("small", null, "choose 3 to 5 · " + MY.length + " chosen")),
     el("div", {class:"chips"}, ...Object.entries(KIND).map(([k, d]) => chip(d.label, MY.includes(k), () => {
-      if (MY.includes(k)){ if (MY.length <= 3){ toast("You need at least 3 pictures."); return; } MY = MY.filter(x => x !== k); }
+      if (MY.includes(k)){ if (MY.length <= 3){ const t = $("#picTabs").children[MY.indexOf(k)]; if (t){ t.click(); t.scrollIntoView({behavior:"smooth", block:"start"}); } toast("Here is your picture: " + d.label + ". Make it below. (You need 3 pictures, so it stays chosen.)"); return; } MY = MY.filter(x => x !== k); }
       else { if (MY.length >= 5){ toast("5 pictures maximum."); return; } MY = MY.concat(k); }
       store.set("pics", MY); if (!MY.includes(pic)) pic = MY[0]; S = state(); chooser(); tabs(); draw(); folderUI && folderUI.draw(); }))));
 }
-function tabs(){ $("#picTabs").replaceChildren(...MY.map((k, i) => el("button", {type:"button", role:"tab", "aria-selected": String(k === pic), class:"tab", onclick:() => { pic = k; S = state(); if (PICS(k).who && !S.who){ const c = raw("ch4-char") || {}; if (c.who){ const pe = Array.isArray(c.pers) ? c.pers.join(" and ") : (c.pers || ""); S.who = (pe ? c.who.replace(/^(an?) /, "a " + pe + " ") : c.who) + (c.name ? " called " + c.name : "") + (c.more && c.more.look ? ". Look: " + c.more.look : Array.isArray(c.look) && c.look.length ? ", who " + c.look.join(" and ") : ""); } } tabs(); draw(); }}, (i + 1) + " · " + PICS(k).label))); }
+function tabs(){ $("#picTabs").replaceChildren(...MY.map((k, i) => el("button", {type:"button", role:"tab", "aria-selected": String(k === pic), class:"tab", onclick:() => { pic = k; S = state(); if (PICS(k).who && !S.who){ const c = raw("ch4-char") || {}; if (c.who){ const pe = Array.isArray(c.pers) ? c.pers.join(" and ") : (c.pers || ""); S.who = (pe ? c.who.replace(/^(an?) /, "a " + pe + " ") : c.who) + (c.name ? " called " + c.name : "") + (c.more && c.more.look ? ". Look: " + c.more.look.trim().replace(/[.!;,]+$/, "") : Array.isArray(c.look) && c.look.length ? ", who " + c.look.join(" and ") : ""); } } tabs(); draw(); }}, (i + 1) + " · " + PICS(k).label))); }
 $("#resetPic").onclick = () => { S = blank(pic); store.set("scene-" + pic, S); draw(); };
 $("#copyPic").onclick = () => { if (!drawOut()){ toast("Choose where it is and at least 1 thing first."); return; } copyText(prompt(), $("#picOut"), "Adobe Express"); };
 let slotUI = null, folderUI = null;
@@ -706,4 +706,6 @@ go(start >= 0 ? start : 0);
 </script>
 <script src="config.js"></script>
 <script src="sync.js"></script>
+<script src="gate.js"></script>
+<script src="brief.js"></script>
 </body></html>
