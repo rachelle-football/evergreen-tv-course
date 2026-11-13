@@ -30,7 +30,7 @@
        missions:{3:"Your output: your pictures, saved in your folder. They go on your web page in Chapter 6."}},
     8:{goal:"Build your page of the team website, with everything you made.",
        make:[["🌐", "page.html: your design, your story and your pictures on one page"]],
-       steps:["Watch: Gemini Canvas builds a page in 30 seconds", "Check you have all your pieces", "Click to build your director's prompt, Gemini Canvas builds your page", "Download it, save it with ⬆ Upload", "A classmate tests it, you fix it with prompts"],
+       steps:["Watch: Gemini Canvas builds a page in 30 seconds", "Check you have all your pieces", "Click to build your director's prompt, Gemini Canvas builds your page", "Paste Gemini's code in the app: it becomes your website, with its own link", "A classmate tests it, you fix it with prompts"],
        done:"Your page is saved in your folder, and the launch checklist is 7 of 7.",
        missions:{3:"Your output: page.html, saved in your folder. It goes on the team website.", 4:"Your output: a feedback card for a classmate: a star and a wish.", 5:"Your output: a better page. Save it again with Replace when you are done."}},
     9:{goal:"Present your work to parents and guests, and launch the two team websites.",

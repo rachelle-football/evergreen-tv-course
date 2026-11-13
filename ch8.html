@@ -298,7 +298,11 @@ Bright colours, big fonts, works on a phone.</pre>
       <pre class="prompt small" id="pageOut"></pre>
       <div class="row"><button class="btn sm" id="copyPage" type="button">Copy my prompt</button></div>
       <p class="newchat">🆕 Paste it in a <b>NEW</b> Gemini chat with Canvas (press <b>New chat</b> first), so Gemini does not mix it with your other work.</p>
-      <span class="tag" style="margin-top:6px">Save your page in your folder</span>
+      <span class="tag" style="margin-top:6px">Make it a real website: paste Gemini's code</span>
+      <p class="muted" style="margin:0;font-size:14px">In Gemini, open the code (Canvas: the <b>Code</b> tab, or the code box in the chat), press <b>Copy</b>, then paste it here.</p>
+      <textarea id="pageCode" rows="5" placeholder="Paste the whole code here. It starts with <!DOCTYPE html> or <html>…" style="width:100%"></textarea>
+      <div class="row" style="flex-wrap:wrap"><button class="btn sm" id="saveCode" type="button">🌐 Make my website</button><span class="muted" id="codeMsg" style="font-size:14px"></span></div>
+      <span class="tag" style="margin-top:6px">Or upload the page file</span>
       <div id="pageSlot"></div>
       <div id="pageLink" class="row" style="margin-top:8px;flex-wrap:wrap"></div>
     </aside>
@@ -707,7 +711,7 @@ const L1 = checklist("list1", [
   ["Paste your prompt", "Copy my prompt (on the right), paste it in Gemini and press Enter. Wait about 30 seconds."],
   ["Look at the preview", "Your pictures show at once: they come from your folder in the app. A picture is missing? Copy the prompt again."],
   ["Improve it twice", "Copy 2 improvement prompts into the same chat, or write your own."],
-  ["Save the page", "In the Canvas panel, find Download (the arrow icon). Then press ⬆ Upload under your prompt and choose the file. It is saved in your folder as page.html."],
+  ["Make it a website", "In Gemini, copy all the code (Copy button on the code). Paste it in the app under your prompt and press 🌐 Make my website. It is saved in your folder as page.html."],
   ["Open your link", "Under the upload box, press 🌐 Open my page. That is your real website link: send it to your family!"]
 ]);
 picker($("#proj"), () => { drawPage(); drawPlan(); });
@@ -776,6 +780,17 @@ function drawLink(){ const f = MYF.find(x => x.slot === "page"), box = $("#pageL
   if (!f){ box.replaceChildren(); return; }
   const u = F.view(f.path);
   box.replaceChildren(el("a", {class:"btn sm", href:u, target:"_blank", rel:"noopener", style:"text-decoration:none"}, "🌐 Open my page"), el("button", {class:"btn sm alt", type:"button", onclick:() => copy(u, null, "a message to your family")}, "🔗 Copy my link")); }
+/* paste the code from Gemini: the app saves it as page.html and gives the link */
+function cleanCode(t){ t = (t || "").trim(); const m = t.match(/```(?:html)?\s*([\s\S]*?)```/i); if (m) t = m[1].trim(); const i = t.search(/<!doctype html|<html/i); if (i > 0) t = t.slice(i); const j = t.toLowerCase().lastIndexOf("</html>"); if (j > -1) t = t.slice(0, j + 7); return t; }
+$("#saveCode").onclick = async () => {
+  const code = cleanCode($("#pageCode").value), msg = $("#codeMsg");
+  if (!/<(html|body)[\s>]/i.test(code)){ msg.textContent = "This is not the page code yet. In Gemini, copy the code that starts with <!DOCTYPE html>."; return; }
+  if (!F.on()){ msg.textContent = F.MSG.offline; return; }
+  msg.textContent = "Making your website…";
+  try { await F.upload(new File([code], "page.html", {type:"text/html"}), "page", "My web page"); msg.textContent = "✓ Your website is ready! Press 🌐 Open my page."; document.dispatchEvent(new CustomEvent("evg-files")); fold8.draw(); refreshFiles();
+    const cb = document.getElementById("list1-5"); if (cb && !cb.checked){ cb.checked = true; cb.dispatchEvent(new Event("change", {bubbles:true})); } }
+  catch(e){ msg.textContent = F.MSG[e.code] || ("Problem: " + (e.code || "unknown")); }
+};
 function refreshFiles(){ F.ready().then(() => F.list(true)).then(fs => { MYF = fs || []; drawPlan(); drawPage(); drawLink(); }).catch(() => {}); }
 refreshFiles();
 K.start();
