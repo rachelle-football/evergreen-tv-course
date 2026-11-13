@@ -2,7 +2,7 @@
    a reminder at the top of every mission, and the project strip (what you have, what you make today). */
 (function(){
   const CH = +((location.pathname.match(/ch(\d)\.html/) || [])[1] || 0);
-  const DN = n => n >= 7 ? n - 1 : n; /* the voice chapter was removed: file ch7 is Chapter 6, ch8 is 7, ch9 is 8 */
+  const DN = n => n >= 8 ? n - 2 : n; /* the voice and video chapters were removed: file ch8 is Chapter 6, ch9 is Chapter 7 */
   const B = {
     1:{goal:"Discover what AI really is, and choose your part of the project.",
        make:[["🧭", "Your team and your part"], ["💡", "Your first idea for it"]],
@@ -17,26 +17,21 @@
        make:[["📝", "Your design card: a name, 3 big ideas, a day in it, and your own idea"]],
        steps:["Learn the 4 parts of a good prompt", "Click to build your prompt, then copy it", "Paste it in a NEW Gemini chat", "Paste Gemini's answer in the design card: it fills by itself", "Add one idea of your own that the AI did not have"],
        done:"All 6 boxes of your design card are filled. You cannot go on before that.",
-       missions:{3:"Your output: your design card. Every next chapter uses it: the story, the pictures, the video and your web page."}},
+       missions:{3:"Your output: your design card. Every next chapter uses it: the story, the pictures and your web page."}},
     4:{goal:"Invent a hero, and write a story that happens inside your design.",
        make:[["🦸", "Your character card"], ["📖", "Your story (about 150 words) with a title"]],
        steps:["Learn the 4 parts of a story", "Invent your character, Gemini adds details", "Click to build your story prompt, Gemini writes it", "Paste it, give it a title, change 3 sentences into your own words", "Read it to the class"],
        done:"Your story has a title and at least 40 words. You cannot go on before that.",
-       missions:{2:"Your output: your character card. Your hero appears in your story, your pictures and your video.", 3:"Your output: your story, set in your design. It goes on your web page (Chapter 7)."}},
+       missions:{2:"Your output: your character card. Your hero appears in your story, your pictures and your web page.", 3:"Your output: your story, set in your design. It goes on your web page (Chapter 6)."}},
     5:{goal:"Make 3 to 5 AI pictures of your design, and save them in your folder.",
        make:[["🖼️", "3 to 5 pictures you choose (big picture, close-up, character…)"]],
        steps:["Spot what the AI decides by itself", "Learn the 5 ingredients of a picture prompt", "Choose which pictures you will make", "For each picture: click, copy, make it in Adobe Express, download", "Save each picture with ⬆ Upload"],
        done:"Every picture you chose is saved in your folder (green ✓). You cannot go on before that.",
-       missions:{3:"Your output: your pictures, saved in your folder. They go into your video and your web page."}},
-    7:{goal:"Make a 30-second video of your design, fact-checked and labelled.",
-       make:[["🎬", "video.mp4: your pictures, captions and music, 30 seconds"]],
-       steps:["Spot fake facts and AI videos", "Make your storyboard: it fills by itself from your work", "Build the video in Adobe Express, scene by scene", "Fact-check it, add the Made with AI label", "Download it and save it with ⬆ Upload"],
-       done:"Your video is saved in your folder. You cannot go on before that.",
-       missions:{3:"Your output: your storyboard, the plan of your video, scene by scene.", 4:"Your output: the first cut of your video in Adobe Express. Follow Your plan, one line = one scene.", 6:"Your output: video.mp4, saved in your folder. It goes on your web page."}},
+       missions:{3:"Your output: your pictures, saved in your folder. They go on your web page in Chapter 6."}},
     8:{goal:"Build your page of the team website, with everything you made.",
-       make:[["🌐", "page.html: your design, story, pictures and video on one page"]],
+       make:[["🌐", "page.html: your design, your story and your pictures on one page"]],
        steps:["Watch: Gemini Canvas builds a page in 30 seconds", "Check you have all your pieces", "Click to build your director's prompt, Gemini Canvas builds your page", "Download it, save it with ⬆ Upload", "A classmate tests it, you fix it with prompts"],
-       done:"Your page is saved in your folder, and the launch checklist is 8 of 8.",
+       done:"Your page is saved in your folder, and the launch checklist is 7 of 7.",
        missions:{3:"Your output: page.html, saved in your folder. It goes on the team website.", 4:"Your output: a feedback card for a classmate: a star and a wish.", 5:"Your output: a better page. Save it again with Replace when you are done."}},
     9:{goal:"Present your work to parents and guests, and launch the two team websites.",
        make:[["🎤", "Your 30-second pitch"], ["🚀", "Both team websites, live"]],
@@ -61,13 +56,13 @@
   document.head.append(css);
   const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.textContent = h; return e; };
   /* the 7 pieces of every student's project */
-  const PIECES = [["card", "📝", "Design card", 3], ["story", "📖", "Story", 4], ["pics", "🖼️", "Pictures", 5], ["video", "🎬", "Video", 7], ["page", "🌐", "Web page", 8], ["pitch", "🎤", "Pitch", 9]];
+  const PIECES = [["card", "📝", "Design card", 3], ["story", "📖", "Story", 4], ["pics", "🖼️", "Pictures", 5], ["page", "🌐", "Web page", 8], ["pitch", "🎤", "Pitch", 9]];
   async function have(){
     const c = raw("ch3-card") || {}, s = raw("ch4-story") || {}, p = raw("ch9-pitch") || {};
     const h = {card:!!(c.name && c.i1 && c.i2 && c.i3), story:!!((s.title || "").trim() && words(s.text) >= 40), pitch:["p1", "p2", "p3", "p4", "p5"].filter(k => (p[k] || "").trim()).length >= 4};
     if (window.F && window.F.on && window.F.on() && raw("ai-lab-session")){
       try { const fs = await window.F.list(true), k = raw("ch5-pics"), want = Array.isArray(k) && k.length ? k : ["big", "close", "char"], ok = x => fs.some(f => f.slot === x);
-        h.pics = want.every(ok); h.video = ok("video"); h.page = ok("page"); } catch(e){}
+        h.pics = want.every(ok); h.page = ok("page"); } catch(e){}
     }
     return h;
   }

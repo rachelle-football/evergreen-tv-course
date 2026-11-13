@@ -417,7 +417,7 @@ window.PICKINDS = {
   inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
 };
 window.F = (function(){
-const DN = n => n >= 7 ? n - 1 : n; /* the voice chapter was removed: file ch7 is Chapter 6, ch8 is 7, ch9 is 8 */
+const DN = n => n >= 8 ? n - 2 : n; /* the voice and video chapters were removed: file ch8 is Chapter 6, ch9 is Chapter 7 */
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
@@ -453,7 +453,7 @@ async function upload(file, slot, label){
   cache = null; return list(true);
 }
 async function remove(slot){ await rpc("ailab_file_remove", {p_token:acc().token, p_slot:slot}); cache = null; return list(true); }
-const MSG = {offline:"Saving files needs the class login. Open the course from the class link and log in.", too_big:"This file is bigger than 30 MB. In Adobe, download it smaller (720p for videos).", bad_type:"This kind of file is not allowed. Use a picture (png, jpg), a video (mp4) or your page (html).", not_logged_in:"Please log in again on the home page.", upload_failed:"The upload did not work. Check the internet and try again.", too_many_tries:"Too many uploads in one hour. Wait a bit."};
+const MSG = {offline:"Saving files needs the class login. Open the course from the class link and log in.", too_big:"This file is bigger than 30 MB. Download it again from Adobe in a smaller size.", bad_type:"This kind of file is not allowed. Use a picture (png, jpg) or your page (html).", not_logged_in:"Please log in again on the home page.", upload_failed:"The upload did not work. Check the internet and try again.", too_many_tries:"Too many uploads in one hour. Wait a bit."};
 const fileName = f => f.slot + "." + extOf(f.mime, f.path);
 const kb = n => n > 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB";
 function preview(f){
@@ -490,7 +490,7 @@ function slotBox(box, s, onDone){
 function plan(){
   const kinds = raw("ch5-pics") || ["big","close","char"], K = window.PICKINDS || {};
   return kinds.map(k => ({slot:k, label:(K[k] && K[k].label) || k, ch:5, accept:"image/*"})).concat([
-    {slot:"video", label:"My video", ch:7, accept:"video/*"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
+    {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
 }
 function folder(box, now){
   async function draw(){

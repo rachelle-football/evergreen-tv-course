@@ -244,7 +244,7 @@ img.fprev{background:var(--paper)}
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 7: Website Building</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 6: Website Building</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -423,7 +423,7 @@ window.PICKINDS = {
   inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
 };
 window.F = (function(){
-const DN = n => n >= 7 ? n - 1 : n; /* the voice chapter was removed: file ch7 is Chapter 6, ch8 is 7, ch9 is 8 */
+const DN = n => n >= 8 ? n - 2 : n; /* the voice and video chapters were removed: file ch8 is Chapter 6, ch9 is Chapter 7 */
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
@@ -459,7 +459,7 @@ async function upload(file, slot, label){
   cache = null; return list(true);
 }
 async function remove(slot){ await rpc("ailab_file_remove", {p_token:acc().token, p_slot:slot}); cache = null; return list(true); }
-const MSG = {offline:"Saving files needs the class login. Open the course from the class link and log in.", too_big:"This file is bigger than 30 MB. In Adobe, download it smaller (720p for videos).", bad_type:"This kind of file is not allowed. Use a picture (png, jpg), a video (mp4) or your page (html).", not_logged_in:"Please log in again on the home page.", upload_failed:"The upload did not work. Check the internet and try again.", too_many_tries:"Too many uploads in one hour. Wait a bit."};
+const MSG = {offline:"Saving files needs the class login. Open the course from the class link and log in.", too_big:"This file is bigger than 30 MB. Download it again from Adobe in a smaller size.", bad_type:"This kind of file is not allowed. Use a picture (png, jpg) or your page (html).", not_logged_in:"Please log in again on the home page.", upload_failed:"The upload did not work. Check the internet and try again.", too_many_tries:"Too many uploads in one hour. Wait a bit."};
 const fileName = f => f.slot + "." + extOf(f.mime, f.path);
 const kb = n => n > 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB";
 function preview(f){
@@ -496,7 +496,7 @@ function slotBox(box, s, onDone){
 function plan(){
   const kinds = raw("ch5-pics") || ["big","close","char"], K = window.PICKINDS || {};
   return kinds.map(k => ({slot:k, label:(K[k] && K[k].label) || k, ch:5, accept:"image/*"})).concat([
-    {slot:"video", label:"My video", ch:7, accept:"video/*"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
+    {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
 }
 function folder(box, now){
   async function draw(){
@@ -655,7 +655,6 @@ function have(){
     ["Your design card", "Name, 3 big ideas, a day in it (Chapter 3)", !!(d.name && d.i1)],
     ["Your story", "From Chapter 4", !!(st.text && st.text.length > 40)],
     ...PICS8.map(k => [PK8[k].label, fname(k) + " · Chapter 5", saved(k)]),
-    ["Your video", fname("video") + " · Chapter 6", saved("video")],
     ["Made with AI", "A label on everything AI made", true]
   ];
 }
@@ -666,13 +665,13 @@ const WSPEC = [
   {id:"theme", icon:"🎨", title:"Theme of my page", one:true, opts:["a magazine from the future","a video game world","a space mission","a nature adventure","a newspaper from 2050","a museum of the future"]},
   {id:"colours", icon:"🌈", title:"Colours", one:true, opts:["blue and glowing neon","green and sunny yellow","white and gold","purple and pink","ocean blue and sand","rainbow colours"]},
   {id:"font", icon:"🔤", title:"Letters", one:true, opts:["rounded and friendly","futuristic","handwritten","big and bold"]},
-  {id:"sections", icon:"🧩", title:"What goes on my page", opts:["my design ideas","my story","my pictures","my video"], hint:"pick everything you made"},
+  {id:"sections", icon:"🧩", title:"What goes on my page", opts:["my design ideas","my story","my pictures"], hint:"pick everything you made"},
   {id:"fun", icon:"🕹️", title:"Interactive things", max:2, opts:["a quiz with 3 questions","a before/after slider: today vs the future","a fun-fact button","a poll: would you like this?","a mini game: match problems and solutions","a countdown to the future","a day/night mode button"]},
   {id:"anim", icon:"✨", title:"Animations", one:true, opts:["no animations","gentle animations","lots of animations"]},
   {id:"idea", title:"✨ Your own idea", text:true, ph:"e.g. little robots walk along the bottom of the page", hint:"makes it yours"}
 ];
-const W = Object.assign({theme:"", colours:"", font:"", sections:["my design ideas","my story","my pictures","my video"], fun:[], anim:"gentle animations", idea:""}, store.get("web") || {});
-W.sections = (W.sections || []).filter(x => x !== "my podcast clip");
+const W = Object.assign({theme:"", colours:"", font:"", sections:["my design ideas","my story","my pictures"], fun:[], anim:"gentle animations", idea:""}, store.get("web") || {});
+W.sections = (W.sections || []).filter(x => x !== "my podcast clip" && x !== "my video");
 function slug(s){ return (s || "").toLowerCase().replace(/^the /, "").split(/\s+/)[0].replace(/[^a-z0-9]/g, "") || "part"; }
 function pageText(){
   const m = me(), T = m.T || K.TEAMS.school, d = raw("ch3-card") || {}, st = raw("ch4-story") || {}, has = x => W.sections.includes(x);
@@ -681,13 +680,12 @@ function pageText(){
   if (has("my design ideas")) out.push("My design: " + (ideas.length ? ideas.map(x => "\"" + x + "\"").join(", ") : "(my big ideas)") + ", each in its own card." + (d.day ? " A day in it: \"" + d.day + "\"" : ""));
   if (has("my story")) out.push("My story" + (st.title ? ", called \"" + st.title + "\"" : "") + (has("my pictures") && PICS8.includes("char") ? ", with the picture " + fname("char") + " next to it" : "") + ". Here is the story: \"" + (st.text || "(my story)").trim() + "\"");
   if (has("my pictures")) PICS8.filter(k => k !== PICS8[0] && k !== "char").forEach(k => out.push("The picture " + fname(k) + " (" + PK8[k].label.toLowerCase() + ") with a short caption."));
-  if (has("my video")) out.push("A video player for " + fname("video") + " with the title \"Watch: my video\".");
   W.fun.forEach(f => out.push(f.charAt(0).toUpperCase() + f.slice(1) + "."));
-  out.push("A footer: \"Made with AI by EB7 · " + T.site + "\". Under every picture and video, a small label: Made with AI.");
+  out.push("A footer: \"Made with AI by EB7 · " + T.site + "\". Under every picture, a small label: Made with AI.");
   return "Role: You are a web designer who builds amazing websites for kids.\n" +
     "Task: Create a one-page website for \"" + T.site + ": " + (d.name || "my future design") + "\", made by a 12-year-old student in the team \"" + T.name + "\".\n" +
     "Context: Put these sections on the page, in this order:\n" + out.map((x, i) => (i + 1) + ". " + x).join("\n") + "\n" +
-    "The pictures and videos will be in the same folder as the page, with exactly these file names." + ((W.idea || "").trim() ? "\nMy own idea: " + W.idea.trim() + "." : "") + "\n" +
+    "The pictures will be in the same folder as the page, with exactly these file names." + ((W.idea || "").trim() ? "\nMy own idea: " + W.idea.trim() + "." : "") + "\n" +
     "Format: The page looks like " + (W.theme || "a colourful page from the future") + ". Colours: " + (W.colours || "bright and friendly") + ". Letters: " + (W.font || "big and easy to read") + ". " + (W.anim || "gentle animations").replace(/^./, c => c.toUpperCase()) + ". Big fonts, easy to read, works well on a phone. Do not invent facts or real people's names.";
 }
 let webUI;
@@ -701,10 +699,10 @@ const L1 = checklist("list1", [
   ["Design your page", "Choose a theme, colours, letters, what goes on it and 2 interactive things. Your design card and story are added by themselves."],
   ["Open Gemini with Canvas", "Go to gemini.google.com. Press the + next to the message box, then choose Canvas."],
   ["Paste your prompt", "Copy my prompt (on the right), paste it in Gemini and press Enter. Wait about 30 seconds."],
-  ["Look at the preview", "Your pictures and videos will not show yet: they are on your computer, not in Gemini. That is normal."],
+  ["Look at the preview", "Your pictures will not show yet: they are on your computer, not in Gemini. That is normal."],
   ["Improve it twice", "Copy 2 improvement prompts into the same chat, or write your own."],
   ["Save the page", "In the Canvas panel, find Download (the arrow icon). Then press ⬆ Upload under your prompt and choose the file. It is saved in your folder as page.html."],
-  ["See it with everything", "In the folder box (part 02), press ⬇ Download my whole folder. Open the zip and double-click page.html. Now your pictures and videos appear. Do they all work?"]
+  ["See it with everything", "In the folder box (part 02), press ⬇ Download my whole folder. Open the zip and double-click page.html. Now your pictures appear. Do they all work?"]
 ]);
 picker($("#proj"), () => { drawPage(); drawPlan(); });
 document.addEventListener("click", () => { if (W.theme && W.colours) L1.tick(0); });
@@ -714,7 +712,7 @@ drawPage(); drawPlan();
 const CHECKS = [
   ["works", "Every button works", "Click everything on the page."],
   ["clear", "Clear in 5 seconds", "Can you tell right away which part of the future this page is about?"],
-  ["media", "Pictures and video show", "All my pictures and the video play on the page."],
+  ["media", "Pictures show", "All my pictures show on the page, each with its caption."],
   ["story", "The story and design make sense", "Read the design cards and the story. Anything confusing or impossible?"],
   ["phone", "Works on a small screen", "Make the window narrow. Does it still fit?"],
   ["safe", "Honest and safe", "Labelled Made with AI, first names only, no photos of real people."]
@@ -742,9 +740,9 @@ drawChecks(); drawCard();
 
 /* fixes: choose, the prompt writes itself */
 const FSPEC = [
-  {id:"what", icon:"🐞", title:"What is wrong?", one:true, opts:["a button does nothing","it is hard to read","it looks broken on a phone","a picture or video does not show","something is missing","something is not true","it looks boring"]},
-  {id:"where", icon:"📍", title:"Where?", one:true, opts:["the title","the idea cards","the story","the pictures","the video player","the quiz or game","the whole page"]},
-  {id:"how", icon:"🔧", title:"How should it be fixed?", max:2, opts:["make the text bigger","use stronger colours","make it fit a phone screen","use the exact file names (big.png, video.mp4…)","add gentle animations","make it look like the rest of the page","make the button work"]},
+  {id:"what", icon:"🐞", title:"What is wrong?", one:true, opts:["a button does nothing","it is hard to read","it looks broken on a phone","a picture does not show","something is missing","something is not true","it looks boring"]},
+  {id:"where", icon:"📍", title:"Where?", one:true, opts:["the title","the idea cards","the story","the pictures","the quiz or game","the whole page"]},
+  {id:"how", icon:"🔧", title:"How should it be fixed?", max:2, opts:["make the text bigger","use stronger colours","make it fit a phone screen","use the exact file names (big.png, close.png…)","add gentle animations","make it look like the rest of the page","make the button work"]},
   {id:"detail", title:"✏️ Say exactly what you see (optional)", text:true, ph:"e.g. the Start quiz button does nothing when I click it"}
 ];
 const FX = Object.assign({what:"", where:"", how:[], detail:""}, store.get("fixB") || {});
@@ -761,7 +759,7 @@ $("#nextFix").onclick = () => { store.set("fixes", (store.get("fixes") || 0) + 1
 drawFix();
 
 /* launch */
-const L = [["Every button works",""],["All my pictures show on the page",""],["My video plays on the page",""],["Every fact is checked",""],["Everything AI-made is labelled Made with AI",""],["First names only, no photos of real people",""],["It works on a phone",""],["My folder in the app has my pictures, video and page",""]];
+const L = [["Every button works",""],["All my pictures show on the page",""],["Every fact is checked",""],["Everything AI-made is labelled Made with AI",""],["First names only, no photos of real people",""],["It works on a phone",""],["My folder in the app has my pictures and my page",""]];
 checklist("launch", L);
 function ready(){ const n = [...document.querySelectorAll("#launch input")].filter(x => x.checked).length;
   $("#ready").replaceChildren(el("span", {class:"tag"}, "Status"), el("div", {class:"big-num"}, n + " / " + L.length), n === L.length ? el("p", {class:"lead", style:"margin:0;color:var(--green);font-weight:700"}, "Ready for launch! Your teacher downloads your folder from the teacher page.") : el("p", {class:"lead", style:"margin:0"}, "Tick every line before launch day.")); }

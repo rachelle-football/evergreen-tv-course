@@ -237,9 +237,8 @@ const CH = [
   {n:3, t:"Prompt Engineering", s:"4", f:"ch3.html", learn:"Design your part with Gemini: your design card", lists:[["ch3-list1",7]]},
   {n:4, t:"AI Storytelling", s:"5", f:"ch4.html", learn:"A story from the future, with your own character", lists:[["ch4-list1",6],["ch4-hunt",5]]},
   {n:5, t:"AI Images", s:"6", f:"ch5.html", learn:"3 to 5 pictures you choose, saved in your folder", lists:[["ch5-list1",8]]},
-  {n:6, t:"AI Video", s:"7–8", f:"ch7.html", learn:"30 seconds of video from your pictures, fact-checked and labelled", lists:[["ch7-list1",7],["ch7-list2",6]]},
-  {n:7, t:"Website Building", s:"9–10", f:"ch8.html", learn:"Your page on the team website, tested and fixed", lists:[["ch8-list1",7],["ch8-launch",8]]},
-  {n:8, t:"The Exhibition", s:"11–12", f:"ch9.html", learn:"Your pitch, and both websites go live", lists:[["ch9-rehearse",4]], extra: d => (pj(d["ch9-pitch"]) && Object.values(pj(d["ch9-pitch"])).filter(v => (v || "").trim()).length >= 3 ? 1 : 0) + (d["ch9-job"] ? 1 : 0), of:2}
+  {n:6, t:"Website Building", s:"7–8", f:"ch8.html", learn:"Your page on the team website, tested and fixed", lists:[["ch8-list1",7],["ch8-launch",7]]},
+  {n:7, t:"The Exhibition", s:"9–10", f:"ch9.html", learn:"Your pitch, and both websites go live", lists:[["ch9-rehearse",4]], extra: d => (pj(d["ch9-pitch"]) && Object.values(pj(d["ch9-pitch"])).filter(v => (v || "").trim()).length >= 3 ? 1 : 0) + (d["ch9-job"] ? 1 : 0), of:2}
 ];
 function pj(v){ if (v == null) return null; if (typeof v !== "string") return v; try { return JSON.parse(v); } catch(e){ return v; } }
 function progress(d){ return CH.map(c => { let done = 0, total = c.of || 0; c.lists.forEach(([k, n]) => { total += n; const a = pj(d[k]); if (Array.isArray(a)) done += a.filter(Boolean).length; }); if (c.extra) done += c.extra(d); return total ? Math.min(100, Math.round(done / total * 100)) : 0; }); }
@@ -285,7 +284,7 @@ function renderHome(){
   const lastI = pr.reduce((a, v, i) => v > 0 ? i : a, -1), next = lastI < 0 ? CH[0] : pr[lastI] < 100 ? CH[lastI] : CH[Math.min(lastI + 1, CH.length - 1)];
   $("#app").replaceChildren(
     el("section", {class:"welcome"},
-      el("div", null, el("span", {class:"tag"}, "12 sessions · 8 chapters"), el("h1", null, ACC ? "Hi " + ACC.name + "!" : "AI Creators"),
+      el("div", null, el("span", {class:"tag"}, "10 sessions · 7 chapters"), el("h1", null, ACC ? "Hi " + ACC.name + "!" : "AI Creators"),
         el("p", {class:"lead"}, seg ? "Your project: " + seg + ". Every chapter adds one piece to your page of the team website." : "Two teams, two websites: School 2040 and Planet 2050. Pick your team and your part in Chapter 1.")),
       el("div", {class:"card total"}, el("span", {class:"tag"}, "Your course"), el("b", null, all + "%"), el("div", {class:"bar"}, el("i", {style:"width:" + all + "%"})),
         el("a", {class:"btn", href:next.f}, (all === 100 ? "All done! Review Chapter " : all ? "Continue: Chapter " : "Start: Chapter ") + next.n))),
@@ -294,8 +293,8 @@ function renderHome(){
       el("span", {class:"body"}, el("span", {class:"tag"}, "Session " + c.s), el("b", null, c.t), el("span", {class:"learn"}, c.learn), el("span", {class:"bar sm"}, el("i", {style:"width:" + pr[i] + "%"}))),
       el("span", {class:"pct"}, pr[i] + "%")))),
     (() => { const box = el("div", {class:"card extra"}, el("span", {class:"tag"}, "📁 My folder · saved in the app"), el("b", null, "Loading…"));
-      if (ON && ACC){ rpc("ailab_my_files", {p_token:ACC.token}).then(fs => { box.replaceChildren(el("span", {class:"tag"}, "📁 My folder · saved in the app"), el("b", null, fs.length + " file" + (fs.length === 1 ? "" : "s") + " saved"), el("span", {class:"muted"}, fs.length ? fs.map(f => "✓ " + f.slot + " (" + (f.label || "") + ")").join("   ·   ") : "Your pictures, video and page appear here when you upload them (Chapters 5 to 7).")); }).catch(() => box.replaceChildren(el("span", {class:"tag"}, "📁 My folder"), el("span", {class:"muted"}, "Your folder will appear here."))); }
-      else box.replaceChildren(el("span", {class:"tag"}, "📁 My folder"), el("span", {class:"muted"}, "Log in to save your pictures and videos in the app."));
+      if (ON && ACC){ rpc("ailab_my_files", {p_token:ACC.token}).then(fs => { box.replaceChildren(el("span", {class:"tag"}, "📁 My folder · saved in the app"), el("b", null, fs.length + " file" + (fs.length === 1 ? "" : "s") + " saved"), el("span", {class:"muted"}, fs.length ? fs.map(f => "✓ " + f.slot + " (" + (f.label || "") + ")").join("   ·   ") : "Your pictures and your web page appear here when you upload them (Chapters 5 and 6).")); }).catch(() => box.replaceChildren(el("span", {class:"tag"}, "📁 My folder"), el("span", {class:"muted"}, "Your folder will appear here."))); }
+      else box.replaceChildren(el("span", {class:"tag"}, "📁 My folder"), el("span", {class:"muted"}, "Log in to save your pictures and your page in the app."));
       return box; })(),
     el("a", {class:"card extra", href:"ai-lab.html"}, el("span", {class:"tag"}, "Extra practice"), el("b", null, "AI Lab games"), el("span", {class:"muted"}, "10 mini missions: train a classifier, build a guessing machine, be a neuron, and more. Same login."))
   );
@@ -351,7 +350,7 @@ function hub(tok){
       el("div", {class:"folders"}, ...Object.entries(by).map(([u, v]) => { const b = el("button", {class:"btn sm alt", type:"button", onclick:() => zipFolders([[u, v.files]], u, b)}, "⬇ Folder");
         return el("div", {class:"fold"}, el("div", {class:"row", style:"justify-content:space-between"}, el("div", null, el("b", null, v.name), el("br"), el("small", {class:"muted"}, u + " · " + v.cls + " · " + mb(v.files.reduce((a, f) => a + (+f.size || 0), 0)))), b),
           (() => { const PIC = ["big","close","char","robot","poster","before","map","inside"], has = k => v.files.some(f => f.slot === k), np = v.files.filter(f => PIC.includes(f.slot)).length;
-            const miss = [np < 3 && "pictures (" + np + " of 3)", !has("video") && "video", !has("page") && "web page"].filter(Boolean);
+            const miss = [np < 3 && "pictures (" + np + " of 3)", !has("page") && "web page"].filter(Boolean);
             return el("p", {style:"margin:6px 0;font-size:14px;font-weight:600;color:" + (miss.length ? "#b42318" : "#1e7a4f")}, miss.length ? "Missing: " + miss.join(", ") : "✓ Project complete"); })(),
           el("div", {class:"thumbs"}, ...v.files.map(f => el("a", {href:FURL(f.path), target:"_blank", rel:"noopener", title:f.label, class:"th"}, /^image\//.test(f.mime) ? el("img", {src:FURL(f.path), alt:f.label, loading:"lazy"}) : el("span", null, /^video|^audio/.test(f.mime) ? "🎬" : "📄"), el("small", null, fname(f)))))); }))));
   }

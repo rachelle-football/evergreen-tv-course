@@ -258,7 +258,7 @@ img.fprev{background:var(--paper)}
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 8: The Exhibition</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 7: The Exhibition</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -271,7 +271,7 @@ img.fprev{background:var(--paper)}
   <p class="big">Your pages are ready. Next week both team websites go live for parents and the school: 🏫 School 2040 and 🌍 Planet 2050.</p>
   <div class="grid g3">
     <div class="card"><span class="tag">Two websites</span><p class="lead" style="margin:6px 0 0">Each team has a home page with a tile for every part. Click a tile, and you see that student's page.</p></div>
-    <div class="card"><span class="tag">Two trailers</span><p class="lead" style="margin:6px 0 0">Your teacher joins the best videos of each team into a 2-minute trailer.</p></div>
+    <div class="card"><span class="tag">Live on the big screen</span><p class="lead" style="margin:6px 0 0">On launch day, both team websites open on the big screens, live, for parents and guests.</p></div>
     <div class="card"><span class="tag">You</span><p class="lead" style="margin:6px 0 0">Stand by your page and explain your part in 30 seconds.</p></div>
   </div>
 </section>
@@ -284,9 +284,9 @@ img.fprev{background:var(--paper)}
     <div class="pitchform">
       <label class="ing"><span class="tag">1 · My part</span><input id="p1" placeholder="e.g. I designed the library of School 2040: the Story Cave."></label>
       <label class="ing"><span class="tag">2 · What the AI did</span><input id="p2" placeholder="e.g. Gemini helped me with ideas and wrote the code, Adobe drew my pictures."></label>
-      <label class="ing"><span class="tag">3 · What I did</span><input id="p3" placeholder="e.g. I chose the ideas, wrote my story, made my video and fixed the AI's mistakes."></label>
+      <label class="ing"><span class="tag">3 · What I did</span><input id="p3" placeholder="e.g. I chose the ideas, wrote my story, built my page and fixed the AI's mistakes."></label>
       <label class="ing"><span class="tag">4 · What surprised me</span><input id="p4" placeholder="e.g. The AI drew only boys in my library until I changed my prompt."></label>
-      <label class="ing"><span class="tag">5 · Try it!</span><input id="p5" placeholder="e.g. Watch my 30-second video, or take my quiz."></label>
+      <label class="ing"><span class="tag">5 · Try it!</span><input id="p5" placeholder="e.g. Take my quiz, or find my own idea on my page."></label>
     </div>
     <aside class="card side">
       <span class="tag">Your pitch</span>
@@ -320,20 +320,19 @@ We trained AIs, caught them making mistakes, and used them as a tool to imagine 
 Team 1 reinvented our school: welcome to School 2040.
 Team 2 designed the future of our planet: welcome to Planet 2050.
 Every idea was chosen by us, everything AI-made is labelled, and every fact was checked by us.
-Please put your phones on silent. Lights down: here are our trailers!</pre>
+Please put your phones on silent. Lights down: 3, 2, 1… our two websites are live!</pre>
     <div class="row"><button class="btn sm copy" data-copy="hostScript" type="button">Copy host script</button></div>
   </div>
 </section>
 
 <section class="seg" id="seg-6" data-min="20" data-title="Teacher: build the platform" data-p="2" hidden>
   <div class="lower"><div class="no">06</div><div class="name"><h2>Teacher tool: build the two websites</h2><p>Before launch day · about 20 minutes</p></div></div>
-  <p class="lead">Add one line per student. This makes 3 pages: <b>index.html</b> (the entrance, with both teams), <b>school.html</b> and <b>planet.html</b> (a trailer and a tile for every part).</p>
+  <p class="lead">Add one line per student. This makes 3 pages: <b>index.html</b> (the entrance, with both teams), <b>school.html</b> and <b>planet.html</b> (a tile for every part).</p>
   <div class="grid g2" style="align-items:start">
     <div class="card">
       <div class="crow head"><span>First name</span><span>Team and part</span><span>Folder / page file</span><span></span></div>
       <div id="rows"></div>
       <div class="row" style="margin-top:10px"><button class="btn sm alt" id="addRow" type="button">+ Add a student</button></div>
-      <p class="muted" style="font-size:15px;margin:14px 0 0">Team files you make: <b>school-trailer.mp4</b>, <b>planet-trailer.mp4</b></p>
       <div class="row" style="margin-top:12px"><button class="btn sm" id="copyIndex" type="button">Copy index.html</button><button class="btn sm" id="copySchool" type="button">Copy school.html</button><button class="btn sm" id="copyPlanet" type="button">Copy planet.html</button></div>
     </div>
     <div class="card">
@@ -425,7 +424,7 @@ window.PICKINDS = {
   inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
 };
 window.F = (function(){
-const DN = n => n >= 7 ? n - 1 : n; /* the voice chapter was removed: file ch7 is Chapter 6, ch8 is 7, ch9 is 8 */
+const DN = n => n >= 8 ? n - 2 : n; /* the voice and video chapters were removed: file ch8 is Chapter 6, ch9 is Chapter 7 */
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
@@ -461,7 +460,7 @@ async function upload(file, slot, label){
   cache = null; return list(true);
 }
 async function remove(slot){ await rpc("ailab_file_remove", {p_token:acc().token, p_slot:slot}); cache = null; return list(true); }
-const MSG = {offline:"Saving files needs the class login. Open the course from the class link and log in.", too_big:"This file is bigger than 30 MB. In Adobe, download it smaller (720p for videos).", bad_type:"This kind of file is not allowed. Use a picture (png, jpg), a video (mp4) or your page (html).", not_logged_in:"Please log in again on the home page.", upload_failed:"The upload did not work. Check the internet and try again.", too_many_tries:"Too many uploads in one hour. Wait a bit."};
+const MSG = {offline:"Saving files needs the class login. Open the course from the class link and log in.", too_big:"This file is bigger than 30 MB. Download it again from Adobe in a smaller size.", bad_type:"This kind of file is not allowed. Use a picture (png, jpg) or your page (html).", not_logged_in:"Please log in again on the home page.", upload_failed:"The upload did not work. Check the internet and try again.", too_many_tries:"Too many uploads in one hour. Wait a bit."};
 const fileName = f => f.slot + "." + extOf(f.mime, f.path);
 const kb = n => n > 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB";
 function preview(f){
@@ -498,7 +497,7 @@ function slotBox(box, s, onDone){
 function plan(){
   const kinds = raw("ch5-pics") || ["big","close","char"], K = window.PICKINDS || {};
   return kinds.map(k => ({slot:k, label:(K[k] && K[k].label) || k, ch:5, accept:"image/*"})).concat([
-    {slot:"video", label:"My video", ch:7, accept:"video/*"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
+    {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
 }
 function folder(box, now){
   async function draw(){
@@ -654,10 +653,10 @@ drawPitch();
 const J = window.B.join, card = K.store.raw("ch3-card") || {}, ME = K.me(), TS = ME.T || K.TEAMS.school;
 const PSPEC = [
   {id:"open", icon:"👋", title:"How do you start?", one:true, opts:["a question to the visitor","a surprising fact","\"Imagine…\"","a clap and a big welcome"]},
-  {id:"ai", icon:"🤖", title:"What did the AI do?", max:3, opts:["gave me ideas","drew my pictures","wrote a first story","wrote the captions of my video","wrote the code of my page"]},
-  {id:"me", icon:"🧑", title:"What did YOU do?", max:3, opts:["chose the best ideas","added my own crazy idea","made my video scene by scene","fixed the AI's mistakes","checked the facts","made it fair for boys and girls"]},
+  {id:"ai", icon:"🤖", title:"What did the AI do?", max:3, opts:["gave me ideas","drew my pictures","wrote a first story","wrote my quiz questions","wrote the code of my page"]},
+  {id:"me", icon:"🧑", title:"What did YOU do?", max:3, opts:["chose the best ideas","added my own crazy idea","built my web page step by step","fixed the AI's mistakes","checked the facts","made it fair for boys and girls"]},
   {id:"wow", icon:"😮", title:"What surprised you?", one:true, opts:["the AI drew only boys at first","the AI invented a fact","the AI made strange hands","the AI did not know my idea until I explained it","the AI was fast, but my ideas were better"]},
-  {id:"try", icon:"👉", title:"What should visitors try?", one:true, opts:["watch my video","take my quiz","read my story","guess which picture is made by AI"]}
+  {id:"try", icon:"👉", title:"What should visitors try?", one:true, opts:["explore my page","take my quiz","read my story","guess which picture is made by AI"]}
 ];
 const PB = Object.assign({open:"", ai:[], me:[], wow:"", try:""}, store.get("pitchB") || {});
 let pbUI;
@@ -682,12 +681,12 @@ checklist("rehearse", [
   ["Says who did what", "You say clearly what the AI did and what you did."]
 ]);
 /* jobs */
-const JOBS = [["Host","Opens the exhibition with the host script and introduces the two trailers."],["Tech crew","Plays the trailers and keeps both websites open on the big screens."],["Guide","Walks visitors through the School 2040 zone and the Planet 2050 zone."],["Live demo","Builds a page live from a visitor's idea with Gemini Canvas."],["AI challenge booth","Parents draw waste for the recycling robot (Chapter 2) and play Fake or Real."],["Greeter","Welcomes guests at the door and gives them the website link."]];
+const JOBS = [["Host","Opens the exhibition with the host script and launches the two websites."],["Tech crew","Opens both team websites on the big screens and keeps them running."],["Guide","Walks visitors through the School 2040 zone and the Planet 2050 zone."],["Live demo","Builds a page live from a visitor's idea with Gemini Canvas."],["AI challenge booth","Parents draw waste for the recycling robot (Chapter 2) and play Fake or Real."],["Greeter","Welcomes guests at the door and gives them the website link."]];
 let job = store.get("job");
 function drawJobs(){ $("#jobs").replaceChildren(...JOBS.map(([n, d]) => el("button", {class:"segcard", type:"button", "aria-pressed": String(job === n), onclick:() => { job = n; store.set("job", n); drawJobs(); }}, el("strong", null, n), el("span", null, d)))); $("#jobMsg").textContent = job ? "Your job: " + job + ". Tell your teacher." : "Two or three students per job. Everyone also stands by their own page."; }
 drawJobs();
 /* run sheet */
-const RUN = [["0:00","Welcome","Hosts read the opening script."],["0:04","Two trailers","Tech crew plays the School 2040 trailer, then the Planet 2050 trailer."],["0:10","Gallery walk","Visitors walk through both zones while the team trailers play on the big screens. Each student gives their 30-second pitch with their page open."],["0:28","Live demo","A visitor suggests an idea; the demo team designs it live with one prompt."],["0:36","AI challenge","Visitors try to fool the recycling robot and vote in Fake or Real. The class explains bias and the 4 S check."],["0:43","Thank you","Hosts thank guests and give everyone the website link."]];
+const RUN = [["0:00","Welcome","Hosts read the opening script."],["0:04","Launch!","Countdown 3-2-1: tech crew opens the School 2040 website, then the Planet 2050 website, on the big screens."],["0:10","Gallery walk","Visitors walk through both zones while both websites stay open on the big screens. Each student gives their 30-second pitch with their page open."],["0:28","Live demo","A visitor suggests an idea; the demo team designs it live with one prompt."],["0:36","AI challenge","Visitors try to fool the recycling robot and vote in Fake or Real. The class explains bias and the 4 S check."],["0:43","Thank you","Hosts thank guests and give everyone the website link."]];
 $("#run").replaceChildren(...RUN.map(([t, n, d]) => el("div", {class:"runrow"}, el("time", null, t), el("div", null, el("b", null, n), el("span", null, d)))));
 document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => { const s = document.getElementById(b.dataset.copy); copy(s.textContent, s, "your notes"); }));
 /* two websites builder */
@@ -720,8 +719,6 @@ function teamHTML(t){
   const tiles = rows.filter(r => r.t === t && r.n && r.f).map(r => `    <a class="tile" href="${esc(r.f)}"><b>${esc(r.p)}</b><span>by ${esc(r.n)}</span><em>Open →</em></a>`).join("\n");
   return page(T.site, `<header style="background:${COL[t]}"><a href="index.html">← AI Creators</a><h1>${T.emoji} ${T.site}</h1><p>${T.name}: ${T.goal}</p></header>
 <main>
-  <h2>Our trailer</h2>
-  <video src="${t}-trailer.mp4" controls></video>
   <h2>Our parts</h2>
   <div class="grid">
 ${tiles}
@@ -752,13 +749,12 @@ $("#copySchool").onclick = () => copy(teamHTML("school"), null, "a file called s
 $("#copyPlanet").onclick = () => copy(teamHTML("planet"), null, "a file called planet.html");
 drawRows(); save();
 checklist("gh", [
-  ["Collect the folders", "On the teacher page (#teacher), open Student folders and press Download all folders. Unzip it: you get one folder per student, named with their username, with page.html, their pictures and video inside."],
-  ["Make the 2 trailers", "In Adobe Express, upload the best video.mp4 files of each team, add a title and an ending, and download school-trailer.mp4 and planet-trailer.mp4."],
+  ["Collect the folders", "On the teacher page (#teacher), open Student folders and press Download all folders. Unzip it: you get one folder per student, named with their username, with page.html and their pictures inside."],
   ["Create the repo", "On github.com, create a public repository called ai-creators."],
-  ["Upload everything", "Add file, then Upload files: drag in all student folders and both trailers. Commit. GitHub's upload page takes files up to 25 MB each, so download long videos from Adobe at 720p."],
+  ["Upload everything", "Add file, then Upload files: drag in all student folders. Commit."],
   ["Add the 3 home pages", "Press Copy index.html above. On GitHub: Add file, Create new file, name it index.html, paste, Commit. Do the same for school.html and planet.html."],
   ["Switch it on", "Settings, then Pages: deploy from the main branch, root folder. After 1 to 2 minutes the websites are live at yourname.github.io/ai-creators."],
-  ["Test on a phone", "Open the link on a phone. Do both doors work? Does every tile open its page? Do the trailers play?"]
+  ["Test on a phone", "Open the link on a phone. Do both doors work? Does every tile open its page? Do the pictures show?"]
 ]);
 K.start();
 })();
