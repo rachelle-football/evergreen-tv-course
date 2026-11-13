@@ -696,7 +696,7 @@ function pageText(){
     "Task: Create a one-page website for \"" + T.site + ": " + (d.name || "my future design") + "\", made by a 12-year-old student in the team \"" + T.name + "\".\n" +
     "Context: Put these sections on the page, in this order:\n" + out.map((x, i) => (i + 1) + ". " + x).join("\n") + "\n" +
     (allOnline() ? "Use every picture link exactly as written, as the src of an <img>." : "The pictures will be in the same folder as the page, with exactly these file names.") + ((W.idea || "").trim() ? "\nMy own idea: " + W.idea.trim() + "." : "") + "\n" +
-    "Format: The page looks like " + (W.theme || "a colourful page from the future") + ". Colours: " + (W.colours || "bright and friendly") + ". Letters: " + (W.font || "big and easy to read") + ". " + (W.anim || "gentle animations").replace(/^./, c => c.toUpperCase()) + ". Big fonts, easy to read, works well on a phone. Do not invent facts or real people's names.";
+    "Give me ONE complete HTML file that starts with <!DOCTYPE html>, with the CSS and JavaScript inside it. No React.\n" + "Format: The page looks like " + (W.theme || "a colourful page from the future") + ". Colours: " + (W.colours || "bright and friendly") + ". Letters: " + (W.font || "big and easy to read") + ". " + (W.anim || "gentle animations").replace(/^./, c => c.toUpperCase()) + ". Big fonts, easy to read, works well on a phone. Do not invent facts or real people's names.";
 }
 let webUI;
 function drawPage(){ window.B.show($("#pageOut"), WSPEC, W, pageText()); window.B.meter($("#webP"), WSPEC, W); window.B.lock($("#copyPage"), WSPEC, W);  }
@@ -784,10 +784,15 @@ function drawLink(){ const f = MYF.find(x => x.slot === "page"), box = $("#pageL
 function cleanCode(t){ t = (t || "").trim(); const m = t.match(/```(?:html)?\s*([\s\S]*?)```/i); if (m) t = m[1].trim(); const i = t.search(/<!doctype html|<html/i); if (i > 0) t = t.slice(i); const j = t.toLowerCase().lastIndexOf("</html>"); if (j > -1) t = t.slice(0, j + 7); return t; }
 $("#saveCode").onclick = async () => {
   const code = cleanCode($("#pageCode").value), msg = $("#codeMsg");
-  if (!/<(html|body)[\s>]/i.test(code)){ msg.textContent = "This is not the page code yet. In Gemini, copy the code that starts with <!DOCTYPE html>."; return; }
+  const rawTxt = $("#pageCode").value.trim();
+  if (!rawTxt){ msg.textContent = "The box is empty. In Gemini, press Copy on the code, then click in the box and press Ctrl+V."; $("#pageCode").focus(); return; }
+  if (/import React|export default|from ["']react["']/.test(rawTxt)){ msg.textContent = "This is React code, not a web page. In the same Gemini chat, write: Make it one single HTML file. Then copy the new code."; return; }
+  let page = code;
+  if (!/<(html|body)[\s>]/i.test(page)){ if (/<(div|section|main|header|h1|style)[\s>]/i.test(page)) page = "<!DOCTYPE html>\n<html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"></head><body>\n" + page + "\n</body></html>";
+    else { msg.textContent = "This is not the page code yet. In Gemini, copy the code (it has < and > signs), not the text around it."; return; } }
   if (!F.on()){ msg.textContent = F.MSG.offline; return; }
   msg.textContent = "Making your website…";
-  try { await F.upload(new File([code], "page.html", {type:"text/html"}), "page", "My web page"); msg.textContent = "✓ Your website is ready! Press 🌐 Open my page."; document.dispatchEvent(new CustomEvent("evg-files")); fold8.draw(); refreshFiles();
+  try { await F.upload(new File([page], "page.html", {type:"text/html"}), "page", "My web page"); msg.textContent = "✓ Your website is ready! Press 🌐 Open my page."; document.dispatchEvent(new CustomEvent("evg-files")); fold8.draw(); refreshFiles();
     const cb = document.getElementById("list1-5"); if (cb && !cb.checked){ cb.checked = true; cb.dispatchEvent(new Event("change", {bubbles:true})); } }
   catch(e){ msg.textContent = F.MSG[e.code] || ("Problem: " + (e.code || "unknown")); }
 };
