@@ -237,7 +237,7 @@ const CH = [
   {n:3, t:"Prompt Engineering", s:"4", f:"ch3.html", learn:"Design your part with Gemini: your design card", lists:[["ch3-list1",7]]},
   {n:4, t:"AI Storytelling", s:"5", f:"ch4.html", learn:"A story from the future, with your own character", lists:[["ch4-list1",6],["ch4-hunt",5]]},
   {n:5, t:"AI Images", s:"6", f:"ch5.html", learn:"3 to 5 pictures you choose, saved in your folder", lists:[["ch5-list1",8]]},
-  {n:6, t:"Website Building", s:"7–8", f:"ch8.html", learn:"Your page on the team website, tested and fixed", lists:[["ch8-list1",7],["ch8-launch",7]]},
+  {n:6, t:"Website Building", s:"7–8", f:"ch8.html", learn:"Your own website: about you, your dream job or your football team", lists:[["ch8-list1",6],["ch8-better",3],["ch8-launch",7]]},
   {n:7, t:"The Exhibition", s:"9–10", f:"ch9.html", learn:"Your pitch, and both websites go live", lists:[["ch9-rehearse",4]], extra: d => (pj(d["ch9-pitch"]) && Object.values(pj(d["ch9-pitch"])).filter(v => (v || "").trim()).length >= 3 ? 1 : 0) + (d["ch9-job"] ? 1 : 0), of:2}
 ];
 function pj(v){ if (v == null) return null; if (typeof v !== "string") return v; try { return JSON.parse(v); } catch(e){ return v; } }

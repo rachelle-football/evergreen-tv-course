@@ -7,7 +7,7 @@
     3:[{after:3, need:["card"]}],
     4:[{after:2, need:["card"]}, {after:3, need:["story"]}],
     5:[{after:2, need:["card"]}, {after:3, need:["pics"]}],
-    8:[{after:2, need:["card", "story", "pics"]}, {after:3, need:["page"]}],
+    8:[{after:3, need:["page"]}],
     9:[{after:1, need:["page"]}]
   }[CH];
   if (!RULES) return;
@@ -28,7 +28,7 @@
       let fs = []; try { fs = await window.F.list(true); } catch(e){ return out; }
       const has = s => fs.some(f => f.slot === s);
       if (fileNeed.includes("pics")){ const m = PICK().filter(k => !has(k)); if (m.length) out.push({kind:"file", ch:5, text:"Pictures not saved yet (Chapter 5): " + m.map(LABEL).join(", ") + "."}); }
-      if (fileNeed.includes("page") && !has("page")) out.push({kind:"file", ch:8, text:"Your web page is not saved yet (Chapter 6)."});
+      if (fileNeed.includes("page") && !has("page")) out.push({kind:"file", ch:8, text:CH === 8 ? "Your website is not published yet. Press 🌐 Publish my website first." : "Your website is not published yet (Chapter 6)."});
     }
     return out;
   }
@@ -71,7 +71,7 @@
     const box = document.createElement("div"); box.className = "gin";
     box.innerHTML = '<h3>✋ Not yet! Finish your piece first</h3><p class="muted" style="margin:0">Your project needs this before you go on:</p>';
     const ul = document.createElement("ul"); m.forEach(x => { const li = document.createElement("li"); li.textContent = x.text; ul.append(li); }); box.append(ul);
-    if (files && window.F && window.F.folder){ const fb = document.createElement("div"); fb.className = "gfold card"; box.append(fb); window.F.folder(fb, CH); box.append(Object.assign(document.createElement("p"), {className:"muted", style:"font-size:14px;margin:6px 0 0", textContent:"Made it already? Press ⬆ Add and choose the file, then press Check again."})); }
+    if (files && CH !== 8 && window.F && window.F.folder){ const fb = document.createElement("div"); fb.className = "gfold card"; box.append(fb); window.F.folder(fb, CH); box.append(Object.assign(document.createElement("p"), {className:"muted", style:"font-size:14px;margin:6px 0 0", textContent:"Made it already? Press ⬆ Add and choose the file, then press Check again."})); }
     const act = document.createElement("div"); act.className = "gact";
     const again = document.createElement("button"); again.className = "btn"; again.type = "button"; again.textContent = "Check again";
     again.onclick = async () => { const mm = await missing([...new Set(RULES.filter(r => target >= r.after).flatMap(r => r.need))]); if (!mm.length){ dlg.close(); pass = true; try { redo(); } finally { pass = false; } } else show(mm, target, redo); };

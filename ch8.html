@@ -231,6 +231,21 @@ img.fprev{background:var(--paper)}
 .stars .st.on{color:var(--gold)}
 .big-num{font:800 clamp(40px,5vw,56px)/1.1 var(--display);font-variant-numeric:tabular-nums;margin:4px 0}
 #fixes textarea{min-height:0;font-size:15px}
+/* new website builder */
+.wb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px;align-items:start}
+.wbl{display:grid;gap:14px}.wbl .card{margin:0}
+.wbr{position:sticky;top:76px}.wbr .side{display:grid;gap:10px}
+.wprev{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.wprev iframe{display:block;width:100%;height:min(66vh,620px);border:0;background:#fff}
+.wf{display:grid;gap:4px;margin-top:10px}.wf input,.wf textarea{width:100%}
+.wpics{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.chip .sw{display:inline-block;width:18px;height:18px;border-radius:50%;margin-right:6px;vertical-align:-3px;border:1px solid rgba(0,0,0,.15)}
+.topic{display:flex;flex-direction:column;gap:6px;text-align:left;cursor:pointer;border:2px solid var(--line);font:inherit;color:var(--ink)}
+.topic:hover{border-color:var(--ink)}.topic.on{border-color:var(--green);background:var(--green-soft)}
+.topic .ti{font-size:44px;line-height:1}.topic b{font-family:var(--display);font-size:24px}.topic small{color:var(--muted);font-size:13px}
+.wprompt summary{cursor:pointer;font-weight:700;color:var(--green)}
+#wPublish.locked{opacity:.55}
+@media (max-width:900px){.wb{grid-template-columns:1fr}.wbr{position:static}.wprev iframe{height:70vh}}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -253,95 +268,90 @@ img.fprev{background:var(--paper)}
 </header>
 <main class="wrap" id="stage">
 
-<section class="seg" id="seg-1" data-min="6" data-title="You are the director">
-  <div class="lower"><div class="no">01</div><div class="name"><h2>You are the director</h2><p>Period 1 · 6 minutes · teacher demo, then the lesson</p></div></div>
-  <p class="big">Watch: the teacher types one prompt in Gemini Canvas. In 30 seconds, the AI writes hundreds of lines of code and builds a web page.</p>
-  <div class="card">
-    <span class="tag">Teacher: open gemini.google.com, press + then Canvas, and paste</span>
-    <pre class="prompt" id="demoPrompt">Create a colourful one-page website called "School 2040: The Sky Playground", made by a 12-year-old student.
-Include: a big title, 3 cards with big ideas (a rooftop garden, a climbing wall, a rain-water fountain), and a button that shows a random fun fact about playgrounds.
-Bright colours, big fonts, works on a phone.</pre>
-    <div class="row"><button class="btn sm" id="copyDemo" type="button">Copy prompt</button></div>
+<section class="seg" id="seg-1" data-min="8" data-title="Your own website">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>Your own website</h2><p>Period 1 · 8 minutes · the lesson</p></div></div>
+  <p class="big">Today you are the web designer. You build a real website, with its own link, that you can send to your family.</p>
+  <div class="grid g2">
+    <div class="card" style="border-color:var(--red)"><span class="tag">❌ A weak prompt</span><p class="lead" style="margin:6px 0 0">"Make a website about me."</p><p class="muted" style="margin:6px 0 0">The AI does not know you. It invents a boring page that could be about anyone.</p></div>
+    <div class="card good"><span class="tag">✅ A strong prompt</span><p class="lead" style="margin:6px 0 0">"A website about my team Real Madrid, in Stadium Night style, white and gold, with my player Vinícius and 3 fun facts I know."</p><p class="muted" style="margin:6px 0 0">Every detail is yours, so the website is yours.</p></div>
   </div>
-  <div class="grid g2" style="margin-top:16px">
-    <div class="card bad"><span class="tag">Weak prompt</span><p class="quote">"Make a website about water."</p><p class="muted" style="margin:0">The AI guesses everything: what goes on it, the colours, the text. It is not YOUR page.</p></div>
-    <div class="card good"><span class="tag">Director's prompt</span><p class="quote">Name + what's on it + look + action</p><p class="muted" style="margin:0">You give it your design, your story and your files. The AI is the programmer. You are the director.</p></div>
+  <p class="lead" style="margin-top:18px">A website prompt has the same 4 parts you know:</p>
+  <div class="grid g2">
+    <div class="card"><span class="tag">🎭 Role</span><p style="margin:6px 0 0"><b>Who builds it?</b> "You are a web designer who builds fun websites for kids."</p></div>
+    <div class="card"><span class="tag">🎯 Task</span><p style="margin:6px 0 0"><b>About what, and for who?</b> "A website about my dream job, for my class and my family."</p></div>
+    <div class="card"><span class="tag">📚 Context</span><p style="margin:6px 0 0"><b>Your real details:</b> names, why you love it, facts you know. The most important part: <b>what you do not write, the AI invents.</b></p></div>
+    <div class="card"><span class="tag">📋 Format</span><p style="margin:6px 0 0"><b>How it looks:</b> the title, the style, the colours, and one fun button.</p></div>
   </div>
+  <p class="note">In part 03, every choice you make writes one line of your website's prompt, and you see your website change at once.</p>
 </section>
 
-<section class="seg" id="seg-2" data-min="4" data-title="Your page plan" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>Your page: everything you made comes together</h2><p>Period 1 · 4 minutes · check you have everything</p></div></div>
-  <p class="big">Your page is one part of your team's website. Here is what goes on it. Green means you already have it.</p>
-  <div class="grid g3" id="plan"></div>
-  <div class="card" id="filesBox" style="margin-top:14px;max-width:640px"></div>
-  <p class="note">Missing something? Press ⬆ Add next to it in your folder. You build your page only when every piece is ready: an empty page is not a project.</p>
+<section class="seg" id="seg-2" data-min="4" data-title="Choose your topic" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>Choose your topic</h2><p>Period 1 · 4 minutes · one topic, your choice</p></div></div>
+  <p class="big">What is your website about? Pick one. You can change it later.</p>
+  <div class="grid g3" id="topics"></div>
 </section>
 
-<section class="seg" id="seg-3" data-min="35" data-title="Mission: build your page" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: build your page with Gemini Canvas</h2><p>Period 1 · 35 minutes · gemini.google.com</p></div></div>
-  <div class="card myproj" id="proj"></div>
-  <div class="card" style="margin-bottom:16px">
-    <span class="tag">1 · Design your page: choose, and the prompt writes itself</span>
-    <div class="builder" id="webB" style="margin-top:10px"></div>
-  </div>
-  <div class="mission">
-    <div>
-      <ol class="checklist" id="list1"></ol>
-      <div class="card" style="margin-top:14px">
-        <span class="tag">Make it better (copy into the same chat)</span>
-        <div class="row" id="better" style="margin-top:8px"></div>
+<section class="seg" id="seg-3" data-min="33" data-title="Mission: build your website" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: build your website</h2><p>Period 1 · 33 minutes · watch it change as you choose</p></div></div>
+  <div class="wb">
+    <div class="wbl">
+      <div class="card" id="wbTopic"></div>
+      <div class="card">
+        <span class="tag">1 · Your title</span>
+        <input id="wTitle" maxlength="60">
       </div>
+      <div class="card"><span class="tag">2 · Your information</span><div id="wFields"></div>
+        <p class="note" style="margin-top:10px">🔒 First name only. No family name, no address, no phone number.</p></div>
+      <div class="card"><span class="tag">3 · Your pictures</span><p class="muted" id="wPicHelp" style="margin:4px 0 8px;font-size:15px"></p><div class="wpics" id="wPics"></div></div>
+      <div class="card"><span class="tag">4 · Your fun facts (one per line, at least 3)</span><textarea id="wFacts" rows="4"></textarea></div>
+      <div class="card"><span class="tag">5 · Style</span><div class="chips" id="wStyles"></div>
+        <span class="tag" style="display:block;margin-top:12px">6 · Colours</span><div class="chips" id="wColours"></div>
+        <div id="wFav" class="row" style="margin-top:8px" hidden><label for="wFavIn" class="muted">Pick your colour:</label><input type="color" id="wFavIn" value="#1E88E5" style="width:56px;height:40px;padding:2px"></div></div>
+      <ol class="checklist" id="list1"></ol>
     </div>
-    <aside class="card side">
-      <div class="power" id="webP"></div>
-      <span class="tag">Your director's prompt (made from all your work)</span>
-      <pre class="prompt small" id="pageOut"></pre>
-      <div class="row"><button class="btn sm" id="copyPage" type="button">Copy my prompt</button></div>
-      <p class="newchat">🆕 Paste it in a <b>NEW</b> Gemini chat with Canvas (press <b>New chat</b> first), so Gemini does not mix it with your other work.</p>
-      <span class="tag" style="margin-top:6px">Make it a real website: paste Gemini's code</span>
-      <p class="muted" style="margin:0;font-size:14px">In Gemini, open the code (Canvas: the <b>Code</b> tab, or the code box in the chat), press <b>Copy</b>, then paste it here.</p>
-      <textarea id="pageCode" rows="5" placeholder="Paste the whole code here. It starts with <!DOCTYPE html> or <html>…" style="width:100%"></textarea>
-      <div class="row" style="flex-wrap:wrap"><button class="btn sm" id="saveCode" type="button">🌐 Make my website</button><span class="muted" id="codeMsg" style="font-size:14px"></span></div>
-      <span class="tag" style="margin-top:6px">Or upload the page file</span>
-      <div id="pageSlot"></div>
-      <div id="pageLink" class="row" style="margin-top:8px;flex-wrap:wrap"></div>
+    <aside class="wbr">
+      <div class="card side">
+        <div class="row" style="justify-content:space-between"><span class="tag">👀 Your website, live</span><span class="muted" style="font-size:13px">changes as you choose</span></div>
+        <div class="wprev"><iframe id="wPrev" title="Your website preview" sandbox="allow-scripts"></iframe></div>
+        <div id="wMissing" class="fmsg no" style="margin:0"></div>
+        <div class="row" style="flex-wrap:wrap"><button class="btn" id="wPublish" type="button">🌐 Publish my website</button><span class="muted" id="wMsg" style="font-size:14px"></span></div>
+        <div id="pageLink" class="row" style="flex-wrap:wrap"></div>
+        <details class="wprompt"><summary>📝 See your website's prompt</summary><p class="muted" style="font-size:14px;margin:6px 0">Every choice you make becomes a line of this prompt. The app reads it and builds your website, like an AI would.</p><pre class="prompt small" id="wPrompt"></pre></details>
+      </div>
     </aside>
   </div>
 </section>
 
 <section class="seg" id="seg-4" data-min="20" data-title="Mission: be a tester" data-p="2" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Mission: test a classmate's page</h2><p>Period 2 · 20 minutes · swap computers</p></div></div>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Mission: test a classmate's website</h2><p>Period 2 · 20 minutes · open their link</p></div></div>
   <div class="mission">
     <div>
-      <label class="tag" for="who">Whose page are you testing? (first name)</label>
+      <label class="tag" for="who">Whose website are you testing? (first name)</label>
       <input id="who" placeholder="e.g. Sara" style="margin:6px 0 14px">
       <div id="checks"></div>
       <label class="tag" for="star">⭐ One star: something that really works</label>
       <textarea id="star" rows="2"></textarea>
-      <label class="tag" for="wish" style="margin-top:10px;display:block">🔧 One wish: the most important thing to fix</label>
+      <label class="tag" for="wish" style="margin-top:10px;display:block">🔧 One wish: the most important thing to make better</label>
       <textarea id="wish" rows="2"></textarea>
     </div>
     <aside class="card side" id="cardBox"></aside>
   </div>
 </section>
 
-<section class="seg" id="seg-5" data-min="20" data-title="Mission: fix yours" data-p="2" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: fix your page with prompts</h2><p>Period 2 · 20 minutes · the same Gemini chat</p></div></div>
-  <p class="big">Read the feedback card your tester showed you. Choose what is wrong and how to fix it: the fix prompt writes itself. Copy it into your page's Gemini chat. One fix at a time!</p>
-  <div class="mission">
-    <div class="card"><div class="builder" id="fixB"></div></div>
-    <aside class="card side">
-      <div class="power" id="fixP"></div>
-      <span class="tag">Your fix prompt</span>
-      <pre class="prompt small" id="fixOut"></pre>
-      <div class="row"><button class="btn sm" id="copyFix" type="button">Copy fix prompt</button><button class="ghost" id="nextFix" type="button">Next fix</button></div>
-      <p class="muted" style="margin:0;font-size:14px">Fixes done: <b id="fixN">0</b></p>
-    </aside>
+<section class="seg" id="seg-5" data-min="20" data-title="Mission: make it better" data-p="2" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: make it better</h2><p>Period 2 · 20 minutes · your builder, part 03</p></div></div>
+  <p class="big">Read the wish your tester gave you. Go back to your builder, change it, and publish again: your link stays the same.</p>
+  <div class="grid g3">
+    <div class="card"><span class="tag">Hard to read?</span><p style="margin:6px 0 0">Try another colour set, or the Magazine Cover style.</p></div>
+    <div class="card"><span class="tag">Boring?</span><p style="margin:6px 0 0">Add 2 more fun facts, a third picture, or a more surprising title.</p></div>
+    <div class="card"><span class="tag">Not clear?</span><p style="margin:6px 0 0">Write more details: why, how, since when. Real details make it yours.</p></div>
   </div>
+  <div class="row" style="margin:16px 0"><button class="btn" id="toBuilder" type="button">← Back to my builder (part 03)</button></div>
+  <ol class="checklist" id="better"></ol>
 </section>
 
 <section class="seg" id="seg-6" data-min="5" data-title="Launch checklist" data-p="2" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>Launch checklist</h2><p>Period 2 · 5 minutes · is your page ready to go live?</p></div></div>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>Launch checklist</h2><p>Period 2 · 5 minutes · is your website ready?</p></div></div>
   <div class="mission">
     <ol class="checklist" id="launch"></ol>
     <aside class="card side" id="ready"></aside>
@@ -645,159 +655,296 @@ return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fi
 
 </script>
 <script>
+/* ---------- My website: the app builds a real one-page website from the student's choices ---------- */
+window.SITE = (function(){
+const STYLES = {
+  stadium:{label:"🏟️ Stadium Night", dark:true, head:"'Bebas Neue',Impact,sans-serif", body:"'Barlow',system-ui,sans-serif", fonts:"Bebas+Neue&family=Barlow:wght@400;600;700"},
+  magazine:{label:"📰 Magazine Cover", dark:false, head:"'Playfair Display',Georgia,serif", body:"'Inter',system-ui,sans-serif", fonts:"Playfair+Display:ital,wght@0,800;1,800&family=Inter:wght@400;600;700"},
+  game:{label:"🎮 Video Game", dark:true, head:"'Press Start 2P',monospace", body:"'Nunito',system-ui,sans-serif", fonts:"Press+Start+2P&family=Nunito:wght@400;700;800"},
+  lab:{label:"🧪 Future Lab", dark:true, head:"'Orbitron',system-ui,sans-serif", body:"'Exo 2',system-ui,sans-serif", fonts:"Orbitron:wght@600;800&family=Exo+2:wght@400;600"},
+  sketch:{label:"✏️ Sketchbook", dark:false, head:"'Caveat',cursive", body:"'Patrick Hand',system-ui,sans-serif", fonts:"Caveat:wght@700&family=Patrick+Hand"},
+  space:{label:"🚀 Space Mission", dark:true, head:"'Space Grotesk',system-ui,sans-serif", body:"'Space Grotesk',system-ui,sans-serif", fonts:"Space+Grotesk:wght@400;600;700"}
+};
+const COLOURS = {
+  cedar:{label:"🌲 Cedar & Sun", a:"#1F8A4C", b:"#F2B705"},
+  med:{label:"🌊 Mediterranean", a:"#0B5FA5", b:"#7FD3FF"},
+  sunset:{label:"🌇 Beirut Sunset", a:"#FF6B35", b:"#C2185B"},
+  neon:{label:"⚡ Neon Night", a:"#39FF14", b:"#00E5FF"},
+  candy:{label:"🍬 Candy", a:"#FF5FA2", b:"#3DDBB0"},
+  ice:{label:"🧊 Ice", a:"#2A9BD8", b:"#BFE9FF"},
+  fav:{label:"❤️ My favourite colour", a:"", b:""}
+};
+/* what goes on the website, for each topic */
+const TOPICS = {
+  me:{label:"About me", icon:"🙋", desc:"Who you are: your family, your hobby, your favourite things.",
+    title:"e.g. Ali's World",
+    fields:[
+      {k:"name", l:"Your first name", ph:"e.g. Ali"},
+      {k:"family", l:"Your family", ph:"e.g. I live with my mum, my dad and my little brother. We love big Sunday lunches together.", area:true},
+      {k:"hobby", l:"Your hobby", ph:"e.g. football and drawing"},
+      {k:"food", l:"Your favourite food", ph:"e.g. man'oushe with zaatar"},
+      {k:"colour", l:"Your favourite colour", ph:"e.g. blue"}],
+    pics:[
+      {s:"w-me", l:"A photo of you", opt:true, hint:"Optional. Only if your parents say OK."},
+      {s:"w-hob1", l:"AI picture 1: you doing your hobby", ai:true},
+      {s:"w-hob2", l:"AI picture 2: you doing your hobby", ai:true},
+      {s:"w-hob3", l:"AI picture 3", ai:true, opt:true, hint:"Optional."}],
+    facts:"e.g. I can juggle a ball 20 times.\nMy little brother copies everything I do.\nI ate 6 man'oushe in one day!"},
+  job:{label:"When I grow up", icon:"🚀", desc:"What you want to be, why, and what you will change.",
+    title:"e.g. Future Doctor Sara",
+    fields:[
+      {k:"name", l:"Your first name", ph:"e.g. Sara"},
+      {k:"job", l:"What do you want to be?", ph:"e.g. a doctor for children"},
+      {k:"why", l:"Why do you want to be that?", ph:"e.g. When I was sick, a kind doctor made me feel safe. I want to do the same for other kids.", area:true},
+      {k:"change", l:"What will you change when you are that?", ph:"e.g. I will open a free clinic in my village, so every child can see a doctor.", area:true}],
+    pics:[
+      {s:"w-job", l:"AI picture: you, grown up, doing this job", ai:true},
+      {s:"w-extra", l:"One more picture of your choice", ai:true, opt:true, hint:"Optional."}],
+    facts:"e.g. A doctor's heart beats about 100,000 times a day, like everyone's!\nThe first thing a doctor learns is to listen.\nI already know first aid."},
+  football:{label:"My football team", icon:"⚽", desc:"Your favourite team and player, and why you love them.",
+    title:"e.g. Forza Nejmeh",
+    fields:[
+      {k:"name", l:"Your first name", ph:"e.g. Karim"},
+      {k:"team", l:"Your favourite team", ph:"e.g. Real Madrid"},
+      {k:"player", l:"Your favourite player", ph:"e.g. Vinícius Júnior"},
+      {k:"why", l:"Why do you love this team?", ph:"e.g. They never give up, even when they are losing in the last minute.", area:true},
+      {k:"info", l:"What you know about the team (one fact per line)", ph:"e.g. Stadium: Santiago Bernabéu\nFounded in 1902\nThey won the Champions League 15 times", area:true}],
+    pics:[
+      {s:"w-logo", l:"The team logo", hint:"Find it on the internet, download it, then upload it here."},
+      {s:"w-player", l:"A picture of your player", hint:"Find it on the internet, download it, then upload it here."}],
+    facts:"e.g. The team's nickname is Los Blancos.\nMy player wears number 7.\nI watched my first match when I was 6."}
+};
+const esc = t => String(t == null ? "" : t).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+const lines = t => String(t || "").split(/\r?\n/).map(x => x.replace(/^\s*[-•*\d.)]+\s*/, "").trim()).filter(Boolean);
+function lum(hex){ const h = (hex || "#888888").replace("#", ""); const [r, g, b] = [0, 2, 4].map(i => parseInt(h.substr(i, 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4)); return .2126 * r + .7152 * g + .0722 * b; }
+function mix(hex, to, p){ const h = hex.replace("#", ""), t = to.replace("#", ""); return "#" + [0, 2, 4].map(i => Math.round(parseInt(h.substr(i, 2), 16) * (1 - p) + parseInt(t.substr(i, 2), 16) * p).toString(16).padStart(2, "0")).join(""); }
+/* a colour name the kid wrote → a colour */
+const NAMED = {red:"#E53935", blue:"#1E88E5", green:"#43A047", yellow:"#FDD835", orange:"#FB8C00", purple:"#8E24AA", pink:"#EC407A", black:"#212121", white:"#ECEFF1", grey:"#78909C", gray:"#78909C", brown:"#8D6E63", gold:"#D4A017", silver:"#9EA7AD", turquoise:"#1ABC9C", navy:"#1A237E", "sky blue":"#4FC3F7", "light blue":"#4FC3F7", "dark blue":"#0D47A1", maroon:"#880E4F", violet:"#7E57C2", cyan:"#00BCD4", lime:"#7CB342"};
+function nameToHex(t){ const s = String(t || "").toLowerCase(); for (const k of Object.keys(NAMED).sort((a, b) => b.length - a.length)) if (s.includes(k)) return NAMED[k]; return ""; }
+function palette(S){
+  let c = COLOURS[S.colours] || COLOURS.cedar;
+  if (S.colours === "fav"){ const a = S.fav || nameToHex((S.f || {}).colour) || "#1E88E5"; c = {a, b:mix(a, "#ffffff", .55)}; }
+  return c;
+}
+/* the prompt that describes the website: every choice becomes a line */
+function prompt(S){
+  const T = TOPICS[S.topic], f = S.f || {}, st = STYLES[S.style], co = COLOURS[S.colours];
+  if (!T) return "Choose your topic first (part 02).";
+  const v = k => (f[k] || "").trim() || "…";
+  const ctx = {
+    me:["A big title: \"" + (S.title || "…") + "\", with my photo or my hobby picture.", "About my family: " + v("family"), "My hobby: " + v("hobby") + ", with my AI pictures.", "My favourites: food: " + v("food") + ", colour: " + v("colour") + "."],
+    job:["A big title: \"" + (S.title || "…") + "\", with the AI picture of me as " + v("job") + ".", "Why I want to be " + v("job") + ": " + v("why"), "What I will change: " + v("change")],
+    football:["A big title: \"" + (S.title || "…") + "\", with the logo of " + v("team") + ".", "My favourite player: " + v("player") + ", with his picture.", "Why I love " + v("team") + ": " + v("why"), "What I know about " + v("team") + ": " + (lines(f.info).join("; ") || "…")]
+  }[S.topic];
+  ctx.push("A \"Fun fact\" button: each click shows a new fact: " + (lines(S.facts).map(x => "\"" + x + "\"").join(", ") || "…"));
+  return "Role: You are a web designer who builds fun websites for kids.\n" +
+    "Task: Build a one-page website about " + {me:"me, " + v("name"), job:"what I want to be when I grow up: " + v("job"), football:"my favourite football team, " + v("team")}[S.topic] + ", for my classmates and my family.\n" +
+    "Context: Put these sections on the page, in this order:\n" + ctx.map((x, i) => (i + 1) + ". " + x).join("\n") + "\n" +
+    "Format: Style: " + (st ? st.label.replace(/^\S+\s/, "") : "…") + ". Colours: " + (co ? co.label.replace(/^\S+\s/, "") : "…") + ". Big letters, works on a phone, easy English. Every AI picture has the label Made with AI. First name only.";
+}
+/* the website itself (one HTML file) */
+function html(S, U){
+  const T = TOPICS[S.topic] || TOPICS.me, f = S.f || {}, st = STYLES[S.style] || STYLES.magazine, c = palette(S), dark = st.dark;
+  const bg = dark ? ({stadium:"#070B16", game:"#14122B", lab:"#060B16", space:"#05040F"}[S.style] || "#0B1020") : ({magazine:"#F7F3EE", sketch:"#FFFDF4"}[S.style] || "#FAFAF7");
+  const ink = dark ? "#F4F7FB" : "#1C1B19", soft = dark ? "rgba(255,255,255,.07)" : "#FFFFFF", line = dark ? "rgba(255,255,255,.16)" : "rgba(0,0,0,.12)";
+  const aText = lum(c.a) > .45 ? "#111" : "#fff";
+  const head = dark ? (lum(c.a) < .08 ? c.b : c.a) : (lum(c.a) > .3 ? mix(c.a, "#000000", .5) : c.a);
+  const bt = dark ? (lum(c.b) < .08 ? c.a : c.b) : (lum(c.b) > .3 ? mix(c.b, "#000000", .55) : c.b); /* readable on light and dark pages */
+  const v = k => esc((f[k] || "").trim());
+  const img = (slot, alt, ai, cls) => U[slot] ? '<figure class="pic ' + (cls || "") + '"><img src="' + esc(U[slot]) + '" alt="' + esc(alt) + '">' + (ai ? '<figcaption>✨ Made with AI</figcaption>' : "") + "</figure>" : "";
+  const card = (h, body, extra) => '<section class="card"><h2>' + h + "</h2>" + (body ? "<p>" + body + "</p>" : "") + (extra || "") + "</section>";
+  let hero = "", main = "";
+  if (S.topic === "job"){
+    hero = img("w-job", "Me as " + (f.job || ""), true, "hero-pic") + '<p class="kicker">When I grow up, I want to be</p><p class="big">' + (v("job") || "…") + "</p>";
+    main = card("Why I want to be " + (v("job") || "this"), v("why")) + card("What I will change", v("change")) + (U["w-extra"] ? '<section class="card">' + img("w-extra", "My extra picture", true) + "</section>" : "");
+  } else if (S.topic === "football"){
+    hero = img("w-logo", "Logo of " + (f.team || ""), false, "logo") + '<p class="kicker">My favourite team</p><p class="big">' + (v("team") || "…") + "</p>";
+    const info = lines(f.info).map(x => "<li>" + esc(x) + "</li>").join("");
+    main = '<section class="card player">' + img("w-player", f.player || "My player", false) + '<div><h2>My favourite player</h2><p class="big2">' + (v("player") || "…") + "</p></div></section>" +
+      card("Why I love " + (v("team") || "my team"), v("why")) + card("What I know about " + (v("team") || "my team"), "", info ? '<ul class="facts">' + info + "</ul>" : "");
+  } else {
+    const first = U["w-me"] ? img("w-me", "Me", false, "hero-pic round") : img("w-hob1", "Me doing my hobby", true, "hero-pic");
+    hero = first + '<p class="kicker">Hi, I am</p><p class="big">' + (v("name") || "…") + "</p>";
+    const gal = ["w-hob1", "w-hob2", "w-hob3"].filter(s => U[s] && !(s === "w-hob1" && !U["w-me"])).map(s => img(s, "Me doing my hobby", true)).join("");
+    main = card("My family", v("family")) + card("My hobby: " + (v("hobby") || "…"), "", gal ? '<div class="gal">' + gal + "</div>" : "") +
+      '<section class="card"><h2>My favourites</h2><div class="favs"><span>🍽️ ' + (v("food") || "…") + '</span><span>🎨 ' + (v("colour") || "…") + "</span></div></section>";
+  }
+  const facts = lines(S.facts);
+  const deco = {stadium:'<div class="lights"></div>', space:'<div class="stars"></div><div class="planet"></div>', lab:'<div class="grid"></div>', game:"", sketch:"", magazine:""}[S.style] || "";
+  const css = `:root{--a:${c.a};--b:${c.b};--bg:${bg};--ink:${ink};--soft:${soft};--line:${line};--head:${head};--bt:${bt};--at:${aText}}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--ink);font:18px/1.55 ${st.body};min-height:100vh;overflow-x:hidden;position:relative}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:28px 18px 40px}
+header{text-align:center;padding:26px 0 12px}h1{font-family:${st.head};color:var(--head);font-size:clamp(34px,8vw,72px);line-height:1.05;margin:.2em 0;letter-spacing:.01em;word-wrap:break-word}
+.kicker{margin:14px 0 0;text-transform:uppercase;letter-spacing:.14em;font-size:14px;opacity:.75}.big{font-family:${st.head};font-size:clamp(26px,6vw,46px);line-height:1.1;margin:.1em 0;color:var(--bt)}
+.big2{font-family:${st.head};font-size:clamp(22px,5vw,34px);margin:.1em 0;color:var(--head)}
+.pic{margin:0;position:relative}.pic img{display:block;width:100%;height:auto;border-radius:16px}.pic figcaption{position:absolute;left:8px;bottom:8px;background:rgba(0,0,0,.62);color:#fff;font:600 12px/1 system-ui,sans-serif;padding:5px 8px;border-radius:999px}
+.hero-pic{max-width:560px;margin:10px auto 0}.hero-pic img{aspect-ratio:16/10;object-fit:cover;box-shadow:0 18px 50px rgba(0,0,0,.25)}.round img{aspect-ratio:1;max-width:240px;margin:0 auto;border-radius:50%;object-fit:cover;border:6px solid var(--a)}
+.logo{max-width:180px;margin:0 auto}.logo img{border-radius:0;background:transparent}
+.card{background:var(--soft);border:1px solid var(--line);border-radius:20px;padding:22px 22px;margin:18px 0}.card h2{font-family:${st.head};color:var(--head);font-size:clamp(22px,4.6vw,32px);line-height:1.15;margin:0 0 8px}.card p{margin:0}
+.player{display:grid;grid-template-columns:minmax(0,220px) 1fr;gap:18px;align-items:center}.player img{aspect-ratio:3/4;object-fit:cover}
+.gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:10px}.gal img{aspect-ratio:1;object-fit:cover}
+.favs{display:flex;flex-wrap:wrap;gap:10px}.favs span{background:var(--a);color:var(--at);border-radius:999px;padding:8px 16px;font-weight:700}
+.facts{margin:6px 0 0;padding-left:22px}.facts li{margin:4px 0}
+.fun{text-align:center}.fun button{font:700 20px/1 ${st.body};background:var(--a);color:var(--at);border:0;border-radius:999px;padding:16px 28px;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.25);transition:transform .1s}.fun button:active{transform:translateY(3px)}
+.fun .fact{min-height:3em;margin:16px auto 0;max-width:560px;font-size:21px;font-weight:600}.fun .fact.pop{animation:pop .45s ease}@keyframes pop{0%{opacity:0;transform:scale(.9)}100%{opacity:1;transform:none}}
+footer{text-align:center;font-size:14px;opacity:.75;margin-top:28px}
+@media (max-width:560px){.player{grid-template-columns:1fr}.card{padding:18px}}
+/* styles */
+${S.style === "stadium" ? `.lights{position:fixed;inset:0;background:radial-gradient(60% 40% at 15% 0%,${c.a}55,transparent 70%),radial-gradient(60% 40% at 85% 0%,${c.b}44,transparent 70%);pointer-events:none}.card{background:rgba(255,255,255,.05);backdrop-filter:blur(6px)}h1{text-shadow:0 0 30px ${c.a}88}.big{letter-spacing:.06em}` : ""}
+${S.style === "magazine" ? `header{border-top:6px solid var(--ink);border-bottom:2px solid var(--ink);margin-bottom:10px}h1{font-style:italic;font-size:clamp(44px,11vw,96px)}.kicker{color:var(--a);opacity:1;font-weight:700}.card{border-radius:4px;box-shadow:6px 6px 0 var(--a)}` : ""}
+${S.style === "game" ? `h1{font-size:clamp(20px,5vw,40px);line-height:1.4;text-shadow:4px 4px 0 ${c.b}66}.big,.big2,.card h2{font-size:clamp(14px,3.4vw,22px);line-height:1.5}.card{border-radius:0;border:4px solid var(--a);box-shadow:8px 8px 0 rgba(0,0,0,.45)}.card h2::before{content:"▶ ";color:var(--bt)}.pic img{border-radius:0;image-rendering:auto}.fun button{border-radius:0;font-family:${st.head};font-size:14px;line-height:1.4}` : ""}
+${S.style === "lab" ? `.grid{position:fixed;inset:0;background-image:linear-gradient(${c.a}22 1px,transparent 1px),linear-gradient(90deg,${c.a}22 1px,transparent 1px);background-size:40px 40px;pointer-events:none}.card{background:rgba(255,255,255,.05);border:1px solid ${c.a}88;box-shadow:0 0 24px ${c.a}33 inset;backdrop-filter:blur(8px)}h1{text-shadow:0 0 18px ${c.a}}` : ""}
+${S.style === "sketch" ? `body{background-image:repeating-linear-gradient(transparent 0 31px,#D7E3F3 31px 32px)}.card{border:2px solid var(--ink);border-radius:255px 15px 225px 15px/15px 225px 15px 255px;transform:rotate(-.6deg)}.card:nth-of-type(even){transform:rotate(.6deg)}h1{font-size:clamp(48px,11vw,96px)}.pic img{border:3px solid var(--ink);border-radius:6px;transform:rotate(1deg)}` : ""}
+${S.style === "space" ? `.stars{position:fixed;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 70% 20%,#fff,transparent),radial-gradient(2px 2px at 40% 80%,#fff,transparent),radial-gradient(1px 1px at 85% 65%,#fff,transparent),radial-gradient(1.5px 1.5px at 10% 75%,#fff,transparent),radial-gradient(1px 1px at 55% 50%,#fff,transparent);background-size:300px 300px;pointer-events:none;opacity:.8}.planet{position:fixed;right:-80px;top:120px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle at 30% 30%,${c.b},${c.a} 60%,#000 100%);opacity:.5;pointer-events:none}.card{background:rgba(255,255,255,.06);backdrop-filter:blur(6px)}.card h2::before{content:"🛰️ "}` : ""}`;
+  const script = facts.length ? `<script>(function(){var F=${JSON.stringify(facts).replace(/</g, "\\u003c")},i=-1,b=document.getElementById("funBtn"),o=document.getElementById("funOut");b.onclick=function(){i=(i+1)%F.length;o.textContent=F[i];o.classList.remove("pop");void o.offsetWidth;o.classList.add("pop");};})();<\/script>` : "";
+  return '<!DOCTYPE html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n<title>' + esc(S.title || T.label) + '</title>\n<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=' + st.fonts + '&display=swap">\n<style>' + css + "</style></head>\n<body>" + deco +
+    '<div class="wrap"><header><h1>' + (esc(S.title) || "My website") + "</h1>" + hero + "</header>" + main +
+    (facts.length ? '<section class="card fun"><h2>Fun fact</h2><button id="funBtn" type="button">🎲 Show me a fun fact</button><p class="fact" id="funOut">Press the button!</p></section>' : "") +
+    "<footer>Made by " + (v("name") || "a student") + " · EB7 · Evergreen School · Pictures marked ✨ were made with AI</footer></div>" + script + "</body></html>";
+}
+return {STYLES, COLOURS, TOPICS, prompt, html, lines, nameToHex};
+})();
+
+</script>
+<script>
 (function(){
-const {$, el, store, copy, checklist, me, picker} = K;
+const {$, el, store, copy, checklist} = K;
 K.init("ch8", 3);
-const raw = k => store.raw(k);
-$("#copyDemo").onclick = () => copy($("#demoPrompt").textContent, $("#demoPrompt"), "Gemini Canvas");
+const {STYLES, COLOURS, TOPICS} = window.SITE;
+const S = Object.assign({topic:"", title:"", style:"", colours:"", fav:"", f:{}, facts:"", all:{}}, store.get("site") || {});
+let U = {}, PAGE = null;
+const save = () => store.set("site", S);
+/* each topic keeps its own answers */
+function switchTopic(t){ if (S.topic) S.all[S.topic] = {f:S.f, facts:S.facts, title:S.title}; S.topic = t; const o = S.all[t] || {}; S.f = o.f || {}; S.facts = o.facts || ""; S.title = o.title || ""; save(); drawAll(); }
 
-/* page plan */
-let MYF = [];
-const PK8 = window.PICKINDS, PICS8 = (raw("ch5-pics") || ["big","close","char"]).filter(k => PK8[k]);
-const fname = slot => { const f = MYF.find(x => x.slot === slot); return f ? F.fileName(f) : slot + (slot === "video" ? ".mp4" : slot === "page" ? ".html" : ".png"); };
-const saved = slot => MYF.some(x => x.slot === slot);
-/* the picture as Gemini needs it: its real web address when it is saved, so it shows at once */
-const pic = slot => { const f = MYF.find(x => x.slot === slot); return f ? "from this link: " + F.url(f.path) : fname(slot); };
-const allOnline = () => PICS8.every(saved);
-function have(){
-  const d = raw("ch3-card") || {}, st = raw("ch4-story") || {};
-  return [
-    ["Your design card", "Name, 3 big ideas, a day in it (Chapter 3)", !!(d.name && d.i1)],
-    ["Your story", "From Chapter 4", !!(st.text && st.text.length > 40)],
-    ...PICS8.map(k => [PK8[k].label, fname(k) + " · Chapter 5", saved(k)]),
-    ["Made with AI", "A label on everything AI made", true]
-  ];
+/* part 02: the topic */
+function drawTopics(){
+  $("#topics").replaceChildren(...Object.entries(TOPICS).map(([k, T]) => el("button", {type:"button", class:"card topic" + (S.topic === k ? " on" : ""), "aria-pressed":String(S.topic === k), onclick:() => { switchTopic(k); K.toast("Your topic: " + T.label + ". Now press Next."); }},
+    el("span", {class:"ti"}, T.icon), el("b", null, T.label), el("span", {class:"muted"}, T.desc),
+    el("small", null, "On your website: " + T.fields.map(x => x.l.replace(/^(Your|What do you want to be\?|Why do you love this team\?|What you know about the team).*$/, m => m).toLowerCase()).slice(0, 4).join(" · ")))));
 }
-function drawPlan(){ $("#plan").replaceChildren(...have().map(([n, d, ok]) => el("div", {class:"card " + (ok ? "good" : "")}, el("span", {class:"tag"}, ok ? "✓ Ready" : "To check"), el("h3", {style:"font-size:21px;margin:4px 0"}, n), el("p", {class:"muted", style:"margin:0"}, d)))); }
 
-/* director's prompt from all the work */
-const WSPEC = [
-  {id:"theme", icon:"🎨", title:"Theme of my page", one:true, opts:["a magazine from the future","a video game world","a space mission","a nature adventure","a newspaper from 2050","a museum of the future"]},
-  {id:"colours", icon:"🌈", title:"Colours", one:true, opts:["blue and glowing neon","green and sunny yellow","white and gold","purple and pink","ocean blue and sand","rainbow colours"]},
-  {id:"font", icon:"🔤", title:"Letters", one:true, opts:["rounded and friendly","futuristic","handwritten","big and bold"]},
-  {id:"sections", icon:"🧩", title:"What goes on my page", opts:["my design ideas","my story","my pictures"], hint:"pick everything you made"},
-  {id:"fun", icon:"🕹️", title:"Interactive things", max:2, opts:["a quiz with 3 questions","a before/after slider: today vs the future","a fun-fact button","a poll: would you like this?","a mini game: match problems and solutions","a countdown to the future","a day/night mode button"]},
-  {id:"anim", icon:"✨", title:"Animations", one:true, opts:["no animations","gentle animations","lots of animations"]},
-  {id:"idea", title:"✨ Your own idea", text:true, ph:"e.g. little robots walk along the bottom of the page", hint:"makes it yours"}
-];
-const W = Object.assign({theme:"", colours:"", font:"", sections:["my design ideas","my story","my pictures"], fun:[], anim:"gentle animations", idea:""}, store.get("web") || {});
-W.sections = (W.sections || []).filter(x => x !== "my podcast clip" && x !== "my video");
-function slug(s){ return (s || "").toLowerCase().replace(/^the /, "").split(/\s+/)[0].replace(/[^a-z0-9]/g, "") || "part"; }
-function pageText(){
-  const m = me(), T = m.T || K.TEAMS.school, d = raw("ch3-card") || {}, st = raw("ch4-story") || {}, has = x => W.sections.includes(x);
-  const ideas = [d.i1, d.i2, d.i3, d.mine].filter(Boolean), out = [];
-  out.push("A big title" + (has("my pictures") ? " with the picture " + pic(PICS8[0]) + " behind it" : "") + ".");
-  if (has("my design ideas")) out.push("My design: " + (ideas.length ? ideas.map(x => "\"" + x + "\"").join(", ") : "(my big ideas)") + ", each in its own card." + (d.day ? " A day in it: \"" + d.day + "\"" : ""));
-  if (has("my story")) out.push("My story" + (st.title ? ", called \"" + st.title + "\"" : "") + (has("my pictures") && PICS8.includes("char") ? ", with the picture " + pic("char") + " next to it" : "") + ". Here is the story: \"" + (st.text || "(my story)").trim() + "\"");
-  if (has("my pictures")) PICS8.filter(k => k !== PICS8[0] && k !== "char").forEach(k => out.push("The picture " + pic(k) + " (" + PK8[k].label.toLowerCase() + ") with a short caption."));
-  W.fun.forEach(f => out.push(f.charAt(0).toUpperCase() + f.slice(1) + "."));
-  out.push("A footer: \"Made with AI by EB7 · " + T.site + "\". Under every picture, a small label: Made with AI.");
-  return "Role: You are a web designer who builds amazing websites for kids.\n" +
-    "Task: Create a one-page website for \"" + T.site + ": " + (d.name || "my future design") + "\", made by a 12-year-old student in the team \"" + T.name + "\".\n" +
-    "Context: Put these sections on the page, in this order:\n" + out.map((x, i) => (i + 1) + ". " + x).join("\n") + "\n" +
-    (allOnline() ? "Use every picture link exactly as written, as the src of an <img>." : "The pictures will be in the same folder as the page, with exactly these file names.") + ((W.idea || "").trim() ? "\nMy own idea: " + W.idea.trim() + "." : "") + "\n" +
-    "Give me ONE complete HTML file that starts with <!DOCTYPE html>, with the CSS and JavaScript inside it. No React.\n" + "Format: The page looks like " + (W.theme || "a colourful page from the future") + ". Colours: " + (W.colours || "bright and friendly") + ". Letters: " + (W.font || "big and easy to read") + ". " + (W.anim || "gentle animations").replace(/^./, c => c.toUpperCase()) + ". Big fonts, easy to read, works well on a phone. Do not invent facts or real people's names.";
+/* part 03: the builder */
+function drawBuilder(){
+  const T = TOPICS[S.topic];
+  $("#wbTopic").replaceChildren(T ? el("div", {class:"row", style:"justify-content:space-between;flex-wrap:wrap"}, el("span", null, el("span", {class:"tag"}, "Your topic"), el("b", {style:"font-size:20px;margin-left:8px"}, T.icon + " " + T.label)), el("button", {class:"ghost", type:"button", onclick:() => K.go ? K.go(1) : (location.hash = "#seg-2")}, "Change topic"))
+    : el("p", {class:"fmsg no", style:"margin:0"}, "Choose your topic first, in part 02."));
+  if (!T){ $("#wFields").replaceChildren(); $("#wPics").replaceChildren(); return; }
+  $("#wTitle").placeholder = T.title; $("#wTitle").value = S.title || "";
+  $("#wFields").replaceChildren(...T.fields.map(x => { const id = "wf-" + x.k;
+    const inp = x.area ? el("textarea", {id, rows:"3", placeholder:x.ph}) : el("input", {id, placeholder:x.ph});
+    inp.value = S.f[x.k] || ""; inp.addEventListener("input", () => { S.f[x.k] = inp.value; save(); later(); });
+    return el("div", {class:"wf"}, el("label", {class:"tag", for:id}, x.l), inp); }));
+  $("#wPicHelp").textContent = T.pics.some(p => p.ai) ? "Go to Gemini or ChatGPT, ask for a cartoon picture of you, download it, then press ⬆ Upload here." : "Find the pictures on the internet, download them, then press ⬆ Upload here.";
+  $("#wPics").replaceChildren(...T.pics.map(p => { const box = el("div", {class:"wpic"}); F.slotBox(box, {slot:p.s, label:p.l + (p.opt ? " (optional)" : ""), accept:"image/*"}, () => refresh());
+    return el("div", null, box, p.hint ? el("p", {class:"muted", style:"font-size:13px;margin:4px 2px 0"}, p.hint) : null); }));
+  $("#wFacts").placeholder = T.facts; $("#wFacts").value = S.facts || "";
+  $("#wStyles").replaceChildren(...Object.entries(STYLES).map(([k, s]) => el("button", {type:"button", class:"chip", "aria-pressed":String(S.style === k), onclick:() => { S.style = k; save(); drawChips(); draw(); }}, s.label)));
+  drawChips();
 }
-let webUI;
-function drawPage(){ window.B.show($("#pageOut"), WSPEC, W, pageText()); window.B.meter($("#webP"), WSPEC, W); window.B.lock($("#copyPage"), WSPEC, W);  }
-function onWeb(redraw){ store.set("web", W); if (redraw) webUI.draw(); drawPage(); }
-webUI = window.B.make($("#webB"), WSPEC, W, onWeb);
-$("#copyPage").onclick = () => { if (!window.B.guard(WSPEC, W, $("#webB"), K.toast)) return; copy(pageText(), $("#pageOut"), "a NEW Gemini chat with Canvas"); L1.tick(2); };
-const BETTER = [["Magazine look", "Make my page look like a colourful magazine page, but keep all my text the same."], ["Phone check", "Make sure the whole page fits a phone screen: nothing too wide, nothing overlapping."], ["Add animations", "Add gentle animations when the cards appear. Nothing flashing."], ["Easier to read", "Make all the text bigger and the colours stronger so it is easy to read."]];
-$("#better").replaceChildren(...BETTER.map(([n, t]) => el("button", {class:"btn sm alt", type:"button", title:t, onclick:() => { copy(t, null, "the same Gemini chat"); L1.tick(4); }}, "Copy: " + n)));
-const L1 = checklist("list1", [
-  ["Design your page", "Choose a theme, colours, letters, what goes on it and 2 interactive things. Your design card and story are added by themselves."],
-  ["Open Gemini with Canvas", "Go to gemini.google.com. Press the + next to the message box, then choose Canvas."],
-  ["Paste your prompt", "Copy my prompt (on the right), paste it in Gemini and press Enter. Wait about 30 seconds."],
-  ["Look at the preview", "Your pictures show at once: they come from your folder in the app. A picture is missing? Copy the prompt again."],
-  ["Improve it twice", "Copy 2 improvement prompts into the same chat, or write your own."],
-  ["Make it a website", "In Gemini, copy all the code (Copy button on the code). Paste it in the app under your prompt and press 🌐 Make my website. It is saved in your folder as page.html."],
-  ["Open your link", "Under the upload box, press 🌐 Open my page. That is your real website link: send it to your family!"]
-]);
-picker($("#proj"), () => { drawPage(); drawPlan(); });
-document.addEventListener("click", () => { if (W.theme && W.colours) L1.tick(0); });
-drawPage(); drawPlan();
+function drawChips(){
+  [...$("#wStyles").children].forEach((b, i) => b.setAttribute("aria-pressed", String(Object.keys(STYLES)[i] === S.style)));
+  $("#wColours").replaceChildren(...Object.entries(COLOURS).map(([k, c]) => el("button", {type:"button", class:"chip", "aria-pressed":String(S.colours === k), onclick:() => { S.colours = k; if (k === "fav" && !S.fav) S.fav = window.SITE.nameToHex(S.f.colour) || "#1E88E5"; save(); drawChips(); draw(); }},
+    ...(k === "fav" ? [] : [el("i", {class:"sw", style:"background:linear-gradient(90deg," + c.a + " 50%," + c.b + " 50%)"})]), c.label)));
+  $("#wFav").hidden = S.colours !== "fav"; if (S.fav) $("#wFavIn").value = S.fav;
+}
+$("#wTitle").addEventListener("input", () => { S.title = $("#wTitle").value; save(); later(); });
+$("#wFacts").addEventListener("input", () => { S.facts = $("#wFacts").value; save(); later(); });
+$("#wFavIn").addEventListener("input", () => { S.fav = $("#wFavIn").value; save(); later(); });
 
-/* tester */
+/* what is still missing before publishing */
+function missing(){
+  const T = TOPICS[S.topic], m = [];
+  if (!T) return ["your topic (part 02)"];
+  if (!(S.title || "").trim()) m.push("a title");
+  T.fields.forEach(x => { if (!(S.f[x.k] || "").trim()) m.push(x.l.toLowerCase().replace(/^your /, "your ")); });
+  T.pics.filter(p => !p.opt).forEach(p => { if (!U[p.s]) m.push("the picture: " + p.l.toLowerCase()); });
+  if (window.SITE.lines(S.facts).length < 3) m.push("3 fun facts");
+  if (!S.style) m.push("a style"); if (!S.colours) m.push("colours");
+  return m;
+}
+/* the live website */
+let tm = 0; function later(){ clearTimeout(tm); tm = setTimeout(draw, 250); }
+function draw(){
+  if (!TOPICS[S.topic]) return;
+  $("#wPrev").srcdoc = window.SITE.html(S, U);
+  $("#wPrompt").textContent = window.SITE.prompt(S);
+  const m = missing();
+  $("#wMissing").textContent = m.length ? "Before you publish, add: " + m.join(", ") + "." : "";
+  $("#wPublish").classList.toggle("locked", m.length > 0);
+  ticks();
+}
+function ticks(){
+  const T = TOPICS[S.topic]; if (!T) return;
+  const done = [!!(S.title || "").trim(), T.fields.every(x => (S.f[x.k] || "").trim()), T.pics.filter(p => !p.opt).every(p => U[p.s]), window.SITE.lines(S.facts).length >= 3, !!(S.style && S.colours), !!PAGE];
+  done.forEach((d, i) => { const cb = document.getElementById("list1-" + i); if (cb && d && !cb.checked){ cb.checked = true; cb.dispatchEvent(new Event("change", {bubbles:true})); } });
+}
+checklist("list1", [
+  ["Write your title", "It shows on top of your website at once."],
+  ["Fill in your information", "Real details make it yours. First name only."],
+  ["Add your pictures", "Make them in Gemini or ChatGPT (or find them on the internet for football), then ⬆ Upload."],
+  ["Write 3 fun facts", "One per line. The Fun fact button shows them one by one."],
+  ["Choose your style and colours", "Try them all! Your website changes at once."],
+  ["Publish my website", "Press 🌐 Publish my website. You get your own link."]
+], true);
+
+/* publish: the app saves the website as page.html and gives the link */
+$("#wPublish").onclick = async () => {
+  const m = missing(), msg = $("#wMsg");
+  if (m.length){ K.toast("Before you publish, add: " + m.join(", ") + "."); return; }
+  if (!F.on()){ msg.textContent = F.MSG.offline; return; }
+  msg.textContent = "Publishing…";
+  try { await F.upload(new File([window.SITE.html(S, U)], "page.html", {type:"text/html"}), "page", "My website"); msg.textContent = "✓ Published! Your link is ready."; refresh(); document.dispatchEvent(new CustomEvent("evg-files")); }
+  catch(e){ msg.textContent = F.MSG[e.code] || ("Problem: " + (e.code || "unknown")); }
+};
+function drawLink(){
+  const box = $("#pageLink"); if (!PAGE){ box.replaceChildren(); return; }
+  const u = F.view(PAGE.path);
+  box.replaceChildren(el("a", {class:"btn sm", href:u, target:"_blank", rel:"noopener", style:"text-decoration:none"}, "🌐 Open my website"), el("button", {class:"btn sm alt", type:"button", onclick:() => copy(u, null, "a message to your family")}, "🔗 Copy my link"));
+}
+function refresh(){ return F.ready().then(() => F.list(true)).then(fs => { U = {}; PAGE = null; (fs || []).forEach(f => { if (/^w-/.test(f.slot)) U[f.slot] = F.url(f.path); if (f.slot === "page") PAGE = f; }); drawLink(); draw(); }).catch(() => {}); }
+function drawAll(){ drawTopics(); drawBuilder(); draw(); }
+
+/* part 04: tester */
 const CHECKS = [
-  ["works", "Every button works", "Click everything on the page."],
-  ["clear", "Clear in 5 seconds", "Can you tell right away which part of the future this page is about?"],
-  ["media", "Pictures show", "All my pictures show on the page, each with its caption."],
-  ["story", "The story and design make sense", "Read the design cards and the story. Anything confusing or impossible?"],
-  ["phone", "Works on a small screen", "Make the window narrow. Does it still fit?"],
-  ["safe", "Honest and safe", "Labelled Made with AI, first names only, no photos of real people."]
+  ["clear", "Clear in 5 seconds", "Can you tell at once what this website is about?"],
+  ["works", "The Fun fact button works", "Press it 3 times. A new fact each time?"],
+  ["pics", "Pictures show", "Every picture shows. AI pictures say Made with AI."],
+  ["details", "Real details", "Does it say real things about the topic, not boring general things?"],
+  ["read", "Easy to read", "Can you read every word? Do the colours help?"],
+  ["safe", "Safe", "First name only. No family name, address or phone number."]
 ];
-const T = store.get("test") || {who:"", star:"", wish:"", s:{}};
+const TS = store.get("test") || {who:"", star:"", wish:"", s:{}};
 function drawChecks(){
   $("#checks").replaceChildren(...CHECKS.map(([k, name, how]) => el("div", {class:"chk"},
     el("div", null, el("b", null, name), el("span", {class:"muted"}, how)),
-    el("div", {class:"stars", role:"radiogroup", "aria-label": name}, ...[1,2,3].map(n => el("button", {type:"button", role:"radio", "aria-checked": String(T.s[k] === n), "aria-label": n + " of 3", class:"st" + ((T.s[k] || 0) >= n ? " on" : ""), onclick:() => { T.s[k] = n; save(); drawChecks(); }}, "★"))))));
+    el("div", {class:"stars", role:"radiogroup", "aria-label":name}, ...[1, 2, 3].map(n => el("button", {type:"button", role:"radio", "aria-checked":String(TS.s[k] === n), "aria-label":n + " of 3", class:"st" + ((TS.s[k] || 0) >= n ? " on" : ""), onclick:() => { TS.s[k] = n; saveT(); drawChecks(); }}, "★"))))));
 }
 function drawCard(){
-  const scored = CHECKS.filter(([k]) => T.s[k]), pts = scored.reduce((a, [k]) => a + T.s[k], 0);
-  const low = CHECKS.filter(([k]) => T.s[k] && T.s[k] < 3).map(([, n]) => n);
-  const txt = "Feedback for " + (T.who || "my classmate") + "'s page\n" + CHECKS.map(([k, n]) => "- " + n + ": " + (T.s[k] ? "★".repeat(T.s[k]) + "☆".repeat(3 - T.s[k]) : "not tested")).join("\n") + "\nStar: " + (T.star || "…") + "\nWish: " + (T.wish || "…");
-  $("#cardBox").replaceChildren(el("span", {class:"tag"}, "Feedback card"), el("h3", {style:"font-size:24px;margin:4px 0"}, (T.who || "Your classmate") + "'s page"),
+  const scored = CHECKS.filter(([k]) => TS.s[k]), pts = scored.reduce((a, [k]) => a + TS.s[k], 0);
+  const txt = "Feedback for " + (TS.who || "my classmate") + "'s website\n" + CHECKS.map(([k, n]) => "- " + n + ": " + (TS.s[k] ? "★".repeat(TS.s[k]) + "☆".repeat(3 - TS.s[k]) : "not tested")).join("\n") + "\nStar: " + (TS.star || "…") + "\nWish: " + (TS.wish || "…");
+  $("#cardBox").replaceChildren(el("span", {class:"tag"}, "Feedback card"), el("h3", {style:"font-size:24px;margin:4px 0"}, (TS.who || "Your classmate") + "'s website"),
     el("div", {class:"big-num"}, pts + " / " + CHECKS.length * 3), el("p", {class:"muted", style:"margin:0"}, scored.length + " of " + CHECKS.length + " checks done"),
-    low.length ? el("p", {style:"margin:8px 0 0"}, el("b", null, "Needs work: "), low.join(", ")) : "",
-    T.star ? el("p", {style:"margin:8px 0 0"}, el("b", null, "⭐ "), T.star) : "", T.wish ? el("p", {style:"margin:4px 0 0"}, el("b", null, "🔧 "), T.wish) : "",
+    TS.star ? el("p", {style:"margin:8px 0 0"}, el("b", null, "⭐ "), TS.star) : "", TS.wish ? el("p", {style:"margin:4px 0 0"}, el("b", null, "🔧 "), TS.wish) : "",
     el("p", {class:"note"}, "Show this card to your classmate, or copy it for them."),
     el("div", {class:"row"}, el("button", {class:"btn sm", type:"button", onclick:() => copy(txt, null, "a message")}, "Copy feedback")));
 }
-function save(){ store.set("test", T); drawCard(); }
-["who","star","wish"].forEach(id => { $("#" + id).value = T[id] || ""; $("#" + id).addEventListener("input", () => { T[id] = $("#" + id).value; save(); }); });
+function saveT(){ store.set("test", TS); drawCard(); }
+["who", "star", "wish"].forEach(id => { $("#" + id).value = TS[id] || ""; $("#" + id).addEventListener("input", () => { TS[id] = $("#" + id).value; saveT(); }); });
 drawChecks(); drawCard();
 
-/* fixes: choose, the prompt writes itself */
-const FSPEC = [
-  {id:"what", icon:"🐞", title:"What is wrong?", one:true, opts:["a button does nothing","it is hard to read","it looks broken on a phone","a picture does not show","something is missing","something is not true","it looks boring"]},
-  {id:"where", icon:"📍", title:"Where?", one:true, opts:["the title","the idea cards","the story","the pictures","the quiz or game","the whole page"]},
-  {id:"how", icon:"🔧", title:"How should it be fixed?", max:2, opts:["make the text bigger","use stronger colours","make it fit a phone screen","use the exact file names (big.png, close.png…)","add gentle animations","make it look like the rest of the page","make the button work"]},
-  {id:"detail", title:"✏️ Say exactly what you see (optional)", text:true, ph:"e.g. the Start quiz button does nothing when I click it"}
-];
-const FX = Object.assign({what:"", where:"", how:[], detail:""}, store.get("fixB") || {});
-function fixText(){ const j = window.B.join;
-  return "On my page, " + (FX.where || "something") + ": " + (FX.what || "there is a problem") + "." + ((FX.detail || "").trim() ? " " + FX.detail.trim().charAt(0).toUpperCase() + FX.detail.trim().slice(1).replace(/\.?$/, ".") : "") +
-    "\nPlease fix it" + (FX.how.length ? ": " + j(FX.how) : "") + ".\nKeep everything else on my page exactly the same.";
-}
-let fixUI;
-function drawFix(){ window.B.show($("#fixOut"), FSPEC, FX, fixText()); window.B.meter($("#fixP"), FSPEC, FX); window.B.lock($("#copyFix"), FSPEC, FX); $("#fixN").textContent = store.get("fixes") || 0; }
-function onFix(redraw){ store.set("fixB", FX); if (redraw) fixUI.draw(); drawFix(); }
-fixUI = window.B.make($("#fixB"), FSPEC, FX, onFix);
-$("#copyFix").onclick = () => { if (!window.B.guard(FSPEC, FX, $("#fixB"), K.toast)) return; copy(fixText(), $("#fixOut"), "your page's Gemini chat"); };
-$("#nextFix").onclick = () => { store.set("fixes", (store.get("fixes") || 0) + 1); FX.what = ""; FX.where = ""; FX.how = []; FX.detail = ""; onFix(true); K.toast("Fix counted. Choose the next one."); };
-drawFix();
+/* part 05: make it better */
+checklist("better", [["I read my feedback card", "What did your tester wish?"], ["I changed it in my builder", "Part 03: style, colours, details, facts or pictures."], ["I published again", "Press 🌐 Publish my website again. Same link, better website."]], true);
+$("#toBuilder").onclick = () => { location.hash = "#seg-3"; };
 
-/* launch */
-const L = [["Every button works",""],["All my pictures show on the page",""],["Every fact is checked",""],["Everything AI-made is labelled Made with AI",""],["First names only, no photos of real people",""],["It works on a phone",""],["My folder in the app has my pictures and my page",""]];
+/* part 06: launch */
+const L = [["My title says what my website is about", ""], ["The Fun fact button works", ""], ["All my pictures show", ""], ["My facts are true", ""], ["AI pictures say Made with AI", ""], ["First name only: no family name, address or phone", ""], ["It is published: Open my website works", ""]];
 checklist("launch", L);
 function ready(){ const n = [...document.querySelectorAll("#launch input")].filter(x => x.checked).length;
-  $("#ready").replaceChildren(el("span", {class:"tag"}, "Status"), el("div", {class:"big-num"}, n + " / " + L.length), n === L.length ? el("p", {class:"lead", style:"margin:0;color:var(--green);font-weight:700"}, "Ready for launch! Your teacher downloads your folder from the teacher page.") : el("p", {class:"lead", style:"margin:0"}, "Tick every line before launch day.")); }
+  $("#ready").replaceChildren(el("span", {class:"tag"}, "Status"), el("div", {class:"big-num"}, n + " / " + L.length), n === L.length ? el("p", {class:"lead", style:"margin:0;color:var(--green);font-weight:700"}, "Ready for launch! Send your link to your family.") : el("p", {class:"muted", style:"margin:0"}, "Tick each line when it is true.")); }
 $("#launch").addEventListener("change", ready); ready();
-const fold8 = F.folder($("#filesBox"), 8);
-F.slotBox($("#pageSlot"), {slot:"page", label:"My web page", accept:".html,text/html"}, () => { fold8.draw(); refreshFiles(); const cb = document.getElementById("list1-5"); if (cb && !cb.checked){ cb.checked = true; cb.dispatchEvent(new Event("change", {bubbles:true})); } });
-function drawLink(){ const f = MYF.find(x => x.slot === "page"), box = $("#pageLink"); if (!box) return;
-  if (!f){ box.replaceChildren(); return; }
-  const u = F.view(f.path);
-  box.replaceChildren(el("a", {class:"btn sm", href:u, target:"_blank", rel:"noopener", style:"text-decoration:none"}, "🌐 Open my page"), el("button", {class:"btn sm alt", type:"button", onclick:() => copy(u, null, "a message to your family")}, "🔗 Copy my link")); }
-/* paste the code from Gemini: the app saves it as page.html and gives the link */
-function cleanCode(t){ t = (t || "").trim(); const m = t.match(/```(?:html)?\s*([\s\S]*?)```/i); if (m) t = m[1].trim(); const i = t.search(/<!doctype html|<html/i); if (i > 0) t = t.slice(i); const j = t.toLowerCase().lastIndexOf("</html>"); if (j > -1) t = t.slice(0, j + 7); return t; }
-$("#saveCode").onclick = async () => {
-  const code = cleanCode($("#pageCode").value), msg = $("#codeMsg");
-  const rawTxt = $("#pageCode").value.trim();
-  if (!rawTxt){ msg.textContent = "The box is empty. In Gemini, press Copy on the code, then click in the box and press Ctrl+V."; $("#pageCode").focus(); return; }
-  if (/import React|export default|from ["']react["']/.test(rawTxt)){ msg.textContent = "This is React code, not a web page. In the same Gemini chat, write: Make it one single HTML file. Then copy the new code."; return; }
-  let page = code;
-  if (!/<(html|body)[\s>]/i.test(page)){ if (/<(div|section|main|header|h1|style)[\s>]/i.test(page)) page = "<!DOCTYPE html>\n<html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"></head><body>\n" + page + "\n</body></html>";
-    else { msg.textContent = "This is not the page code yet. In Gemini, copy the code (it has < and > signs), not the text around it."; return; } }
-  if (!F.on()){ msg.textContent = F.MSG.offline; return; }
-  msg.textContent = "Making your website…";
-  try { await F.upload(new File([page], "page.html", {type:"text/html"}), "page", "My web page"); msg.textContent = "✓ Your website is ready! Press 🌐 Open my page."; document.dispatchEvent(new CustomEvent("evg-files")); fold8.draw(); refreshFiles();
-    const cb = document.getElementById("list1-5"); if (cb && !cb.checked){ cb.checked = true; cb.dispatchEvent(new Event("change", {bubbles:true})); } }
-  catch(e){ msg.textContent = F.MSG[e.code] || ("Problem: " + (e.code || "unknown")); }
-};
-function refreshFiles(){ F.ready().then(() => F.list(true)).then(fs => { MYF = fs || []; drawPlan(); drawPage(); drawLink(); }).catch(() => {}); }
-refreshFiles();
+
+drawAll(); refresh();
 K.start();
 })();
 </script>
