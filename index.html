@@ -232,7 +232,7 @@ const ERR = c => ({wrong_login:"Wrong username or password. Check with your teac
 
 /* ---------- course data in this browser ---------- */
 const CH = [
-  {n:1, t:"Meet AI", s:"1", f:"ch1.html", learn:"What AI is, how it learns. Pick your team and your part", lists:[], extra: d => (d["meet-ai-idea"] ? 1 : 0) + (pj(d["ch1-part"]) ? 1 : 0), of:2},
+  {n:1, t:"Meet AI", s:"1", f:"ch1.html", learn:"What AI is, and how it learns from what we teach it", lists:[], extra: d => d["meet-ai-idea"] ? 1 : 0, of:1},
   {n:2, t:"AI Training", s:"2–3", f:"ch2.html", learn:"Teach a real AI: school objects or a recycling robot", lists:[["ch2-list1",8],["ch2-list2",6],["ch2-list3",6]]},
   {n:3, t:"Prompt Engineering", s:"4", f:"ch3.html", learn:"Design your part with Gemini: your design card", lists:[["ch3-list1",7]]},
   {n:4, t:"AI Storytelling", s:"5", f:"ch4.html", learn:"A story from the future, with your own character", lists:[["ch4-list1",6],["ch4-hunt",5]]},

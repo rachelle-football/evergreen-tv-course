@@ -75,6 +75,44 @@ a{color:var(--green);font-weight:700}
 .verdict.h{background:var(--green-soft)} .verdict.a{background:var(--onair-soft)}
 .score{font-family:var(--mono);font-weight:700}
 
+/* 1 ai or not */
+.things{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr))}
+.thing{background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:14px;text-align:center;display:flex;flex-direction:column;gap:8px}
+.thing .ic{font-size:54px;line-height:1.1;min-height:60px;display:grid;place-items:center}
+.thing strong{font-family:var(--display);font-size:19px;line-height:1.2}
+.thing .row{justify-content:center}
+.thing.ok{border-color:var(--green);background:var(--green-soft)}
+.thing.no{border-color:var(--onair);background:var(--onair-soft)}
+.thing .why{margin:0;font-size:15px;color:var(--ink)}
+.thing .ans{font:700 13px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase}
+
+/* 3 teach the AI */
+.part{margin-bottom:18px}
+.part h3{font-size:24px;margin:6px 0 4px}
+.teach{display:grid;gap:18px;grid-template-columns:minmax(0,220px) 1fr;align-items:start;margin-top:12px}
+.shape{background:#fff;border:1px solid var(--line);border-radius:14px;aspect-ratio:1;display:grid;place-items:center}
+.shape svg{width:70%;height:auto}
+.bot{display:flex;gap:10px;align-items:flex-start;margin:0 0 12px}
+.bot .face{font-size:34px;line-height:1}
+.bot .bub{background:var(--panel);border:2px solid var(--ink);border-radius:4px 16px 16px 16px;padding:10px 14px;font-family:var(--display);font-weight:700;font-size:20px;line-height:1.25}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px}
+.chip{background:var(--panel);border:2px solid var(--line);border-radius:999px;padding:9px 16px;font-weight:700}
+.chip[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+.sws{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px}
+.sw{width:46px;height:46px;border-radius:12px;border:3px solid transparent;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+.sw[aria-pressed="true"]{border-color:var(--ink);transform:scale(1.08)}
+.sw:disabled{opacity:.25;cursor:not-allowed}
+.houses{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));margin:10px 0}
+.hcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center;color:#13221C}
+.hcard svg{width:100%;max-width:150px;height:auto}
+.hcard b{display:block;font-family:var(--display);font-size:18px}
+.hcard.new{border:2px dashed var(--ink)}
+.slider{display:grid;gap:4px;font-weight:700;font-size:15px;margin:6px 0}
+.slider input{width:100%;accent-color:var(--green)}
+.hue{-webkit-appearance:none;appearance:none;height:16px;border-radius:8px;background:linear-gradient(90deg,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)}
+.step-t{font:700 13px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin:16px 0 6px}
+@media (max-width:640px){.teach{grid-template-columns:1fr}.shape{max-width:200px}}
+
 /* 2 day */
 .day{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr))}
 .moment{position:relative;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;min-height:150px;display:flex;flex-direction:column;gap:6px}
@@ -171,32 +209,81 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
 <main class="wrap" id="stage">
 
 <!-- 1 -->
-<section class="seg" id="seg-1" data-min="5" data-title="Real or AI?">
-  <div class="lower"><div class="no">01</div><div class="name"><h2>Real or AI?</h2><p>5 minutes · warm-up</p></div></div>
-  <p class="big">Some of these lines were written by famous people long ago. Some were written by an AI this week. Can you tell which?</p>
-  <div class="grid g2" id="quotes"></div>
-  <p class="lead" style="margin-top:22px"><span class="score" id="qscore">0 of 4</span> right so far. Now try faces: <a href="https://www.whichfaceisreal.com/" target="_blank" rel="noopener">Which Face Is Real?</a> (a game made by University of Washington researchers; one face is a real photo, the other was made by AI).</p>
+<section class="seg" id="seg-1" data-min="5" data-title="AI or not AI?">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>AI or not AI?</h2><p>5 minutes · warm-up</p></div></div>
+  <p class="big">Some machines are AI. Most are not. For each one, tap your answer.</p>
+  <div class="things" id="things"></div>
+  <p class="lead" style="margin-top:20px"><span class="score" id="tScore">0 of 10</span> right</p>
+  <div class="def" id="tLesson" hidden>
+    <span class="tag">What did you learn?</span>
+    <p>Electricity is not AI. A robot is not always AI. AI is a machine that LEARNS.</p>
+  </div>
 </section>
 
 <!-- 2 -->
-<section class="seg" id="seg-2" data-min="5" data-title="Where AI hides" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>Where AI hides</h2><p>5 minutes · one normal day</p></div></div>
-  <p class="big">You already used AI today, maybe ten times. Tap each moment to find the AI inside it.</p>
-  <div class="day" id="day"></div>
-  <p class="lead" style="margin-top:20px">Found: <span class="found" id="foundN">0 of 8</span></p>
+<section class="seg" id="seg-2" data-min="5" data-title="Real or AI?" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>Real or AI?</h2><p>5 minutes · who wrote it?</p></div></div>
+  <p class="big">Two of these lines were said by real people. Two were written by an AI. Can you tell which?</p>
+  <div class="grid g2" id="quotes"></div>
+  <p class="lead" style="margin-top:22px"><span class="score" id="qscore">0 of 4</span> right so far.</p>
+  <div class="def" id="qLesson" hidden>
+    <span class="tag">What did you learn?</span>
+    <p>AI can write like a person. You can't always tell. That's why you always check who made it.</p>
+    <div class="note" style="color:var(--ink);font-size:17px">Pictures too: try <a href="https://www.whichfaceisreal.com/" target="_blank" rel="noopener">Which Face Is Real?</a> One face is a real photo, the other was made by AI.</div>
+  </div>
 </section>
 
 <!-- 3 -->
-<section class="seg" id="seg-3" data-min="7" data-title="What is AI?" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>What is AI?</h2><p>7 minutes · rules vs. examples</p></div></div>
-  <p class="big">Challenge: write a rule a computer could follow to know if an animal is a cat.</p>
-  <p class="lead">Pick a rule. Let's see if it works.</p>
-  <div class="rules" id="rules"></div>
-  <div class="card broke" id="broke" aria-live="polite"><p class="muted" style="margin:0">Choose a rule above.</p></div>
-  <div class="def" id="def" hidden>
-    <span class="tag">So what is AI?</span>
-    <p>AI is a computer that learns from examples, instead of following rules that a person wrote.</p>
-    <div class="note" style="color:var(--ink);font-size:17px">Show it thousands of photos labelled "cat" and "not a cat", and it finds the patterns by itself. Nobody writes the rule.</div>
+<section class="seg" id="seg-3" data-min="10" data-title="What is AI?" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>What is AI?</h2><p>10 minutes · you teach the AI</p></div></div>
+  <p class="big">An AI knows nothing at first. You teach it. Then it starts to think by itself.</p>
+
+  <div class="card part">
+    <span class="tag">Part 1 · The AI knows nothing</span>
+    <h3>Teach your AI what this shape is</h3>
+    <div class="teach">
+      <div class="shape"><svg viewBox="0 0 100 100" aria-label="A shape"><rect x="12" y="12" width="76" height="76" rx="3" fill="#1E88E5"/></svg></div>
+      <div>
+        <div class="bot"><span class="face">🤖</span><span class="bub" id="b1">Hello! My brain is empty. I don't know anything yet.</span></div>
+        <div class="row"><button class="btn sm" type="button" id="ask1">🤖 Ask the AI: what is this?</button></div>
+        <p class="step-t">Teach it: this is a…</p>
+        <div class="chips" id="names1"></div>
+        <p class="muted" style="margin:0;font-size:15px" id="h1">You choose. Your AI will believe you.</p>
+      </div>
+    </div>
+    <div class="def" id="l1" hidden>
+      <span class="tag">What did you learn?</span>
+      <p>The AI only knows what you teach it. Teach it wrong, and it says wrong.</p>
+      <div class="note" style="color:var(--ink);font-size:17px">Look at your friend's screen: does his AI say the same thing as yours?</div>
+    </div>
+  </div>
+
+  <div class="card part" id="p2" hidden>
+    <span class="tag">Part 2 · The AI starts to think</span>
+    <h3>House or castle? You decide by the colour</h3>
+    <p class="step-t">Step 1 · Choose the colour of a HOUSE</p>
+    <div class="sws" id="swH"></div>
+    <p class="step-t">Step 2 · Choose the colour of a CASTLE</p>
+    <div class="sws" id="swC"></div>
+    <div class="houses" id="taught"></div>
+    <div id="newBox" hidden>
+      <p class="step-t">Step 3 · Make a NEW colour the AI has never seen</p>
+      <div class="teach">
+        <div class="hcard new" id="newCard"></div>
+        <div>
+          <label class="slider">Colour<input type="range" class="hue" id="hue" min="0" max="359" value="30"></label>
+          <label class="slider">Light or dark<input type="range" id="lig" min="20" max="80" value="50"></label>
+          <div class="row" style="margin:8px 0 12px"><button class="btn sm" type="button" id="ask2">🤖 Ask the AI: house or castle?</button></div>
+          <div class="bot"><span class="face">🤖</span><span class="bub" id="b2">Make a new colour, then ask me.</span></div>
+          <p class="muted" style="margin:0;font-size:15px" id="asked">Try at least 3 new colours.</p>
+        </div>
+      </div>
+    </div>
+    <div class="def" id="l2" hidden>
+      <span class="tag">What did you learn?</span>
+      <p>You never taught it these colours. It looked at what it learned, found the closest, and decided by itself. That is how AI learns and gets better.</p>
+      <div class="note" style="color:var(--ink);font-size:17px">AI = a machine that learns from examples, then decides by itself on new things it has never seen.</div>
+    </div>
   </div>
 </section>
 
@@ -296,30 +383,26 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
 </section>
 
 <!-- 8 -->
-<section class="seg" id="seg-8" data-min="6" data-title="Your mission" hidden>
-  <div class="lower"><div class="no">08</div><div class="name"><h2>Your mission this year: AI Creator</h2><p>6 minutes · pick your team and your part</p></div></div>
-  <p class="big">The class splits into two teams. Each team designs, writes and draws with AI, and every student builds a real website. Everything is made by you.</p>
-  <div class="grid g2">
-    <div class="card teamcard"><span class="tag">Team 1 · 🏫 School 2040</span><h3>Reinvent the School</h3><p style="margin:0">Design the school of tomorrow: classrooms, the library, the canteen, the playground, how we learn.</p></div>
-    <div class="card teamcard"><span class="tag">Team 2 · 🌍 Planet 2050</span><h3>The Future of Our Planet</h3><p style="margin:0">Create a better world with AI: clean energy, water, less waste, clean air, the cedars and the sea.</p></div>
-  </div>
-  <div class="card myproj" id="proj" style="margin-top:16px"></div>
+<section class="seg" id="seg-8" data-min="6" data-title="Your year" hidden>
+  <div class="lower"><div class="no">08</div><div class="name"><h2>Your year as an AI Creator</h2><p>6 minutes · what you will make</p></div></div>
+  <p class="big">This year you don't only use AI. You create with it. Here is your road.</p>
   <div class="card">
-    <span class="tag">Your first idea</span>
-    <h3 style="font-size:24px;margin:6px 0 10px">What would your part look like in the future?</h3>
-    <label for="idea" class="muted" style="font-size:15px">Write one sentence. Be bold!</label>
-    <textarea id="idea" placeholder="In the future, my part will…"></textarea>
+    <span class="tag">Your road, chapter by chapter</span>
+    <div class="road">
+      <div><b>1 · Meet AI</b>What AI is, and how it learns ✓</div>
+      <div><b>2 · Train an AI</b>Teach a real AI with your drawings</div>
+      <div><b>3 · Prompts</b>Learn to talk to AI so it does what you want</div>
+      <div><b>4 · Story</b>Invent a hero and a story with AI</div>
+      <div><b>5 · Pictures</b>Make your own AI pictures</div>
+      <div><b>6 · My own website</b>Build your website, with your own link</div>
+      <div><b>7 · Exhibition</b>Show your work to parents and guests</div>
+    </div>
   </div>
   <div class="card" style="margin-top:16px">
-    <span class="tag">What you will make for your part, chapter by chapter</span>
-    <div class="road">
-      <div><b>2 · AI Training</b>Teach a real AI to recognise things</div>
-      <div><b>3 · Prompts</b>Your design card, made with Gemini</div>
-      <div><b>4 · Story</b>A short story from the future</div>
-      <div><b>5 · Pictures</b>3 to 5 AI pictures of your part</div>
-      <div><b>6 · Website</b>Your own website, with your own link</div>
-      <div><b>7 · Exhibition</b>Launch day!</div>
-    </div>
+    <span class="tag">Your turn</span>
+    <h3 style="font-size:24px;margin:6px 0 10px">What do you want to make with AI this year?</h3>
+    <label for="idea" class="muted" style="font-size:15px">Write one sentence. Be bold!</label>
+    <textarea id="idea" placeholder="This year, I want to make…"></textarea>
   </div>
 </section>
 
@@ -404,58 +487,98 @@ $("#clockBtn").onclick = () => {
   tick = setInterval(() => { left--; $("#clock").textContent = fmt(left); $("#clock").classList.toggle("late", left < 0); }, 1000);
 };
 
-/* ---------- 1 real or AI ---------- */
+/* ---------- 1 AI or not AI ---------- */
+const SVG = {
+  remote:'<svg viewBox="0 0 64 64" width="58" height="58"><rect x="21" y="4" width="22" height="56" rx="8" fill="#2B2F36"/><circle cx="32" cy="14" r="4" fill="#E53935"/><circle cx="27" cy="26" r="2.6" fill="#B0BEC5"/><circle cx="37" cy="26" r="2.6" fill="#B0BEC5"/><circle cx="27" cy="34" r="2.6" fill="#B0BEC5"/><circle cx="37" cy="34" r="2.6" fill="#B0BEC5"/><circle cx="27" cy="42" r="2.6" fill="#B0BEC5"/><circle cx="37" cy="42" r="2.6" fill="#B0BEC5"/><rect x="26" y="49" width="12" height="4" rx="2" fill="#4FC3F7"/></svg>',
+  fridge:'<svg viewBox="0 0 64 64" width="58" height="58"><rect x="14" y="3" width="36" height="58" rx="5" fill="#ECEFF1" stroke="#78909C" stroke-width="2.5"/><line x1="14" y1="24" x2="50" y2="24" stroke="#78909C" stroke-width="2.5"/><rect x="41" y="9" width="3.5" height="10" rx="1.5" fill="#78909C"/><rect x="41" y="29" width="3.5" height="16" rx="1.5" fill="#78909C"/></svg>',
+  calc:'<svg viewBox="0 0 64 64" width="58" height="58"><rect x="12" y="3" width="40" height="58" rx="6" fill="#37474F"/><rect x="17" y="8" width="30" height="12" rx="2" fill="#C5E1A5"/><g fill="#CFD8DC"><rect x="17" y="25" width="8" height="7" rx="1.5"/><rect x="28" y="25" width="8" height="7" rx="1.5"/><rect x="17" y="35" width="8" height="7" rx="1.5"/><rect x="28" y="35" width="8" height="7" rx="1.5"/><rect x="17" y="45" width="8" height="7" rx="1.5"/><rect x="28" y="45" width="8" height="7" rx="1.5"/></g><rect x="39" y="25" width="8" height="27" rx="1.5" fill="#FB8C00"/></svg>',
+  vacuum:'<svg viewBox="0 0 64 64" width="58" height="58"><circle cx="32" cy="34" r="25" fill="#455A64"/><circle cx="32" cy="34" r="19" fill="#607D8B"/><path d="M14 17a25 25 0 0 1 36 0" fill="none" stroke="#B0BEC5" stroke-width="5" stroke-linecap="round"/><circle cx="32" cy="27" r="5" fill="#26C6DA"/><circle cx="32" cy="44" r="3" fill="#B0BEC5"/></svg>'
+};
+const THINGS = [
+  ["svg:remote","TV remote",false,"It only does what the button says."],
+  ["🗣️","Siri / Google Assistant",true,"It learned to understand voices from hours of recordings."],
+  ["svg:fridge","Fridge",false,"It keeps food cold. It never learns anything."],
+  ["📱","Face unlock on a phone",true,"It learned your face from the camera."],
+  ["🖊️","Pen",false,"There is no computer inside at all."],
+  ["🦾","Factory robot arm",false,"It repeats the same move again and again. A robot is not always AI!"],
+  ["🌐","Google Translate",true,"It learned from millions of texts in two languages."],
+  ["svg:calc","Calculator",false,"It follows fixed rules that a person wrote."],
+  ["svg:vacuum","Robot vacuum",true,"It learns the map of your house as it cleans."],
+  ["🚦","Traffic light",false,"It changes on a timer. It does not learn."]
+];
+let tRight = 0, tDone = 0;
+THINGS.forEach(([ic, name, ai, why]) => {
+  const card = el("div", {class:"thing"}), act = el("div", {class:"row"});
+  const pick = g => { const ok = g === ai; tDone++; if (ok) tRight++; card.classList.add(ok ? "ok" : "no");
+    act.replaceChildren(el("span", {class:"ans"}, (ok ? "✓ Right: " : "✗ No: ") + (ai ? "🤖 AI" : "⚙️ Not AI")));
+    card.append(el("p", {class:"why"}, why)); $("#tScore").textContent = tRight + " of 10"; if (tDone === THINGS.length) $("#tLesson").hidden = false; };
+  act.append(el("button", {class:"btn sm alt", type:"button", onclick:() => pick(true)}, "🤖 AI"), el("button", {class:"btn sm alt", type:"button", onclick:() => pick(false)}, "⚙️ Not AI"));
+  const icon = el("span", {class:"ic", "aria-hidden":"true"}); if (ic.startsWith("svg:")) icon.innerHTML = SVG[ic.slice(4)]; else icon.textContent = ic;
+  card.append(icon, el("strong", null, name), act);
+  $("#things").append(card);
+});
+
+/* ---------- 2 real or AI ---------- */
 const QUOTES = [
-  {t:"“Hope is the thing with feathers / That perches in the soul.”", ai:false, src:"Human: Emily Dickinson, an American poet, around 1861."},
+  {t:"“Patience is the key to relief.”", ai:false, src:"A person: an old Arabic proverb (الصبر مفتاح الفرج)."},
   {t:"“The lunch bell rings like a tiny alarm clock for my stomach, and suddenly every maths problem looks like a sandwich.”", ai:true, src:"AI: written by an AI (Claude) for this lesson."},
-  {t:"“All the world's a stage, and all the men and women merely players.”", ai:false, src:"Human: William Shakespeare, in a play from 1599."},
+  {t:"“The more difficult the victory, the greater the happiness in winning.”", ai:false, src:"A person: Pelé, the Brazilian football legend."},
   {t:"“Football is chess that learned how to run, with eleven kings and one very nervous goalkeeper.”", ai:true, src:"AI: written by an AI (Claude) for this lesson."}
 ];
-let qRight = 0;
+let qRight = 0, qDone = 0;
 const qBox = $("#quotes");
 QUOTES.forEach(q => {
   const v = el("div");
-  const pick = guessAI => { if (v.childElementCount) return; const ok = guessAI === q.ai; if (ok) qRight++; $("#qscore").textContent = qRight + " of 4";
-    v.append(el("div", {class:"verdict " + (q.ai ? "a" : "h")}, el("b", null, ok ? "Right! " : "Not this time. "), q.src)); };
+  const pick = guessAI => { if (v.childElementCount) return; const ok = guessAI === q.ai; qDone++; if (ok) qRight++; $("#qscore").textContent = qRight + " of 4";
+    v.append(el("div", {class:"verdict " + (q.ai ? "a" : "h")}, el("b", null, ok ? "Right! " : "Not this time. "), q.src)); if (qDone === QUOTES.length) $("#qLesson").hidden = false; };
   qBox.append(el("div", {class:"card"}, el("span", {class:"tag"}, "Who wrote it?"), el("p", {class:"quote"}, q.t),
-    el("div", {class:"row"}, el("button", {class:"btn sm alt", type:"button", onclick:() => pick(false)}, "A person"), el("button", {class:"btn sm alt", type:"button", onclick:() => pick(true)}, "An AI")), v));
+    el("div", {class:"row"}, el("button", {class:"btn sm alt", type:"button", onclick:() => pick(false)}, "👤 A person"), el("button", {class:"btn sm alt", type:"button", onclick:() => pick(true)}, "🤖 An AI")), v));
 });
 
-/* ---------- 2 where AI hides ---------- */
-const DAY = [
-  ["07:00","Unlock your phone","Face unlock: the AI recognises your face from the camera.","thousands of example faces"],
-  ["07:20","Text a friend","Autocorrect and word suggestions: the AI predicts your next word.","huge amounts of written text"],
-  ["12:30","Use a photo filter","The AI finds your eyes, nose and mouth and follows them as you move.","millions of face photos"],
-  ["15:00","Watch one more video","The next video is chosen by AI to keep you watching.","what millions of people watched and skipped"],
-  ["16:00","Drive to training","Maps predicts the traffic and how long the trip takes.","phones moving on the roads"],
-  ["18:00","Do French homework","A translation app turns French into English.","the same texts written in two languages"],
-  ["19:30","Parents check email","The spam filter hides junk email.","emails people marked as spam"],
-  ["20:00","“Hey Google, set an alarm”","The AI turns your voice into words, then into an action.","many hours of recorded speech"]
-];
-let found = 0;
-DAY.forEach(([time, what, ai, from]) => {
-  const b = el("button", {class:"moment", type:"button", "aria-expanded":"false"}, el("time", null, time), el("strong", null, what), el("span", {class:"hint"}, "Tap to find the AI"));
-  b.onclick = () => { if (b.getAttribute("aria-expanded") === "true") return; b.setAttribute("aria-expanded", "true"); b.querySelector(".hint").remove();
-    b.append(el("span", {class:"reveal"}, ai), el("span", {class:"hint"}, "It learned from: " + from)); found++; $("#foundN").textContent = found + " of 8"; };
-  $("#day").append(b);
-});
+/* ---------- 3 teach the AI ---------- */
+/* part 1: the AI only knows what the kid taught it */
+let taught1 = null, asked1 = 0;
+const NAMES = ["Square", "Circle", "Triangle", "Star"];
+function drawNames(){ $("#names1").replaceChildren(...NAMES.map(n => el("button", {class:"chip", type:"button", "aria-pressed":String(taught1 === n), onclick:() => {
+  taught1 = n; drawNames(); $("#b1").textContent = "OK! I learned: this is a " + n.toLowerCase() + "."; $("#h1").textContent = "Now ask the AI again."; }}, n))); }
+drawNames();
+$("#ask1").onclick = () => {
+  if (!taught1){ $("#b1").textContent = "I don't know. Nobody taught me. 🤷"; $("#h1").textContent = "Teach it: choose a name below."; return; }
+  asked1++;
+  $("#b1").textContent = "This is a " + taught1.toLowerCase() + "!";
+  $("#h1").textContent = taught1 === "Square" ? "Right, because you taught it right. Now try teaching it a wrong name, and ask again." : "Wrong! It is a square. But your AI believes you, because you taught it.";
+  $("#l1").hidden = false; $("#p2").hidden = false;
+};
+/* part 2: colours. The kid teaches 2 colours, then asks about new ones: the AI picks the closest */
+const SW = [["red","#E53935"],["yellow","#FDD835"],["blue","#1E88E5"],["green","#43A047"],["purple","#8E24AA"],["orange","#FB8C00"],["pink","#EC407A"],["brown","#8D6E63"]];
+let cH = null, cC = null, asked2 = 0;
+const house = (fill, castle) => '<svg viewBox="0 0 120 100" aria-hidden="true">' + (castle
+  ? '<rect x="18" y="30" width="84" height="62" fill="' + fill + '" stroke="#13221C" stroke-width="3"/><rect x="10" y="14" width="24" height="78" fill="' + fill + '" stroke="#13221C" stroke-width="3"/><rect x="86" y="14" width="24" height="78" fill="' + fill + '" stroke="#13221C" stroke-width="3"/><path d="M10 14v-8h6v8M22 14v-8h6v8M86 14v-8h6v8M98 14v-8h6v8" fill="' + fill + '" stroke="#13221C" stroke-width="3"/><path d="M48 92V66a12 12 0 0 1 24 0v26" fill="#13221C"/>'
+  : '<path d="M14 48 60 12l46 36" fill="' + fill + '" stroke="#13221C" stroke-width="3" stroke-linejoin="round"/><rect x="24" y="46" width="72" height="46" fill="' + fill + '" stroke="#13221C" stroke-width="3"/><rect x="50" y="64" width="20" height="28" fill="#13221C"/><rect x="32" y="56" width="12" height="12" fill="#fff" stroke="#13221C" stroke-width="2"/><rect x="76" y="56" width="12" height="12" fill="#fff" stroke="#13221C" stroke-width="2"/>') + '</svg>';
+const hcard = (fill, label, castle, cls) => { const d = el("div", {class:"hcard" + (cls ? " " + cls : "")}); d.innerHTML = house(fill, castle); d.append(el("b", null, label)); return d; };
+function swatches(box, get, set, other){ $(box).replaceChildren(...SW.map(([n, c]) => el("button", {class:"sw", type:"button", title:n, "aria-label":n, "aria-pressed":String(get() === c), style:"background:" + c, onclick:() => { if (other() === c) return; set(c); drawSw(); }}))); [...$(box).children].forEach((b, i) => b.disabled = other() === SW[i][1]); }
+function drawSw(){
+  swatches("#swH", () => cH, c => cH = c, () => cC); swatches("#swC", () => cC, c => cC = c, () => cH);
+  $("#taught").replaceChildren(...(cH ? [hcard(cH, "🤖 learned: House", false)] : []), ...(cC ? [hcard(cC, "🤖 learned: Castle", true)] : []));
+  $("#newBox").hidden = !(cH && cC); newColour();
+}
+const hex2 = h => [1, 3, 5].map(i => parseInt(h.substr(i, 2), 16));
+function hsl(h, s, l){ s /= 100; l /= 100; const k = n => (n + h / 30) % 12, a = s * Math.min(l, 1 - l), f = n => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1))); return [f(0), f(8), f(4)].map(x => Math.round(x * 255)); }
+const toHex = rgb => "#" + rgb.map(x => x.toString(16).padStart(2, "0")).join("");
+const dist = (a, b) => { const r = (a[0] + b[0]) / 2, d = a.map((x, i) => x - b[i]); return Math.sqrt((2 + r / 256) * d[0] ** 2 + 4 * d[1] ** 2 + (2 + (255 - r) / 256) * d[2] ** 2); };
+let cur2 = null;
+function newColour(){ cur2 = hsl(+$("#hue").value, 85, +$("#lig").value); $("#newCard").innerHTML = house(toHex(cur2), false); $("#newCard").append(el("b", null, "❓ New colour")); }
+$("#hue").oninput = $("#lig").oninput = () => { newColour(); $("#b2").textContent = "A new colour! Ask me."; };
+$("#ask2").onclick = () => {
+  const dH = dist(cur2, hex2(cH)), dC = dist(cur2, hex2(cC)), isH = dH <= dC, nameOf = c => SW.find(x => x[1] === c)[0];
+  const close = Math.abs(dH - dC) < .12 * Math.max(dH, dC);
+  $("#b2").textContent = (close ? "Hmm, this one is hard… I think: " : "I think: ") + (isH ? "HOUSE 🏠" : "CASTLE 🏰") + ". You never taught me this colour, but it is closer to the " + nameOf(isH ? cH : cC) + " you showed me.";
+  asked2++; $("#asked").textContent = "You asked " + asked2 + (asked2 === 1 ? " time." : " times.") + (asked2 < 3 ? " Try " + (3 - asked2) + " more." : " Great!");
+  if (asked2 >= 3) $("#l2").hidden = false;
+};
+drawSw();
 
-/* ---------- 3 rules ---------- */
-const RULES = [
-  ["It has whiskers","Dogs, rabbits and seals have whiskers too. Your rule says a seal is a cat."],
-  ["It has four legs","So do dogs, horses and tables. And a cat with three legs is still a cat."],
-  ["It says “meow”","A sleeping cat says nothing. A cat in a photo can't make any sound."],
-  ["It has pointy ears","Many dogs have pointy ears. Some cats have folded ears."],
-  ["It is small","A lion is a cat, and it is not small. A tiny dog is small."]
-];
-let broken = 0;
-RULES.forEach(([r, why]) => { const b = el("button", {class:"rule", type:"button", "aria-pressed":"false"}, r);
-  b.onclick = () => { $("#broke").replaceChildren(el("span", {class:"tag", style:"color:var(--onair)"}, "Rule broken"), el("p", {class:"lead", style:"margin:6px 0 0"}, why));
-    if (b.getAttribute("aria-pressed") === "false"){ b.setAttribute("aria-pressed", "true"); broken++; }
-    if (broken >= 3) $("#def").hidden = false; };
-  $("#rules").append(b); });
 
-/* ---------- 4 loop + next word ---------- */
 const loopNodes = [...document.querySelectorAll("#loopNodes g")]; let li = 0;
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 function lightLoop(){ loopNodes.forEach((g, k) => { const r = g.querySelector("rect"); r.setAttribute("stroke", k === li ? "var(--green)" : "var(--line)"); r.setAttribute("stroke-width", k === li ? "3" : "2"); }); li = (li + 1) % 4; }
@@ -487,7 +610,6 @@ let qz = 0;
 QUIZ.forEach(([q, opts, ok, why]) => { const w = el("p", {class:"why"}); let done = false;
   const bs = opts.map((o, i) => el("button", {class:"opt", type:"button", onclick:() => { if (done) return; done = true; bs[ok].classList.add("right"); if (i !== ok) bs[i].classList.add("wrong"); else { qz++; $("#quizScore").textContent = qz + " of 5"; } w.textContent = why; }}, o));
   $("#quiz").append(el("div", {class:"card q"}, el("h3", null, q), el("div", {class:"opts"}, bs), w)); });
-P.picker(document.getElementById("proj"));
 try { const d = localStorage.getItem("meet-ai-idea"); if (d) $("#idea").value = d; } catch(e) {}
 $("#idea").addEventListener("input", () => { try { localStorage.setItem("meet-ai-idea", $("#idea").value); } catch(e) {} });
 

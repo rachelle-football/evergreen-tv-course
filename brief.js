@@ -7,7 +7,7 @@
     1:{goal:"Discover what AI really is, and choose your part of the project.",
        make:[["🧭", "Your team and your part"], ["💡", "Your first idea for it"]],
        steps:["Play Real or AI?, and find the AI hidden in a normal day", "Learn how AI learns from examples", "Take the quick quiz", "Pick your team and your part, and write your first idea"],
-       done:"Your team and your part are chosen (part 08).", missions:{8:"Choose your team and your part. You keep them until the exhibition."}},
+       done:"", missions:{}},
     2:{goal:"Teach a real AI with your own drawings, then trick it and fix it.",
        make:[["🤖", "An AI you trained yourself"], ["📊", "Its exam score"]],
        steps:["Learn the 3 steps: examples, training, testing", "Teach the AI 3 new things by drawing", "Test it with 10 new drawings and count its score", "Trick it with wrong examples, then fix it"],
@@ -86,8 +86,8 @@
     return b;
   }
   function place(){
-    const s1 = document.getElementById("seg-1"); if (!s1 || s1.querySelector(".mbrief")) return;
-    const low = s1.querySelector(".lower"); (low ? low.after(brief()) : s1.prepend(brief()));
+    const s1 = document.getElementById("seg-1"); if (!s1 || s1.dataset.mdone) return; s1.dataset.mdone = "1";
+    /* the big "Today's mission" box was removed (2026-11-13): only the short mission banners stay */
     Object.entries(B.missions || {}).forEach(([n, t]) => { const s = document.getElementById("seg-" + n); if (!s || s.querySelector(".mtask")) return;
       const m = el("div", "mtask"); m.append(el("span", null, "🎯"), el("span", null, t)); const lw = s.querySelector(".lower"); (lw ? lw.after(m) : s.prepend(m)); });
   }
