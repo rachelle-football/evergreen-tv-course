@@ -352,7 +352,7 @@ function hub(tok){
           (() => { const PIC = ["big","close","char","robot","poster","before","map","inside"], has = k => v.files.some(f => f.slot === k), np = v.files.filter(f => PIC.includes(f.slot)).length;
             const miss = [np < 3 && "pictures (" + np + " of 3)", !has("page") && "web page"].filter(Boolean);
             return el("p", {style:"margin:6px 0;font-size:14px;font-weight:600;color:" + (miss.length ? "#b42318" : "#1e7a4f")}, miss.length ? "Missing: " + miss.join(", ") : "✓ Project complete"); })(),
-          el("div", {class:"thumbs"}, ...v.files.map(f => el("a", {href:FURL(f.path), target:"_blank", rel:"noopener", title:f.label, class:"th"}, /^image\//.test(f.mime) ? el("img", {src:FURL(f.path), alt:f.label, loading:"lazy"}) : el("span", null, /^video|^audio/.test(f.mime) ? "🎬" : "📄"), el("small", null, fname(f)))))); }))));
+          el("div", {class:"thumbs"}, ...v.files.map(f => el("a", {href:/html/.test(f.mime || "") ? new URL("view.html?p=" + f.path, location.href).href : FURL(f.path), target:"_blank", rel:"noopener", title:f.label, class:"th"}, /^image\//.test(f.mime) ? el("img", {src:FURL(f.path), alt:f.label, loading:"lazy"}) : el("span", null, /^video|^audio/.test(f.mime) ? "🎬" : "📄"), el("small", null, fname(f)))))); }))));
   }
 
   const fail = e => { if (e.code === "not_teacher"){ try { sessionStorage.removeItem(TKEY); } catch(x) {} renderTeacher(); toast(ERR(e.code)); } else msg.replaceChildren(el("div", {class:"fb no"}, ERR(e.code))); };

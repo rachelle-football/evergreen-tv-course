@@ -300,6 +300,7 @@ Bright colours, big fonts, works on a phone.</pre>
       <p class="newchat">🆕 Paste it in a <b>NEW</b> Gemini chat with Canvas (press <b>New chat</b> first), so Gemini does not mix it with your other work.</p>
       <span class="tag" style="margin-top:6px">Save your page in your folder</span>
       <div id="pageSlot"></div>
+      <div id="pageLink" class="row" style="margin-top:8px;flex-wrap:wrap"></div>
     </aside>
   </div>
 </section>
@@ -439,6 +440,8 @@ async function rpc(fn, args){
   return j;
 }
 const url = path => base() + "/storage/v1/object/public/creations/" + path.split("/").map(encodeURIComponent).join("/");
+const view = path => new URL("view.html?p=" + encodeURIComponent(path).replace(/%2F/g, "/"), location.href).href; /* a page opens as a real website */
+const link = f => /html/.test(f.mime || "") || /\.html?$/.test(f.path) ? view(f.path) : url(f.path);
 const EXT = {"image/png":"png","image/jpeg":"jpg","image/webp":"webp","image/gif":"gif","video/mp4":"mp4","video/webm":"webm","video/quicktime":"mov","audio/mpeg":"mp3","audio/mp4":"m4a","audio/wav":"wav","audio/webm":"weba","text/html":"html"};
 const extOf = (mime, name) => EXT[mime] || ((name || "").split(".").pop() || "bin").toLowerCase().slice(0, 5);
 let cache = null;
@@ -467,7 +470,7 @@ function preview(f){
   if (/^image\//.test(f.mime)) return el("img", {src:u, alt:f.label, class:"fprev", loading:"lazy"});
   if (/^video\//.test(f.mime)) return el("video", {src:u, controls:"", preload:"metadata", class:"fprev"});
   if (/^audio\//.test(f.mime)) return el("audio", {src:u, controls:"", class:"faud"});
-  return el("a", {href:u, target:"_blank", rel:"noopener", class:"fpage"}, "📄 Open my page");
+  return el("a", {href:view(f.path), target:"_blank", rel:"noopener", class:"fpage"}, "🌐 Open my page");
 }
 /* one upload box for one slot: [{slot, label, accept}] */
 function slotBox(box, s, onDone){
@@ -503,7 +506,7 @@ function folder(box, now){
     let files = []; let err = ""; try { files = await list(true); } catch(e){ err = MSG[e.code] || ""; }
     const P = plan(), have = s => files.find(f => f.slot === s.slot), n = P.filter(have).length;
     box.replaceChildren(...[el("span", {class:"tag"}, "📁 My folder · saved in the app"),
-      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:url(f.path), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc() && (!now || s.ch <= now) && !(box.closest("dialog") == null && document.querySelector('.fslot[data-slot="' + s.slot + '"]'))) ? addBtn(s) : el("small", null, f || !now || s.ch <= now ? (!f && document.querySelector('.fslot[data-slot="' + s.slot + '"]') ? "↑ Upload above" : "Ch " + DN(s.ch)) : "later · Ch " + DN(s.ch))); })),
+      el("ul", {class:"files2"}, ...P.map(s => { const f = have(s); return el("li", {class:(f ? "ok" : "") + (s.ch === now ? " now" : "")}, el("b", null, f ? "✓" : s.ch === now ? "→" : "○"), el("span", null, f ? el("a", {href:link(f), target:"_blank", rel:"noopener"}, el("code", null, fileName(f))) : el("code", null, s.slot), " ", s.label), (!f && on() && acc() && (!now || s.ch <= now) && !(box.closest("dialog") == null && document.querySelector('.fslot[data-slot="' + s.slot + '"]'))) ? addBtn(s) : el("small", null, f || !now || s.ch <= now ? (!f && document.querySelector('.fslot[data-slot="' + s.slot + '"]') ? "↑ Upload above" : "Ch " + DN(s.ch)) : "later · Ch " + DN(s.ch))); })),
       el("p", {class:"muted", style:"margin:4px 0 0;font-size:14px"}, on() ? n + " of " + P.length + " saved. Your teacher can see your folder." : "Log in from the class link to save your files in the app."),
       err ? el("p", {class:"fmsg no"}, err) : null,
       on() && files.length ? el("div", {class:"row", style:"margin-top:6px"}, el("button", {class:"btn sm alt", type:"button", onclick:() => zip(files, (acc() && acc().username) || "my-folder")}, "⬇ Download my whole folder")) : null].filter(Boolean));
@@ -528,7 +531,7 @@ async function zip(files, name, groups){
   for (const [folderName, fs] of sets){ const d = z.folder(folderName); for (const f of fs){ const r = await fetch(url(f.path)); d.file(fileName(f), await r.blob()); } }
   const blob = await z.generateAsync({type:"blob"}); const a = el("a", {href:URL.createObjectURL(blob), download:name + ".zip"}); document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 4000);
 }
-return {on, list, upload, remove, url, slotBox, folder, plan, zip, fileName, kb, preview, ready, rpc, MSG};
+return {on, list, upload, remove, url, view, link, slotBox, folder, plan, zip, fileName, kb, preview, ready, rpc, MSG};
 })();
 
 /* ---------- chip prompt builder: kids choose, the prompt builds itself ---------- */
@@ -649,6 +652,9 @@ let MYF = [];
 const PK8 = window.PICKINDS, PICS8 = (raw("ch5-pics") || ["big","close","char"]).filter(k => PK8[k]);
 const fname = slot => { const f = MYF.find(x => x.slot === slot); return f ? F.fileName(f) : slot + (slot === "video" ? ".mp4" : slot === "page" ? ".html" : ".png"); };
 const saved = slot => MYF.some(x => x.slot === slot);
+/* the picture as Gemini needs it: its real web address when it is saved, so it shows at once */
+const pic = slot => { const f = MYF.find(x => x.slot === slot); return f ? "from this link: " + F.url(f.path) : fname(slot); };
+const allOnline = () => PICS8.every(saved);
 function have(){
   const d = raw("ch3-card") || {}, st = raw("ch4-story") || {};
   return [
@@ -676,16 +682,16 @@ function slug(s){ return (s || "").toLowerCase().replace(/^the /, "").split(/\s+
 function pageText(){
   const m = me(), T = m.T || K.TEAMS.school, d = raw("ch3-card") || {}, st = raw("ch4-story") || {}, has = x => W.sections.includes(x);
   const ideas = [d.i1, d.i2, d.i3, d.mine].filter(Boolean), out = [];
-  out.push("A big title" + (has("my pictures") ? " with the picture " + fname(PICS8[0]) + " behind it" : "") + ".");
+  out.push("A big title" + (has("my pictures") ? " with the picture " + pic(PICS8[0]) + " behind it" : "") + ".");
   if (has("my design ideas")) out.push("My design: " + (ideas.length ? ideas.map(x => "\"" + x + "\"").join(", ") : "(my big ideas)") + ", each in its own card." + (d.day ? " A day in it: \"" + d.day + "\"" : ""));
-  if (has("my story")) out.push("My story" + (st.title ? ", called \"" + st.title + "\"" : "") + (has("my pictures") && PICS8.includes("char") ? ", with the picture " + fname("char") + " next to it" : "") + ". Here is the story: \"" + (st.text || "(my story)").trim() + "\"");
-  if (has("my pictures")) PICS8.filter(k => k !== PICS8[0] && k !== "char").forEach(k => out.push("The picture " + fname(k) + " (" + PK8[k].label.toLowerCase() + ") with a short caption."));
+  if (has("my story")) out.push("My story" + (st.title ? ", called \"" + st.title + "\"" : "") + (has("my pictures") && PICS8.includes("char") ? ", with the picture " + pic("char") + " next to it" : "") + ". Here is the story: \"" + (st.text || "(my story)").trim() + "\"");
+  if (has("my pictures")) PICS8.filter(k => k !== PICS8[0] && k !== "char").forEach(k => out.push("The picture " + pic(k) + " (" + PK8[k].label.toLowerCase() + ") with a short caption."));
   W.fun.forEach(f => out.push(f.charAt(0).toUpperCase() + f.slice(1) + "."));
   out.push("A footer: \"Made with AI by EB7 · " + T.site + "\". Under every picture, a small label: Made with AI.");
   return "Role: You are a web designer who builds amazing websites for kids.\n" +
     "Task: Create a one-page website for \"" + T.site + ": " + (d.name || "my future design") + "\", made by a 12-year-old student in the team \"" + T.name + "\".\n" +
     "Context: Put these sections on the page, in this order:\n" + out.map((x, i) => (i + 1) + ". " + x).join("\n") + "\n" +
-    "The pictures will be in the same folder as the page, with exactly these file names." + ((W.idea || "").trim() ? "\nMy own idea: " + W.idea.trim() + "." : "") + "\n" +
+    (allOnline() ? "Use every picture link exactly as written, as the src of an <img>." : "The pictures will be in the same folder as the page, with exactly these file names.") + ((W.idea || "").trim() ? "\nMy own idea: " + W.idea.trim() + "." : "") + "\n" +
     "Format: The page looks like " + (W.theme || "a colourful page from the future") + ". Colours: " + (W.colours || "bright and friendly") + ". Letters: " + (W.font || "big and easy to read") + ". " + (W.anim || "gentle animations").replace(/^./, c => c.toUpperCase()) + ". Big fonts, easy to read, works well on a phone. Do not invent facts or real people's names.";
 }
 let webUI;
@@ -699,10 +705,10 @@ const L1 = checklist("list1", [
   ["Design your page", "Choose a theme, colours, letters, what goes on it and 2 interactive things. Your design card and story are added by themselves."],
   ["Open Gemini with Canvas", "Go to gemini.google.com. Press the + next to the message box, then choose Canvas."],
   ["Paste your prompt", "Copy my prompt (on the right), paste it in Gemini and press Enter. Wait about 30 seconds."],
-  ["Look at the preview", "Your pictures will not show yet: they are on your computer, not in Gemini. That is normal."],
+  ["Look at the preview", "Your pictures show at once: they come from your folder in the app. A picture is missing? Copy the prompt again."],
   ["Improve it twice", "Copy 2 improvement prompts into the same chat, or write your own."],
   ["Save the page", "In the Canvas panel, find Download (the arrow icon). Then press ⬆ Upload under your prompt and choose the file. It is saved in your folder as page.html."],
-  ["See it with everything", "In the folder box (part 02), press ⬇ Download my whole folder. Open the zip and double-click page.html. Now your pictures appear. Do they all work?"]
+  ["Open your link", "Under the upload box, press 🌐 Open my page. That is your real website link: send it to your family!"]
 ]);
 picker($("#proj"), () => { drawPage(); drawPlan(); });
 document.addEventListener("click", () => { if (W.theme && W.colours) L1.tick(0); });
@@ -766,7 +772,11 @@ function ready(){ const n = [...document.querySelectorAll("#launch input")].filt
 $("#launch").addEventListener("change", ready); ready();
 const fold8 = F.folder($("#filesBox"), 8);
 F.slotBox($("#pageSlot"), {slot:"page", label:"My web page", accept:".html,text/html"}, () => { fold8.draw(); refreshFiles(); const cb = document.getElementById("list1-5"); if (cb && !cb.checked){ cb.checked = true; cb.dispatchEvent(new Event("change", {bubbles:true})); } });
-function refreshFiles(){ F.ready().then(() => F.list(true)).then(fs => { MYF = fs || []; drawPlan(); drawPage(); }).catch(() => {}); }
+function drawLink(){ const f = MYF.find(x => x.slot === "page"), box = $("#pageLink"); if (!box) return;
+  if (!f){ box.replaceChildren(); return; }
+  const u = F.view(f.path);
+  box.replaceChildren(el("a", {class:"btn sm", href:u, target:"_blank", rel:"noopener", style:"text-decoration:none"}, "🌐 Open my page"), el("button", {class:"btn sm alt", type:"button", onclick:() => copy(u, null, "a message to your family")}, "🔗 Copy my link")); }
+function refreshFiles(){ F.ready().then(() => F.list(true)).then(fs => { MYF = fs || []; drawPlan(); drawPage(); drawLink(); }).catch(() => {}); }
 refreshFiles();
 K.start();
 })();

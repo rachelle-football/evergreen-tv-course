@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Creators · Student page</title>
+<style>
+:root{--ink:#13221C;--paper:#F4F6F2;--green:#1E7A55}
+html,body{margin:0;height:100%;background:var(--paper);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+.bar{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:8px 14px;background:#fff;border-bottom:1px solid #D7DFD9;font-size:14px}
+.bar b{color:var(--green)}.bar a{color:var(--ink)}
+iframe{display:block;width:100%;height:calc(100% - 39px);border:0;background:#fff}
+.msg{max-width:520px;margin:15vh auto;padding:0 16px;text-align:center}
+</style></head><body>
+<div class="bar"><span><b>AI Creators</b> · EB7 · a student page, made with AI</span><a href="index.html">All chapters</a></div>
+<div id="app"><p class="msg">Loading the page…</p></div>
+<script src="config.js"></script>
+<script>
+(function(){
+  const p = new URLSearchParams(location.search).get("p") || "";
+  const app = document.getElementById("app");
+  const say = t => { app.innerHTML = ""; const m = document.createElement("p"); m.className = "msg"; m.textContent = t; app.append(m); };
+  /* only a student's saved page: <ticket>/page.html */
+  if (!/^[0-9a-f-]{36}\/page\.html?$/i.test(p) || !window.EVG_CLOUD || !EVG_CLOUD.url){ say("This link is not complete. Ask your teacher for the right link."); return; }
+  const url = EVG_CLOUD.url.replace(/\/+$/, "") + "/storage/v1/object/public/creations/" + p;
+  fetch(url, {cache:"no-cache"}).then(r => { if (!r.ok) throw 0; return r.text(); }).then(html => {
+    const f = document.createElement("iframe");
+    f.setAttribute("sandbox", "allow-scripts allow-popups allow-forms");
+    f.setAttribute("title", "Student page");
+    f.srcdoc = html;
+    app.innerHTML = ""; app.append(f);
+  }).catch(() => say("This page could not be opened. It may have been replaced: ask the student for a new link."));
+})();
+</script>
+</body></html>
