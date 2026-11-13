@@ -245,10 +245,14 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
       <div class="shape"><svg viewBox="0 0 100 100" aria-label="A shape"><rect x="12" y="12" width="76" height="76" rx="3" fill="#1E88E5"/></svg></div>
       <div>
         <div class="bot"><span class="face">🤖</span><span class="bub" id="b1">Hello! My brain is empty. I don't know anything yet.</span></div>
-        <div class="row"><button class="btn sm" type="button" id="ask1">🤖 Ask the AI: what is this?</button></div>
-        <p class="step-t">Teach it: this is a…</p>
+        <p class="step-t">Step 1 · Ask the AI</p>
+        <div class="row"><button class="btn sm" type="button" id="ask1">🤖 What is this?</button></div>
+        <p class="step-t">Step 2 · Teach it: this is a…</p>
         <div class="chips" id="names1"></div>
-        <p class="muted" style="margin:0;font-size:15px" id="h1">You choose. Your AI will believe you.</p>
+        <p class="muted" style="margin:0 0 4px;font-size:15px">You choose. Your AI will believe you, even if it is wrong.</p>
+        <p class="step-t">Step 3 · Ask it again</p>
+        <div class="row"><button class="btn sm" type="button" id="ask1b">🤖 What is this?</button></div>
+        <p class="muted" style="margin:8px 0 0;font-size:15px" id="h1"></p>
       </div>
     </div>
     <div class="def" id="l1" hidden>
@@ -258,7 +262,7 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
     </div>
   </div>
 
-  <div class="card part" id="p2" hidden>
+  <div class="card part" id="p2">
     <span class="tag">Part 2 · The AI starts to think</span>
     <h3>House or castle? You decide by the colour</h3>
     <p class="step-t">Step 1 · Choose the colour of a HOUSE</p>
@@ -540,14 +544,14 @@ QUOTES.forEach(q => {
 let taught1 = null, asked1 = 0;
 const NAMES = ["Square", "Circle", "Triangle", "Star"];
 function drawNames(){ $("#names1").replaceChildren(...NAMES.map(n => el("button", {class:"chip", type:"button", "aria-pressed":String(taught1 === n), onclick:() => {
-  taught1 = n; drawNames(); $("#b1").textContent = "OK! I learned: this is a " + n.toLowerCase() + "."; $("#h1").textContent = "Now ask the AI again."; }}, n))); }
+  taught1 = n; drawNames(); $("#b1").textContent = "OK! I learned: this is a " + n.toLowerCase() + "."; $("#h1").textContent = "Now do step 3: ask it again."; }}, n))); }
 drawNames();
-$("#ask1").onclick = () => {
-  if (!taught1){ $("#b1").textContent = "I don't know. Nobody taught me. 🤷"; $("#h1").textContent = "Teach it: choose a name below."; return; }
+$("#ask1").onclick = $("#ask1b").onclick = () => {
+  if (!taught1){ $("#b1").textContent = "I don't know. Nobody taught me. 🤷"; $("#h1").textContent = "It does not know! Do step 2: teach it."; return; }
   asked1++;
   $("#b1").textContent = "This is a " + taught1.toLowerCase() + "!";
   $("#h1").textContent = taught1 === "Square" ? "Right, because you taught it right. Now try teaching it a wrong name, and ask again." : "Wrong! It is a square. But your AI believes you, because you taught it.";
-  $("#l1").hidden = false; $("#p2").hidden = false;
+  $("#l1").hidden = false;
 };
 /* part 2: colours. The kid teaches 2 colours, then asks about new ones: the AI picks the closest */
 const SW = [["red","#E53935"],["yellow","#FDD835"],["blue","#1E88E5"],["green","#43A047"],["purple","#8E24AA"],["orange","#FB8C00"],["pink","#EC407A"],["brown","#8D6E63"]];
