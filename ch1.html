@@ -230,8 +230,23 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
 <main class="wrap" id="stage">
 
 <!-- 1 -->
-<section class="seg" id="seg-1" data-min="5" data-title="AI or not AI?">
-  <div class="lower"><div class="no">01</div><div class="name"><h2>AI or not AI?</h2><p>5 minutes · warm-up</p></div></div>
+<section class="seg" id="seg-1" data-min="2" data-title="Your year">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>Your year as an AI Creator</h2><p>2 minutes · your road</p></div></div>
+  <p class="big">This year you don't only use AI. You create with it. Here is your road.</p>
+  <ol class="road2" aria-label="Your road, chapter by chapter">
+    <li class="done"><span class="ic">🤖</span><b>1 · Meet AI</b><span>What AI is and how it learns</span><em>▶ Today</em></li>
+    <li><span class="ic">🧠</span><b>2 · Train an AI</b><span>Teach a real AI with your drawings</span></li>
+    <li><span class="ic">💬</span><b>3 · Prompts</b><span>Talk to AI so it does what you want</span></li>
+    <li><span class="ic">📖</span><b>4 · Story</b><span>Invent a hero and a story</span></li>
+    <li><span class="ic">🖼️</span><b>5 · Pictures</b><span>Make your own AI pictures</span></li>
+    <li><span class="ic">🌐</span><b>6 · My website</b><span>Your own website, your own link</span></li>
+    <li class="goal"><span class="ic">🎤</span><b>7 · Exhibition</b><span>Show parents and guests what you made</span></li>
+  </ol>
+</section>
+
+<!-- 2 -->
+<section class="seg" id="seg-2" data-min="5" data-title="AI or not AI?" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>AI or not AI?</h2><p>5 minutes · warm-up</p></div></div>
   <p class="big">Some machines are AI. Most are not. For each one, tap your answer.</p>
   <div class="things" id="things"></div>
   <p class="lead" style="margin-top:20px"><span class="score" id="tScore">0 of 10</span> right</p>
@@ -241,9 +256,9 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
   </div>
 </section>
 
-<!-- 2 -->
-<section class="seg" id="seg-2" data-min="5" data-title="Real or AI?" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>Real or AI?</h2><p>5 minutes · who wrote it?</p></div></div>
+<!-- 3 -->
+<section class="seg" id="seg-3" data-min="5" data-title="Real or AI?" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Real or AI?</h2><p>5 minutes · who wrote it?</p></div></div>
   <p class="big">Two of these lines were said by real people. Two were written by an AI. Can you tell which?</p>
   <div class="grid g2" id="quotes"></div>
   <p class="lead" style="margin-top:22px"><span class="score" id="qscore">0 of 4</span> right so far.</p>
@@ -254,9 +269,9 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
   </div>
 </section>
 
-<!-- 3 -->
-<section class="seg" id="seg-3" data-min="10" data-title="What is AI?" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>What is AI?</h2><p>10 minutes · you teach the AI</p></div></div>
+<!-- 4 -->
+<section class="seg" id="seg-4" data-min="10" data-title="What is AI?" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>What is AI?</h2><p>10 minutes · you teach the AI</p></div></div>
   <p class="big">An AI knows nothing at first. You teach it. Then it starts to think by itself.</p>
 
   <div class="card part">
@@ -309,9 +324,9 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
   </div>
 </section>
 
-<!-- 4 -->
-<section class="seg" id="seg-4" data-min="7" data-title="Think like ChatGPT" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Think like ChatGPT</h2><p>7 minutes · guess the next word</p></div></div>
+<!-- 5 -->
+<section class="seg" id="seg-5" data-min="7" data-title="Think like ChatGPT" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Think like ChatGPT</h2><p>7 minutes · guess the next word</p></div></div>
   <p class="big">ChatGPT and Gemini write one word at a time. Each time, they guess the most likely next word. Can you guess like them?</p>
   <div class="card">
     <span class="tag" id="sentNo">Sentence 1 of 4</span>
@@ -337,9 +352,9 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
   </div>
 </section>
 
-<!-- 5 -->
-<section class="seg" id="seg-5" data-min="6" data-title="Why learn it now?" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Why learn it now?</h2><p>6 minutes · your dream job</p></div></div>
+<!-- 6 -->
+<section class="seg" id="seg-6" data-min="6" data-title="Why learn it now?" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>Why learn it now?</h2><p>6 minutes · your dream job</p></div></div>
   <div class="line">
     <div class="stop now"><div class="dot"></div><b>2026</b><span>You, in EB7, learning AI</span></div>
     <div class="stop"><div class="dot"></div><b>2030</b><span>You finish school</span></div>
@@ -351,26 +366,17 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
   <div class="def" style="border-color:var(--onair);background:var(--onair-soft)"><p>AI will be inside almost every job. The people who know how to use it will lead. You start today.</p></div>
 </section>
 
-<!-- 6 -->
-<section class="seg" id="seg-6" data-min="5" data-title="Quick quiz" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>Quick quiz</h2><p>5 minutes</p></div></div>
+<!-- 7 -->
+<section class="seg" id="seg-7" data-min="5" data-title="Quick quiz" hidden>
+  <div class="lower"><div class="no">07</div><div class="name"><h2>Quick quiz</h2><p>5 minutes</p></div></div>
   <div id="quiz"></div>
   <p class="lead"><span class="score" id="quizScore">0 of 5</span></p>
 </section>
 
-<!-- 7 -->
-<section class="seg" id="seg-7" data-min="6" data-title="Your year" hidden>
-  <div class="lower"><div class="no">07</div><div class="name"><h2>Your year as an AI Creator</h2><p>6 minutes · your goal</p></div></div>
-  <p class="big">This year you don't only use AI. You create with it. Here is your road.</p>
-  <ol class="road2" aria-label="Your road, chapter by chapter">
-    <li class="done"><span class="ic">🤖</span><b>1 · Meet AI</b><span>What AI is and how it learns</span><em>✓ Done today</em></li>
-    <li><span class="ic">🧠</span><b>2 · Train an AI</b><span>Teach a real AI with your drawings</span></li>
-    <li><span class="ic">💬</span><b>3 · Prompts</b><span>Talk to AI so it does what you want</span></li>
-    <li><span class="ic">📖</span><b>4 · Story</b><span>Invent a hero and a story</span></li>
-    <li><span class="ic">🖼️</span><b>5 · Pictures</b><span>Make your own AI pictures</span></li>
-    <li><span class="ic">🌐</span><b>6 · My website</b><span>Your own website, your own link</span></li>
-    <li class="goal"><span class="ic">🎤</span><b>7 · Exhibition</b><span>Show parents and guests what you made</span></li>
-  </ol>
+<!-- 8 -->
+<section class="seg" id="seg-8" data-min="5" data-title="Your goal" hidden>
+  <div class="lower"><div class="no">08</div><div class="name"><h2>Your goal for the year</h2><p>5 minutes · one bold sentence</p></div></div>
+  <p class="big">Now you know what AI is. So: what will YOU make with it this year?</p>
   <div class="card promise">
     <span class="tag">Your goal for the year</span>
     <h3>What do you want to make with AI this year?</h3>
