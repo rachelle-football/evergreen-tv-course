@@ -215,10 +215,10 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 <!-- PERIOD 1 -->
 <section class="seg" id="seg-1" data-min="3" data-title="Today" data-period="1">
   <div class="lower"><div class="no">01</div><div class="name"><h2>Today you teach a real AI</h2><p>Period 1 · 3 minutes</p></div></div>
-  <p class="big">Last week you learned that AI learns from examples. Today, you are the one giving the examples.</p>
+  <p class="big">Last week you learned that AI learns from examples. Today, you are the one giving the examples. You choose what you teach it:</p>
   <div class="grid g3">
-    <div class="card"><span class="tag">Team School 🏫</span><h3 style="font-size:24px;margin:6px 0">School objects</h3><p style="margin:0">Teach a real AI to recognise school things it has never seen: a pencil, a book, a backpack…</p></div>
-    <div class="card"><span class="tag">Team Planet 🌍</span><h3 style="font-size:24px;margin:6px 0">Recycling robot</h3><p style="margin:0">Teach a robot to sort waste: a bottle, a can, a banana peel… Watch it go from "no idea" to "I know this!"</p></div>
+    <div class="card"><span class="tag">Choice 1 · 🏫</span><h3 style="font-size:24px;margin:6px 0">School objects</h3><p style="margin:0">Teach a real AI to recognise school things it has never seen: a pencil, a book, a backpack…</p></div>
+    <div class="card"><span class="tag">Choice 2 · ♻️</span><h3 style="font-size:24px;margin:6px 0">Recycling robot</h3><p style="margin:0">Teach a robot to sort waste: a bottle, a can, a banana peel… Watch it go from "no idea" to "I know this!"</p></div>
     <div class="card"><span class="tag">Next period</span><h3 style="font-size:24px;margin:6px 0">Trick</h3><p style="margin:0">Teach it lies on purpose and see what happens. Then fix it.</p></div>
   </div>
 </section>
@@ -246,20 +246,20 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
   <div class="mission">
     <div>
       <p class="lead" id="lab1lead">This AI has never seen a pencil, a bottle or a banana peel. You will teach it, the way real engineers do: with examples.</p>
-      <p class="teamnote" id="lab1team"></p>
+      <div class="teamnote"><b>First, choose what you teach your AI:</b><div class="teamrow" id="pickWhat" style="margin-top:8px"></div></div>
       <div class="card lab" id="lab1"></div>
       <ol class="checklist" id="list1"></ol>
     </div>
     <aside class="card tally" id="tally1"></aside>
   </div>
-  <p class="note">No camera, nothing uploaded. Your drawings and your AI live in this page and are saved to your account.</p>
+  <p class="note">No camera, nothing uploaded. Your AI lives only in this page: when you close it, it forgets everything.</p>
 </section>
 
 <section class="seg" id="seg-4" data-min="5" data-title="Share" data-period="1" hidden>
   <div class="lower"><div class="no">04</div><div class="name"><h2>Share your score</h2><p>Period 1 · 5 minutes</p></div></div>
   <p class="big">Who got the highest accuracy? What did they do differently?</p>
   <div class="grid g2">
-    <div class="card"><span class="tag">Ask the class</span><ul class="lead" style="margin:8px 0 0;padding-left:22px"><li>What did the AI say before you taught it?</li><li>How many drawings did it need to learn one thing?</li><li>Which drawings fooled it? Why?</li><li>Planet team: would you trust your robot to sort the school's rubbish?</li></ul></div>
+    <div class="card"><span class="tag">Ask the class</span><ul class="lead" style="margin:8px 0 0;padding-left:22px"><li>What did the AI say before you taught it?</li><li>How many drawings did it need to learn one thing?</li><li>Which drawings fooled it? Why?</li><li>Would you trust your AI to do this job alone? Why?</li></ul></div>
     <div class="card" style="background:var(--gold-soft);border-color:transparent"><span class="tag">Remember for next week</span><p class="lead" style="margin:8px 0 0">An AI is only as good as the examples you give it.</p></div>
   </div>
 </section>
@@ -317,17 +317,7 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
     <p>The helpers are the AI's <b>neurons</b>. The stars are how much it listens to each one. When an AI learns, it changes the stars by itself, again and again, until it makes no mistakes.</p>
     <div class="note" style="color:var(--ink);font-size:17px">ChatGPT has billions of helpers. That's why it can do so much.</div>
   </div>
-</section>
-
-<section class="seg" id="seg-8" data-min="10" data-title="Your team and part" data-period="2" hidden>
-  <div class="lower"><div class="no">08</div><div class="name"><h2>Your team and your part</h2><p>Period 2 · 10 minutes · you keep them until the exhibition</p></div></div>
-  <p class="big">From next week, every lesson builds a piece of your team's website. Check your team and your part.</p>
-  <div class="card myproj" id="proj"></div>
-  <div class="card" style="margin-top:16px">
-    <label for="segIdea" class="tag">What should the AI of the future do for your part? One sentence.</label>
-    <textarea id="segIdea" placeholder="In my part, AI could…"></textarea>
-    <p class="note">Next week: Prompt Engineering. You will design your part with Gemini, like a real architect.</p>
-  </div>
+  <p class="note" style="margin-top:16px">Next week: Prompt Engineering. You learn to talk to AI so it does exactly what you want.</p>
 </section>
 
 </main>
@@ -702,7 +692,7 @@ drawLab($("#lab3"), {
 });
 
 /* lab 1: teach the AI your team's things */
-const TEAM = P.me().team === "planet" ? "planet" : P.me().team === "school" ? "school" : null;
+const TEAM = ["school", "planet"].includes(store.get("what")) ? store.get("what") : null;
 const LAB1 = {
   school:{chips:["pencil","book","backpack","clock","chair","scissors","ruler"], ph:"e.g. pencil", greet:"Hi! Teach me school objects. Write one in the box, then draw it."},
   planet:{chips:["bottle","can","banana peel","paper bag","apple core","battery","glass jar"], ph:"e.g. bottle", greet:"Hi! I'm a recycling robot. Teach me kinds of waste: write one in the box, then draw it."},
@@ -740,12 +730,9 @@ T2.onchange = st => { if (st[0].r + st[0].w >= 5){ L2.tick(3); $("#trickDef").hi
 T2.onchange(T2.state());
 
 /* pick a segment */
-/* team and part */
-P.picker($("#proj"), () => location.reload());
-const idea = store.get("idea"); if (idea) $("#segIdea").value = idea;
-$("#segIdea").addEventListener("input", () => store.set("idea", $("#segIdea").value));
-{ const m = P.me(); $("#lab1team").textContent = m.team === "school" ? "Team School 🏫: teach it school objects. Goal: it knows 3 school things." : m.team === "planet" ? "Team Planet 🌍: you are building a recycling robot. Goal: it can sort 3 kinds of waste." : "You have not picked a team yet. Pick it in part 08 of this chapter, then come back.";
-  if (m.team === "planet") $("#lab1lead").textContent = "A recycling robot must know a bottle from a banana peel. This one knows nothing about waste yet. You will teach it, the way real engineers do: with examples."; }
+/* what to teach: school objects or a recycling robot (no teams) */
+$("#pickWhat").replaceChildren(...[["school", "🏫 School objects"], ["planet", "♻️ Recycling robot"]].map(([k, t]) => el("button", {class:"teambtn", type:"button", "aria-pressed":String(TEAM === k), onclick:() => { if (TEAM === k) return; store.set("what", k); location.reload(); }}, t)));
+if (TEAM === "planet") $("#lab1lead").textContent = "A recycling robot must know a bottle from a banana peel. This one knows nothing about waste yet. You will teach it, the way real engineers do: with examples.";
 
 const start = segs.findIndex(s => "#" + s.id === location.hash);
 go(start >= 0 ? start : 0);
