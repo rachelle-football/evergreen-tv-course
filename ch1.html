@@ -145,14 +145,16 @@ a{color:var(--green);font-weight:700}
 .sentence{font-family:var(--display);font-size:24px;font-weight:700;margin:6px 0}
 .sentence u{text-decoration:none;border-bottom:3px dashed var(--green);padding:0 18px}
 
-/* 5 alphazero */
-.board{display:grid;grid-template-columns:repeat(8,1fr);width:min(100%,280px);aspect-ratio:1;border:2px solid var(--ink);border-radius:6px;overflow:hidden}
-.board i:nth-child(16n+1),.board i:nth-child(16n+3),.board i:nth-child(16n+5),.board i:nth-child(16n+7),
-.board i:nth-child(16n+10),.board i:nth-child(16n+12),.board i:nth-child(16n+14),.board i:nth-child(16n+16){background:var(--green-soft)}
-.board i{background:var(--panel)}
-.stat b{display:block;font-family:var(--display);font-size:clamp(30px,4vw,46px);line-height:1;font-variant-numeric:tabular-nums}
-.meter{height:12px;background:var(--line);border-radius:6px;overflow:hidden;margin:10px 0}
-.meter i{display:block;height:100%;width:0;background:var(--gold)}
+/* 5 jobs */
+.jobs{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));margin-bottom:14px}
+.jobs button{background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:12px 8px;font-weight:700;font-size:16px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.jobs button span{font-size:34px;line-height:1}
+.jobs button[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+.jobcard{display:grid;gap:14px;grid-template-columns:auto 1fr 1fr;align-items:start;margin-bottom:14px}
+.jobcard .big-ic{font-size:64px;line-height:1}
+.jobcard h3{font-size:24px;margin:4px 0 6px}
+.jobcard p{margin:0;font-size:17px}
+@media (max-width:700px){.jobcard{grid-template-columns:1fr}}
 
 /* 6 timeline */
 .line{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative;margin:10px 0 24px}
@@ -292,7 +294,7 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
 </section>
 
 <!-- 4 -->
-<section class="seg" id="seg-4" data-min="7" data-title="How it learns" hidden>
+<section class="seg" id="seg-4" data-min="7" data-title="Think like ChatGPT" hidden>
   <div class="lower"><div class="no">04</div><div class="name"><h2>Think like ChatGPT</h2><p>7 minutes · guess the next word</p></div></div>
   <p class="big">ChatGPT and Gemini write one word at a time. Each time, they guess the most likely next word. Can you guess like them?</p>
   <div class="card">
@@ -320,67 +322,29 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
 </section>
 
 <!-- 5 -->
-<section class="seg" id="seg-5" data-min="5" data-title="Can it teach itself?" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Can AI teach itself?</h2><p>5 minutes · a true story from 2017</p></div></div>
-  <div class="grid g2" style="align-items:start">
-    <div>
-      <p class="big">An AI called AlphaZero was given only the rules of chess. No tips, no famous games. Then it played against itself.</p>
-      <div class="row"><button class="btn" id="train" type="button">Watch it practise</button></div>
-      <div class="meter" aria-hidden="true"><i id="meter"></i></div>
-      <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))">
-        <div class="card stat"><span class="tag">Practice time</span><b id="hrs">0 h</b></div>
-        <div class="card stat"><span class="tag">Its teacher</span><b style="font-size:26px">itself</b></div>
-      </div>
-      <div class="card" id="result" style="margin-top:14px" hidden>
-        <span class="tag">After about 9 hours</span>
-        <p class="lead" style="margin:6px 0 0">It played the best chess program in the world, 100 games: <b>28 wins, 0 losses, 72 draws.</b></p>
-      </div>
-    </div>
-    <div>
-      <div class="board" aria-hidden="true">
-        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-      </div>
-      <div class="card" style="margin-top:14px;background:var(--gold-soft);border-color:transparent">
-        <span class="tag">But who is the boss?</span>
-        <p style="margin:6px 0 0">People chose the goal (win at chess), built the AI and decided what it is used for. AI can get better at a task by itself. People decide which task.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 6 -->
-<section class="seg" id="seg-6" data-min="5" data-title="Why learn it now?" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>Why learn it now?</h2><p>5 minutes · your timeline</p></div></div>
+<section class="seg" id="seg-5" data-min="6" data-title="Why learn it now?" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Why learn it now?</h2><p>6 minutes · your dream job</p></div></div>
   <div class="line">
     <div class="stop now"><div class="dot"></div><b>2026</b><span>You, in EB7, learning AI</span></div>
     <div class="stop"><div class="dot"></div><b>2030</b><span>You finish school</span></div>
     <div class="stop"><div class="dot"></div><b>2035</b><span>Your first job</span></div>
   </div>
-  <p class="big">By then, AI will be inside almost every job. Here is what it already does today:</p>
-  <div class="grid g3">
-    <div class="card job"><span class="tag">Doctor</span><h3>Reads scans</h3><p>Points to signs of illness in X-rays so the doctor looks twice.</p></div>
-    <div class="card job"><span class="tag">Football coach</span><h3>Tracks every run</h3><p>Measures where each player ran in a match and how fast.</p></div>
-    <div class="card job"><span class="tag">Designer</span><h3>Sketches ideas</h3><p>Draws 20 ideas in a minute. The designer picks one and makes it great.</p></div>
-    <div class="card job"><span class="tag">Engineer</span><h3>Checks designs</h3><p>Tests a bridge or a phone on the computer before it is built.</p></div>
-    <div class="card job"><span class="tag">Chef</span><h3>Invents recipes</h3><p>Suggests dishes from what is left in the fridge.</p></div>
-    <div class="card job"><span class="tag">Teacher</span><h3>Makes practice</h3><p>Turns a lesson into a quiz in seconds. The teacher checks it.</p></div>
-  </div>
-  <div class="def" style="border-color:var(--onair);background:var(--onair-soft)"><p>The people who know how to use AI will lead. You can start today.</p></div>
+  <p class="big">What do you want to be? Pick your dream job, and see what AI already does in it today.</p>
+  <div class="jobs" id="jobs"></div>
+  <div class="card jobcard" id="jobCard" hidden></div>
+  <div class="def" style="border-color:var(--onair);background:var(--onair-soft)"><p>AI will be inside almost every job. The people who know how to use it will lead. You start today.</p></div>
 </section>
 
-<!-- 7 -->
-<section class="seg" id="seg-7" data-min="5" data-title="Quick quiz" hidden>
-  <div class="lower"><div class="no">07</div><div class="name"><h2>Quick quiz</h2><p>5 minutes</p></div></div>
+<!-- 6 -->
+<section class="seg" id="seg-6" data-min="5" data-title="Quick quiz" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>Quick quiz</h2><p>5 minutes</p></div></div>
   <div id="quiz"></div>
   <p class="lead"><span class="score" id="quizScore">0 of 5</span></p>
 </section>
 
-<!-- 8 -->
-<section class="seg" id="seg-8" data-min="6" data-title="Your year" hidden>
-  <div class="lower"><div class="no">08</div><div class="name"><h2>Your year as an AI Creator</h2><p>6 minutes · what you will make</p></div></div>
+<!-- 7 -->
+<section class="seg" id="seg-7" data-min="6" data-title="Your year" hidden>
+  <div class="lower"><div class="no">07</div><div class="name"><h2>Your year as an AI Creator</h2><p>6 minutes · what you will make</p></div></div>
   <p class="big">This year you don't only use AI. You create with it. Here is your road.</p>
   <div class="card">
     <span class="tag">Your road, chapter by chapter</span>
@@ -614,17 +578,38 @@ $("#myGuess").addEventListener("keydown", e => { if (e.key === "Enter") $("#reve
 $("#nextSent").onclick = () => { si++; showSent(); };
 showSent();
 
-/* ---------- 5 alphazero ---------- */
-let trained = false;
-$("#train").onclick = () => { if (trained) return; trained = true; let h = 0; const step = () => { h += .25; $("#hrs").textContent = (h % 1 ? h.toFixed(1) : h) + " h"; $("#meter").style.width = (h/9*100) + "%"; if (h < 9) setTimeout(step, reduce ? 0 : 70); else $("#result").hidden = false; }; step(); };
+/* ---------- 5 dream job ---------- */
+const JOBS = [
+  ["⚽","Footballer","Tracks every run, sprint and pass in a match, and shows where you can improve.","Your skill, your teamwork, your heart on the pitch."],
+  ["🩺","Doctor","Reads X-rays and scans, and points to signs of illness so the doctor looks twice.","The decision, and caring for the patient."],
+  ["✈️","Pilot","The autopilot flies straight for hours and checks the weather ahead.","Take-off, landing, and every emergency."],
+  ["🎥","YouTuber","Suggests titles, cuts the boring parts and adds subtitles in seconds.","The ideas, the jokes and your personality."],
+  ["🏗️","Architect","Draws many building ideas in minutes and tests if they are strong.","Choosing the best idea, and designing for real people."],
+  ["👨‍🍳","Chef","Invents recipes from what is left in the fridge.","The taste. Only a person can taste!"],
+  ["👩‍🏫","Teacher","Turns a lesson into a quiz in seconds.","Explaining, encouraging and checking what the AI made."],
+  ["⚙️","Engineer","Tests a bridge or a phone on the computer before it is built.","Inventing the design and keeping people safe."],
+  ["⚖️","Lawyer","Reads thousands of pages in a minute and finds the important ones.","Defending people and speaking in court."],
+  ["🎮","Game designer","Makes characters, levels and music faster.","The fun idea that makes people want to play."],
+  ["🚜","Farmer","Drones check every plant and water only the ones that need it.","Growing the food, and knowing the land."],
+  ["🎨","Designer","Sketches 20 ideas in a minute.","Picking one idea and making it great."]
+];
+let job = null; try { job = localStorage.getItem("ch1-job"); } catch(e) {}
+function drawJobs(){
+  $("#jobs").replaceChildren(...JOBS.map(([ic, n]) => el("button", {type:"button", "aria-pressed":String(job === n), onclick:() => { job = n; try { localStorage.setItem("ch1-job", n); } catch(e) {} drawJobs(); }}, el("span", {"aria-hidden":"true"}, ic), n)));
+  const j = JOBS.find(x => x[1] === job); $("#jobCard").hidden = !j; if (!j) return;
+  $("#jobCard").replaceChildren(el("span", {class:"big-ic", "aria-hidden":"true"}, j[0]),
+    el("div", null, el("span", {class:"tag"}, "🤖 What AI already does"), el("h3", null, j[1]), el("p", null, j[2])),
+    el("div", null, el("span", {class:"tag"}, "🧑 What only YOU can do"), el("h3", null, "The human part"), el("p", null, j[3])));
+}
+drawJobs();
 
-/* ---------- 7 quiz ---------- */
+/* ---------- 6 quiz ---------- */
 const QUIZ = [
-  ["What makes AI different from a normal program?", ["It learns from examples","It is faster","It uses more electricity"], 0, "A normal program follows rules a person wrote. AI learns patterns from examples."],
-  ["Where do many AIs get their examples?", ["From robots","From people: our photos, words and clicks","From the moon"], 1, "Our photos, messages and clicks become the examples AI learns from."],
-  ["ChatGPT writes by…", ["copying one website","picking a likely next word again and again","asking a person every time"], 1, "It predicts the next word, then the next, then the next."],
-  ["AlphaZero got very good at chess by…", ["reading chess books","playing millions of games against itself","copying a world champion"], 1, "It started with only the rules and learned by practising against itself."],
-  ["Who decides what an AI is used for?", ["The AI","People","Nobody"], 1, "AI can get better at a task, but people choose the task."]
+  ["Is a factory robot arm that repeats the same move AI?", ["Yes, all robots are AI","No, it does not learn","Only when it is switched on"], 1, "A robot is not always AI. AI is a machine that learns."],
+  ["You teach your AI that a square is a circle. You ask it: what is this square?", ["Square","Circle","It refuses to answer"], 1, "The AI only knows what you teach it. Teach it wrong, and it says wrong."],
+  ["You show the AI a colour it has never seen. How does it decide?", ["It picks the closest colour it learned","It chooses at random","It asks Google"], 0, "It compares with what it learned and picks the closest. That is how AI decides on new things."],
+  ["How does ChatGPT write a sentence?", ["It copies one website","It guesses the most likely next word, again and again","A person types it in secret"], 1, "It predicts the next word, then the next, then the next."],
+  ["Why should you always check who made a text or a picture?", ["Because AI can write and draw like a person","Because AI always makes mistakes","Because pictures are not allowed"], 0, "You can't always tell AI from a person. So you check."]
 ];
 let qz = 0;
 QUIZ.forEach(([q, opts, ok, why]) => { const w = el("p", {class:"why"}); let done = false;
