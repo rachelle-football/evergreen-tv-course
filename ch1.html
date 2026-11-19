@@ -133,12 +133,15 @@ a{color:var(--green);font-weight:700}
 .def p{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(22px,2.8vw,30px);line-height:1.25}
 
 /* 4 loop + next word */
-.loop svg{width:100%;height:auto;max-width:620px;display:block}
+.guess{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:8px 0 14px}
+.guess input{font:inherit;font-size:18px;padding:10px 12px;border:2px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:min(100%,220px)}
+.guess input:focus{outline:none;border-color:var(--green)}
 .bars{display:grid;gap:8px;margin-top:10px}
 .bar{display:grid;grid-template-columns:110px 1fr 46px;gap:10px;align-items:center;font-size:16px}
 .bar span:last-child{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
 .track{height:16px;border-radius:8px;background:var(--line);overflow:hidden}
 .track i{display:block;height:100%;width:0;background:var(--green);border-radius:8px;transition:width .8s ease}
+.bar.mine span:first-child{font-weight:700}.bar.mine .track i{background:var(--gold)}
 .sentence{font-family:var(--display);font-size:24px;font-weight:700;margin:6px 0}
 .sentence u{text-decoration:none;border-bottom:3px dashed var(--green);padding:0 18px}
 
@@ -290,37 +293,29 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
 
 <!-- 4 -->
 <section class="seg" id="seg-4" data-min="7" data-title="How it learns" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>How it learns from us</h2><p>7 minutes · the learning loop</p></div></div>
-  <div class="grid g2">
-    <div class="card loop">
-      <span class="tag">The learning loop</span>
-      <svg viewBox="0 0 620 300" role="img" aria-label="Examples lead to a guess, the guess is checked, the AI adjusts and guesses better">
-        <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--muted)"/></marker></defs>
-        <g fill="none" stroke="var(--muted)" stroke-width="2">
-          <path d="M228 70H392" marker-end="url(#ah)"/><path d="M490 104V196" marker-end="url(#ah)"/>
-          <path d="M392 230H228" marker-end="url(#ah)"/><path d="M130 196V104" marker-end="url(#ah)"/>
-        </g>
-        <g id="loopNodes" font-family="Atkinson Hyperlegible, sans-serif">
-          <g data-i="0"><rect x="32" y="36" width="196" height="68" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/><text x="130" y="66" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">1. Examples</text><text x="130" y="88" text-anchor="middle" font-size="14" fill="var(--muted)">photos, words, clicks</text></g>
-          <g data-i="1"><rect x="392" y="36" width="196" height="68" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/><text x="490" y="66" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">2. A guess</text><text x="490" y="88" text-anchor="middle" font-size="14" fill="var(--muted)">"I think it's a cat"</text></g>
-          <g data-i="2"><rect x="392" y="196" width="196" height="68" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/><text x="490" y="226" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">3. Feedback</text><text x="490" y="248" text-anchor="middle" font-size="14" fill="var(--muted)">"No, it's a dog"</text></g>
-          <g data-i="3"><rect x="32" y="196" width="196" height="68" rx="12" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/><text x="130" y="226" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">4. Adjust</text><text x="130" y="248" text-anchor="middle" font-size="14" fill="var(--muted)">and guess better</text></g>
-        </g>
-        <text x="310" y="156" text-anchor="middle" font-size="15" fill="var(--muted)" font-family="Atkinson Hyperlegible, sans-serif">repeat millions of times</text>
-      </svg>
-      <p class="muted" style="margin:8px 0 0;font-size:16px">Where do the examples come from? From us: our photos, our messages, what we click, watch and skip.</p>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Think like ChatGPT</h2><p>7 minutes · guess the next word</p></div></div>
+  <p class="big">ChatGPT and Gemini write one word at a time. Each time, they guess the most likely next word. Can you guess like them?</p>
+  <div class="card">
+    <span class="tag" id="sentNo">Sentence 1 of 4</span>
+    <p class="sentence" id="sent"></p>
+    <div class="guess">
+      <label for="myGuess" class="step-t" style="margin:0">1 · Your guess</label>
+      <input id="myGuess" type="text" maxlength="20" autocomplete="off" placeholder="Type one word">
+      <button class="btn sm" id="revealWord" type="button">2 · Check with the AI</button>
     </div>
-    <div class="card">
-      <span class="tag">Be the AI: guess the next word</span>
-      <p class="sentence" id="sent"></p>
-      <div class="row"><button class="btn sm" id="revealWord" type="button">Show the AI's guesses</button><button class="btn sm alt" id="nextSent" type="button">Next sentence</button></div>
-      <div class="bars" id="bars" aria-live="polite"></div>
-      <p class="note">Example numbers, to show the idea. ChatGPT works this way: it picks a likely next word, again and again.</p>
-    </div>
+    <div class="bot" id="gVerdict" hidden><span class="face">🤖</span><span class="bub" id="gBub"></span></div>
+    <div class="bars" id="bars" aria-live="polite"></div>
+    <div class="row" style="margin-top:12px"><button class="btn sm alt" id="nextSent" type="button" hidden>Next sentence →</button></div>
+    <p class="note">Example numbers, to show the idea.</p>
+  </div>
+  <div class="def" id="gLesson" hidden>
+    <span class="tag">What did you learn?</span>
+    <p>The AI does not "know" the answer. It learned from millions of texts which word usually comes next, and it picks the most likely one, again and again.</p>
+    <div class="note" style="color:var(--ink);font-size:17px">You matched the AI <b id="gScore">0</b> times out of 4. When you guess like the AI, you are thinking in patterns, just like it does.</div>
   </div>
   <div class="card" style="margin-top:14px">
     <span class="tag">Try a real AI</span>
-    <p class="lead" style="margin:6px 0 0">Play 2 rounds of <a href="https://quickdraw.withgoogle.com/" target="_blank" rel="noopener">Quick, Draw!</a> by Google. You draw, the AI guesses. It can guess because millions of people played before you and gave it examples.</p>
+    <p class="lead" style="margin:6px 0 0">Play 2 rounds of <a href="https://quickdraw.withgoogle.com/" target="_blank" rel="noopener">Quick, Draw!</a> by Google. You draw, the AI guesses. It can guess because millions of people played before you and gave it examples. Next week, YOU teach an AI with your drawings.</p>
   </div>
 </section>
 
@@ -591,19 +586,32 @@ $("#ask2").onclick = () => {
 drawSw();
 
 
-const loopNodes = [...document.querySelectorAll("#loopNodes g")]; let li = 0;
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-function lightLoop(){ loopNodes.forEach((g, k) => { const r = g.querySelector("rect"); r.setAttribute("stroke", k === li ? "var(--green)" : "var(--line)"); r.setAttribute("stroke-width", k === li ? "3" : "2"); }); li = (li + 1) % 4; }
-lightLoop(); if (!reduce) setInterval(lightLoop, 1400);
 const SENT = [
   {s:["I'm so hungry, let's eat some"," ."], w:[["pizza",34],["food",22],["lunch",15],["cake",9],["shawarma",8]]},
   {s:["The goalkeeper jumped and saved the"," !"], w:[["ball",31],["penalty",29],["shot",24],["day",8],["game",5]]},
-  {s:["After school I always do my"," ."], w:[["homework",71],["best",8],["chores",6],["work",5],["training",4]]}
+  {s:["After school I always do my"," ."], w:[["homework",71],["best",8],["chores",6],["work",5],["training",4]]},
+  {s:["My mom says I spend too much time on my"," ."], w:[["phone",58],["tablet",14],["PlayStation",10],["laptop",7],["games",6]]}
 ];
-let si = 0;
-function showSent(){ const x = SENT[si]; $("#sent").replaceChildren(x.s[0] + " ", el("u", null, "?"), x.s[1]); $("#bars").replaceChildren(); }
-$("#revealWord").onclick = () => { const x = SENT[si]; $("#bars").replaceChildren(...x.w.map(([w, p]) => { const i = el("i"); setTimeout(() => i.style.width = p + "%", 30); return el("div", {class:"bar"}, el("span", null, w), el("div", {class:"track"}, i), el("span", null, p + "%")); })); $("#sent u").textContent = x.w[0][0]; };
-$("#nextSent").onclick = () => { si = (si + 1) % SENT.length; showSent(); };
+let si = 0, gHits = 0, checked = false;
+const norm = t => (t || "").toLowerCase().trim().replace(/^(the|a|an|some|my)\s+/, "").replace(/[^a-z]/g, "");
+function showSent(){ const x = SENT[si]; checked = false; $("#sentNo").textContent = "Sentence " + (si + 1) + " of " + SENT.length; $("#sent").replaceChildren(x.s[0] + " ", el("u", null, "?"), x.s[1]);
+  $("#bars").replaceChildren(); $("#gVerdict").hidden = true; $("#nextSent").hidden = true; $("#myGuess").value = ""; $("#myGuess").disabled = false; }
+$("#revealWord").onclick = () => {
+  if (checked) return; const g = norm($("#myGuess").value);
+  if (!g){ $("#gVerdict").hidden = false; $("#gBub").textContent = "First type your guess: one word."; $("#myGuess").focus(); return; }
+  checked = true; $("#myGuess").disabled = true; const x = SENT[si], k = x.w.findIndex(([w]) => norm(w) === g);
+  $("#bars").replaceChildren(...x.w.map(([w, p], n) => { const i = el("i"); setTimeout(() => i.style.width = p + "%", 30); return el("div", {class:"bar" + (n === k ? " mine" : "")}, el("span", null, (n === k ? "⭐ " : "") + w), el("div", {class:"track"}, i), el("span", null, p + "%")); }));
+  $("#sent u").textContent = x.w[0][0];
+  if (k === 0) gHits++;
+  $("#gBub").textContent = k === 0 ? "Same as me! \u201c" + x.w[0][0] + "\u201d is my number 1 guess. You think like an AI! 🎉"
+    : k > 0 ? "Close! \u201c" + x.w[k][0] + "\u201d is on my list (number " + (k + 1) + "). My first choice is \u201c" + x.w[0][0] + "\u201d."
+    : "I did not think of \u201c" + $("#myGuess").value.trim() + "\u201d. In the texts I learned from, \u201c" + x.w[0][0] + "\u201d comes most often.";
+  $("#gVerdict").hidden = false;
+  if (si < SENT.length - 1) $("#nextSent").hidden = false; else { $("#gScore").textContent = gHits; $("#gLesson").hidden = false; }
+};
+$("#myGuess").addEventListener("keydown", e => { if (e.key === "Enter") $("#revealWord").click(); });
+$("#nextSent").onclick = () => { si++; showSent(); };
 showSent();
 
 /* ---------- 5 alphazero ---------- */
