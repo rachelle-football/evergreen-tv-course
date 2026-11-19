@@ -269,6 +269,7 @@ img.fprev{background:var(--paper)}
 <section class="seg" id="seg-1" data-min="3" data-title="Launch week">
   <div class="lower"><div class="no">01</div><div class="name"><h2>Launch week</h2><p>Period 1 · 3 minutes</p></div></div>
   <p class="big">Your pages are ready. Next week both team websites go live for parents and the school: 🏫 School 2040 and 🌍 Planet 2050.</p>
+  <div class="card" id="promise" style="border:2px solid var(--gold);background:var(--gold-soft);margin-bottom:16px" hidden><span class="tag">🔒 Your goal from Chapter 1</span><p class="big" style="margin:8px 0 10px" id="promiseT"></p><p style="margin:0 0 8px;font-weight:700">Did you do it?</p><div class="row" id="promiseA"></div><p class="muted" id="promiseR" style="margin:10px 0 0;font-size:15px"></p></div>
   <div class="grid g3">
     <div class="card"><span class="tag">Two websites</span><p class="lead" style="margin:6px 0 0">Each team has a home page with a tile for every part. Click a tile, and you see that student's page.</p></div>
     <div class="card"><span class="tag">Live on the big screen</span><p class="lead" style="margin:6px 0 0">On launch day, both team websites open on the big screens, live, for parents and guests.</p></div>
@@ -758,6 +759,13 @@ checklist("gh", [
   ["Switch it on", "Settings, then Pages: deploy from the main branch, root folder. After 1 to 2 minutes the websites are live at yourname.github.io/ai-creators."],
   ["Test on a phone", "Open the link on a phone. Do both doors work? Does every tile open its page? Do the pictures show?"]
 ]);
+/* the goal the student wrote in Chapter 1 comes back */
+(function(){ let t = ""; try { t = localStorage.getItem("meet-ai-idea") || ""; t = JSON.parse(t); } catch(e) {} if (typeof t !== "string" || !t.trim()) return;
+  $("#promise").hidden = false; $("#promiseT").textContent = "“" + t.trim() + "”";
+  const say = {yes:"🎉 Amazing! Tell your guests about it in your pitch.", part:"👍 Good! Say what you made, and what you still want to try.", no:"💡 That's OK. Real creators change their plans. What did you make instead?"};
+  let v = null; try { v = localStorage.getItem("ch9-promise"); } catch(e) {}
+  const draw = () => { $("#promiseA").replaceChildren(...[["yes","✅ Yes!"],["part","🙂 A part of it"],["no","🔄 I changed my plan"]].map(([k, l]) => { const b = document.createElement("button"); b.className = "btn sm" + (v === k ? "" : " alt"); b.type = "button"; b.textContent = l; b.onclick = () => { v = k; try { localStorage.setItem("ch9-promise", k); } catch(e) {} draw(); }; return b; })); $("#promiseR").textContent = v ? say[v] : ""; };
+  draw(); })();
 K.start();
 })();
 </script>

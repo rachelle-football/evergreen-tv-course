@@ -156,6 +156,22 @@ a{color:var(--green);font-weight:700}
 .jobcard p{margin:0;font-size:17px}
 @media (max-width:700px){.jobcard{grid-template-columns:1fr}}
 
+/* 7 your year */
+.road2{list-style:none;margin:6px 0 20px;padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;position:relative}
+.road2::before{content:"";position:absolute;left:7%;right:7%;top:30px;height:4px;background:var(--line);border-radius:2px}
+.road2 li{position:relative;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px}
+.road2 .ic{width:60px;height:60px;border-radius:50%;background:var(--panel);border:3px solid var(--line);display:grid;place-items:center;font-size:28px;position:relative}
+.road2 b{font-family:var(--display);font-size:16px;line-height:1.2;margin-top:4px}
+.road2 span:not(.ic){font-size:13px;color:var(--muted);line-height:1.3}
+.road2 em{font:700 12px/1 var(--mono);color:var(--green);font-style:normal;letter-spacing:.04em}
+.road2 li.done .ic{border-color:var(--green);background:var(--green-soft)}
+.road2 li.goal .ic{border-color:var(--gold);background:var(--gold-soft)}
+.promise{border:2px solid var(--gold);background:var(--gold-soft)}
+.promise h3{font-size:26px;margin:6px 0 6px}
+.promise textarea{font-size:19px;background:#fff;color:#13221C}
+.keep{margin:10px 0 0;font-size:15px;font-weight:600}
+@media (max-width:820px){.road2{grid-template-columns:1fr;gap:6px}.road2::before{left:29px;right:auto;top:10px;bottom:10px;width:4px;height:auto}.road2 li{flex-direction:row;text-align:left;flex-wrap:wrap;gap:4px 12px}.road2 li span:not(.ic){flex-basis:calc(100% - 72px);margin-left:72px;margin-top:-6px}.road2 em{margin-left:72px}}
+
 /* 6 timeline */
 .line{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative;margin:10px 0 24px}
 .line::before{content:"";position:absolute;left:8%;right:8%;top:22px;height:3px;background:var(--line)}
@@ -344,25 +360,24 @@ textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:1
 
 <!-- 7 -->
 <section class="seg" id="seg-7" data-min="6" data-title="Your year" hidden>
-  <div class="lower"><div class="no">07</div><div class="name"><h2>Your year as an AI Creator</h2><p>6 minutes · what you will make</p></div></div>
+  <div class="lower"><div class="no">07</div><div class="name"><h2>Your year as an AI Creator</h2><p>6 minutes · your goal</p></div></div>
   <p class="big">This year you don't only use AI. You create with it. Here is your road.</p>
-  <div class="card">
-    <span class="tag">Your road, chapter by chapter</span>
-    <div class="road">
-      <div><b>1 · Meet AI</b>What AI is, and how it learns ✓</div>
-      <div><b>2 · Train an AI</b>Teach a real AI with your drawings</div>
-      <div><b>3 · Prompts</b>Learn to talk to AI so it does what you want</div>
-      <div><b>4 · Story</b>Invent a hero and a story with AI</div>
-      <div><b>5 · Pictures</b>Make your own AI pictures</div>
-      <div><b>6 · My own website</b>Build your website, with your own link</div>
-      <div><b>7 · Exhibition</b>Show your work to parents and guests</div>
-    </div>
-  </div>
-  <div class="card" style="margin-top:16px">
-    <span class="tag">Your turn</span>
-    <h3 style="font-size:24px;margin:6px 0 10px">What do you want to make with AI this year?</h3>
-    <label for="idea" class="muted" style="font-size:15px">Write one sentence. Be bold!</label>
+  <ol class="road2" aria-label="Your road, chapter by chapter">
+    <li class="done"><span class="ic">🤖</span><b>1 · Meet AI</b><span>What AI is and how it learns</span><em>✓ Done today</em></li>
+    <li><span class="ic">🧠</span><b>2 · Train an AI</b><span>Teach a real AI with your drawings</span></li>
+    <li><span class="ic">💬</span><b>3 · Prompts</b><span>Talk to AI so it does what you want</span></li>
+    <li><span class="ic">📖</span><b>4 · Story</b><span>Invent a hero and a story</span></li>
+    <li><span class="ic">🖼️</span><b>5 · Pictures</b><span>Make your own AI pictures</span></li>
+    <li><span class="ic">🌐</span><b>6 · My website</b><span>Your own website, your own link</span></li>
+    <li class="goal"><span class="ic">🎤</span><b>7 · Exhibition</b><span>Show parents and guests what you made</span></li>
+  </ol>
+  <div class="card promise">
+    <span class="tag">Your goal for the year</span>
+    <h3>What do you want to make with AI this year?</h3>
+    <p class="muted" style="margin:0 0 8px;font-size:15px">Write one sentence. Be bold! Need an idea? Tap one:</p>
+    <div class="chips" id="ideaEx"></div>
     <textarea id="idea" placeholder="This year, I want to make…"></textarea>
+    <p class="keep">🔒 We keep your sentence. At the Exhibition (Chapter 7), you will see it again, and you will check: did I do it?</p>
   </div>
 </section>
 
@@ -616,6 +631,7 @@ QUIZ.forEach(([q, opts, ok, why]) => { const w = el("p", {class:"why"}); let don
   const bs = opts.map((o, i) => el("button", {class:"opt", type:"button", onclick:() => { if (done) return; done = true; bs[ok].classList.add("right"); if (i !== ok) bs[i].classList.add("wrong"); else { qz++; $("#quizScore").textContent = qz + " of 5"; } w.textContent = why; }}, o));
   $("#quiz").append(el("div", {class:"card q"}, el("h3", null, q), el("div", {class:"opts"}, bs), w)); });
 try { const d = localStorage.getItem("meet-ai-idea"); if (d) $("#idea").value = d; } catch(e) {}
+["a comic where I am the hero", "a website about my football team", "a song about my family", "a game about Lebanon in 2050"].forEach(t => $("#ideaEx").append(el("button", {class:"chip", type:"button", onclick:() => { $("#idea").value = "This year, I want to make " + t + "."; $("#idea").dispatchEvent(new Event("input")); $("#idea").focus(); }}, t)));
 $("#idea").addEventListener("input", () => { try { localStorage.setItem("meet-ai-idea", $("#idea").value); } catch(e) {} });
 
 const start = segs.findIndex(s => "#" + s.id === location.hash);
