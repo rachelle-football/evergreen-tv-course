@@ -174,6 +174,31 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 .step[aria-current="step"]{border-top-color:var(--onair);color:var(--ink);font-weight:700}
 @media (max-width:700px){.bug small{display:none}.step .t{display:none}.clock .lbl{display:none}body{font-size:17px}.lead{font-size:18px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* inside the brain: the helpers game */
+.helpers{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.helper{border:2px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--panel);display:grid;gap:6px}
+.helper .hic{font-size:34px;line-height:1}
+.helper b{font-family:var(--display);font-size:19px}
+.helper p{margin:0;font-size:15px;color:var(--muted)}
+.stars{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.stars button{background:none;border:2px solid var(--line);border-radius:10px;padding:4px 8px;font-size:20px;line-height:1;cursor:pointer;filter:grayscale(1);opacity:.45}
+.stars button.on{filter:none;opacity:1;border-color:var(--gold);background:var(--gold-soft)}
+.stars .zero{font:700 13px/1 var(--mono);filter:none;opacity:1;color:var(--muted)}
+.stars .zero.on{border-color:var(--ink);background:var(--line);color:var(--ink)}
+.wire{height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.wire i{display:block;height:100%;background:var(--green);transition:width .3s}
+.bhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.bscore{font:700 26px/1 var(--mono)}
+.animals{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));margin-top:10px}
+.animal{border:2px solid var(--line);border-radius:14px;padding:10px 12px;display:grid;gap:4px}
+.animal.ok{border-color:var(--green);background:var(--green-soft)}
+.animal.no{border-color:var(--onair);background:var(--onair-soft)}
+.animal .aic{font-size:36px;line-height:1}
+.animal b{font-size:16px}
+.animal small{font-size:13px;color:var(--muted)}
+.animal .votes{font-size:14px}
+.animal .says{font-weight:700}
+.bhint{margin:12px 0 0;font-weight:700}
 </style>
 <header class="top">
   <div class="wrap">
@@ -273,34 +298,24 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
   </div>
 </section>
 
-<section class="seg" id="seg-7" data-min="10" data-title="Mission: inside the brain" data-period="2" hidden>
-  <div class="lower"><div class="no">07</div><div class="name"><h2>Mission: look inside the brain</h2><p>Period 2 · 10 minutes · a real neural network</p></div></div>
-  <div class="mission">
-    <div>
-      <p class="lead">Open <a href="https://playground.tensorflow.org" target="_blank" rel="noopener">TensorFlow Playground</a> (by Google, free, no account). It shows a real neural network learning, live.</p>
-      <ol class="checklist" id="list3"></ol>
-    </div>
-    <aside class="card">
-      <span class="tag">How to read it</span>
-      <svg viewBox="0 0 300 190" role="img" aria-label="Neurons connected by lines; thicker lines carry more weight" style="width:100%;height:auto;margin-top:8px">
-        <g stroke-linecap="round">
-          <line x1="40" y1="50" x2="150" y2="40" stroke="var(--green)" stroke-width="7"/>
-          <line x1="40" y1="50" x2="150" y2="140" stroke="var(--onair)" stroke-width="2"/>
-          <line x1="40" y1="140" x2="150" y2="40" stroke="var(--onair)" stroke-width="4"/>
-          <line x1="40" y1="140" x2="150" y2="140" stroke="var(--green)" stroke-width="1.5"/>
-          <line x1="150" y1="40" x2="260" y2="90" stroke="var(--green)" stroke-width="5"/>
-          <line x1="150" y1="140" x2="260" y2="90" stroke="var(--onair)" stroke-width="2.5"/>
-        </g>
-        <g fill="var(--panel)" stroke="var(--ink)" stroke-width="2"><circle cx="40" cy="50" r="16"/><circle cx="40" cy="140" r="16"/><circle cx="150" cy="40" r="16"/><circle cx="150" cy="140" r="16"/><circle cx="260" cy="90" r="18"/></g>
-      </svg>
-      <ul style="margin:6px 0 0;padding-left:20px;font-size:16px">
-        <li><b>Circles</b> are neurons.</li>
-        <li><b>Lines</b> are weights: how much one neuron listens to another.</li>
-        <li><b>Thick</b> line = listens a lot. Thin = hardly listens.</li>
-        <li>Colour shows if it pushes the answer one way or the other.</li>
-        <li><b>Learning</b> = the computer changing the weights, again and again, until the mistakes go down.</li>
-      </ul>
-    </aside>
+<section class="seg" id="seg-7" data-min="8" data-title="Inside the brain" data-period="2" hidden>
+  <div class="lower"><div class="no">07</div><div class="name"><h2>Inside the AI's brain</h2><p>Period 2 · 8 minutes · the brain is a team</p></div></div>
+  <p class="big">An AI's brain is a team of little helpers. Each one gives its opinion. The AI decides who to listen to more.</p>
+  <div class="card">
+    <span class="tag">The job: is it a 🐱 cat or a 🐶 dog?</span>
+    <p class="lead" style="margin:6px 0 12px">Your AI has 3 helpers. Choose how much it trusts each one (0 to 3 stars). At first, it only listens to how the animal looks.</p>
+    <div class="helpers" id="helpers"></div>
+    <div class="row" style="margin-top:14px"><button class="btn" id="bTest" type="button">🤖 Test the AI on 8 animals</button></div>
+  </div>
+  <div class="card" id="bRes" style="margin-top:14px" hidden>
+    <div class="bhead"><span class="tag">The AI's answers</span><b class="bscore" id="bScore"></b></div>
+    <div class="animals" id="animals"></div>
+    <p class="bhint" id="bHint"></p>
+  </div>
+  <div class="def" id="bLesson" hidden>
+    <span class="tag">What did you learn?</span>
+    <p>The helpers are the AI's <b>neurons</b>. The stars are how much it listens to each one. When an AI learns, it changes the stars by itself, again and again, until it makes no mistakes.</p>
+    <div class="note" style="color:var(--ink);font-size:17px">ChatGPT has billions of helpers. That's why it can do so much.</div>
   </div>
 </section>
 
@@ -440,14 +455,6 @@ const L2 = checklist("list2", [
   ["Spring the trap", "Draw a circle and press Ask. What does it say? Do it 5 times and press Right or Wrong each time (Before the fix)."],
   ["Fix it", "Press Wipe the brain. Now teach the truth: 3 circles as CIRCLE, 3 squares as SQUARE."],
   ["Test again", "5 more tries (After the fix). Why did the score change? Tell your neighbour in one sentence."]
-]);
-checklist("list3", [
-  ["Pick the circle puzzle", "Under DATA, click the first picture: a blue circle inside orange dots."],
-  ["Press Play", "Click the big ▶ button at the top left. Watch the picture on the right and the Test loss number."],
-  ["Watch it learn", "Test loss is the mistake score. When it gets close to 0, press pause. How many epochs (rounds) did it need?"],
-  ["Make the brain tiny", "Press the minus button above the hidden layer until it has 1 neuron. Press reset, then Play. Can it still learn the circle?"],
-  ["Make it bigger again", "Add neurons back (try 4). Press reset and Play. What changed?"],
-  ["Try the spiral", "Pick the last DATA picture (the spiral). It is very hard. Add layers and neurons until it works, or until the bell rings."]
 ]);
 
 /* tallies */
@@ -742,6 +749,54 @@ $("#segIdea").addEventListener("input", () => store.set("idea", $("#segIdea").va
 
 const start = segs.findIndex(s => "#" + s.id === location.hash);
 go(start >= 0 ? start : 0);
+})();
+/* inside the brain: 3 helpers vote cat (+1) or dog (-1); the kid chooses how much the AI trusts each one */
+(function(){
+  const H = [
+    {k:"ears", ic:"👂", name:"Ears helper", says:"Pointy ears? Then it's a cat."},
+    {k:"size", ic:"📏", name:"Size helper", says:"Small? Then it's a cat."},
+    {k:"sound", ic:"🔊", name:"Sound helper", says:"Says meow? Then it's a cat."}
+  ];
+  const A = [
+    ["🐱", "Kitten", "pointy ears · small · meow", {ears:1, size:1, sound:1}, "cat"],
+    ["🐕", "German shepherd", "pointy ears · big · woof", {ears:1, size:-1, sound:-1}, "dog"],
+    ["🐶", "Chihuahua", "pointy ears · small · woof", {ears:1, size:1, sound:-1}, "dog"],
+    ["🐈", "Big fluffy cat", "pointy ears · big · meow", {ears:1, size:-1, sound:1}, "cat"],
+    ["🐩", "Poodle", "floppy ears · small · woof", {ears:-1, size:1, sound:-1}, "dog"],
+    ["🐈‍⬛", "Cat with folded ears", "folded ears · small · meow", {ears:-1, size:1, sound:1}, "cat"],
+    ["🦮", "Labrador", "floppy ears · big · woof", {ears:-1, size:-1, sound:-1}, "dog"],
+    ["🐈", "Street cat", "pointy ears · small · meow", {ears:1, size:1, sound:1}, "cat"]
+  ];
+  const T = {ears:3, size:3, sound:0}; let tests = 0, best = 0;
+  const $$ = s => document.querySelector(s);
+  const mk = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+  function drawHelpers(){
+    $$("#helpers").replaceChildren(...H.map(h => {
+      const d = mk("div", "helper"), st = mk("div", "stars"), w = mk("div", "wire"), wi = mk("i");
+      wi.style.width = (T[h.k] / 3 * 100) + "%"; w.append(wi);
+      const z = mk("button", "zero" + (T[h.k] === 0 ? " on" : ""), "0"); z.type = "button"; z.setAttribute("aria-label", "Don't listen"); z.onclick = () => { T[h.k] = 0; drawHelpers(); };
+      st.append(z);
+      for (let n = 1; n <= 3; n++){ const b = mk("button", n <= T[h.k] ? "on" : "", "⭐"); b.type = "button"; b.setAttribute("aria-label", n + " stars"); b.onclick = () => { T[h.k] = n; drawHelpers(); }; st.append(b); }
+      d.append(mk("span", "hic", h.ic), mk("b", null, h.name), mk("p", null, "“" + h.says + "”"), st, w);
+      return d; }));
+  }
+  $$("#bTest").onclick = () => {
+    let ok = 0;
+    $$("#animals").replaceChildren(...A.map(([ic, name, desc, v, truth]) => {
+      const score = H.reduce((s, h) => s + T[h.k] * v[h.k], 0), ans = score > 0 ? "cat" : score < 0 ? "dog" : null, good = ans === truth; if (good) ok++;
+      const d = mk("div", "animal " + (good ? "ok" : "no"));
+      const votes = H.map(h => h.ic + (v[h.k] > 0 ? "🐱" : "🐶")).join("  ");
+      d.append(mk("span", "aic", ic), mk("b", null, name), mk("small", null, desc), mk("span", "votes", "Votes: " + votes),
+        mk("span", "says", "🤖 " + (ans ? (ans === "cat" ? "Cat!" : "Dog!") : "I can't decide 🤷") + (good ? "  ✓" : "  ✗")));
+      return d; }));
+    tests++; best = Math.max(best, ok);
+    $$("#bScore").textContent = ok + " of 8 right"; $$("#bRes").hidden = false;
+    $$("#bHint").textContent = ok === 8 ? "🎉 8 of 8! You found which helper to trust. That is exactly what an AI does when it learns."
+      : tests === 1 ? "Look at the mistakes. Which helper is often wrong? Which one is always right? Change the stars and test again."
+      : "Better? Keep changing the stars. Hint: small dogs exist, and some cats have floppy ears… but which animal says meow?";
+    if (ok === 8 || tests >= 4) $$("#bLesson").hidden = false;
+  };
+  drawHelpers();
 })();
 </script>
 <script src="config.js"></script>
