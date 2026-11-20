@@ -241,6 +241,17 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 .sorti.ok{border-color:var(--green);background:var(--green-soft)}
 .sorti.no{border-color:var(--onair);background:var(--onair-soft)}
 .sorti .fb{font-size:15px;font-weight:700}
+.whobadge{margin:0;display:inline-block;justify-self:start;background:var(--gold);color:#13221C;font-weight:800;padding:8px 14px;border-radius:999px;font-size:17px}
+.brainmem{border:1px dashed var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:6px;background:var(--paper)}
+.brainmem .memrow canvas{width:34px;height:34px;border:1px solid var(--line);border-radius:6px;background:#fff;image-rendering:pixelated}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}
+.confetti i{position:absolute;top:-20px;width:10px;height:16px;border-radius:2px;animation:fall 2.2s ease-in forwards}
+@keyframes fall{to{top:110%;transform:rotate(720deg)}}
+.vs{width:100%;border-collapse:collapse;margin-top:8px;font-size:17px}
+.vs th,.vs td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}
+.vs td:nth-child(n+2),.vs th:nth-child(n+2){text-align:center;font-weight:700}
+.certbox{display:grid;gap:12px}
+#cert{width:100%;height:auto;border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,.12);background:#FBF7EE}
 </style>
 <header class="top">
   <div class="wrap">
@@ -256,12 +267,12 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 
 <!-- PERIOD 1 -->
 <section class="seg" id="seg-1" data-min="3" data-title="Today" data-period="1">
-  <div class="lower"><div class="no">01</div><div class="name"><h2>Today you teach a real AI</h2><p>Period 1 · 3 minutes</p></div></div>
-  <p class="big">Last week you learned that AI learns from examples. Today, you are the one giving the examples. You choose what you teach it:</p>
+  <div class="lower"><div class="no">01</div><div class="name"><h2>Today you are an AI engineer</h2><p>Period 1 · 3 minutes</p></div></div>
+  <p class="big">Last week you learned WHAT AI is. Today you learn HOW to train a GOOD one, and how to measure it. You choose what you teach it:</p>
   <div class="grid g3">
     <div class="card"><span class="tag">Choice 1 · 🏫</span><h3 style="font-size:24px;margin:6px 0">School objects</h3><p style="margin:0">Teach a real AI to recognise school things it has never seen: a pencil, a book, a backpack…</p></div>
     <div class="card"><span class="tag">Choice 2 · ♻️</span><h3 style="font-size:24px;margin:6px 0">Recycling robot</h3><p style="margin:0">Teach a robot to sort waste: a bottle, a can, a banana peel… Watch it go from "no idea" to "I know this!"</p></div>
-    <div class="card"><span class="tag">Next period</span><h3 style="font-size:24px;margin:6px 0">Trick</h3><p style="margin:0">Teach it lies on purpose and see what happens. Then fix it.</p></div>
+    <div class="card"><span class="tag">Then</span><h3 style="font-size:24px;margin:6px 0">Test it</h3><p style="margin:0">Give it an exam, let a friend test it, make it stronger, and get your AI Trainer certificate 🏅</p></div>
   </div>
 </section>
 
@@ -283,8 +294,8 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
   </div>
 </section>
 
-<section class="seg" id="seg-3" data-min="30" data-title="Mission: teach your AI" data-period="1" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: teach the AI</h2><p>Period 1 · 30 minutes · right here, on this page</p></div></div>
+<section class="seg" id="seg-3" data-min="35" data-title="Mission: train your AI" data-period="1" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: train and test your AI</h2><p>Period 1 · 35 minutes · 6 stages, right here on this page</p></div></div>
   <div class="mission one">
     <div>
       <p class="lead" id="lab1lead">This AI has never seen a pencil, a bottle or a banana peel. You will teach it, the way real engineers do: with examples.</p>
@@ -299,8 +310,8 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
   <div class="lower"><div class="no">04</div><div class="name"><h2>Share your score</h2><p>Period 1 · 5 minutes</p></div></div>
   <p class="big">Who got the highest accuracy? What did they do differently?</p>
   <div class="grid g2">
-    <div class="card"><span class="tag">Ask the class</span><ul class="lead" style="margin:8px 0 0;padding-left:22px"><li>What did the AI say before you taught it?</li><li>How many drawings did it need to learn one thing?</li><li>Which drawings fooled it? Why?</li><li>Would you trust your AI to do this job alone? Why?</li></ul></div>
-    <div class="card" style="background:var(--gold-soft);border-color:transparent"><span class="tag">Remember for next week</span><p class="lead" style="margin:8px 0 0">An AI is only as good as the examples you give it.</p></div>
+    <div class="card"><span class="tag">Ask the class</span><ul class="lead" style="margin:8px 0 0;padding-left:22px"><li>What was your exam score? And with your friend?</li><li>Why did your AI get worse with your friend's drawings?</li><li>What made it better?</li><li>Would you trust your AI to do this job alone? Why?</li></ul></div>
+    <div class="card" style="background:var(--gold-soft);border-color:transparent"><span class="tag">Remember for next week</span><p class="lead" style="margin:8px 0 0">An AI is only as good as its examples: many, different, and from many people.</p></div>
   </div>
 </section>
 
@@ -321,23 +332,8 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
   </div>
 </section>
 
-<section class="seg" id="seg-6" data-min="15" data-title="Mission: trick the AI" data-period="2" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>Mission: trick the AI</h2><p>Period 2 · 15 minutes · teach it lies, then fix it</p></div></div>
-  <div class="mission one">
-    <div>
-      <p class="lead">A brand new AI, with an empty brain. You will teach it lies: circles are squares, squares are circles. What will it believe?</p>
-      <div class="card lab" id="lab2"></div>
-      <div class="def" id="trickDef" hidden>
-        <span class="tag">What just happened</span>
-        <p>The AI is not clever or stupid. It believes whatever its examples say. Wrong examples make a wrong AI.</p>
-        <div class="note" style="color:var(--ink);font-size:17px">Engineers say: <b>garbage in, garbage out</b>. Real AIs learn from millions of examples written by people. If people made mistakes, the AI learns the mistakes too.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="seg" id="seg-7" data-min="8" data-title="Inside the brain" data-period="2" hidden>
-  <div class="lower"><div class="no">07</div><div class="name"><h2>Inside the AI's brain</h2><p>Period 2 · 8 minutes · the brain is a team</p></div></div>
+<section class="seg" id="seg-6" data-min="8" data-title="Inside the brain" data-period="2" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>Inside the AI's brain</h2><p>Period 2 · 8 minutes · the brain is a team</p></div></div>
   <p class="big">An AI's brain is a team of little helpers. Each one gives its opinion. The AI decides who to listen to more.</p>
   <div class="card">
     <span class="tag">The job: is it a 🐱 cat or a 🐶 dog?</span>
@@ -354,6 +350,43 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
     <span class="tag">What did you learn?</span>
     <p>The helpers are the AI's <b>neurons</b>. The stars are how much it listens to each one. When an AI learns, it changes the stars by itself, again and again, until it makes no mistakes.</p>
     <div class="note" style="color:var(--ink);font-size:17px">ChatGPT has billions of helpers. That's why it can do so much.</div>
+  </div>
+</section>
+
+<section class="seg" id="seg-7" data-min="7" data-title="The real thing" data-period="2" hidden>
+  <div class="lower"><div class="no">07</div><div class="name"><h2>The real thing: AutoDraw</h2><p>Period 2 · 7 minutes · an AI trained by millions</p></div></div>
+  <p class="big">Your AI learned from you and a friend. Google's AI learned the same way, from millions of people.</p>
+  <div class="grid g2">
+    <div class="card">
+      <span class="tag">Try it (free, no account)</span>
+      <ol class="lead" style="margin:8px 0 12px;padding-left:22px">
+        <li>Open <a href="https://www.autodraw.com/" target="_blank" rel="noopener">AutoDraw</a> and press <b>Start Drawing</b>.</li>
+        <li>Scribble something quickly: a cat, a house, a bike…</li>
+        <li>Look at the top bar: the AI guesses your drawing and offers clean pictures. Click one!</li>
+      </ol>
+      <p class="muted" style="margin:0;font-size:15px">It learned from the drawings of people who played Quick, Draw! (like you did in Chapter 1).</p>
+    </div>
+    <div class="card">
+      <span class="tag">Your AI vs. Google's</span>
+      <table class="vs">
+        <tr><th></th><th>🤖 Your AI</th><th>🌍 Google's</th></tr>
+        <tr><td>Things it knows</td><td>3</td><td>345</td></tr>
+        <tr><td>Example drawings</td><td>about 20</td><td>50 million</td></tr>
+        <tr><td>Drawn by</td><td>you and a friend</td><td>people all over the world</td></tr>
+      </table>
+      <p class="lead" style="margin:12px 0 0">Same idea, more examples, from more people. That's the secret of a strong AI.</p>
+    </div>
+  </div>
+</section>
+
+<section class="seg" id="seg-8" data-min="5" data-title="Your certificate" data-period="2" hidden>
+  <div class="lower"><div class="no">08</div><div class="name"><h2>Your AI Trainer certificate</h2><p>Period 2 · 5 minutes · show it at home</p></div></div>
+  <p class="big">You trained a real AI, tested it, and made it better. Here is your certificate.</p>
+  <div class="card certbox">
+    <label class="labname">Your name on the certificate<input id="certName" type="text" maxlength="30" autocomplete="off" placeholder="Your first and last name"></label>
+    <p class="muted" id="certNote" style="margin:0;font-size:15px"></p>
+    <canvas id="cert" width="1200" height="850" aria-label="Your AI Trainer certificate"></canvas>
+    <div class="row"><a class="btn" id="certDl" download="AI-Trainer-certificate.png" href="#">⬇ Download my certificate</a></div>
   </div>
   <p class="note" style="margin-top:16px">Next week: Prompt Engineering. You learn to talk to AI so it does exactly what you want.</p>
 </section>
@@ -773,8 +806,8 @@ function stageLab(box, cfg){
     if (!raw){ say("think", "Draw it first, then press Teach.", ""); return; }
     if (rev === taughtRev){ say("think", "I already learned this drawing.", "Draw a new one: the board clears by itself."); return; }
     mem.push({l:label, raw, f:F(raw)}); taughtRev = rev;
-    const n = count(label), need = S[si].need || 0;
-    say("good", "Got it! This is " + an(label) + ".", "Now I remember " + n + " drawing" + (n > 1 ? "s" : "") + " of " + an(label) + "." + (need && n < need ? " Draw another one, a bit different." : ""));
+    const n = count(label), st = S[si], left = st.type === "teach" && got(st, label) < goal(st);
+    say("good", "Got it! This is " + an(label) + ".", "Now I remember " + n + " drawing" + (n > 1 ? "s" : "") + " of " + an(label) + "." + (left ? " Draw another one, a bit different." : ""));
     render();
   }
 
@@ -791,18 +824,21 @@ function stageLab(box, cfg){
     if (!exam.wait) return; exam.wait = false; ok ? exam.r++ : exam.w++; clear();
     const n = exam.r + exam.w, st = S[si];
     if (n >= st.tries){ if (st.onExam) st.onExam(exam.r, exam.w); say("", "Exam finished!", ""); }
-    else say("", ok ? "Yes! 🎉 Next drawing." : "Oops! 😅 Next drawing.", "Drawing " + (n + 1) + " of " + st.tries + ": " + (st.examHint || "draw a NEW one."));
+    else say("", ok ? "Yes! 🎉 Next drawing." : "Oops! 😅 Next drawing.", "Drawing " + (n + 1) + " of " + st.tries + ": " + (typeof st.examHint === "function" ? st.examHint(words) : st.examHint || "draw a NEW one."));
     render();
   }
 
   /* stage logic */
+  const actv = st => typeof st.labels === "function" ? st.labels(words) : st.labels || words.slice(st.from || 0, st.pickTo);
+  const got = (st, l) => count(l) - (st.base && st.base[l] || 0), goal = st => st.plus || st.need;
   const isDone = () => { const st = S[si];
-    if (st.type === "teach") return st.labels ? st.labels.every(l => count(l) >= st.need) : words.length >= st.pickTo && words.slice(st.from || 0, st.pickTo).every(w => count(w) >= st.need);
+    if (st.type === "teach") return (st.labels || words.length >= st.pickTo) && actv(st).length > 0 && actv(st).every(l => got(st, l) >= goal(st));
     return exam && exam.r + exam.w >= st.tries; };
   function enter(i){
     si = i; const st = S[si]; clear(); exam = null;
     if (st.wipe){ mem = []; }
     if (st.type === "exam") exam = {r:0, w:0, wait:false};
+    if (st.plus){ st.base = {}; actv(st).forEach(l => st.base[l] = count(l)); }
     if (st.hello) say("", st.hello[0], st.hello[1] || "");
     render();
   }
@@ -811,11 +847,11 @@ function stageLab(box, cfg){
   function render(){
     const st = S[si], rr = rec();
     head.replaceChildren(...S.map((x, i) => el("div", {role:"listitem", class:"sb" + (i === si ? " now" : "") + (i < si ? " ok" : "")}, el("b", null, i < si ? "✓" : String(i + 1)), el("span", null, x.short))));
-    const kids = [el("h3", {class:"sth"}, "Stage " + (si + 1) + " · " + st.title), el("p", {class:"stp"}, st.text)];
+    const kids = [...(st.who ? [el("p", {class:"whobadge"}, st.who)] : []), el("h3", {class:"sth"}, "Stage " + (si + 1) + " · " + st.title), el("p", {class:"stp"}, typeof st.text === "function" ? st.text(words) : st.text)];
     let actions = [];
     if (st.type === "teach"){
-      const need = st.need;
-      let active = st.labels || words.slice(st.from || 0, st.pickTo);
+      const need = goal(st);
+      let active = actv(st);
       /* word picker */
       if (!st.labels && words.length < st.pickTo){
         const own = el("input", {type:"text", maxlength:"20", placeholder:"or write your own word", autocomplete:"off", "aria-label":"Your own word"});
@@ -825,7 +861,7 @@ function stageLab(box, cfg){
           el("div", {class:"chips"}, ...cfg.chips().filter(c => !words.includes(c)).map(c => el("button", {class:"chip", type:"button", onclick:() => add(c)}, c))),
           el("div", {class:"ownrow"}, own, el("button", {class:"btn sm alt", type:"button", onclick:() => add(own.value)}, "Add"))));
       }
-      if (active.length) kids.push(el("div", {class:"counts"}, ...active.map(l => { const n = Math.min(count(l), need);
+      if (active.length) kids.push(el("div", {class:"counts"}, ...active.map(l => { const n = Math.max(0, Math.min(got(st, l), need));
         return el("div", {class:"cnt" + (n >= need ? " full" : "")}, el("b", null, l), el("span", {class:"dots"}, ...Array.from({length:need}, (_, k) => el("i", {class:k < n ? "on" : ""}))), el("small", null, n + " / " + need)); })));
       actions = active.length ? [...active.map(l => el("button", {class:"btn teach", type:"button", onclick:() => teach(l)}, st.btn ? st.btn(l) : "✓ Teach: this is " + an(l))), el("button", {class:"btn alt", type:"button", onclick:ask}, "🤖 Ask the AI: what is this?")] : [];
     } else {
@@ -834,10 +870,13 @@ function stageLab(box, cfg){
       if (n < st.tries) actions = [el("button", {class:"btn big", type:"button", onclick:examAsk}, "🤖 Ask the AI")];
     }
     const work = el("div", {class:"labmain"}, el("div", null, cv, tools), el("div", {style:"display:grid;gap:10px;align-content:start"}, el("div", {class:"labacts"}, ...actions), ai));
-    if (st.type === "teach" && !(st.labels || words.slice(st.from || 0, st.pickTo)).length) kids.push(el("p", {class:"muted"}, "Choose a word above to start."));
+    if (st.type === "teach" && !actv(st).length) kids.push(el("p", {class:"muted"}, "Choose a word above to start."));
     else if (!(st.type === "exam" && exam.r + exam.w >= st.tries)) kids.push(work);
+    if (mem.length){ const grp = {}; mem.forEach(e => (grp[e.l] = grp[e.l] || []).push(e));
+      kids.push(el("div", {class:"brainmem"}, el("span", {class:"tag"}, "🧠 Your AI's memory: " + mem.length + " drawing" + (mem.length > 1 ? "s" : "")),
+        ...Object.entries(grp).map(([l, a]) => el("div", {class:"memrow mine"}, el("strong", null, l), el("small", null, a.length + "×"), ...a.map(e => DL.thumb(e.raw)))))); }
     if (isDone()){
-      done(si);
+      done(si); if (st.onDone && !st._fired){ st._fired = true; st.onDone(words, exam); }
       const fin = st.type === "exam" ? st.result(exam.r, exam.w) : null;
       if (fin) kids.push(fin);
       kids.push(el("div", {class:"stdone"}, el("b", null, "✓ Stage " + (si + 1) + " done!"),
@@ -850,6 +889,13 @@ function stageLab(box, cfg){
   paint(); enter(0);
   return {enter};
 }
+/* a little celebration */
+function confetti(){
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const box = el("div", {class:"confetti", "aria-hidden":"true"});
+  for (let i = 0; i < 40; i++) box.append(el("i", {style:"left:" + Math.random() * 100 + "%;background:" + ["#1E7A55", "#C9932B", "#E5484D", "#2A9BD8", "#8E24AA"][i % 5] + ";animation-delay:" + (Math.random() * .4).toFixed(2) + "s;transform:rotate(" + Math.round(Math.random() * 360) + "deg)"}));
+  document.body.append(box); setTimeout(() => box.remove(), 2600);
+}
 
 /* lab 1: teach your AI (3 stages) */
 const WHAT = store.get("what") === "planet" ? "planet" : store.get("what") === "school" ? "school" : null;
@@ -857,32 +903,27 @@ const CHIPS1 = {school:["pencil","book","backpack","clock","chair","scissors","r
 const examResult = (r, w) => { const p = Math.round(r / (r + w) * 100);
   return el("div", {class:"bigscore"}, el("span", {class:"tag"}, "Your AI's score"), el("div", {class:"pct"}, r + "/" + (r + w) + " = " + p + "%"),
     el("p", null, p >= 80 ? "🏆 Your AI is smart! Your examples were good." : p >= 50 ? "👍 Not bad! More examples, a bit different each time, make an AI smarter." : "🤔 Your AI is confused. Maybe your 3 things look too much alike, or it needs more examples.")); };
+const CERT = () => store.get("cert") || {};
+const setCert = o => { store.set("cert", Object.assign(CERT(), o)); if (window.EVG_CERT) window.EVG_CERT(); };
+const list = w => w.slice(0, 3).join(", ");
+let f1 = null;
 stageLab($("#lab1"), {
   record:"list1", chips:() => CHIPS1,
   stages:[
     {type:"teach", short:"Teach 1 thing", title:"Teach your AI 1 thing", text:"Choose a word. Draw it and press Teach. Do it 5 times, a bit different each time (bigger, smaller, turned).", pickText:"What do you teach it first?", from:0, pickTo:1, need:5, hello:["Hi! My brain is empty.", "I don't know anything yet. Teach me!"]},
     {type:"teach", short:"Teach 2 more", title:"Teach it 2 more things", text:"Choose 2 more words. Draw each one 5 times and press Teach. Then press Ask: can it tell your 3 things apart?", pickText:"Choose your second word:", from:1, pickTo:3, need:5, hello:["I know 1 thing now.", "Teach me 2 more!"]},
-    {type:"exam", short:"The exam", title:"The exam: 10 new drawings", text:"Draw one of your 3 things, NEW, and press Ask the AI. Then press ✓ if it was right, ✗ if it was wrong. 10 times.", tries:10, examHint:"draw one of your 3 things, NEW.", hello:["Exam time! 📝", "Draw one of your 3 things. I will guess."],
-      onExam:(r, w) => store.set("tally1", [{r, w}]), result:examResult}
-  ],
-  after: enter => el("button", {class:"btn alt", type:"button", onclick:() => enter(2)}, "🔁 Take the exam again")
-});
-
-/* lab 2: trick the AI (3 stages) */
-let before = null;
-stageLab($("#lab2"), {
-  record:"list2", chips:() => [],
-  stages:[
-    {type:"teach", short:"Teach it lies", title:"Teach it lies", text:"Draw a CIRCLE and press “this is a SQUARE”. Draw a SQUARE and press “this is a CIRCLE”. 3 times each.", labels:["square", "circle"], need:3, lie:l => l, btn:l => l === "square" ? "Draw a ⚪ circle, then: this is a SQUARE" : "Draw a ⬜ square, then: this is a CIRCLE", hello:["Hi, I'm a brand new AI.", "My brain is empty. I believe everything you teach me."]},
-    {type:"exam", short:"The trap", title:"Spring the trap", text:"Now draw real circles and press Ask the AI. Is it right? Press ✓ or ✗. 5 times.", tries:5, examHint:"draw a circle.", hello:["I know circles and squares now!", "Test me. Draw a circle."],
-      onExam:(r, w) => { before = {r, w}; store.set("tally2", [{r, w}, {r:0, w:0}]); },
-      result:(r, w) => el("div", {class:"bigscore bad"}, el("span", {class:"tag"}, "Before the fix"), el("div", {class:"pct"}, r + "/" + (r + w)), el("p", null, "It believed your lies! Wrong examples make a wrong AI."))},
-    {type:"teach", short:"Fix it", title:"Fix it: wipe the brain and teach the truth", text:"I wiped its brain. Now teach the truth: draw a circle and press CIRCLE, draw a square and press SQUARE. 3 times each.", labels:["circle", "square"], need:3, wipe:true, lie:l => l, btn:l => l === "circle" ? "✓ This is a CIRCLE" : "✓ This is a SQUARE", hello:["🧹 My brain is empty again.", "Teach me the truth this time."]},
-    {type:"exam", short:"Test again", title:"Test it again", text:"Draw circles and squares, press Ask the AI, then ✓ or ✗. 5 times.", tries:5, examHint:"draw a circle or a square.", hello:["Test me again!", "Draw a circle or a square."],
-      onExam:(r, w) => store.set("tally2", [before || {r:0, w:0}, {r, w}]),
-      result:(r, w) => el("div", {class:"bigscore"}, el("span", {class:"tag"}, "Before → after the fix"), el("div", {class:"pct"}, (before ? before.r + "/5" : "?") + " → " + r + "/" + (r + w)), el("p", null, "Good examples made a good AI."))}
-  ],
-  onEnd: () => { $("#trickDef").hidden = false; }
+    {type:"exam", short:"The exam", title:"The exam: 10 new drawings", text:"Draw one of your 3 things, NEW, and press Ask the AI. Then press ✓ if it was right, ✗ if it was wrong. 10 times.", tries:10, examHint:w => "draw a NEW " + w.slice(0, 3).join(" / ") + ".", hello:["Exam time! 📝", "Draw one of your 3 things. I will guess."],
+      onExam:(r, w) => { store.set("tally1", [{r, w}]); setCert({exam:{r, w}}); if (r / (r + w) >= .8) confetti(); }, onDone:w => setCert({words:w.slice(0, 3)}), result:examResult},
+    {type:"exam", who:"👫 Your friend's turn! Give the mouse to a classmate.", short:"Friend test", title:"Friend test", text:w => "Your friend draws your 3 things (" + list(w) + "), in THEIR own way. You press ✓ or ✗. 5 times. Will your AI know your friend's drawings?", tries:5, examHint:w => "your friend draws a " + w.slice(0, 3).join(" / ") + ".", hello:["A new person? 😳", "I only learned YOUR drawings. Let's see…"],
+      onExam:(r, w) => { f1 = {r, w}; setCert({f1:{r, w}}); },
+      result:(r, w) => el("div", {class:"bigscore" + (r < 4 ? " bad" : "")}, el("span", {class:"tag"}, "Friend test"), el("div", {class:"pct"}, r + "/" + (r + w)),
+        el("p", null, r < 4 ? "Your AI got confused! It only learned YOUR way of drawing. Real AIs need examples from many different people." : "Wow, your AI knew your friend's drawings too! Let's make it even stronger."))},
+    {type:"teach", who:"👫 Still your friend's turn.", short:"Friend teaches", title:"Your friend teaches your AI", text:"Your friend draws each of your 3 things 2 times, their way, and presses Teach. Now your AI learns from 2 people.", labels:w => w.slice(0, 3), plus:2, hello:["Teach me your way!", "2 drawings of each thing, please."]},
+    {type:"exam", who:"👫 Your friend draws again.", short:"Test again", title:"Friend test again", text:w => "Your friend draws " + list(w) + " again. You press ✓ or ✗. 5 times. Is your AI better now?", tries:5, examHint:w => "your friend draws a " + w.slice(0, 3).join(" / ") + ".", hello:["I learned from 2 people now!", "Test me again."],
+      onExam:(r, w) => { setCert({f2:{r, w}}); if (!f1 || r > f1.r) confetti(); },
+      result:(r, w) => el("div", {class:"bigscore"}, el("span", {class:"tag"}, "Friend test: before → after"), el("div", {class:"pct"}, (f1 ? f1.r : "?") + "/5 → " + r + "/5"),
+        el("p", null, !f1 || r > f1.r ? "🎉 Better! More people's examples made a smarter AI. That's why real AIs learn from millions of people." : r === f1.r ? "Same score. Try with more drawings: more examples from more people make a stronger AI." : "Hmm, not better this time. Real engineers test again and again, with more examples."))}
+  ]
 });
 
 /* step 2: sort the sentences into Examples / Training / Testing */
@@ -900,6 +941,40 @@ stageLab($("#lab2"), {
   Q.forEach(([t, a]) => { const fb = el("span", {class:"fb"}), card = el("div", {class:"sorti"}); let done = false;
     const row = el("div", {class:"row"}, ...ST.map((s, i) => el("button", {class:"btn sm alt", type:"button", onclick:() => { if (done) return; done = true; const good = i === a; if (good) ok++; card.classList.add(good ? "ok" : "no"); fb.textContent = (good ? "✓ Right: " : "✗ No, it's ") + ST[a] + "."; $("#sortScore").textContent = ok + " of 6"; }}, (i + 1) + " · " + s)));
     card.append(el("p", null, t), row, fb); $("#sort").append(card); });
+})();
+
+/* the AI Trainer certificate (drawn on a canvas, downloadable) */
+(function(){
+  const c = $("#cert"); if (!c) return;
+  const g = c.getContext("2d"); let d = {};
+  let who = ""; try { who = (JSON.parse(localStorage.getItem("ai-lab-session")) || {}).name || ""; } catch(e) {}
+  $("#certName").value = store.get("certName") || who;
+  function draw(){
+    d = store.get("cert") || {};
+    $("#certNote").textContent = d.words && d.exam ? "Your AI's results are on it. Check your name, then download." : "Finish the mission in step 3 (teach your AI and give it the exam) and your results appear here.";
+    const W = 1200, H = 850, name = $("#certName").value.trim() || "AI Trainer";
+    g.fillStyle = "#FBF7EE"; g.fillRect(0, 0, W, H);
+    g.strokeStyle = "#1E7A55"; g.lineWidth = 14; g.strokeRect(30, 30, W - 60, H - 60);
+    g.strokeStyle = "#C9932B"; g.lineWidth = 3; g.strokeRect(56, 56, W - 112, H - 112);
+    g.textAlign = "center"; g.fillStyle = "#1E7A55"; g.font = "700 26px Arial, sans-serif"; g.fillText("A I   C R E A T O R S   ·   E B 7", W / 2, 128);
+    g.fillStyle = "#13221C"; g.font = "800 66px Georgia, serif"; g.fillText("AI Trainer Certificate", W / 2, 214);
+    g.font = "28px Arial, sans-serif"; g.fillStyle = "#56665E"; g.fillText("This certifies that", W / 2, 288);
+    g.font = "700 60px Georgia, serif"; g.fillStyle = "#13221C"; g.fillText(name, W / 2, 364);
+    g.strokeStyle = "#C9932B"; g.lineWidth = 2; g.beginPath(); g.moveTo(330, 388); g.lineTo(870, 388); g.stroke();
+    g.font = "28px Arial, sans-serif"; g.fillStyle = "#13221C";
+    g.fillText("trained a real AI to recognise: " + (d.words && d.words.length ? d.words.join(", ") : "…"), W / 2, 450);
+    const sc = x => x ? x.r + "/" + (x.r + x.w) : "…";
+    const boxes = [["🤖 Exam score", sc(d.exam)], ["👫 Friend test", d.f1 ? sc(d.f1) + "  →  " + sc(d.f2) : "…"]];
+    boxes.forEach(([t, v], i) => { const x = 250 + i * 400, y = 495; g.fillStyle = "#E3F1E9"; g.fillRect(x, y, 300, 140); g.strokeStyle = "#1E7A55"; g.lineWidth = 3; g.strokeRect(x, y, 300, 140);
+      g.fillStyle = "#56665E"; g.font = "24px Arial, sans-serif"; g.fillText(t, x + 150, y + 45); g.fillStyle = "#13221C"; g.font = "700 46px Arial, sans-serif"; g.fillText(v, x + 150, y + 108); });
+    g.font = "24px Arial, sans-serif"; g.fillStyle = "#56665E";
+    g.fillText("Evergreen School  ·  " + new Date().toLocaleDateString("en-GB", {day:"numeric", month:"long", year:"numeric"}), W / 2, 720);
+    g.font = "italic 22px Georgia, serif"; g.fillText("“An AI is only as good as the examples you give it.”", W / 2, 765);
+    try { $("#certDl").href = c.toDataURL("image/png"); } catch(e) {}
+  }
+  $("#certName").addEventListener("input", () => { store.set("certName", $("#certName").value); draw(); });
+  addEventListener("hashchange", draw); window.EVG_CERT = draw;
+  draw();
 })();
 
 /* pick a segment */
