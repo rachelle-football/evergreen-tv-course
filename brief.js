@@ -12,7 +12,7 @@
        make:[["🤖", "An AI you trained yourself"], ["📊", "Its exam score"]],
        steps:["Learn the 3 steps: examples, training, testing", "Teach the AI 3 new things by drawing", "Test it with 10 new drawings and count its score", "Trick it with wrong examples, then fix it"],
        done:"Your AI's exam score is filled in, and your team and part are checked (part 08).",
-       missions:{3:"Train your AI, give it the exam, then let a friend test it. Your output: its scores.", 8:"Your output: your AI Trainer certificate 🏅"}},
+       missions:{2:"Train your AI, give it the exam, then let a friend test it. Your output: its scores.", 7:"Your output: your AI Trainer certificate 🏅"}},
     3:{goal:"Design your part of the future with Gemini. This card is the plan for your whole project.",
        make:[["📝", "Your design card: a name, 3 big ideas, a day in it, and your own idea"]],
        steps:["Learn the 4 parts of a good prompt", "Click to build your prompt, then copy it", "Paste it in a NEW Gemini chat", "Paste Gemini's answer in the design card: it fills by itself", "Add one idea of your own that the AI did not have"],
