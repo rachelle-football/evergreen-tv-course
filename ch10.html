@@ -347,6 +347,10 @@ img.fprev{background:var(--paper)}
 .theme b{font-family:var(--display);font-size:19px}
 .theme .muted{font-size:14px}
 .theme.on{border-color:var(--green);background:var(--green-soft)}
+.exr{background:var(--paper);border-radius:12px;padding:10px 12px;border-left:4px solid var(--onair)}
+.exr p{margin:4px 0;font-weight:700;font-size:17px}
+.exr s{color:var(--onair);text-decoration-thickness:2px}
+.exr small{font-size:15px;color:var(--ink)}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -386,9 +390,12 @@ img.fprev{background:var(--paper)}
   <div class="lower"><div class="no">02</div><div class="name"><h2>Why does AI get things wrong?</h2><p>10 minutes · learn</p></div></div>
   <p class="big">AI answers can contain errors, missing information or invented details. Important information must be checked.</p>
   <div class="step3">
-    <div class="card"><span class="tag">Reason 1</span><b>🎲 It predicts words</b><p style="margin:0">Remember “Think like ChatGPT”? It picks the most likely next word. It does not look things up in a book.</p></div>
-    <div class="card"><span class="tag">Reason 2</span><b>📚 It learned from people</b><p style="margin:0">It learned from millions of texts. Some were wrong, some are old, and some are missing.</p></div>
-    <div class="card"><span class="tag">Reason 3</span><b>😎 It always sounds sure</b><p style="margin:0">It writes a wrong answer in the same calm, confident voice as a right one.</p></div>
+    <div class="card"><span class="tag">Reason 1</span><b>🎲 It guesses the most likely word</b><p style="margin:0 0 10px">It does not look things up. It writes the word that comes most often.</p>
+      <div class="exr"><span class="tag">Example</span><p>“The capital of Australia is <s>Sydney</s>.”</p><small>Sydney is the city people write about most, so the AI guesses it. The real capital is <b>Canberra</b>.</small></div></div>
+    <div class="card"><span class="tag">Reason 2</span><b>📚 It learned from old or wrong texts</b><p style="margin:0 0 10px">People wrote its examples. Some were wrong, some are old.</p>
+      <div class="exr"><span class="tag">Example</span><p>“There are <s>9 planets</s> in our solar system.”</p><small>Old books said 9. Since 2006, Pluto is a dwarf planet: there are <b>8</b>.</small></div></div>
+    <div class="card"><span class="tag">Reason 3</span><b>😎 It always sounds sure</b><p style="margin:0 0 10px">A wrong answer sounds exactly as confident as a right one.</p>
+      <div class="exr"><span class="tag">Example</span><p>“Of course! The Great Wall of China is <s>easy to see from space</s>.”</p><small>Sounds sure, but false: astronauts say you can't see it with your eyes from space.</small></div></div>
   </div>
   <p class="lead" style="margin:20px 0 0"><b>Key words.</b> Tap each word to see what it means.</p>
   <div class="vocab" id="vocab"></div>
