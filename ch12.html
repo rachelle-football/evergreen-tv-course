@@ -355,6 +355,15 @@ img.fprev{background:var(--paper)}
 .howto{display:grid;gap:10px;margin-bottom:12px}
 .how4{margin:0;padding-left:24px;display:grid;gap:4px;font-size:17px}
 .stp2{margin:4px 0 0;font-weight:700;font-size:16px}.stp2 b{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:13px;margin-right:4px}
+.srcbook{border:2px solid var(--green);background:var(--green-soft);border-radius:16px;padding:16px 18px;align-self:start;position:sticky;top:84px}
+.srcbook p{margin:8px 0 0;font-size:19px;line-height:1.6}
+.case .claim{cursor:default}
+@media (max-width:900px){.srcbook{position:static}}
+.ordq{margin:0 0 8px;font-weight:700;font-size:17px}
+.ordl li.run{background:var(--gold-soft);border-radius:8px;outline:2px solid var(--gold);padding:2px 6px}
+.shake{animation:shake .35s}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media (prefers-reduced-motion: reduce){.shake{animation:none}}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -381,9 +390,9 @@ img.fprev{background:var(--paper)}
   <div class="lower"><div class="no">01</div><div class="name"><h2>Program a robot</h2><p>7 minutes · discover</p></div></div>
   <p class="big">This robot waters plants. It does exactly what you tell it, in the order you tell it. Give it the right steps.</p>
   <div class="grid g2">
-    <div class="card"><span class="tag">Your instructions</span><div id="robotOrder" style="margin-top:8px"></div></div>
+    <div class="card"><span class="tag">1 · Your instructions</span><div id="robotOrder" style="margin-top:8px"></div></div>
     <div class="card robot">
-      <span class="tag">Test the robot</span>
+      <span class="tag">2 · Test the robot</span>
       <div class="plant" id="plant">🪴</div>
       <div class="row" style="justify-content:center"><button class="btn sm alt" id="soilBtn" type="button">Soil: dry 🏜️</button><button class="btn sm" id="runRobot" type="button" disabled>▶ Run</button></div>
       <p class="muted" id="robotSays" style="text-align:center;margin:10px 0 0">Put the steps in order first.</p>
@@ -812,17 +821,21 @@ window.X = (function(){
     if (on) on(S); return S;
   }
   /* tap the items in the right order */
-  function order(box, items, onDone){
-    const want = items.map((_, i) => i), shuffled = items.map((t, i) => [t, i]).sort((a, b) => ((a[1] * 7 + 3) % items.length) - ((b[1] * 7 + 3) % items.length));
-    let got = [], fb = el("p", {class:"fb", style:"margin:8px 0 0;font-weight:700"});
-    const list = el("ol", {class:"ordl"}), pool = el("div", {class:"row"});
+  /* tap the items in the right order: a wrong tap is refused at once, with a hint */
+  function order(box, items, onDone, hints){
+    const shuffled = items.map((t, i) => [t, i]).sort((a, b) => ((a[1] * 7 + 3) % items.length) - ((b[1] * 7 + 3) % items.length));
+    let got = [];
+    const fb = el("p", {class:"fb", style:"margin:8px 0 0;font-weight:700"}), list = el("ol", {class:"ordl"}), pool = el("div", {class:"row"}), q = el("p", {class:"ordq"});
     function draw(){
-      pool.replaceChildren(...shuffled.filter(([, i]) => !got.includes(i)).map(([t, i]) => el("button", {class:"btn sm alt", type:"button", onclick:() => { got.push(i); draw(); }}, t)));
+      const n = got.length;
+      q.textContent = n < items.length ? "Step " + (n + 1) + " of " + items.length + ": which one comes " + (n === 0 ? "FIRST" : "next") + "?" : "";
+      pool.replaceChildren(...shuffled.filter(([, i]) => !got.includes(i)).map(([t, i]) => el("button", {class:"btn sm alt", type:"button", onclick:e => {
+        if (i === got.length){ got.push(i); fb.textContent = got.length === items.length ? "✓ Perfect order!" : "✓ Yes!"; fb.style.color = "var(--green)"; draw(); if (got.length === items.length && onDone) onDone(); }
+        else { fb.textContent = "✗ Not yet. " + ((hints && hints[got.length]) || "Think: what must happen before that?"); fb.style.color = "var(--onair)"; const b = e.currentTarget; b.classList.remove("shake"); void b.offsetWidth; b.classList.add("shake"); } }}, t)));
       list.replaceChildren(...got.map(i => el("li", null, items[i])));
-      if (got.length === items.length){ const ok = got.every((v, k) => v === want[k]); fb.textContent = ok ? "✓ Perfect order!" : "✗ Not quite. Try again."; fb.style.color = ok ? "var(--green)" : "var(--onair)";
-        if (!ok) pool.replaceChildren(el("button", {class:"btn sm", type:"button", onclick:() => { got = []; fb.textContent = ""; draw(); }}, "↺ Try again")); else if (onDone) onDone(); }
     }
-    box.replaceChildren(el("p", {class:"muted", style:"margin:0 0 6px;font-size:15px"}, "Tap them in the right order:"), pool, list, fb); draw();
+    box.replaceChildren(q, pool, list, fb); draw();
+    return {list};
   }
   /* a badge */
   function badge(box, ic, name, text){ box.replaceChildren(el("div", {class:"badgewin"}, el("span", {class:"bi"}, ic), el("div", null, el("b", null, "Badge: " + name), el("span", null, text)))); try { const b = store.raw ? null : null; } catch(e){} }
@@ -853,9 +866,15 @@ const done = X.prog(4);
 
 /* 1 robot */
 let dry = true, ordered = false;
-X.order($("#robotOrder"), ["Read the soil sensor", "IF the soil is dry: turn on the pump for 5 seconds", "ELSE: keep the pump off", "Wait one hour, then start again"], () => { ordered = true; $("#runRobot").disabled = false; $("#robotSays").textContent = "Now press Run."; });
+const ROB = X.order($("#robotOrder"), ["Read the soil sensor", "IF the soil is dry: turn on the pump for 5 seconds", "ELSE: keep the pump off", "Wait one hour, then start again"], () => { ordered = true; $("#runRobot").disabled = false; $("#robotSays").textContent = "Now choose the soil (dry or wet) and press ▶ Run."; },
+  ["The robot must first FIND OUT if the soil is dry. How?", "Now it knows the soil. What does it do IF the soil is dry?", "And if the soil is NOT dry (ELSE)?", ""]);
 $("#soilBtn").onclick = () => { dry = !dry; $("#soilBtn").textContent = dry ? "Soil: dry 🏜️" : "Soil: wet 💧"; };
-$("#runRobot").onclick = () => { if (!ordered) return; $("#plant").textContent = dry ? "🪴💦" : "🪴"; $("#robotSays").textContent = dry ? "🤖 Sensor says DRY → pump ON for 5 seconds. Plant watered!" : "🤖 Sensor says WET → pump stays OFF. No flood!"; $("#l1").hidden = false; done(0); };
+/* run: the robot follows the steps one by one, and each step lights up */
+$("#runRobot").onclick = () => { if (!ordered) return; const lis = [...ROB.list.querySelectorAll("li")]; $("#runRobot").disabled = true; $("#plant").textContent = "🪴";
+  const say = [["🤖 Step 1: reading the soil sensor… the soil is " + (dry ? "DRY 🏜️" : "WET 💧") + "."], [dry ? "🤖 Step 2: the soil is dry, so: pump ON for 5 seconds 💦" : "🤖 Step 2: IF the soil is dry… it is NOT dry, so I skip this step."], [dry ? "🤖 Step 3: ELSE… not needed, I already watered." : "🤖 Step 3: ELSE: the pump stays OFF. No flood!"], ["🤖 Step 4: waiting one hour… then I start again from step 1."]];
+  let k = 0; const step = () => { lis.forEach((l, j) => l.classList.toggle("run", j === k)); $("#robotSays").textContent = say[k][0]; if (k === 1 && dry) $("#plant").textContent = "🪴💦"; k++;
+    if (k < 4) setTimeout(step, 1300); else setTimeout(() => { lis.forEach(l => l.classList.remove("run")); $("#runRobot").disabled = false; $("#robotSays").textContent += "  Now change the soil and run again!"; $("#l1").hidden = false; done(0); }, 1500); };
+  step(); };
 
 /* 2 */
 X.vocab($("#vocab"), [["Algorithm", "Steps, in order, to solve a problem."], ["Sequence", "Steps that happen one after another."], ["Condition", "A question with yes or no: IF this is true…"], ["If / else", "IF yes, do this. ELSE, do that."], ["Loop", "Repeat some steps many times."], ["Bug", "A mistake in a program."], ["Debug", "Finding and fixing the bug."]]);

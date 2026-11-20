@@ -355,6 +355,15 @@ img.fprev{background:var(--paper)}
 .howto{display:grid;gap:10px;margin-bottom:12px}
 .how4{margin:0;padding-left:24px;display:grid;gap:4px;font-size:17px}
 .stp2{margin:4px 0 0;font-weight:700;font-size:16px}.stp2 b{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:13px;margin-right:4px}
+.srcbook{border:2px solid var(--green);background:var(--green-soft);border-radius:16px;padding:16px 18px;align-self:start;position:sticky;top:84px}
+.srcbook p{margin:8px 0 0;font-size:19px;line-height:1.6}
+.case .claim{cursor:default}
+@media (max-width:900px){.srcbook{position:static}}
+.ordq{margin:0 0 8px;font-weight:700;font-size:17px}
+.ordl li.run{background:var(--gold-soft);border-radius:8px;outline:2px solid var(--gold);padding:2px 6px}
+.shake{animation:shake .35s}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media (prefers-reduced-motion: reduce){.shake{animation:none}}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -776,17 +785,21 @@ window.X = (function(){
     if (on) on(S); return S;
   }
   /* tap the items in the right order */
-  function order(box, items, onDone){
-    const want = items.map((_, i) => i), shuffled = items.map((t, i) => [t, i]).sort((a, b) => ((a[1] * 7 + 3) % items.length) - ((b[1] * 7 + 3) % items.length));
-    let got = [], fb = el("p", {class:"fb", style:"margin:8px 0 0;font-weight:700"});
-    const list = el("ol", {class:"ordl"}), pool = el("div", {class:"row"});
+  /* tap the items in the right order: a wrong tap is refused at once, with a hint */
+  function order(box, items, onDone, hints){
+    const shuffled = items.map((t, i) => [t, i]).sort((a, b) => ((a[1] * 7 + 3) % items.length) - ((b[1] * 7 + 3) % items.length));
+    let got = [];
+    const fb = el("p", {class:"fb", style:"margin:8px 0 0;font-weight:700"}), list = el("ol", {class:"ordl"}), pool = el("div", {class:"row"}), q = el("p", {class:"ordq"});
     function draw(){
-      pool.replaceChildren(...shuffled.filter(([, i]) => !got.includes(i)).map(([t, i]) => el("button", {class:"btn sm alt", type:"button", onclick:() => { got.push(i); draw(); }}, t)));
+      const n = got.length;
+      q.textContent = n < items.length ? "Step " + (n + 1) + " of " + items.length + ": which one comes " + (n === 0 ? "FIRST" : "next") + "?" : "";
+      pool.replaceChildren(...shuffled.filter(([, i]) => !got.includes(i)).map(([t, i]) => el("button", {class:"btn sm alt", type:"button", onclick:e => {
+        if (i === got.length){ got.push(i); fb.textContent = got.length === items.length ? "✓ Perfect order!" : "✓ Yes!"; fb.style.color = "var(--green)"; draw(); if (got.length === items.length && onDone) onDone(); }
+        else { fb.textContent = "✗ Not yet. " + ((hints && hints[got.length]) || "Think: what must happen before that?"); fb.style.color = "var(--onair)"; const b = e.currentTarget; b.classList.remove("shake"); void b.offsetWidth; b.classList.add("shake"); } }}, t)));
       list.replaceChildren(...got.map(i => el("li", null, items[i])));
-      if (got.length === items.length){ const ok = got.every((v, k) => v === want[k]); fb.textContent = ok ? "✓ Perfect order!" : "✗ Not quite. Try again."; fb.style.color = ok ? "var(--green)" : "var(--onair)";
-        if (!ok) pool.replaceChildren(el("button", {class:"btn sm", type:"button", onclick:() => { got = []; fb.textContent = ""; draw(); }}, "↺ Try again")); else if (onDone) onDone(); }
     }
-    box.replaceChildren(el("p", {class:"muted", style:"margin:0 0 6px;font-size:15px"}, "Tap them in the right order:"), pool, list, fb); draw();
+    box.replaceChildren(q, pool, list, fb); draw();
+    return {list};
   }
   /* a badge */
   function badge(box, ic, name, text){ box.replaceChildren(el("div", {class:"badgewin"}, el("span", {class:"bi"}, ic), el("div", null, el("b", null, "Badge: " + name), el("span", null, text)))); try { const b = store.raw ? null : null; } catch(e){} }
