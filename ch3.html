@@ -816,8 +816,8 @@ const F = Object.assign({role:"", task:"", ctx:"", out:""}, store.get("fix") || 
 const BOX = [
   ["role", "🎭 Role", "Who should the AI be?", ["You are an environmental scientist.", "You are a creative teacher.", "Act as a school project coach."]],
   ["task", "🎯 Task", "What exactly should it do?", ["Help me make a school project about protecting the environment.", "Create a project about how we can protect our planet."]],
-  ["ctx", "📚 Context", "Who is it for? Why?", ["I am in Grade 7 in Lebanon.", "It is for a class presentation next week.", "My class cares about plastic on our beaches."]],
-  ["out", "📋 Output", "How should the answer look?", ["Give me 5 project ideas.", "Suggest a picture for each idea.", "Plan a 6-slide presentation.", "Use simple English."]]
+  ["ctx", "📚 Context", "Who is it for? Why?", ["I am in Grade 7 in Lebanon.", "It is for my Grade 7 class, next week.", "My Grade 7 class cares about plastic on our beaches."]],
+  ["out", "📋 Output", "How should the answer look?", ["Give me 5 project ideas, a picture for each idea, and a 6-slide presentation plan.", "Give me 3 ideas, with pictures, and a short presentation.", "Use simple English."]]
 ];
 const CHECKS = [
   ["🎭 A role", t => F.role.trim().length >= 8],
@@ -846,7 +846,7 @@ $("#builder4").replaceChildren(...BOX.map(([k, n, q, ideas]) => {
   const ta = el("textarea", {rows:"2", placeholder:q, "aria-label":n}); ta.value = F[k];
   ta.addEventListener("input", () => { F[k] = ta.value; store.set("fix", F); drawFixSide(); });
   /* Role and Task: ONE choice (it replaces). Context and Output: tap to add, tap again to remove */
-  const one = k === "role" || k === "task";
+  const one = k !== "out";
   const add = s => { const cur = ta.value.trim(); ta.value = one ? s : cur.includes(s) ? cur.replace(s, "").replace(/\s{2,}/g, " ").trim() : (cur ? cur + " " : "") + s; ta.dispatchEvent(new Event("input")); paintChips(); };
   const chips = ideas.map(s => el("button", {class:"chip", type:"button", onclick:() => add(s)}, s));
   const paintChips = () => chips.forEach((c, i) => { const on = ta.value.includes(ideas[i]); c.classList.toggle("on", on); c.setAttribute("aria-pressed", String(on)); });
