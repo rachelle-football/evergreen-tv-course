@@ -199,6 +199,48 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 .animal .votes{font-size:14px}
 .animal .says{font-weight:700}
 .bhint{margin:12px 0 0;font-weight:700}
+/* stage labs (2026-11-20) */
+.mission.one{grid-template-columns:1fr}
+.stagebar{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;margin-bottom:14px}
+.stagebar .sb{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--panel);font-weight:700;font-size:15px;color:var(--muted)}
+.stagebar .sb b{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--line);color:var(--ink);font-family:var(--mono);flex:none}
+.stagebar .sb.now{border-color:var(--ink);color:var(--ink)}
+.stagebar .sb.now b{background:var(--ink);color:#fff}
+.stagebar .sb.ok{border-color:var(--green);background:var(--green-soft);color:var(--ink)}
+.stagebar .sb.ok b{background:var(--green);color:#fff}
+.stagebody{display:grid;gap:12px}
+.sth{font-size:26px;margin:0}
+.stp{margin:0;font-size:18px;line-height:1.45}
+.pick{background:var(--gold-soft);border-radius:12px;padding:12px 14px;display:grid;gap:8px}
+.pickq{margin:0;font-weight:700;font-size:18px}
+.pick .chip{font-size:17px;padding:8px 14px;font-weight:700}
+.ownrow{display:flex;gap:8px;flex-wrap:wrap}
+.ownrow input{font:inherit;font-size:17px;padding:8px 12px;border:2px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:min(100%,240px)}
+.counts{display:flex;gap:10px;flex-wrap:wrap}
+.cnt{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--panel)}
+.cnt b{font-size:18px}
+.cnt.full{border-color:var(--green);background:var(--green-soft)}
+.dots{display:flex;gap:4px}
+.dots i{width:14px;height:14px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--green)}
+.cnt small{font-family:var(--mono);font-size:13px}
+.examline{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font:700 18px/1.2 var(--display)}
+.exscore{font-family:var(--mono)}
+.stdone{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px;border-radius:12px;background:var(--green-soft);border:2px solid var(--green)}
+.stdone b{font-size:18px}
+.bigscore{border:2px solid var(--green);border-radius:16px;padding:16px;text-align:center;background:var(--panel)}
+.bigscore.bad{border-color:var(--onair)}
+.bigscore .pct{font:700 44px/1.1 var(--mono);margin:6px 0}
+.bigscore p{margin:0;font-size:18px;font-weight:600}
+@media (max-width:680px){.stagebar{grid-auto-flow:row}.sth{font-size:22px}}
+/* step 2: sorting game */
+.sort{display:grid;gap:10px}
+.sorti{border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--panel);display:grid;gap:8px}
+.sorti p{margin:0;font-size:17px;font-weight:600}
+.sorti .row{gap:6px}
+.sorti.ok{border-color:var(--green);background:var(--green-soft)}
+.sorti.no{border-color:var(--onair);background:var(--onair-soft)}
+.sorti .fb{font-size:15px;font-weight:700}
 </style>
 <header class="top">
   <div class="wrap">
@@ -231,26 +273,24 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
     <div class="arrow" aria-hidden="true">→</div>
     <div class="card"><span class="tag">Step 2</span><h3>Training</h3><p>The computer looks for patterns in the examples. The result is called a <b>model</b>.</p></div>
     <div class="arrow" aria-hidden="true">→</div>
-    <div class="card"><span class="tag">Step 3</span><h3>Testing</h3><p>Give the model <b>new</b> examples it never saw, and count how often it is right.</p></div>
+    <div class="card"><span class="tag">Step 3</span><h3>Testing</h3><p>Give the model <b>new</b> examples it never saw, and count how often it is right. Like a real exam: new questions!</p></div>
   </div>
   <div class="card" style="margin-top:16px">
-    <span class="tag">Why new examples?</span>
-    <p class="lead" style="margin:6px 0 12px">Your teacher gives you the exact exam questions the day before. You memorise the answers and get 100%. Do you really understand the lesson?</p>
-    <div class="row"><button class="btn sm" id="examBtn" type="button">Show the answer</button></div>
-    <p class="lead" id="examAns" style="margin:12px 0 0" hidden>Maybe not. A real test uses new questions. AI is the same: we test it on examples it has <b>never seen</b>, or the score lies.</p>
+    <span class="tag">Game: which step is it?</span>
+    <p class="lead" style="margin:6px 0 12px">For each sentence, tap the right step.</p>
+    <div class="sort" id="sort"></div>
+    <p class="lead" style="margin:12px 0 0"><b id="sortScore">0 of 6</b> right</p>
   </div>
 </section>
 
 <section class="seg" id="seg-3" data-min="30" data-title="Mission: teach your AI" data-period="1" hidden>
   <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: teach the AI</h2><p>Period 1 · 30 minutes · right here, on this page</p></div></div>
-  <div class="mission">
+  <div class="mission one">
     <div>
       <p class="lead" id="lab1lead">This AI has never seen a pencil, a bottle or a banana peel. You will teach it, the way real engineers do: with examples.</p>
       <div class="teamnote"><b>First, choose what you teach your AI:</b><div class="teamrow" id="pickWhat" style="margin-top:8px"></div></div>
       <div class="card lab" id="lab1"></div>
-      <ol class="checklist" id="list1"></ol>
     </div>
-    <aside class="card tally" id="tally1"></aside>
   </div>
   <p class="note">No camera, nothing uploaded. Your AI lives only in this page: when you close it, it forgets everything.</p>
 </section>
@@ -283,18 +323,16 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 
 <section class="seg" id="seg-6" data-min="15" data-title="Mission: trick the AI" data-period="2" hidden>
   <div class="lower"><div class="no">06</div><div class="name"><h2>Mission: trick the AI</h2><p>Period 2 · 15 minutes · teach it lies, then fix it</p></div></div>
-  <div class="mission">
+  <div class="mission one">
     <div>
-      <p class="lead">This is a brand new AI. Its brain is empty. You will teach it that circles are squares and squares are circles. What will it believe?</p>
+      <p class="lead">A brand new AI, with an empty brain. You will teach it lies: circles are squares, squares are circles. What will it believe?</p>
       <div class="card lab" id="lab2"></div>
-      <ol class="checklist" id="list2"></ol>
       <div class="def" id="trickDef" hidden>
         <span class="tag">What just happened</span>
         <p>The AI is not clever or stupid. It believes whatever its examples say. Wrong examples make a wrong AI.</p>
         <div class="note" style="color:var(--ink);font-size:17px">Engineers say: <b>garbage in, garbage out</b>. Real AIs learn from millions of examples written by people. If people made mistakes, the AI learns the mistakes too.</div>
       </div>
     </div>
-    <aside class="card tally" id="tally2"></aside>
   </div>
 </section>
 
@@ -415,7 +453,6 @@ $("#clockBtn").onclick = () => {
 };
 
 /* exam analogy */
-$("#examBtn").onclick = () => { $("#examAns").hidden = false; };
 
 /* checklists */
 function checklist(id, items){
@@ -428,24 +465,6 @@ function checklist(id, items){
     return li; }));
   return { tick(i){ if (saved[i]) return; const cb = document.getElementById(id + "-" + i); if (!cb) return; cb.checked = true; saved[i] = true; store.set(id, saved); cb.closest("li").classList.add("ok"); } };
 }
-const L1 = checklist("list1", [
-  ["Pick your first thing", "Click one of the ideas (or write your own) in the box at the top of the board."],
-  ["See what the AI knows", "Draw a house. Press Ask the AI. It knows houses, because it learned from example drawings (look at its memory)."],
-  ["Show it your thing", "Press Clear. Draw it and press Ask. It has no idea: it never saw one! Press the green button: No! It's a … Learn it."],
-  ["Ask it again", "Press Ask me again. Now it says the name YOU gave it. It learned from you!"],
-  ["Teach it 5 drawings", "Draw it again, a bit different each time (bigger, smaller, another pose) and press Teach. Do it until it has 5. Can it recognise a brand new drawing now?"],
-  ["Look at what it sees", "Under the answer, look at the little dotted square. The AI does not see your drawing: it sees 784 dots, and compares them with its memory."],
-  ["Score 10 tries", "Draw 10 new drawings: your things, houses, suns, fish… After each answer press Right or Wrong."],
-  ["Teach 2 more things", "Click another idea and teach it the same way. When it knows 3 things, can it tell them all apart?"]
-]);
-const L2 = checklist("list2", [
-  ["Ask the empty brain", "Draw anything and press Ask. It can't answer: it has learned nothing."],
-  ["Teach it a lie", "Draw a circle and press This is a SQUARE. Do it 3 times."],
-  ["Teach it another lie", "Draw a square and press This is a CIRCLE. Do it 3 times."],
-  ["Spring the trap", "Draw a circle and press Ask. What does it say? Do it 5 times and press Right or Wrong each time (Before the fix)."],
-  ["Fix it", "Press Wipe the brain. Now teach the truth: 3 circles as CIRCLE, 3 squares as SQUARE."],
-  ["Test again", "5 more tries (After the fix). Why did the score change? Tell your neighbour in one sentence."]
-]);
 
 /* tallies */
 function tally(id, title, cols, max){
@@ -469,8 +488,6 @@ function tally(id, title, cols, max){
   draw();
   return api;
 }
-const T1 = tally("tally1", "Your AI’s exam: 10 new drawings", ["How often it is right"], 10);
-const T2 = tally("tally2", "Your AI’s exam: circles and squares", ["Before the fix", "After the fix"], 5);
 
 /* ---------- Draw lab: a tiny AI that learns from drawings (no camera, nothing leaves the page) ---------- */
 const DL = (() => {
@@ -691,48 +708,192 @@ drawLab($("#lab3"), {
   on(ev, d){ if (ev === "answer" && d.best !== "tree") $("#biasDef").hidden = false; }
 });
 
-/* lab 1: teach the AI your team's things */
-const TEAM = ["school", "planet"].includes(store.get("what")) ? store.get("what") : null;
-const LAB1 = {
-  school:{chips:["pencil","book","backpack","clock","chair","scissors","ruler"], ph:"e.g. pencil", greet:"Hi! Teach me school objects. Write one in the box, then draw it."},
-  planet:{chips:["bottle","can","banana peel","paper bag","apple core","battery","glass jar"], ph:"e.g. bottle", greet:"Hi! I'm a recycling robot. Teach me kinds of waste: write one in the box, then draw it."},
-  none:{chips:["pencil","book","bottle","can","banana peel","clock"], ph:"e.g. pencil", greet:"Hi! Write a word in the box, then draw it."}
-}[TEAM || "none"];
-const lab1 = drawLab($("#lab1"), {
-  key:"brain1", nameKey:"name", named:true, builtins:true, chips:LAB1.chips, namePh:LAB1.ph, greet:LAB1.greet, nameLabel:"What are you teaching it?",
-  score: right => T1.add(0, right),
-  on(ev, d){
-    if (ev === "named") L1.tick(0);
-    if (ev === "answer" && ["sun","house","fish","star","heart","tree"].includes(d.best)) L1.tick(1);
-    if (ev === "answer") L1.tick(5);
-    if (ev === "learnit") L1.tick(2);
-    if (ev === "answer" && d.name && d.best === d.name) L1.tick(3);
-    if (ev === "taught" && d.n >= 5) L1.tick(4);
-    if (ev === "taught" && Object.keys(d.counts).length >= 3) L1.tick(7);
-  }
-});
-T1.onchange = st => { if (st[0].r + st[0].w >= 10) L1.tick(6); };
-T1.onchange(T1.state());
+/* ---------- Stage lab (2026-11-20): the same tiny drawing AI, but in clear stages.
+   Each stage opens only when the one before is done. The AI starts empty every time the page opens. ---------- */
+function stageLab(box, cfg){
+  let mem = [], words = [], si = 0, exam = null, strokes = [], cur = null, taughtRev = -1, rev = 0;
+  const S = cfg.stages;
+  const recKey = cfg.record; /* e.g. "list1": the highest stage ever finished, for the teacher */
+  const rec = () => { const r = store.get(recKey); return Array.isArray(r) ? r : S.map(() => false); };
+  const done = i => { const r = rec(); r[i] = true; store.set(recKey, r); };
+  const count = l => mem.filter(e => e.l === l).length;
+  const an = w => (/^[aeiou]/i.test(w) ? "an " : "a ") + w;
 
-/* lab 2: trick the AI */
-let fixedOnce = !!store.get("fixed");
-const lab2 = drawLab($("#lab2"), {
-  key:"brain2", builtins:false, labels:["circle", "square"], wipe:true,
-  score: right => T2.add(fixedOnce ? 1 : 0, right),
-  on(ev, d){
-    if (ev === "ask" && d.empty) L2.tick(0);
-    if (ev === "taught" && !fixedOnce){ if ((d.counts.square || 0) >= 3) L2.tick(1); if ((d.counts.circle || 0) >= 3) L2.tick(2); }
-    if (ev === "taught" && fixedOnce && (d.counts.square || 0) >= 3 && (d.counts.circle || 0) >= 3) L2.tick(4);
-    if (ev === "wiped"){ const b = T2.state()[0]; if (b.r + b.w > 0){ fixedOnce = true; store.set("fixed", true); } }
+  /* drawing board */
+  const cv = el("canvas", {class:"board", width:String(DL.BOARD), height:String(DL.BOARD), role:"img", "aria-label":"Drawing board: draw with your mouse or finger"});
+  const g = cv.getContext("2d");
+  function paint(){
+    g.clearRect(0, 0, DL.BOARD, DL.BOARD); g.lineWidth = 9; g.lineCap = g.lineJoin = "round"; g.strokeStyle = g.fillStyle = DL.INK;
+    if (!strokes.length){ g.fillStyle = "#9AA8A1"; g.font = "600 22px Atkinson Hyperlegible, sans-serif"; g.textAlign = "center"; g.fillText("Draw here", DL.BOARD / 2, DL.BOARD / 2); return; }
+    for (const st of strokes){ g.beginPath(); if (st.length === 1){ g.arc(st[0][0], st[0][1], 4.5, 0, 7); g.fill(); continue; } st.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.stroke(); }
   }
+  const pos = e => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width * DL.BOARD, (e.clientY - r.top) / r.height * DL.BOARD]; };
+  cv.addEventListener("pointerdown", e => { e.preventDefault(); cv.setPointerCapture(e.pointerId); if (rev === taughtRev) strokes = []; cur = [pos(e)]; strokes.push(cur); rev++; paint(); });
+  cv.addEventListener("pointermove", e => { if (!cur) return; const p = pos(e), q = cur[cur.length - 1]; if (Math.hypot(p[0] - q[0], p[1] - q[1]) > 2){ cur.push(p); paint(); } });
+  const up = () => { cur = null; }; cv.addEventListener("pointerup", up); cv.addEventListener("pointercancel", up);
+  const clear = () => { strokes = []; rev++; paint(); };
+  const tools = el("div", {class:"boardtools"}, el("button", {class:"ghost", type:"button", onclick:clear}, "Clear"), el("button", {class:"ghost", type:"button", onclick:() => { strokes.pop(); rev++; paint(); }}, "Undo"));
+
+  /* the AI's bubble */
+  const ai = el("div", {class:"ai", "aria-live":"polite"});
+  function say(kind, text, why, extra){
+    ai.className = "ai" + (kind ? " " + kind : "");
+    ai.replaceChildren(el("div", {class:"who"}, el("span", {class:"bot", "aria-hidden":"true"}, kind === "think" ? "🤔" : kind === "bad" ? "😵" : "🤖"), el("div", null, el("p", {class:"say"}, text), ...(why ? [el("p", {class:"why"}, why)] : []))), ...(extra || []));
+  }
+  const bars = r => el("div", {class:"bars"}, ...r.list.slice(0, 3).map(([l, p]) => el("div", {class:"bar"}, el("span", null, l), el("i", null, el("b", {style:"width:" + Math.max(2, Math.round(p * 100)) + "%"})), el("em", null, Math.round(p * 100) + "%"))));
+
+  function think(){
+    const raw = DL.raster(strokes);
+    if (!raw){ say("think", "Draw something first!", "Use your mouse or your finger on the white board."); return null; }
+    if (!mem.length){ say("bad", "My brain is empty. I can't answer!", "I have never seen a single example. Teach me first."); return null; }
+    const r = DL.guess(mem, raw), known = [...new Set(mem.map(e => e.l))];
+    return {r, known};
+  }
+  function ask(){
+    const t = think(); if (!t) return;
+    const {r, known} = t;
+    if (known.length === 1) say("good", "It's " + an(r.best) + "!", "I only know 1 thing: " + r.best + ". So to me, everything looks like " + an(r.best) + "!", [bars(r)]);
+    else if (r.list[0][1] < .55) say("think", "Maybe " + an(r.best) + "? I'm not sure.", "It looks a bit like more than one thing I learned.", [bars(r)]);
+    else say("good", "It's " + an(r.best) + "!", "I learned it from the " + count(r.best) + " drawing" + (count(r.best) > 1 ? "s" : "") + " you taught me.", [bars(r)]);
+  }
+  function teach(label){
+    const raw = DL.raster(strokes);
+    if (!raw){ say("think", "Draw it first, then press Teach.", ""); return; }
+    if (rev === taughtRev){ say("think", "I already learned this drawing.", "Draw a new one: the board clears by itself."); return; }
+    mem.push({l:label, raw, f:DL.feat(raw)}); taughtRev = rev;
+    const n = count(label), need = S[si].need || 0;
+    say("good", "Got it! This is " + an(label) + ".", "Now I remember " + n + " drawing" + (n > 1 ? "s" : "") + " of " + an(label) + "." + (need && n < need ? " Draw another one, a bit different." : ""));
+    render();
+  }
+
+  /* exam */
+  function examAsk(){
+    if (exam.wait) return;
+    const t = think(); if (!t) return;
+    const {r} = t; exam.wait = true;
+    say("good", "It's " + an(r.best) + "!", "Was I right? Be honest!", [bars(r), el("div", {class:"judge"},
+      el("button", {class:"btn sm", type:"button", onclick:() => mark(true)}, "✓ Right"),
+      el("button", {class:"btn sm alt", type:"button", onclick:() => mark(false)}, "✗ Wrong"))]);
+  }
+  function mark(ok){
+    if (!exam.wait) return; exam.wait = false; ok ? exam.r++ : exam.w++; clear();
+    const n = exam.r + exam.w, st = S[si];
+    if (n >= st.tries){ if (st.onExam) st.onExam(exam.r, exam.w); say("", "Exam finished!", ""); }
+    else say("", ok ? "Yes! 🎉 Next drawing." : "Oops! 😅 Next drawing.", "Drawing " + (n + 1) + " of " + st.tries + ": " + (st.examHint || "draw a NEW one."));
+    render();
+  }
+
+  /* stage logic */
+  const isDone = () => { const st = S[si];
+    if (st.type === "teach") return st.labels ? st.labels.every(l => count(l) >= st.need) : words.length >= st.pickTo && words.slice(st.from || 0, st.pickTo).every(w => count(w) >= st.need);
+    return exam && exam.r + exam.w >= st.tries; };
+  function enter(i){
+    si = i; const st = S[si]; clear(); exam = null;
+    if (st.wipe){ mem = []; }
+    if (st.type === "exam") exam = {r:0, w:0, wait:false};
+    if (st.hello) say("", st.hello[0], st.hello[1] || "");
+    render();
+  }
+  const head = el("div", {class:"stagebar", role:"list"});
+  const body = el("div", {class:"stagebody"});
+  function render(){
+    const st = S[si], rr = rec();
+    head.replaceChildren(...S.map((x, i) => el("div", {role:"listitem", class:"sb" + (i === si ? " now" : "") + (i < si ? " ok" : "")}, el("b", null, i < si ? "✓" : String(i + 1)), el("span", null, x.short))));
+    const kids = [el("h3", {class:"sth"}, "Stage " + (si + 1) + " · " + st.title), el("p", {class:"stp"}, st.text)];
+    let actions = [];
+    if (st.type === "teach"){
+      const need = st.need;
+      let active = st.labels || words.slice(st.from || 0, st.pickTo);
+      /* word picker */
+      if (!st.labels && words.length < st.pickTo){
+        const own = el("input", {type:"text", maxlength:"20", placeholder:"or write your own word", autocomplete:"off", "aria-label":"Your own word"});
+        const add = w => { w = (w || "").trim().toLowerCase(); if (!w || words.includes(w)) return; words.push(w); if (words.length === 1 && cfg.onPick) cfg.onPick(w); render(); };
+        own.addEventListener("keydown", e => { if (e.key === "Enter") add(own.value); });
+        kids.push(el("div", {class:"pick"}, el("p", {class:"pickq"}, words.length - (st.from || 0) ? "Now choose one more:" : st.pickText),
+          el("div", {class:"chips"}, ...cfg.chips().filter(c => !words.includes(c)).map(c => el("button", {class:"chip", type:"button", onclick:() => add(c)}, c))),
+          el("div", {class:"ownrow"}, own, el("button", {class:"btn sm alt", type:"button", onclick:() => add(own.value)}, "Add"))));
+      }
+      if (active.length) kids.push(el("div", {class:"counts"}, ...active.map(l => { const n = Math.min(count(l), need);
+        return el("div", {class:"cnt" + (n >= need ? " full" : "")}, el("b", null, l), el("span", {class:"dots"}, ...Array.from({length:need}, (_, k) => el("i", {class:k < n ? "on" : ""}))), el("small", null, n + " / " + need)); })));
+      actions = active.length ? [...active.map(l => el("button", {class:"btn teach", type:"button", onclick:() => teach(l)}, st.btn ? st.btn(l) : "✓ Teach: this is " + an(l))), el("button", {class:"btn alt", type:"button", onclick:ask}, "🤖 Ask the AI: what is this?")] : [];
+    } else {
+      const n = exam.r + exam.w;
+      kids.push(el("div", {class:"examline"}, el("span", null, n >= st.tries ? "Done!" : "Drawing " + (n + 1) + " of " + st.tries), el("span", {class:"exscore"}, "✓ " + exam.r + "   ✗ " + exam.w)));
+      if (n < st.tries) actions = [el("button", {class:"btn big", type:"button", onclick:examAsk}, "🤖 Ask the AI")];
+    }
+    const work = el("div", {class:"labmain"}, el("div", null, cv, tools), el("div", {style:"display:grid;gap:10px;align-content:start"}, el("div", {class:"labacts"}, ...actions), ai));
+    if (st.type === "teach" && !(st.labels || words.slice(st.from || 0, st.pickTo)).length) kids.push(el("p", {class:"muted"}, "Choose a word above to start."));
+    else if (!(st.type === "exam" && exam.r + exam.w >= st.tries)) kids.push(work);
+    if (isDone()){
+      done(si);
+      const fin = st.type === "exam" ? st.result(exam.r, exam.w) : null;
+      if (fin) kids.push(fin);
+      kids.push(el("div", {class:"stdone"}, el("b", null, "✓ Stage " + (si + 1) + " done!"),
+        si < S.length - 1 ? el("button", {class:"btn", type:"button", onclick:() => enter(si + 1)}, "Next: " + S[si + 1].short + " →") : (cfg.after ? cfg.after(enter) : el("span"))));
+      if (si === S.length - 1 && cfg.onEnd) cfg.onEnd();
+    }
+    body.replaceChildren(...kids);
+  }
+  box.replaceChildren(head, body);
+  paint(); enter(0);
+  return {enter};
+}
+
+/* lab 1: teach your AI (3 stages) */
+const WHAT = store.get("what") === "planet" ? "planet" : store.get("what") === "school" ? "school" : null;
+const CHIPS1 = {school:["pencil","book","backpack","clock","chair","scissors","ruler"], planet:["bottle","can","banana peel","paper bag","apple core","battery","glass jar"]}[WHAT] || ["pencil","book","bottle","can","banana peel","clock"];
+const examResult = (r, w) => { const p = Math.round(r / (r + w) * 100);
+  return el("div", {class:"bigscore"}, el("span", {class:"tag"}, "Your AI's score"), el("div", {class:"pct"}, r + "/" + (r + w) + " = " + p + "%"),
+    el("p", null, p >= 80 ? "🏆 Your AI is smart! Your examples were good." : p >= 50 ? "👍 Not bad! More examples, a bit different each time, make an AI smarter." : "🤔 Your AI is confused. Maybe your 3 things look too much alike, or it needs more examples.")); };
+stageLab($("#lab1"), {
+  record:"list1", chips:() => CHIPS1,
+  stages:[
+    {type:"teach", short:"Teach 1 thing", title:"Teach your AI 1 thing", text:"Choose a word. Draw it and press Teach. Do it 5 times, a bit different each time (bigger, smaller, turned).", pickText:"What do you teach it first?", from:0, pickTo:1, need:5, hello:["Hi! My brain is empty.", "I don't know anything yet. Teach me!"]},
+    {type:"teach", short:"Teach 2 more", title:"Teach it 2 more things", text:"Choose 2 more words. Draw each one 5 times and press Teach. Then press Ask: can it tell your 3 things apart?", pickText:"Choose your second word:", from:1, pickTo:3, need:5, hello:["I know 1 thing now.", "Teach me 2 more!"]},
+    {type:"exam", short:"The exam", title:"The exam: 10 new drawings", text:"Draw one of your 3 things, NEW, and press Ask the AI. Then press ✓ if it was right, ✗ if it was wrong. 10 times.", tries:10, examHint:"draw one of your 3 things, NEW.", hello:["Exam time! 📝", "Draw one of your 3 things. I will guess."],
+      onExam:(r, w) => store.set("tally1", [{r, w}]), result:examResult}
+  ],
+  after: enter => el("button", {class:"btn alt", type:"button", onclick:() => enter(2)}, "🔁 Take the exam again")
 });
-T2.onchange = st => { if (st[0].r + st[0].w >= 5){ L2.tick(3); $("#trickDef").hidden = false; } if (st[1].r + st[1].w >= 5) L2.tick(5); };
-T2.onchange(T2.state());
+
+/* lab 2: trick the AI (3 stages) */
+let before = null;
+stageLab($("#lab2"), {
+  record:"list2", chips:() => [],
+  stages:[
+    {type:"teach", short:"Teach it lies", title:"Teach it lies", text:"Draw a CIRCLE and press “this is a SQUARE”. Draw a SQUARE and press “this is a CIRCLE”. 3 times each.", labels:["square", "circle"], need:3, lie:l => l, btn:l => l === "square" ? "Draw a ⚪ circle, then: this is a SQUARE" : "Draw a ⬜ square, then: this is a CIRCLE", hello:["Hi, I'm a brand new AI.", "My brain is empty. I believe everything you teach me."]},
+    {type:"exam", short:"The trap", title:"Spring the trap", text:"Now draw real circles and press Ask the AI. Is it right? Press ✓ or ✗. 5 times.", tries:5, examHint:"draw a circle.", hello:["I know circles and squares now!", "Test me. Draw a circle."],
+      onExam:(r, w) => { before = {r, w}; store.set("tally2", [{r, w}, {r:0, w:0}]); },
+      result:(r, w) => el("div", {class:"bigscore bad"}, el("span", {class:"tag"}, "Before the fix"), el("div", {class:"pct"}, r + "/" + (r + w)), el("p", null, "It believed your lies! Wrong examples make a wrong AI."))},
+    {type:"teach", short:"Fix it", title:"Fix it: wipe the brain and teach the truth", text:"I wiped its brain. Now teach the truth: draw a circle and press CIRCLE, draw a square and press SQUARE. 3 times each.", labels:["circle", "square"], need:3, wipe:true, lie:l => l, btn:l => l === "circle" ? "✓ This is a CIRCLE" : "✓ This is a SQUARE", hello:["🧹 My brain is empty again.", "Teach me the truth this time."]},
+    {type:"exam", short:"Test again", title:"Test it again", text:"Draw circles and squares, press Ask the AI, then ✓ or ✗. 5 times.", tries:5, examHint:"draw a circle or a square.", hello:["Test me again!", "Draw a circle or a square."],
+      onExam:(r, w) => store.set("tally2", [before || {r:0, w:0}, {r, w}]),
+      result:(r, w) => el("div", {class:"bigscore"}, el("span", {class:"tag"}, "Before → after the fix"), el("div", {class:"pct"}, (before ? before.r + "/5" : "?") + " → " + r + "/" + (r + w)), el("p", null, "Good examples made a good AI."))}
+  ],
+  onEnd: () => { $("#trickDef").hidden = false; }
+});
+
+/* step 2: sort the sentences into Examples / Training / Testing */
+(function(){
+  const ST = ["Examples", "Training", "Testing"];
+  const Q = [
+    ["You draw 5 pencils and say: “this is a pencil”.", 0],
+    ["The computer looks for what all the pencils have in common.", 1],
+    ["You draw a NEW pencil and check if the AI knows it.", 2],
+    ["A photo app gets 1 million cat photos, each with the word “cat”.", 0],
+    ["You count: the AI was right 8 times out of 10.", 2],
+    ["The AI finds a pattern: cats have pointy ears and whiskers.", 1]
+  ];
+  let ok = 0;
+  Q.forEach(([t, a]) => { const fb = el("span", {class:"fb"}), card = el("div", {class:"sorti"}); let done = false;
+    const row = el("div", {class:"row"}, ...ST.map((s, i) => el("button", {class:"btn sm alt", type:"button", onclick:() => { if (done) return; done = true; const good = i === a; if (good) ok++; card.classList.add(good ? "ok" : "no"); fb.textContent = (good ? "✓ Right: " : "✗ No, it's ") + ST[a] + "."; $("#sortScore").textContent = ok + " of 6"; }}, (i + 1) + " · " + s)));
+    card.append(el("p", null, t), row, fb); $("#sort").append(card); });
+})();
 
 /* pick a segment */
 /* what to teach: school objects or a recycling robot (no teams) */
-$("#pickWhat").replaceChildren(...[["school", "🏫 School objects"], ["planet", "♻️ Recycling robot"]].map(([k, t]) => el("button", {class:"teambtn", type:"button", "aria-pressed":String(TEAM === k), onclick:() => { if (TEAM === k) return; store.set("what", k); location.reload(); }}, t)));
-if (TEAM === "planet") $("#lab1lead").textContent = "A recycling robot must know a bottle from a banana peel. This one knows nothing about waste yet. You will teach it, the way real engineers do: with examples.";
+$("#pickWhat").replaceChildren(...[["school", "🏫 School objects"], ["planet", "♻️ Recycling robot"]].map(([k, t]) => el("button", {class:"teambtn", type:"button", "aria-pressed":String(WHAT === k), onclick:() => { if (WHAT === k) return; store.set("what", k); location.reload(); }}, t)));
+if (WHAT === "planet") $("#lab1lead").textContent = "A recycling robot must know a bottle from a banana peel. This one knows nothing about waste yet. You will teach it, the way real engineers do: with examples.";
 
 const start = segs.findIndex(s => "#" + s.id === location.hash);
 go(start >= 0 ? start : 0);
