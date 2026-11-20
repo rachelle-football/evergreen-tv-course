@@ -355,6 +355,10 @@ img.fprev{background:var(--paper)}
 .howto{display:grid;gap:10px;margin-bottom:12px}
 .how4{margin:0;padding-left:24px;display:grid;gap:4px;font-size:17px}
 .stp2{margin:4px 0 0;font-weight:700;font-size:16px}.stp2 b{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:13px;margin-right:4px}
+.srcbook{border:2px solid var(--green);background:var(--green-soft);border-radius:16px;padding:16px 18px;align-self:start;position:sticky;top:84px}
+.srcbook p{margin:8px 0 0;font-size:19px;line-height:1.6}
+.case .claim{cursor:default}
+@media (max-width:900px){.srcbook{position:static}}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -415,10 +419,10 @@ img.fprev{background:var(--paper)}
 <!-- 3 watch -->
 <section class="seg" id="seg-3" data-min="8" data-title="Watch a storyboard" hidden>
   <div class="lower"><div class="no">03</div><div class="name"><h2>Watch a storyboard come alive</h2><p>8 minutes · “One Small Way to Save Water”</p></div></div>
-  <p class="big">A 30-second video in 4 scenes: the problem, two actions, and a call to action.</p>
+  <p class="big">Every good short video has 4 scenes: the problem, idea 1, idea 2, and a call to action. Press play and watch.</p>
   <div class="sboard" id="demoBoard"></div>
   <div class="row" style="margin-top:12px"><button class="btn" id="demoPlay" type="button">▶ Play the narration</button></div>
-  <p class="muted" style="margin:8px 0 0">Listen: each scene is short. About 60 words in total: that's 30 seconds.</p>
+  <div class="card" style="margin-top:14px"><span class="tag">The idea</span><p style="margin:6px 0 0;font-size:18px">Before making a video, you <b>plan</b> it on paper: a storyboard. For each scene you write 2 things: <b>👁 what we see</b> and <b>🎙 what the narrator says</b>. 4 short scenes, about 70 words: that's 30 seconds. In your mission, you plan your own.</p></div>
 </section>
 
 <!-- 4 brain -->
@@ -835,7 +839,7 @@ $("#ttsGo").onclick = () => say($("#ttsText").value, {rate:+$("#ttsRate").value,
 X.vocab($("#vocab"), [["Text-to-speech", "The computer reads written text aloud."], ["Speech-to-text", "The computer writes down what someone says."], ["Narration", "The voice that tells the story in a video."], ["Storyboard", "A plan of the video, scene by scene, with pictures and words."], ["Synthetic media", "Voices, pictures or videos made by a computer."], ["Consent", "Asking for permission, and getting a clear yes."]]);
 
 /* 3 demo storyboard */
-const DEMO = [["🚿", "The problem", "A tap left running. Water pours away.", "Every day, we waste water without noticing."], ["🪥", "Action 1", "A student turns off the tap while brushing.", "Turn off the tap while you brush your teeth. You save up to 6 litres every time."], ["🪣", "Action 2", "A bucket under the tap collects cold water.", "Catch the cold water before your shower, and use it for the plants."], ["🌍", "Call to action", "Smiling class in front of a blue globe.", "One small action, every day. Start today!"]];
+const DEMO = [["🚿", "The problem", "A tap left running. Water pours away.", "Every day, we waste clean water without even noticing. Water is precious, and it can run out."], ["🪥", "Idea 1", "A student turns off the tap while brushing.", "Idea one: turn off the tap while you brush your teeth. It is easy, and it saves a lot of water."], ["🪣", "Idea 2", "A bucket under the shower collects cold water.", "Idea two: catch the cold water before your shower in a bucket, and use it to water the plants."], ["🌍", "Call to action", "Smiling class in front of a blue globe.", "One small action, every day, by every student. Together, we can save our water. Start today!"]];
 function board(box, scenes, edit){
   box.replaceChildren(...scenes.map(([ic, name, see, say2], i) => el("div", {class:"scene", "data-i":String(i)}, el("div", {class:"sic"}, ic), el("span", {class:"tag"}, "Scene " + (i + 1) + " · " + name),
     el("p", {class:"see"}, "👁 " + see), el("p", {class:"nar"}, "🎙 “" + say2 + "”"))));
