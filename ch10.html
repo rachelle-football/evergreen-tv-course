@@ -870,7 +870,8 @@ function drawReport(){
     const inp = (k, ph) => { const x = el(k === "note" ? "textarea" : "input", Object.assign({placeholder:ph}, k === "note" ? {rows:"2"} : {type:"text"})); x.value = r[k] || ""; x.addEventListener("input", () => { r[k] = x.value; saveR(); badge(); }); return x; };
     return el("div", {class:"rrow"}, el("span", {class:"rn"}, "FACT " + (i + 1) + " OF 3"),
       el("label", null, "① Fact number " + (i + 1) + " in Gemini’s answer", inp("claim", "Copy Gemini’s fact number " + (i + 1) + " here")),
-      el("label", null, "② My source (where I checked)", inp("src", "e.g. Britannica Kids")), el("span", {class:"muted", style:"font-weight:700;font-size:15px"}, "③ My verdict"),
+      el("div", {class:"row", style:"align-items:center"}, el("button", {class:"btn sm", type:"button", onclick:() => { if (!(r.claim || "").trim()){ K.toast("Write the fact first (box ①)."); return; } window.open("https://www.google.com/search?q=" + encodeURIComponent(r.claim.slice(0, 120) + " site:spaceplace.nasa.gov OR site:kids.britannica.com OR site:kids.nationalgeographic.com OR site:who.int"), "_blank", "noopener"); }}, "🔍 Check this fact in a reliable source"), el("span", {class:"muted", style:"font-size:14px"}, "Opens a search in NASA, Britannica Kids, Nat Geo Kids and WHO only.")),
+      el("label", null, "② My source: the name of the page you read", inp("src", "e.g. NASA Space Place: All About Mars")), el("span", {class:"muted", style:"font-weight:700;font-size:15px"}, "③ My verdict"),
       el("div", {class:"verd"}, ...[["v", "✓ Verified"], ["x", "✗ Incorrect"], ["u", "? Unclear"]].map(([k, l]) => el("button", {class:k + (r.v === k ? " on" : ""), type:"button", onclick:() => { r.v = k; saveR(); drawReport(); }}, l))),
       el("label", null, "④ What does the source say?", inp("note", "The source says…")));
   }));
