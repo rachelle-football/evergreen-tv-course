@@ -459,7 +459,13 @@ img.fprev{background:var(--paper)}
       <p class="muted" style="margin:10px 0 0;font-size:15px">Never type your name, address or photos into an AI tool.</p>
     </div>
   </div>
-  <p class="ttl" style="margin-top:20px">Step 2 · Write the 3 claims, check each one, decide</p>
+  <p class="ttl" style="margin-top:20px">Step 2 · Check 3 facts from Gemini’s answer, like a detective</p>
+  <div class="card howto">
+    <span class="tag">For each fact, 4 small steps</span>
+    <ol class="how4"><li><b>Copy</b> one fact from Gemini’s answer.</li><li><b>Open</b> a reliable source (list above) and look for it.</li><li><b>Decide:</b> ✓ the source says the same · ✗ the source says something different · ? you can’t find it.</li><li><b>Write</b> what the source says, in a few words.</li></ol>
+    <div class="exr" style="border-left-color:var(--green)"><span class="tag">Example, done for you</span>
+      <p style="font-weight:400;font-size:16px;margin:6px 0 0"><b>Fact from Gemini:</b> “Cedars of Lebanon can live for more than 1,000 years.”<br><b>My source:</b> Britannica Kids<br><b>Verdict:</b> ✓ Verified<br><b>The source says:</b> cedars can live for many hundreds of years, some more than 1,000.</p></div>
+  </div>
   <div class="report" id="report"></div>
   <div id="detBadge"></div>
 </section>
@@ -862,11 +868,11 @@ drawTopics();
 function drawReport(){
   $("#report").replaceChildren(...R.rows.map((r, i) => {
     const inp = (k, ph) => { const x = el(k === "note" ? "textarea" : "input", Object.assign({placeholder:ph}, k === "note" ? {rows:"2"} : {type:"text"})); x.value = r[k] || ""; x.addEventListener("input", () => { r[k] = x.value; saveR(); badge(); }); return x; };
-    return el("div", {class:"rrow"}, el("span", {class:"rn"}, "CLAIM " + (i + 1)),
-      el("label", null, "What the AI said", inp("claim", "Write the claim in short")),
-      el("label", null, "My source (name or link)", inp("src", "e.g. NASA Space Place")),
+    return el("div", {class:"rrow"}, el("span", {class:"rn"}, "FACT " + (i + 1) + " OF 3"),
+      el("label", null, "① Fact from Gemini", inp("claim", "Copy one fact from Gemini’s answer")),
+      el("label", null, "② My source (where I checked)", inp("src", "e.g. Britannica Kids")), el("span", {class:"muted", style:"font-weight:700;font-size:15px"}, "③ My verdict"),
       el("div", {class:"verd"}, ...[["v", "✓ Verified"], ["x", "✗ Incorrect"], ["u", "? Unclear"]].map(([k, l]) => el("button", {class:k + (r.v === k ? " on" : ""), type:"button", onclick:() => { r.v = k; saveR(); drawReport(); }}, l))),
-      el("label", null, "What did the source say?", inp("note", "The source says…")));
+      el("label", null, "④ What does the source say?", inp("note", "The source says…")));
   }));
   badge();
 }
