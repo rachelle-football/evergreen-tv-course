@@ -710,6 +710,7 @@ drawLab($("#lab3"), {
 
 /* ---------- Stage lab (2026-11-20): the same tiny drawing AI, but in clear stages.
    Each stage opens only when the one before is done. The AI starts empty every time the page opens. ---------- */
+window.EVG_DL = DL;
 function stageLab(box, cfg){
   let mem = [], words = [], si = 0, exam = null, strokes = [], cur = null, taughtRev = -1, rev = 0;
   const S = cfg.stages;
@@ -740,27 +741,38 @@ function stageLab(box, cfg){
     ai.className = "ai" + (kind ? " " + kind : "");
     ai.replaceChildren(el("div", {class:"who"}, el("span", {class:"bot", "aria-hidden":"true"}, kind === "think" ? "🤔" : kind === "bad" ? "😵" : "🤖"), el("div", null, el("p", {class:"say"}, text), ...(why ? [el("p", {class:"why"}, why)] : []))), ...(extra || []));
   }
-  const bars = r => el("div", {class:"bars"}, ...r.list.slice(0, 3).map(([l, p]) => el("div", {class:"bar"}, el("span", null, l), el("i", null, el("b", {style:"width:" + Math.max(2, Math.round(p * 100)) + "%"})), el("em", null, Math.round(p * 100) + "%"))));
+  /* features: the blurred dots, centred (minus the average) so that two different shapes don't look alike just because both are in the middle */
+  function F(raw){ const a = DL.feat(raw); let m = 0; for (const v of a) m += v; m /= a.length; const b = a.map(v => v - m); let n = 0; for (const v of b) n += v * v; n = Math.sqrt(n) || 1; return b.map(v => v / n); }
+  /* how much the drawing looks like each thing it learned (0-100%), from the 3 closest examples */
+  const SIM_LO = .3, SIM_HI = .9, KNOW = .6;
+  function sims(raw){
+    const q = F(raw), by = {};
+    for (const e of mem){ let d = 0; for (let i = 0; i < q.length; i++) d += q[i] * e.f[i]; (by[e.l] = by[e.l] || []).push(d); }
+    return Object.entries(by).map(([l, a]) => { a.sort((x, y) => y - x); const t = a.slice(0, 3); return [l, t.reduce((s, v) => s + v, 0) / t.length]; }).sort((a, b) => b[1] - a[1]);
+  }
+  const pc = v => Math.max(0, Math.min(100, Math.round((v - SIM_LO) / (SIM_HI - SIM_LO) * 100)));
+  const bars = r => el("div", {class:"bars"}, el("p", {class:"why", style:"margin:0"}, "How much it looks like what I learned:"), ...r.s.slice(0, 3).map(([l, v]) => el("div", {class:"bar"}, el("span", null, l), el("i", null, el("b", {style:"width:" + Math.max(2, pc(v)) + "%"})), el("em", null, pc(v) + "%"))));
 
   function think(){
     const raw = DL.raster(strokes);
     if (!raw){ say("think", "Draw something first!", "Use your mouse or your finger on the white board."); return null; }
     if (!mem.length){ say("bad", "My brain is empty. I can't answer!", "I have never seen a single example. Teach me first."); return null; }
-    const r = DL.guess(mem, raw), known = [...new Set(mem.map(e => e.l))];
+    const ss = sims(raw), r = {best:ss[0][0], match:ss[0][1], s:ss, sure:ss.length < 2 || ss[0][1] - ss[1][1] > .04}, known = ss.map(x => x[0]);
+    if (window.EVG_DEBUG) console.log("sims", JSON.stringify(ss));
     return {r, known};
   }
   function ask(){
     const t = think(); if (!t) return;
     const {r, known} = t;
-    if (known.length === 1) say("good", "It's " + an(r.best) + "!", "I only know 1 thing: " + r.best + ". So to me, everything looks like " + an(r.best) + "!", [bars(r)]);
-    else if (r.list[0][1] < .55) say("think", "Maybe " + an(r.best) + "? I'm not sure.", "It looks a bit like more than one thing I learned.", [bars(r)]);
+    if (r.match < KNOW) say("think", "Hmm… I don't know what this is.", "It doesn't look like anything you taught me. I only know: " + known.join(", ") + ".", [bars(r)]);
+    else if (!r.sure) say("think", "Maybe " + an(r.best) + "? I'm not sure.", "It looks a bit like more than one thing I learned.", [bars(r)]);
     else say("good", "It's " + an(r.best) + "!", "I learned it from the " + count(r.best) + " drawing" + (count(r.best) > 1 ? "s" : "") + " you taught me.", [bars(r)]);
   }
   function teach(label){
     const raw = DL.raster(strokes);
     if (!raw){ say("think", "Draw it first, then press Teach.", ""); return; }
     if (rev === taughtRev){ say("think", "I already learned this drawing.", "Draw a new one: the board clears by itself."); return; }
-    mem.push({l:label, raw, f:DL.feat(raw)}); taughtRev = rev;
+    mem.push({l:label, raw, f:F(raw)}); taughtRev = rev;
     const n = count(label), need = S[si].need || 0;
     say("good", "Got it! This is " + an(label) + ".", "Now I remember " + n + " drawing" + (n > 1 ? "s" : "") + " of " + an(label) + "." + (need && n < need ? " Draw another one, a bit different." : ""));
     render();
@@ -771,7 +783,7 @@ function stageLab(box, cfg){
     if (exam.wait) return;
     const t = think(); if (!t) return;
     const {r} = t; exam.wait = true;
-    say("good", "It's " + an(r.best) + "!", "Was I right? Be honest!", [bars(r), el("div", {class:"judge"},
+    say(r.match < KNOW ? "think" : "good", r.match < KNOW ? "I don't know what this is! 🤷" : (r.sure ? "It's " : "Maybe ") + an(r.best) + (r.sure ? "!" : "?"), r.match < KNOW ? "Then I was not right: press ✗." : "Was I right? Be honest!", [bars(r), el("div", {class:"judge"},
       el("button", {class:"btn sm", type:"button", onclick:() => mark(true)}, "✓ Right"),
       el("button", {class:"btn sm alt", type:"button", onclick:() => mark(false)}, "✗ Wrong"))]);
   }
