@@ -546,7 +546,7 @@ window.PICKINDS = {
   inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
 };
 window.F = (function(){
-const DN = n => n >= 8 ? n - 2 : n; /* the voice and video chapters were removed: file ch8 is Chapter 6, ch9 is Chapter 7 */
+const DN = n => ({1:1, 2:2, 3:3, 10:4, 4:5, 5:6, 11:7, 12:8, 13:9, 14:10, 15:11, 16:12, 8:13, 9:14})[n] || n; /* file number → chapter number (AI Explorers, 14 chapters) */
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
@@ -817,7 +817,7 @@ const BOX = [
   ["role", "🎭 Role", "Who should the AI be?", ["You are an environmental scientist.", "You are a creative teacher.", "Act as a school project coach."]],
   ["task", "🎯 Task", "What exactly should it do?", ["Help me make a school project about protecting the environment.", "Create a project about how we can protect our planet."]],
   ["ctx", "📚 Context", "Who is it for? Why?", ["I am in Grade 7 in Lebanon.", "It is for a class presentation next week.", "My class cares about plastic on our beaches."]],
-  ["out", "📋 Output", "How should the answer look?", ["Give me 5 project ideas,", "suggest a picture for each idea,", "and plan a 6-slide presentation.", "Use simple English."]]
+  ["out", "📋 Output", "How should the answer look?", ["Give me 5 project ideas.", "Suggest a picture for each idea.", "Plan a 6-slide presentation.", "Use simple English."]]
 ];
 const CHECKS = [
   ["🎭 A role", t => F.role.trim().length >= 8],
@@ -832,11 +832,11 @@ let gemOpened = false;
 function drawFixSide(){
   const t = fixText().toLowerCase(), n = CHECKS.filter(([, f]) => f(t)).length;
   $("#liveP").replaceChildren(...(fixText() ? ["role", "task", "ctx", "out"].filter(k => F[k].trim()).flatMap(k => [el("span", {class:"seg2 on " + k}, F[k].trim()), " "]) : [el("span", {class:"muted"}, "Start writing on the left. Your prompt appears here.")]));
-  const lvl = n <= 2 ? ["Weak", "bad"] : n <= 4 ? ["Better", "mid"] : ["Pro! 🏆", "pro"];
+  const lvl = n <= 2 ? ["Weak", "bad"] : n <= 4 ? ["Better", "mid"] : n === 5 ? ["Almost!", "mid"] : ["Pro! 🏆", "pro"];
   $("#meter").replaceChildren(el("div", {class:"mbar"}, el("i", {class:lvl[1], style:"width:" + Math.round(n / 6 * 100) + "%"})), el("b", {class:"mlbl " + lvl[1]}, lvl[0] + " · " + n + "/6"));
   $("#checks").replaceChildren(...CHECKS.map(([lbl, f]) => el("span", {class:"ck" + (f(t) ? " on" : "")}, (f(t) ? "✓ " : "○ ") + lbl)));
-  const ready = n >= 5;
-  $("#fixActs").replaceChildren(ready ? el("button", {class:"btn", type:"button", onclick:() => copy(fixText(), $("#liveP"), "Gemini")}, "📋 Copy my prompt") : el("p", {class:"muted", style:"margin:0;font-size:15px"}, "Reach 5 of 6 to unlock: Copy and try it in Gemini."),
+  const ready = n >= 6, miss = CHECKS.filter(([, f]) => !f(t)).map(([l]) => l);
+  $("#fixActs").replaceChildren(ready ? el("button", {class:"btn", type:"button", onclick:() => copy(fixText(), $("#liveP"), "Gemini")}, "📋 Copy my prompt") : el("p", {class:"miss1", style:"margin:0;font-size:16px;font-weight:700"}, "Still missing: " + miss.join(", ") + ". Add " + (miss.length > 1 ? "them" : "it") + " to unlock Copy and Gemini."),
     ...(ready ? [el("a", {class:"btn alt", href:GEM, target:"_blank", rel:"noopener", style:"text-decoration:none", onclick:() => { gemOpened = true; $("#afterGem").hidden = false; done(2); }}, "↗ Open Gemini")] : []));
   if (ready && gemOpened) $("#afterGem").hidden = false;
 }
@@ -845,9 +845,14 @@ $("#gotList").replaceChildren(...["💡 Project ideas", "🖼️ Pictures", "�
 $("#builder4").replaceChildren(...BOX.map(([k, n, q, ideas]) => {
   const ta = el("textarea", {rows:"2", placeholder:q, "aria-label":n}); ta.value = F[k];
   ta.addEventListener("input", () => { F[k] = ta.value; store.set("fix", F); drawFixSide(); });
-  const add = s => { ta.value = (ta.value.trim() ? ta.value.trim() + " " : "") + s; ta.dispatchEvent(new Event("input")); };
+  /* Role and Task: ONE choice (it replaces). Context and Output: tap to add, tap again to remove */
+  const one = k === "role" || k === "task";
+  const add = s => { const cur = ta.value.trim(); ta.value = one ? s : cur.includes(s) ? cur.replace(s, "").replace(/\s{2,}/g, " ").trim() : (cur ? cur + " " : "") + s; ta.dispatchEvent(new Event("input")); paintChips(); };
+  const chips = ideas.map(s => el("button", {class:"chip", type:"button", onclick:() => add(s)}, s));
+  const paintChips = () => chips.forEach((c, i) => { const on = ta.value.includes(ideas[i]); c.classList.toggle("on", on); c.setAttribute("aria-pressed", String(on)); });
+  ta.addEventListener("input", paintChips); setTimeout(paintChips);
   return el("div", {class:"bbox " + k}, el("div", {class:"bhead"}, el("b", null, n), el("span", {class:"muted"}, q)), ta,
-    el("div", {class:"chips"}, el("span", {class:"muted", style:"font-size:13px"}, "Need help? Tap:"), ...ideas.map(s => el("button", {class:"chip", type:"button", onclick:() => add(s)}, s))));
+    el("div", {class:"chips"}, el("span", {class:"muted", style:"font-size:13px"}, one ? "Need help? Choose ONE:" : "Need help? Tap to add (tap again to remove):"), ...chips));
 }));
 drawFixSide();
 

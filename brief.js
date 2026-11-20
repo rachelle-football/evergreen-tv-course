@@ -14,7 +14,7 @@
        done:"Your AI's exam score is filled in, and your team and part are checked (part 08).",
        missions:{2:"Train your AI, give it the exam, then let a friend test it. Your output: its scores.", 7:"Your output: your AI Trainer certificate 🏅"}},
     3:{goal:"Become a prompt engineer: give AI clear, smart instructions.", make:[], steps:[], done:"",
-       missions:{4:"Your output: a pro prompt (5 of 6), tested in Gemini.", 5:"Your output: 3 prompts, 3 answers, and your stars for each."}},
+       missions:{4:"Your output: a pro prompt (6 of 6), tested in Gemini.", 5:"Your output: 3 prompts, 3 answers, and your stars for each."}},
     4:{goal:"Invent a hero, and write a story that happens inside your design.",
        make:[["🦸", "Your character card"], ["📖", "Your story (about 150 words) with a title"]],
        steps:["Learn the 4 parts of a story", "Invent your character, Gemini adds details", "Click to build your story prompt, Gemini writes it", "Paste it, give it a title, change 3 sentences into your own words", "Read it to the class"],
