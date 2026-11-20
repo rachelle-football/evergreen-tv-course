@@ -354,6 +354,7 @@ img.fprev{background:var(--paper)}
 .step3 .card .exr b{display:inline;font-size:inherit;font-family:inherit;margin:0}
 .howto{display:grid;gap:10px;margin-bottom:12px}
 .how4{margin:0;padding-left:24px;display:grid;gap:4px;font-size:17px}
+.stp2{margin:4px 0 0;font-weight:700;font-size:16px}.stp2 b{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:13px;margin-right:4px}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -461,10 +462,8 @@ img.fprev{background:var(--paper)}
   </div>
   <p class="ttl" style="margin-top:20px">Step 2 · Check 3 facts from Gemini’s answer, like a detective</p>
   <div class="card howto">
-    <span class="tag">For each fact, 4 small steps</span>
-    <ol class="how4"><li><b>Copy</b> one fact from Gemini’s answer: Gemini numbers them 1, 2, 3. Fact 1 goes in box 1, fact 2 in box 2, fact 3 in box 3.</li><li><b>Open</b> a reliable source (list above) and look for it.</li><li><b>Decide:</b> ✓ the source says the same · ✗ the source says something different · ? you can’t find it.</li><li><b>Write</b> what the source says, in a few words.</li></ol>
-    <div class="exr" style="border-left-color:var(--green)"><span class="tag">Example, done for you</span>
-      <p style="font-weight:400;font-size:16px;margin:6px 0 0"><b>Fact from Gemini:</b> “Mars has two small moons.”<br><b>My source:</b> NASA Space Place<br><b>Verdict:</b> ✓ Verified<br><b>The source says:</b> Mars has two moons, called Phobos and Deimos.</p></div>
+    <span class="tag">How? 3 taps for each fact</span>
+    <ol class="how4"><li><b>Copy</b> the fact from Gemini (fact 1 in box 1, fact 2 in box 2, fact 3 in box 3).</li><li><b>Tap a website</b> (NASA, Britannica Kids…). It opens and searches your fact there.</li><li><b>Compare</b>: does the website say the same thing as Gemini? Tap ✓, ✗ or ?.</li></ol>
   </div>
   <div class="report" id="report"></div>
   <div id="detBadge"></div>
@@ -865,20 +864,23 @@ const pr = () => "Give me 3 short facts about " + R.topic + " for a Grade 7 stud
 function drawTopics(){ $("#topics").replaceChildren(...TOP.map(t => el("button", {class:"chip" + (R.topic === t ? " on" : ""), type:"button", "aria-pressed":String(R.topic === t), onclick:() => { R.topic = t; saveR(); drawTopics(); }}, t))); $("#detP").textContent = "“" + pr() + "”"; }
 $("#detCopy").onclick = () => copy(pr(), $("#detP"), "a new Gemini chat");
 drawTopics();
+const SITES = [["NASA Space Place", "spaceplace.nasa.gov"], ["Britannica Kids", "kids.britannica.com"], ["Nat Geo Kids", "kids.nationalgeographic.com"], ["WHO", "who.int"]];
 function drawReport(){
   $("#report").replaceChildren(...R.rows.map((r, i) => {
-    const inp = (k, ph) => { const x = el(k === "note" ? "textarea" : "input", Object.assign({placeholder:ph}, k === "note" ? {rows:"2"} : {type:"text"})); x.value = r[k] || ""; x.addEventListener("input", () => { r[k] = x.value; saveR(); badge(); }); return x; };
+    const x = el("input", {type:"text", placeholder:"Copy Gemini’s fact number " + (i + 1) + " here"}); x.value = r.claim || ""; x.addEventListener("input", () => { r.claim = x.value; saveR(); badge(); });
+    const step = (n, t) => el("p", {class:"stp2"}, el("b", null, n), " " + t);
     return el("div", {class:"rrow"}, el("span", {class:"rn"}, "FACT " + (i + 1) + " OF 3"),
-      el("label", null, "① Fact number " + (i + 1) + " in Gemini’s answer", inp("claim", "Copy Gemini’s fact number " + (i + 1) + " here")),
-      el("div", {class:"row", style:"align-items:center"}, el("button", {class:"btn sm", type:"button", onclick:() => { if (!(r.claim || "").trim()){ K.toast("Write the fact first (box ①)."); return; } window.open("https://www.google.com/search?q=" + encodeURIComponent(r.claim.slice(0, 120) + " site:spaceplace.nasa.gov OR site:kids.britannica.com OR site:kids.nationalgeographic.com OR site:who.int"), "_blank", "noopener"); }}, "🔍 Check this fact in a reliable source"), el("span", {class:"muted", style:"font-size:14px"}, "Opens a search in NASA, Britannica Kids, Nat Geo Kids and WHO only.")),
-      el("label", null, "② My source: the name of the page you read", inp("src", "e.g. NASA Space Place: All About Mars")), el("span", {class:"muted", style:"font-weight:700;font-size:15px"}, "③ My verdict"),
-      el("div", {class:"verd"}, ...[["v", "✓ Verified"], ["x", "✗ Incorrect"], ["u", "? Unclear"]].map(([k, l]) => el("button", {class:k + (r.v === k ? " on" : ""), type:"button", onclick:() => { r.v = k; saveR(); drawReport(); }}, l))),
-      el("label", null, "④ What does the source say?", inp("note", "The source says…")));
+      step("1", "Copy Gemini’s fact number " + (i + 1) + ":"), x,
+      step("2", "Choose a website and check the fact there:"),
+      el("div", {class:"verd"}, ...SITES.map(([n, d]) => el("button", {class:"v" + (r.src === n ? " on" : ""), type:"button", onclick:() => { if (!(r.claim || "").trim()){ K.toast("First copy the fact (step 1)."); return; } r.src = n; saveR(); drawReport(); window.open("https://www.google.com/search?q=" + encodeURIComponent(r.claim.slice(0, 120) + " site:" + d), "_blank", "noopener"); }}, "🔍 " + n))),
+      step("3", "Does the website say the same thing?"),
+      el("div", {class:"verd"}, ...[["v", "✓ Yes, the same"], ["x", "✗ No, something different"], ["u", "? I couldn’t find it"]].map(([k, l]) => el("button", {class:k + (r.v === k ? " on" : ""), type:"button", onclick:() => { if (!r.src){ K.toast("First check it on a website (step 2)."); return; } r.v = k; saveR(); drawReport(); }}, l))),
+      ...(r.v ? [el("p", {class:"fb", style:"margin:0;font-weight:700;color:" + (r.v === "v" ? "var(--green)" : r.v === "x" ? "var(--onair)" : "var(--gold)")}, r.v === "v" ? "✓ Verified: Gemini was right." : r.v === "x" ? "✗ Gemini made a mistake here! Good catch, detective." : "? Unclear: we can't be sure. Don't use this fact without checking more.")] : []));
   }));
   badge();
 }
 function badge(){
-  const full = R.rows.every(r => (r.claim || "").trim() && (r.src || "").trim() && r.v);
+  const full = R.rows.every(r => (r.claim || "").trim() && r.src && r.v);
   $("#detBadge").replaceChildren(...(full ? [el("div", {class:"badgewin"}, el("span", {class:"bi"}, "🕵️"), el("div", null, el("b", null, "Badge: AI Detective"), el("span", null, "You checked 3 AI claims with real sources. Saved in your portfolio.")))] : []));
   if (full){ done(2); store.set("badge", "AI Detective"); }
 }
