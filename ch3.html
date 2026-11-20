@@ -827,6 +827,7 @@ const CHECKS = [
   ["🖼️ Pictures", t => /picture|image|photo|drawing|visual|illustration/.test(t)],
   ["📊 A presentation", t => /presentation|slide|powerpoint/.test(t)]
 ];
+const WHERE = {"🎭 A role":"🎭 Role", "🌍 Topic: protecting the environment":"🎯 Task", "👦 For Grade 7":"📚 Context", "💡 Ideas":"📋 Output", "🖼️ Pictures":"📋 Output", "📊 A presentation":"📋 Output"};
 const fixText = () => ["role", "task", "ctx", "out"].map(k => F[k].trim()).filter(Boolean).join(" ");
 let gemOpened = false;
 function drawFixSide(){
@@ -836,7 +837,7 @@ function drawFixSide(){
   $("#meter").replaceChildren(el("div", {class:"mbar"}, el("i", {class:lvl[1], style:"width:" + Math.round(n / 6 * 100) + "%"})), el("b", {class:"mlbl " + lvl[1]}, lvl[0] + " · " + n + "/6"));
   $("#checks").replaceChildren(...CHECKS.map(([lbl, f]) => el("span", {class:"ck" + (f(t) ? " on" : "")}, (f(t) ? "✓ " : "○ ") + lbl)));
   const ready = n >= 6, miss = CHECKS.filter(([, f]) => !f(t)).map(([l]) => l);
-  $("#fixActs").replaceChildren(ready ? el("button", {class:"btn", type:"button", onclick:() => copy(fixText(), $("#liveP"), "Gemini")}, "📋 Copy my prompt") : el("p", {class:"miss1", style:"margin:0;font-size:16px;font-weight:700"}, "Still missing: " + miss.join(", ") + ". Add " + (miss.length > 1 ? "them" : "it") + " to unlock Copy and Gemini."),
+  $("#fixActs").replaceChildren(ready ? el("button", {class:"btn", type:"button", onclick:() => copy(fixText(), $("#liveP"), "Gemini")}, "📋 Copy my prompt") : el("p", {class:"miss1", style:"margin:0;font-size:16px;font-weight:700"}, "Still missing: " + miss.map(m => m + " → write it in " + WHERE[m]).join(" · ") + ". Then Copy and Gemini unlock."),
     ...(ready ? [el("a", {class:"btn alt", href:GEM, target:"_blank", rel:"noopener", style:"text-decoration:none", onclick:() => { gemOpened = true; $("#afterGem").hidden = false; done(2); }}, "↗ Open Gemini")] : []));
   if (ready && gemOpened) $("#afterGem").hidden = false;
 }
