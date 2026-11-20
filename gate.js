@@ -4,9 +4,8 @@
   const CH = +((location.pathname.match(/ch(\d)\.html/) || [])[1] || 0);
   /* after:n = a student cannot go past segment n until "need" is done */
   const RULES = {
-    3:[{after:3, need:["card"]}],
-    4:[{after:2, need:["card"]}, {after:3, need:["story"]}],
-    5:[{after:2, need:["card"]}, {after:3, need:["pics"]}],
+    4:[{after:3, need:["story"]}],
+    5:[{after:3, need:["pics"]}],
     8:[{after:3, need:["page"]}],
     9:[{after:1, need:["page"]}]
   }[CH];

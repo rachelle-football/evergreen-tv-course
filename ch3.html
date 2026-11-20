@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
-<title>Prompt Engineering</title>
+<title>Become a Prompt Engineer</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -223,6 +223,98 @@ img.fprev{background:var(--paper)}
 .slots{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}
 
 .files2 .fadd{padding:4px 10px;font-size:13px;min-height:0}
+/* Chapter 3 · Become a Prompt Engineer (2026-11-20) */
+:root{--c-role:#7B4BC4;--c-task:#1F6FC5;--c-ctx:#B7791F;--c-out:#1E7A55;--t-role:rgba(123,75,196,.12);--t-task:rgba(31,111,197,.12);--t-ctx:rgba(183,121,31,.14);--t-out:rgba(30,122,85,.12)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--c-role:#B596F0;--c-task:#7DB4F2;--c-ctx:#E9B04F;--c-out:#4BC38B;--t-role:rgba(181,150,240,.16);--t-task:rgba(125,180,242,.16);--t-ctx:rgba(233,176,79,.16);--t-out:rgba(75,195,139,.16)}}
+:root[data-theme="dark"]{--c-role:#B596F0;--c-task:#7DB4F2;--c-ctx:#E9B04F;--c-out:#4BC38B;--t-role:rgba(181,150,240,.16);--t-task:rgba(125,180,242,.16);--t-ctx:rgba(233,176,79,.16);--t-out:rgba(75,195,139,.16)}
+.flow{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}
+.fbox{flex:1 1 180px;background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:4px;justify-items:center;text-align:center}
+.fbox .fic{font-size:40px;line-height:1}
+.fbox b{font-family:var(--display);font-size:22px}
+.fbox small{color:var(--muted);font-size:15px}
+.farrow{align-self:center;font-size:30px;color:var(--muted);font-weight:700}
+.gcard{text-align:left;cursor:pointer;display:grid;gap:6px;align-content:start;font:inherit;color:inherit}
+.gcard:hover{border-color:var(--ink)}
+.gcard.open{border-color:var(--gold);background:var(--gold-soft);cursor:default}
+.gtap{font-weight:700;color:var(--green)}
+.gq{margin:0;padding-left:4px;list-style:none;display:grid;gap:4px;font-size:17px}
+.prompt{font-family:var(--display);font-weight:700;font-size:24px;line-height:1.3;margin:6px 0 12px}
+.prompt.sm{font-size:19px;margin:0 0 10px}
+.pcard{display:grid;gap:4px;align-content:start}
+.pcard.weak{border-color:var(--onair)}
+.pcard.strong{border-color:var(--green)}
+.answer{background:var(--paper);border-radius:12px;padding:12px 14px;font-size:17px;line-height:1.5;margin-top:4px}
+.answer.small{font-size:14px;line-height:1.45;max-height:150px;overflow:hidden;position:relative;color:var(--muted)}
+.answer.small::after{content:"";position:absolute;left:0;right:0;bottom:0;height:40px;background:linear-gradient(transparent,var(--paper))}
+.verdict2{margin:8px 0 0;font-weight:700;font-size:17px}
+.verdict2.bad{color:var(--onair)}.verdict2.good{color:var(--green)}
+.seg2{font:inherit;border:0;border-radius:8px;padding:2px 6px;margin:2px 0;cursor:pointer;border-bottom:3px dashed currentColor;background:transparent}
+.seg2.role{color:var(--c-role)}.seg2.task{color:var(--c-task)}.seg2.ctx{color:var(--c-ctx)}.seg2.out{color:var(--c-out)}
+.seg2.on.role{background:var(--t-role)}.seg2.on.task{background:var(--t-task)}.seg2.on.ctx{background:var(--t-ctx)}.seg2.on.out{background:var(--t-out)}
+.seg2.on{border-bottom-style:solid}
+span.seg2{cursor:default;display:inline}
+.why4{display:grid;gap:8px;margin-top:10px}
+.wrow{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;border:2px dashed var(--line);font-size:17px}
+.wrow b{font-family:var(--display);font-size:18px}
+.wrow span{color:var(--muted)}
+.wrow.on span{color:var(--ink);font-weight:600}
+.wrow.on.role{border:2px solid var(--c-role);background:var(--t-role)}.wrow.on.task{border:2px solid var(--c-task);background:var(--t-task)}.wrow.on.ctx{border:2px solid var(--c-ctx);background:var(--t-ctx)}.wrow.on.out{border:2px solid var(--c-out);background:var(--t-out)}
+.parts4,.final{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.part4{display:flex;gap:12px;align-items:flex-start;border-radius:16px;padding:16px;border:2px solid;background:var(--panel)}
+.part4 .pi,.tip5 .pi{font-size:34px;line-height:1}
+.part4 b{font-family:var(--display);font-size:22px}
+.part4 p{margin:4px 0 8px;font-size:16px}
+.part4 q,.tip5 q{display:inline-block;font-style:italic;font-weight:600;background:var(--paper);border-radius:8px;padding:6px 10px;margin:2px 4px 2px 0}
+.part4.role{border-color:var(--c-role);background:var(--t-role)}.part4.task{border-color:var(--c-task);background:var(--t-task)}.part4.ctx{border-color:var(--c-ctx);background:var(--t-ctx)}.part4.out{border-color:var(--c-out);background:var(--t-out)}.part4.imp{border-color:var(--ink)}
+.part4 b{display:block}
+.tip5{display:flex;gap:12px;align-items:flex-start;margin-top:12px;border:2px dashed var(--ink)}
+.tip5 b{font-family:var(--display);font-size:20px}
+.miss{display:grid;gap:10px}
+.mcard{border:2px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--panel)}
+.mcard .row{gap:6px}
+.mcard.ok{border-color:var(--green);background:var(--green-soft)}.mcard.no{border-color:var(--onair);background:var(--onair-soft)}
+.mcard .fb{margin:8px 0 0;font-weight:700;font-size:16px}
+.fixhead{display:grid;grid-template-columns:1fr auto 1.4fr;gap:12px;align-items:stretch;margin-bottom:16px}
+.fixgrid{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+.builder4{display:grid;gap:12px}
+.bbox{border-radius:16px;padding:14px;border:2px solid;display:grid;gap:8px;background:var(--panel)}
+.bbox.role{border-color:var(--c-role)}.bbox.task{border-color:var(--c-task)}.bbox.ctx{border-color:var(--c-ctx)}.bbox.out{border-color:var(--c-out)}
+.bhead{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.bhead b{font-family:var(--display);font-size:21px}
+.bbox textarea{font:inherit;font-size:17px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);resize:vertical;width:100%}
+.bbox .chip{font-size:14px}
+.fixside{display:grid;gap:12px;position:sticky;top:84px}
+.livep{font-size:17px;line-height:1.6;background:var(--paper);border-radius:12px;padding:12px;min-height:90px}
+.mbar{height:14px;border-radius:7px;background:var(--line);overflow:hidden}
+.mbar i{display:block;height:100%;border-radius:7px;transition:width .3s}
+.mbar i.bad{background:var(--onair)}.mbar i.mid{background:var(--gold)}.mbar i.pro{background:var(--green)}
+.mlbl{display:block;margin-top:6px;font-family:var(--display);font-size:20px}
+.mlbl.bad{color:var(--onair)}.mlbl.mid{color:var(--gold)}.mlbl.pro{color:var(--green)}
+.checks{display:flex;flex-wrap:wrap;gap:6px}
+.ck{font-size:14px;padding:5px 10px;border-radius:999px;border:1.5px solid var(--line);color:var(--muted)}
+.ck.on{border-color:var(--green);background:var(--green-soft);color:var(--ink);font-weight:700}
+.chk3{display:grid;gap:6px;margin-top:6px}
+.ck2{display:flex;gap:8px;align-items:center;font-size:16px}
+.ck2 input{width:20px;height:20px;accent-color:var(--green)}
+.chip.big2{font-size:16px;padding:8px 14px;font-weight:700}
+.chip.on,.chip.on:hover{border-color:var(--green);background:var(--green-soft);color:var(--ink)}
+.tri{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));margin-top:16px}
+.tcard{display:grid;gap:4px;align-content:start;border-top:6px solid}
+.tcard.tA{border-top-color:var(--onair)}.tcard.tB{border-top-color:var(--gold)}.tcard.tC{border-top-color:var(--green)}
+.tcard textarea{font:inherit;font-size:16px;padding:10px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);width:100%;resize:vertical}
+.stars{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+.star{background:none;border:0;font-size:28px;line-height:1;color:var(--line);cursor:pointer;padding:0 2px}
+.star.on{color:var(--gold)}
+.cmpbars{display:grid;gap:8px;margin-top:8px}
+.cbar{display:grid;grid-template-columns:110px 1fr 90px;gap:10px;align-items:center;font-weight:700}
+.cbar i{height:16px;border-radius:8px;background:var(--line);overflow:hidden;display:block}
+.cbar i b{display:block;height:100%;border-radius:8px}
+.cbar b.bad{background:var(--onair)}.cbar b.mid{background:var(--gold)}.cbar b.pro{background:var(--green)}
+.cbar em{font-style:normal;color:var(--gold);letter-spacing:2px}
+@media (max-width:900px){.fixhead{grid-template-columns:1fr}.fixhead .farrow{display:none}.fixside{position:static}}
+@media (max-width:600px){.wrow{grid-template-columns:1fr}.flow .farrow{display:none}.prompt{font-size:21px}}
+button.seg2{display:inline;text-align:left;line-height:1.5;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.cmpbars{margin-bottom:6px}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -236,7 +328,7 @@ img.fprev{background:var(--paper)}
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 3: Prompt Engineering</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 3: Become a Prompt Engineer</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -246,94 +338,131 @@ img.fprev{background:var(--paper)}
 
 <main class="wrap" id="stage">
 
-<section class="seg" id="seg-1" data-min="5" data-title="Break the bot">
-  <div class="lower"><div class="no">01</div><div class="name"><h2>Break the bot</h2><p>5 minutes · warm-up</p></div></div>
-  <div class="grid g2" style="align-items:start">
-    <div>
-      <p class="big">This is RuleBot. A person wrote every answer it knows, one rule at a time. Can you make it fail?</p>
-      <p class="lead">Try "hello", then "what's the weather?", then ask it anything else.</p>
-      <p class="lead">RuleBot failed: <span class="score" id="fails">0</span></p>
-      <div class="card" id="afterBot" hidden style="background:var(--gold-soft);border-color:transparent">
-        <span class="tag">Teacher: now ask Gemini the same question</span>
-        <p class="lead" style="margin:6px 0 0">Gemini answers almost anything. Nobody wrote its answers: it learned from a huge amount of text and predicts the next words. But it only knows what you tell it about YOUR project. That is why the prompt matters.</p>
+<!-- 1 -->
+<section class="seg" id="seg-1" data-min="5" data-title="What is a prompt?">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>What is a prompt?</h2><p>5 minutes · the words you give the AI</p></div></div>
+  <p class="big">A prompt is the instruction you give to an AI. The AI does what you <u>write</u>, not what you <u>think</u>.</p>
+  <div class="flow" aria-label="Prompt, then AI, then result">
+    <div class="fbox"><span class="fic">✍️</span><b>Your prompt</b><small>the words you type</small></div>
+    <span class="farrow" aria-hidden="true">→</span>
+    <div class="fbox"><span class="fic">🤖</span><b>The AI</b><small>reads every word</small></div>
+    <span class="farrow" aria-hidden="true">→</span>
+    <div class="fbox"><span class="fic">📄</span><b>The answer</b><small>only as good as your prompt</small></div>
+  </div>
+  <p class="lead" style="margin-top:22px"><b>Try it:</b> tap each short prompt. What does the AI have to guess?</p>
+  <div class="grid g3" id="guessCards"></div>
+  <div class="def" id="l1" hidden><span class="tag">Remember</span><p>If you don't say it, the AI guesses. A prompt engineer leaves nothing to guess.</p></div>
+</section>
+
+<!-- 2 -->
+<section class="seg" id="seg-2" data-min="8" data-title="Weak vs strong" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>A weak prompt vs a strong prompt</h2><p>8 minutes · same topic, two prompts</p></div></div>
+  <p class="big">Same topic: space. Look at the two prompts, and at the two answers.</p>
+  <div class="grid g2 vs2">
+    <div class="card pcard weak">
+      <span class="tag">❌ Prompt 1 · weak</span>
+      <p class="prompt">“Tell me about space.”</p>
+      <span class="tag">The AI's answer</span>
+      <div class="answer small">Space is the vast, seemingly infinite expanse that exists beyond Earth's atmosphere. It contains a wide range of celestial bodies, including stars, planets, moons, asteroids, comets and galaxies, as well as phenomena such as nebulae, black holes and cosmic background radiation. The scientific study of space, known as astronomy and astrophysics, examines the origins, evolution and composition of the universe, from the Big Bang approximately 13.8 billion years ago…</div>
+      <p class="verdict2 bad">😵 Too long, hard words, about everything. <small>(…and 600 more words)</small></p>
+    </div>
+    <div class="card pcard strong">
+      <span class="tag">✅ Prompt 2 · strong</span>
+      <p class="prompt" id="p2text"></p>
+      <span class="tag">The AI's answer</span>
+      <div class="answer">
+        <p style="margin:0 0 8px">Hi Grade 7! ☀️ The solar system is the Sun and everything that travels around it. Here are 5 amazing facts:</p>
+        <ol style="margin:0;padding-left:22px">
+          <li>About 1.3 million Earths could fit inside the Sun.</li>
+          <li>There are 8 planets: 4 rocky ones close to the Sun, and 4 giants made of gas and ice.</li>
+          <li>Jupiter is the biggest planet. Its Great Red Spot is a storm bigger than Earth!</li>
+          <li>A day on Venus is longer than its whole year.</li>
+          <li>Sunlight takes about 8 minutes to reach us.</li>
+        </ol>
       </div>
+      <p class="verdict2 good">🤩 Short, clear, made for you.</p>
     </div>
-    <div class="card chat">
-      <div class="msgs" id="msgs" aria-live="polite"></div>
-      <form class="row" id="botForm"><input id="botIn" autocomplete="off" placeholder="Type a message…" aria-label="Message to RuleBot"><button class="btn sm" type="submit">Send</button></form>
-    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <span class="tag">Why is Prompt 2 better? Tap each coloured part</span>
+    <div class="why4" id="why4"></div>
+    <p class="muted" id="whyCount" style="margin:10px 0 0">0 of 4 found</p>
+  </div>
+  <div class="def" id="l2" hidden><span class="tag">Remember</span><p>Prompt 2 says WHO the AI is, WHAT to explain, FOR WHO, and HOW to answer.</p></div>
+</section>
+
+<!-- 3 -->
+<section class="seg" id="seg-3" data-min="7" data-title="The 4 parts" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>The 4 parts of a strong prompt</h2><p>7 minutes · the prompt engineer's recipe</p></div></div>
+  <p class="big">Every strong prompt has 4 parts. Learn them, and the AI works for you.</p>
+  <div class="parts4">
+    <div class="part4 role"><span class="pi">🎭</span><div><b>1 · Role</b><p>Who should the AI be?</p><q>You are a football coach.</q></div></div>
+    <div class="part4 task"><span class="pi">🎯</span><div><b>2 · Task</b><p>What should it do? Be clear: one exact job.</p><q>Give me training exercises to improve my speed.</q></div></div>
+    <div class="part4 ctx"><span class="pi">📚</span><div><b>3 · Context</b><p>Who is it for? Why? What should it know?</p><q>I am 12, I play left wing, and I train twice a week.</q></div></div>
+    <div class="part4 out"><span class="pi">📋</span><div><b>4 · Output</b><p>How should the answer look? A list, a table, how long?</p><q>Give me 5 exercises, in a short list, in simple English.</q></div></div>
+  </div>
+  <div class="card tip5"><span class="pi">🔁</span><div><b>And the secret 5th step: improve!</b><p style="margin:4px 0 0">Not happy with the answer? Don't start again. Ask for a change: <q>Make it shorter.</q> <q>Add an example.</q> <q>Explain it like I'm 10.</q></p></div></div>
+  <div class="card" style="margin-top:16px">
+    <span class="tag">Game: which part is missing?</span>
+    <p class="lead" style="margin:6px 0 12px">Each prompt forgot one part. Find it.</p>
+    <div class="miss" id="miss"></div>
+    <p class="lead" style="margin:12px 0 0"><b id="missScore">0 of 4</b> right</p>
   </div>
 </section>
 
-<section class="seg" id="seg-2" data-min="3" data-title="The prompt recipe" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>The prompt recipe</h2><p>3 minutes · the lesson</p></div></div>
-  <div class="grid g2">
-    <div class="card bad"><span class="tag">Weak prompt</span><p class="quote" id="weakQ">"Design a future classroom."</p><p style="margin:0">Gemini does not know your school, your age or your country. So it gives a boring, general answer that could be anywhere.</p></div>
-    <div class="card good"><span class="tag">Recipe prompt</span><p class="quote">Role + Task + Context + Format</p><p style="margin:0">Tell it who to be, what to do, the facts it can't know, and how the answer should look. Now the answer is about YOUR project.</p></div>
+<!-- 4 -->
+<section class="seg" id="seg-4" data-min="15" data-title="Mission: fix the prompt" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Mission: fix the prompt</h2><p>15 minutes · from weak to pro</p></div></div>
+  <div class="fixhead">
+    <div class="card pcard weak"><span class="tag">❌ The weak prompt</span><p class="prompt">“Make me a project.”</p></div>
+    <span class="farrow" aria-hidden="true">→</span>
+    <div class="card pcard strong"><span class="tag">✅ Your job</span><p style="margin:6px 0 0;font-size:18px;font-weight:600">Turn it into a pro prompt: a <b>project about protecting the environment</b>, with <b>ideas</b>, <b>pictures</b> and a <b>presentation</b>, for <b>Grade 7</b>.</p></div>
   </div>
-  <div class="grid g2" style="margin-top:16px">
-    <div class="card"><span class="tag">🎭 Role</span><p style="margin:6px 0 0"><b>Who should the AI be?</b> "You are a robot engineer."</p></div>
-    <div class="card"><span class="tag">🎯 Task</span><p style="margin:6px 0 0"><b>What should it do?</b> "Design the playground of our school in 2040."</p></div>
-    <div class="card"><span class="tag">📚 Context</span><p style="margin:6px 0 0"><b>The facts it can't know:</b> "I am 12. I live in Lebanon. There is no space to play."</p></div>
-    <div class="card"><span class="tag">📋 Format</span><p style="margin:6px 0 0"><b>How should the answer look?</b> "A name, 3 big ideas, and a day in it."</p></div>
-  </div>
-  <p class="lead" style="margin-top:16px">In part 03 you build <b>your</b> prompt with these 4 parts, just by clicking.</p>
-</section>
-
-<section class="seg" id="seg-3" data-min="32" data-title="Mission: design card" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: design your part with Gemini</h2><p>32 minutes · gemini.google.com</p></div></div>
-  <div class="card myproj" id="proj"></div>
-  <div class="mission">
-    <div>
-      <div class="card">
-        <span class="tag">1 · Build your prompt: choose, and it writes itself</span>
-        <div class="builder" id="briefB" style="margin-top:10px"></div>
-        <div class="power" id="briefP" style="margin-top:14px"></div>
-        <span class="tag" style="display:block;margin-top:12px">Your prompt (Role + Task + Context + Format)</span>
-        <pre class="prompt small" id="briefOut"></pre>
-        <div class="row"><button class="btn sm" id="copyBrief" type="button">Copy my prompt</button></div>
-        <p class="newchat">🆕 Paste it in a <b>NEW</b> Gemini chat (press <b>New chat</b> first), so Gemini does not mix it with your other work.</p>
+  <div class="mission fixgrid">
+    <div class="builder4" id="builder4"></div>
+    <aside class="card side fixside">
+      <span class="tag">Your prompt, live</span>
+      <div class="livep" id="liveP"></div>
+      <div class="meter" id="meter"></div>
+      <div class="checks" id="checks"></div>
+      <div class="row" id="fixActs"></div>
+      <div id="afterGem" hidden>
+        <span class="tag">Look at Gemini's answer. Did it give you…</span>
+        <div class="chk3" id="gotList"></div>
       </div>
-      <div class="card" style="margin-top:14px">
-        <span class="tag">2 · Optional: make it better with a follow-up prompt</span>
-        <p style="margin:6px 0 10px;font-size:16px">Not happy with the answer? Copy one follow-up into the same Gemini chat. Happy with it? Skip this and go to 3.</p>
-        <div class="row" id="follow"></div>
-      </div>
-      <ol class="checklist" id="list1" style="margin-top:14px"></ol>
-    </div>
-    <aside class="card side" id="cardSide">
-      <span class="tag">3 · Your design card</span>
-      <label class="tag" for="paste">Paste Gemini's best answer here</label>
-      <textarea id="paste" rows="4" placeholder="Select all of Gemini's answer, copy it, paste it here…"></textarea>
-      <div class="row"><button class="btn sm" id="fillCard" type="button">Fill my card from it</button></div>
-      <p class="muted" style="margin:0;font-size:14px">Then check each box below and change words so it sounds like you.</p>
-      <label class="tag" for="dName">Name of your design</label><input id="dName" placeholder="e.g. The Garden Classroom">
-      <label class="tag" for="dI1">Big idea 1</label><input id="dI1">
-      <label class="tag" for="dI2">Big idea 2</label><input id="dI2">
-      <label class="tag" for="dI3">Big idea 3</label><input id="dI3">
-      <label class="tag" for="dDay">A day in it (2–3 sentences)</label><textarea id="dDay" rows="3"></textarea>
-      <label class="tag" for="dMine">✍️ My own idea (you write it, not Gemini)</label><p class="muted" style="margin:4px 0 6px;font-size:14px">Read Gemini's ideas. What is missing that you would love? Something more fun, more Lebanese, more you.</p><input id="dMine" placeholder="Example: every Friday the green walls grow mint and zaatar for our man'oushe">
-      <div id="cardView"></div>
     </aside>
   </div>
 </section>
 
-<section class="seg" id="seg-4" data-min="5" data-title="Gallery" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Design gallery</h2><p>5 minutes · 2 students from each team</p></div></div>
-  <p class="big">Two students from each team present their design card. The class asks one question each.</p>
-  <div class="card" style="border-color:var(--green);background:var(--green-soft)"><span class="tag">🎤 The presenter says</span>
-    <ol class="lead" style="margin:6px 0 0;padding-left:22px;line-height:1.6" id="galSay">
-      <li><b>Hello:</b> "My name is … My design is called … It is for …"</li>
-      <li><b>My 3 big ideas:</b> "1 … 2 … 3 …"</li>
-      <li><b>My own idea</b>, the one the AI did not have: "…"</li>
-      <li><b>Ask the class:</b> "Which idea would you try first?"</li>
-    </ol></div>
-  <div class="grid g3" style="margin-top:16px">
-    <div class="card"><span class="tag">The class asks</span><p class="lead" style="margin:6px 0 0">Could we really build it? Would it be cheap, or very expensive? Which idea could we start next year?</p></div>
-    <div class="card"><span class="tag">The class asks</span><p class="lead" style="margin:6px 0 0">Which idea came from the AI, and which came from you?</p></div>
-    <div class="card"><span class="tag">Remember</span><p class="lead" style="margin:6px 0 0">The AI gives ideas. You choose, change and decide. You are the designer.</p></div>
+<!-- 5 -->
+<section class="seg" id="seg-5" data-min="12" data-title="Challenge: 3 prompts" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Challenge: 3 prompts, 1 question</h2><p>12 minutes · compare the answers</p></div></div>
+  <p class="big">Ask Gemini the same question 3 times: simple, better, pro. Which answer wins?</p>
+  <div class="card">
+    <span class="tag">1 · Choose your question</span>
+    <div class="chips" id="qChips" style="margin-top:8px"></div>
   </div>
-  <div class="card" style="margin-top:16px;background:var(--gold-soft);border-color:transparent"><span class="tag">Next week</span><p class="lead" style="margin:6px 0 0">AI Storytelling: a character from the future visits your design, and you write their story.</p></div>
+  <div class="tri" id="tri"></div>
+  <div class="card" id="cmp" hidden style="margin-top:16px">
+    <span class="tag">The results</span>
+    <div class="cmpbars" id="cmpBars"></div>
+    <label class="labname" style="margin-top:12px">Which answer was best, and why? One sentence.<textarea id="cmpWhy" placeholder="Answer C was best because…"></textarea></label>
+  </div>
+  <div class="def" id="l5" hidden><span class="tag">Remember</span><p>Same question, same AI, different answers. The difference is the prompt, and the prompt is YOU.</p></div>
+</section>
+
+<!-- 6 -->
+<section class="seg" id="seg-6" data-min="3" data-title="Your checklist" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>Your prompt checklist</h2><p>3 minutes · keep it for the whole year</p></div></div>
+  <p class="big">Before you press Enter, check your prompt:</p>
+  <div class="final">
+    <div class="part4 role"><span class="pi">🎭</span><div><b>Role</b><p>Did I tell the AI who to be?</p></div></div>
+    <div class="part4 task"><span class="pi">🎯</span><div><b>Task</b><p>Is my job clear and exact?</p></div></div>
+    <div class="part4 ctx"><span class="pi">📚</span><div><b>Context</b><p>Did I say who it's for, and why?</p></div></div>
+    <div class="part4 out"><span class="pi">📋</span><div><b>Output</b><p>Did I say how the answer should look?</p></div></div>
+    <div class="part4 imp"><span class="pi">🔁</span><div><b>Improve</b><p>Not perfect? Ask for a change.</p></div></div>
+  </div>
+  <p class="note" style="margin-top:18px">Next week: AI Storytelling. You use these 4 parts to write a story with AI.</p>
 </section>
 
 </main>
@@ -635,133 +764,122 @@ return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fi
 </script>
 <script>
 (function(){
-const {$, el, store, copy, checklist, fill, me, picker} = K;
+const {$, el, store, copy} = K;
 K.init("ch3");
+const GEM = "https://gemini.google.com/app";
+const prog = store.get("prog") || [false, false, false, false];
+const done = i => { if (prog[i]) return; prog[i] = true; store.set("prog", prog); };
 
-/* 1 RuleBot */
-const RULES = [
-  [/\b(hi|hello|hey|salut|marhaba)\b/i, "Hello! I am RuleBot. Ask me about the weather or my name."],
-  [/\bweather\b/i, "The weather is sunny. (I always say sunny. Nobody wrote another rule.)"],
-  [/\b(name|who are you)\b/i, "My name is RuleBot. A person wrote all my answers."],
-  [/\b(bye|goodbye)\b/i, "Goodbye!"]
+/* ---------- 1 what does the AI have to guess? ---------- */
+const GUESS = [
+  ["“Draw a cat.”", ["A kitten? A lion? 🐱🦁", "Cartoon or real photo?", "Sleeping, running, flying?"]],
+  ["“Write a story.”", ["About what?", "For a 6-year-old or for your teacher?", "5 lines or 5 pages?"]],
+  ["“Help me with my homework.”", ["Which subject?", "Which question?", "The answer, or how to find it?"]]
 ];
-let fails = 0;
-function say(who, text){ $("#msgs").append(el("div", {class:"msg " + who}, text)); $("#msgs").scrollTop = 1e9; }
-say("bot", "Hi! I'm RuleBot. I only know a few rules. Try to break me!");
-$("#botForm").addEventListener("submit", e => { e.preventDefault(); const q = $("#botIn").value.trim(); if (!q) return; say("me", q); $("#botIn").value = "";
-  const hit = RULES.find(([re]) => re.test(q));
-  setTimeout(() => { if (hit) say("bot", hit[1]); else { fails++; $("#fails").textContent = fails; say("bot fail", "I don't understand. No one wrote a rule for that."); if (fails >= 2) $("#afterBot").hidden = false; } }, 350); });
+let seen1 = 0;
+GUESS.forEach(([p, qs]) => { const c = el("button", {class:"card gcard", type:"button"}, el("span", {class:"tag"}, "Prompt"), el("p", {class:"prompt"}, p), el("span", {class:"gtap"}, "Tap: what must the AI guess?"));
+  c.onclick = () => { if (c.classList.contains("open")) return; c.classList.add("open"); c.querySelector(".gtap").replaceWith(el("ul", {class:"gq"}, ...qs.map(q => el("li", null, "🤔 " + q)))); if (++seen1 === GUESS.length) $("#l1").hidden = false; };
+  $("#guessCards").append(c); });
 
-function team(){ return me().team || "school"; }
+/* ---------- 2 why is prompt 2 better ---------- */
+const P2 = [
+  ["role", "Act as a science teacher.", "🎭 Role", "The answer sounds like a friendly teacher, not an encyclopedia."],
+  ["task", "Explain the solar system", "🎯 Task", "Not ALL of space: only the solar system. One clear job."],
+  ["ctx", "to a Grade 7 student", "📚 Context", "Short sentences and easy words, made for your age."],
+  ["out", "using simple English and 5 interesting facts.", "📋 Output", "Exactly 5 facts, in a numbered list."]
+];
+const found2 = new Set();
+function drawP2(){
+  $("#p2text").replaceChildren("“", ...P2.flatMap(([k, t], i) => [el("button", {class:"seg2 " + k + (found2.has(k) ? " on" : ""), type:"button", onclick:() => { found2.add(k); drawP2(); }}, t), i < 3 ? " " : ""]), "”");
+  $("#why4").replaceChildren(...P2.map(([k, t, n, w]) => el("div", {class:"wrow " + k + (found2.has(k) ? " on" : "")}, el("b", null, n), el("span", null, found2.has(k) ? w : "Tap the " + n.slice(3) + " part in Prompt 2 above."))));
+  $("#whyCount").textContent = found2.size + " of 4 found"; if (found2.size === 4){ $("#l2").hidden = false; done(0); }
+}
+drawP2();
 
-/* 3 design brief */
-const PLACE = {
-  school:["a classroom","the library","the canteen","the playground","the science lab","an art and music studio","the school garden","the way to school","the whole school"],
-  planet:["a city","the sea and beaches","the cedar mountains and forests","farms and food","energy for every home","transport","water for everyone","an underwater city","the sky above Lebanon"]
-};
-const PROB = {
-  school:["it is too hot or too cold","lessons are boring","school bags are too heavy","there is too much plastic and waste","there is no space to play","the traffic to school is long","it is noisy and crowded","students feel stressed"],
-  planet:["there is plastic in the sea","the air is polluted","there are power cuts","there are traffic jams","forests catch fire","there is not enough clean water","there is too much rubbish","heat waves are getting worse"]
-};
-const MUST = ["robots that help","flying vehicles","holograms","plants everywhere","solar and wind power","AI assistants","games while learning","floating buildings","recycling machines","water from the air","furniture that moves","space for animals"];
-const BSPEC = [
-  {id:"role", icon:"🎭", title:"Role · who should the AI be?", one:true, opts:["an architect of the future","a scientist","an inventor","a robot engineer","a famous chef","a football coach","a pirate captain","a game designer","a nature expert"]},
-  {id:"place", icon:"📍", title:"Task · what will you design?", one:true, opts:() => { const k = window.PARTKIT[me().part]; return k ? k.places.concat(PLACE[team()]) : PLACE[team()]; }},
-  {id:"ctx", name:"Context: facts", icon:"📌", title:"Context · facts it can't know", max:3, opts:["I am 12 years old","I live in Lebanon","it must be cheap","it must be fun","it must work for everyone"]},
-  {id:"prob", name:"Context: the problem", icon:"⚠️", title:"Context · what is wrong today?", max:2, opts:() => PROB[team()]},
-  {id:"must", name:"Context: must-haves", icon:"🚀", title:"Context · it must have…", max:4, opts:() => { const k = window.PARTKIT[me().part]; return (k ? k.things : []).concat(MUST); }, opts0:["robots that help","flying vehicles","holograms","plants everywhere","solar and wind power","AI assistants","games while learning","floating buildings","recycling machines","water from the air","furniture that moves","space for animals"]},
-  {id:"feel", name:"Context: the feeling", icon:"💛", title:"Context · people should feel…", max:2, opts:["excited","calm","safe","proud","curious","happy"]},
-  {id:"format", icon:"📝", title:"Format · after the name and 3 big ideas, show it as…", one:true, opts:["a day in it, as a short story","a guided tour for a visitor","a news report from the future","a comic strip in 4 boxes, told in words","an advert on TV"]},
-  {id:"idea", title:"✨ Your own crazy idea", text:true, ph:"e.g. the playground floats above the school", hint:"the AI never thought of it"}
+/* ---------- 3 which part is missing ---------- */
+const MISS = [
+  ["Write a story about a brave cat for 8-year-olds, in 150 words.", "role"],
+  ["You are a football coach. Give me training tips, as 5 short bullet points.", "ctx"],
+  ["You are a history teacher. Explain the Phoenicians to a Grade 7 student in Lebanon.", "out"],
+  ["You are a travel guide. It's for my family trip to Byblos this weekend. Answer in a short list.", "task"]
 ];
-const B = Object.assign({role:"", place:"", ctx:["I am 12 years old","I live in Lebanon"], prob:[], must:[], feel:[], format:"a day in it, as a short story", idea:""}, store.get("brief2") || {});
-function briefText(){
-  const T = me().T || K.TEAMS.school, j = window.B.join, when = T.key === "planet" ? "in Lebanon in the year 2050" : "for our school, Evergreen in Lebanon, in the year 2040";
-  return "Role: You are " + (B.role || "an expert designer of the future") + ".\n" +
-    "Task: Design " + (B.place || "my idea") + " " + when + ", the way it could look in the future.\n" +
-    "Context: " + (B.ctx && B.ctx.length ? B.ctx.map(c => c.charAt(0).toUpperCase() + c.slice(1)).join(". ") + ". " : "") + "I am in the team \"" + T.name + "\"." +
-    (B.prob.length ? " Today the problem is that " + j(B.prob) + "." : "") +
-    (B.must.length ? " It must have " + j(B.must) + "." : "") +
-    (B.feel.length ? " People should feel " + j(B.feel) + " there." : "") +
-    ((B.idea || "").trim() ? " My own idea: " + B.idea.trim() + "." : "") +
-    " Be creative and surprising, but it must be safe and good for people and the planet.\n" +
-    "Format: Start with \"Name:\" and a catchy name for my design. Then \"Big ideas:\" with 3 numbered ideas, one sentence each. Then \"A day in it:\" " + (B.format || "a day in it, as a short story").replace(/^a day in it, as /, "") + ", 3 to 4 sentences. Easy English, under 150 words. Do not use real people's names.";
-}
-let briefUI;
-function drawBrief(){ window.B.show($("#briefOut"), BSPEC, B, briefText()); window.B.meter($("#briefP"), BSPEC, B); window.B.lock($("#copyBrief"), BSPEC, B); }
-function onBrief(redraw){ store.set("brief2", B); if (redraw){ briefUI.draw(); } drawBrief(); drawCard(); ticks(); }
-briefUI = window.B.make($("#briefB"), BSPEC, B, onBrief);
-/* 2 recipe: the same choices, the first 4 ingredients */
-function loadRecipe(){ $("#weakQ").textContent = team() === "planet" ? "\"Design the future of transport.\"" : "\"Design a future classroom.\""; }
-$("#copyBrief").onclick = () => { if (!window.B.guard(BSPEC, B, $("#briefB"), K.toast)) return; copy(briefText(), $("#briefOut"), "a NEW Gemini chat"); L1.tick(3); };
-const FOLLOW = [
-  ["More surprising", "Make big idea 2 more surprising and creative, but still possible."],
-  ["Possible in Lebanon", "Change anything that would be too expensive or impossible in Lebanon. Keep the best ideas."],
-  ["Good for the planet", "How can my design save energy, water or waste? Add one idea."],
-  ["What could go wrong?", "What could go wrong with my design? Give 2 problems and a fix for each."],
-  ["For everyone", "How can my design work for a student in a wheelchair or a student who can't see well?"]
+const PN = {role:"🎭 Role", task:"🎯 Task", ctx:"📚 Context", out:"📋 Output"};
+const WHY_MISS = {role:"Nobody told the AI who to be.", task:"It never says what the AI should DO! Plan the day? Find restaurants?", ctx:"Tips for who? A beginner? A 12-year-old? A pro?", out:"How long? A list? A paragraph? A table?"};
+let missOk = 0, missDone = 0;
+MISS.forEach(([p, a]) => { const fb = el("p", {class:"fb"}), card = el("div", {class:"mcard"}); let d = false;
+  card.append(el("p", {class:"prompt sm"}, "“" + p + "”"), el("div", {class:"row"}, ...Object.entries(PN).map(([k, n]) => el("button", {class:"btn sm alt", type:"button", onclick:() => { if (d) return; d = true; const ok = k === a; if (ok) missOk++; missDone++;
+    card.classList.add(ok ? "ok" : "no"); fb.textContent = (ok ? "✓ Right! " : "✗ It's " + PN[a] + ". ") + WHY_MISS[a]; $("#missScore").textContent = missOk + " of 4"; if (missDone === 4) done(1); }}, n))), fb);
+  $("#miss").append(card); });
+
+/* ---------- 4 fix the prompt ---------- */
+const F = Object.assign({role:"", task:"", ctx:"", out:""}, store.get("fix") || {});
+const BOX = [
+  ["role", "🎭 Role", "Who should the AI be?", ["You are an environmental scientist.", "You are a creative teacher.", "Act as a school project coach."]],
+  ["task", "🎯 Task", "What exactly should it do?", ["Help me make a school project about protecting the environment.", "Create a project about how we can protect our planet."]],
+  ["ctx", "📚 Context", "Who is it for? Why?", ["I am in Grade 7 in Lebanon.", "It is for a class presentation next week.", "My class cares about plastic on our beaches."]],
+  ["out", "📋 Output", "How should the answer look?", ["Give me 5 project ideas,", "suggest a picture for each idea,", "and plan a 6-slide presentation.", "Use simple English."]]
 ];
-$("#follow").replaceChildren(...FOLLOW.map(([n, t]) => el("button", {class:"btn sm alt", type:"button", title:t, onclick:() => copy(t, null, "the same Gemini chat")}, "Copy: " + n)));
-const L1 = checklist("list1", [
-  ["Pick your team", "At the top of this mission. Some choices change with your team."],
-  ["Build your prompt", "Choose a role, what you design, the problem, the must-haves, the feeling and the format. Add your crazy idea. Aim for 5 stars."],
-  ["Open Gemini", "Go to gemini.google.com with your school account. Start a new chat."],
-  ["Paste your prompt", "Copy my prompt, paste it in Gemini, press Enter."],
-  ["Make it better (optional)", "Not happy with the answer? Copy one follow-up prompt into the same chat, then keep the best answer."],
-  ["Fill your design card", "Copy Gemini's best answer, paste it in the card on the right and press Fill my card. Then change words so it sounds like you."],
-  ["Add your own idea", "One idea the AI did not have. This is what makes it yours."]
-]);
-const D = store.get("card") || {};
-/* read Gemini's answer: Name, Big ideas 1-3, A day in it */
-function parseAnswer(t){
-  const lines = t.replace(/\*\*|__|^#+\s*/gm, "").split(/\n+/).map(x => x.trim()).filter(x => x && !/^(here is|here's|sure|great|of course|okay|ok)\b/i.test(x)), out = {};
-  const nm = lines.find(l => /^(design )?name\s*[:\-–]/i.test(l));
-  out.name = nm ? nm.replace(/^(design )?name\s*[:\-–]\s*/i, "") : (lines[0] && lines[0].length < 70 ? lines[0] : "");
-  out.name = out.name.replace(/^["“']|["”']$/g, "").replace(/[:.]$/, "");
-  const ideas = lines.filter(l => /^(\d+[.)]|[-*•])\s+/.test(l)).map(l => l.replace(/^(\d+[.)]|[-*•])\s+/, ""));
-  const di = lines.findIndex(l => /^(a day in it|a day in|day in|the tour|news report|comic|advert)/i.test(l));
-  const bi = lines.findIndex(l => /^big ideas?\b/i.test(l));
-  if (ideas.length < 3 && bi >= 0){ const head = lines[bi].replace(/^big ideas?\s*[:\-–]?\s*/i, ""); const sec = [head, ...lines.slice(bi + 1, di > bi ? di : bi + 4)].filter(x => x && x.length > 8).map(l => l.replace(/^(\d+[.)]|[-*•])\s+/, "")); if (sec.length > ideas.length) ideas.splice(0, ideas.length, ...sec); }
-  [out.i1, out.i2, out.i3] = ideas.slice(0, 3);
-  if (di >= 0){ const head = lines[di].replace(/^[^:]*:\s*/, ""); out.day = [head, ...lines.slice(di + 1).filter(l => !/^(\d+[.)]|[-*•])\s+/.test(l))].filter(Boolean).join(" ").slice(0, 600); }
-  else { const rest = lines.filter(l => l !== nm && l !== lines[0] && !/^(\d+[.)]|[-*•])\s+/.test(l) && !/^big ideas?/i.test(l)); out.day = rest.slice(-2).join(" ").slice(0, 600); }
-  return out;
+const CHECKS = [
+  ["🎭 A role", t => F.role.trim().length >= 8],
+  ["🌍 Topic: protecting the environment", t => /environment|planet|nature|pollution|recycl|climate|plastic|earth|green/.test(t)],
+  ["👦 For Grade 7", t => /grade ?7|grade seven|7th grade|seventh|eb7|eb 7|12[- ]year|13[- ]year/.test(t)],
+  ["💡 Ideas", t => /idea/.test(t)],
+  ["🖼️ Pictures", t => /picture|image|photo|drawing|visual|illustration/.test(t)],
+  ["📊 A presentation", t => /presentation|slide|powerpoint/.test(t)]
+];
+const fixText = () => ["role", "task", "ctx", "out"].map(k => F[k].trim()).filter(Boolean).join(" ");
+let gemOpened = false;
+function drawFixSide(){
+  const t = fixText().toLowerCase(), n = CHECKS.filter(([, f]) => f(t)).length;
+  $("#liveP").replaceChildren(...(fixText() ? ["role", "task", "ctx", "out"].filter(k => F[k].trim()).flatMap(k => [el("span", {class:"seg2 on " + k}, F[k].trim()), " "]) : [el("span", {class:"muted"}, "Start writing on the left. Your prompt appears here.")]));
+  const lvl = n <= 2 ? ["Weak", "bad"] : n <= 4 ? ["Better", "mid"] : ["Pro! 🏆", "pro"];
+  $("#meter").replaceChildren(el("div", {class:"mbar"}, el("i", {class:lvl[1], style:"width:" + Math.round(n / 6 * 100) + "%"})), el("b", {class:"mlbl " + lvl[1]}, lvl[0] + " · " + n + "/6"));
+  $("#checks").replaceChildren(...CHECKS.map(([lbl, f]) => el("span", {class:"ck" + (f(t) ? " on" : "")}, (f(t) ? "✓ " : "○ ") + lbl)));
+  const ready = n >= 5;
+  $("#fixActs").replaceChildren(ready ? el("button", {class:"btn", type:"button", onclick:() => copy(fixText(), $("#liveP"), "Gemini")}, "📋 Copy my prompt") : el("p", {class:"muted", style:"margin:0;font-size:15px"}, "Reach 5 of 6 to unlock: Copy and try it in Gemini."),
+    ...(ready ? [el("a", {class:"btn alt", href:GEM, target:"_blank", rel:"noopener", style:"text-decoration:none", onclick:() => { gemOpened = true; $("#afterGem").hidden = false; done(2); }}, "↗ Open Gemini")] : []));
+  if (ready && gemOpened) $("#afterGem").hidden = false;
 }
-function fillFrom(quiet){ try {
-  const t = $("#paste").value.trim(); if (!t){ if (!quiet){ K.toast("Paste Gemini's answer in the box first."); $("#paste").focus(); } return; }
-  const charLike = (t.match(/^\W*(look|looks|personality|habit|secret|talk|how they talk|funny thing|fear)\W*\s*[:\-–]/gim) || []).length, designLike = /big ideas?|^\W*\d+[.)]\s/im.test(t);
-  if (charLike >= 2 && !designLike){ K.toast("This looks like your CHARACTER (look, habit, secret…), not your design. Paste the answer to this chapter's prompt."); $("#paste").focus(); return; }
-  const a = parseAnswer(t); let n = 0;
-  [["dName","name"],["dI1","i1"],["dI2","i2"],["dI3","i3"],["dDay","day"]].forEach(([id, k]) => { if (a[k]){ D[k] = a[k]; $("#" + id).value = a[k]; n++; } });
-  store.set("card", D); drawCard(); ticks();
-  K.toast(n >= 4 ? "Your card is filled. Now check it, and add your own idea!" : "I filled what I could find. Fill the empty boxes yourself.");
-  const v = $("#dName"); if (v){ v.closest(".card, section, div").scrollIntoView({behavior:"smooth", block:"start"}); ["dName","dI1","dI2","dI3","dDay"].forEach(id => { const x = $("#" + id); if (x && x.value){ x.classList.remove("flash"); void x.offsetWidth; x.classList.add("flash"); } }); }
-} catch(e){ K.toast("Something went wrong. Copy the boxes by hand, and tell your teacher."); console.error(e); } }
-$("#fillCard").onclick = () => fillFrom(false);
-$("#paste").addEventListener("paste", () => setTimeout(() => fillFrom(true), 60));
-const dmap = {dName:"name", dI1:"i1", dI2:"i2", dI3:"i3", dDay:"day", dMine:"mine"};
-Object.entries(dmap).forEach(([id, k]) => { $("#" + id).value = D[k] || ""; $("#" + id).addEventListener("input", () => { D[k] = $("#" + id).value; store.set("card", D); drawCard(); }); });
-function drawGallery(){ try { const c = JSON.parse(localStorage.getItem("ch3-card")) || {}, a = JSON.parse(localStorage.getItem("ai-lab-session")) || {}, part = JSON.parse(localStorage.getItem("ch1-part")) || "my part", q = x => (x || "…").trim().replace(/[.!]+$/, "");
-  const li = $("#galSay").children; if (!li.length) return;
-  li[0].innerHTML = "<b>Hello:</b> "; li[0].append("\u201CMy name is " + (a.name || "…") + ". My design is called " + q(c.name) + ". It is for " + String(part).toLowerCase() + ".\u201D");
-  li[1].innerHTML = "<b>My 3 big ideas:</b> "; li[1].append("\u201C1: " + q(c.i1) + ". 2: " + q(c.i2) + ". 3: " + q(c.i3) + ".\u201D");
-  li[2].innerHTML = "<b>My own idea</b>, the one the AI did not have: "; li[2].append("\u201C" + q(c.mine) + ".\u201D");
-} catch(e){} }
-addEventListener("hashchange", drawGallery); setTimeout(drawGallery, 0);
-function drawCard(){
-  const m = me(), filled = Object.values(dmap).filter(k => (D[k] || "").trim()).length;
-  $("#cardView").replaceChildren(el("div", {class:"card", style:"margin-top:8px;background:var(--green-soft);border-color:var(--green)"},
-    el("span", {class:"tag"}, (m.T ? m.T.site : "My project") + (B.place ? " · " + B.place : m.part ? " · " + m.part : "")),
-    el("h3", {style:"font-size:24px;margin:4px 0 8px"}, D.name || "Your design name"),
-    el("ul", {style:"margin:0;padding-left:20px;font-size:16px"}, ...[D.i1, D.i2, D.i3, D.mine].filter(Boolean).map(x => el("li", null, x))),
-    D.day ? el("p", {style:"margin:8px 0 0;font-size:16px"}, D.day) : "",
-    el("p", {class:"muted", style:"margin:8px 0 0;font-size:14px"}, filled + " of 6 filled · saved to your account")));
+const GOT = store.get("got") || [];
+$("#gotList").replaceChildren(...["💡 Project ideas", "🖼️ Pictures", "📊 A presentation plan", "👦 Easy words for Grade 7"].map((t, i) => { const cb = el("input", {type:"checkbox"}); cb.checked = !!GOT[i]; cb.onchange = () => { GOT[i] = cb.checked; store.set("got", GOT); }; return el("label", {class:"ck2"}, cb, " " + t); }));
+$("#builder4").replaceChildren(...BOX.map(([k, n, q, ideas]) => {
+  const ta = el("textarea", {rows:"2", placeholder:q, "aria-label":n}); ta.value = F[k];
+  ta.addEventListener("input", () => { F[k] = ta.value; store.set("fix", F); drawFixSide(); });
+  const add = s => { ta.value = (ta.value.trim() ? ta.value.trim() + " " : "") + s; ta.dispatchEvent(new Event("input")); };
+  return el("div", {class:"bbox " + k}, el("div", {class:"bhead"}, el("b", null, n), el("span", {class:"muted"}, q)), ta,
+    el("div", {class:"chips"}, el("span", {class:"muted", style:"font-size:13px"}, "Need help? Tap:"), ...ideas.map(s => el("button", {class:"chip", type:"button", onclick:() => add(s)}, s))));
+}));
+drawFixSide();
+
+/* ---------- 5 three prompts, one question ---------- */
+const QS = ["Why do we need to sleep?", "How do volcanoes work?", "What should I eat before a football match?", "How can I learn English faster?", "Why is the sea salty?"];
+const C = Object.assign({q:"", a:"", b:"", c:"", sa:0, sb:0, sc:0, why:""}, store.get("tri") || {});
+const saveC = () => store.set("tri", C);
+const TRI = [
+  ["a", "A · Simple", "Just the question.", "tA"],
+  ["b", "B · Better", "Add a role: “You are a …”, then the question.", "tB"],
+  ["c", "C · Pro", "Role + task + context + output. Use the 4 parts!", "tC"]
+];
+function proN(t){ t = t.toLowerCase(); return [/you are|act as|imagine you/.test(t), /i am|i'm|for my|grade|my class|years old|for a /.test(t), /\d|list|bullet|table|steps|words|short|simple|sentences|paragraph/.test(t)].filter(Boolean).length; }
+function drawTri(){
+  $("#qChips").replaceChildren(...QS.map(q => el("button", {class:"chip big2" + (C.q === q ? " on" : ""), type:"button", "aria-pressed":String(C.q === q), onclick:() => { C.q = q; if (!C.a || QS.includes(C.a)) C.a = q; saveC(); drawTri(); }}, q)));
+  if (!C.q){ $("#tri").replaceChildren(el("p", {class:"muted", style:"margin:14px 0 0"}, "Choose a question to start.")); $("#cmp").hidden = true; return; }
+  $("#tri").replaceChildren(...TRI.map(([k, n, hint, cls]) => {
+    const ta = el("textarea", {rows:k === "c" ? "4" : "3", placeholder:k === "b" ? "You are a … " + C.q : k === "c" ? "You are a … Explain … I am … Give me …" : C.q}); ta.value = C[k];
+    const meter = k === "c" ? el("p", {class:"muted pm", style:"margin:0;font-size:14px"}) : null;
+    const upd = () => { if (meter){ const m = proN(ta.value); meter.textContent = "Pro parts: " + ["🎭 role", "📚 context", "📋 output"].map((x, i) => [/you are|act as|imagine you/, /i am|i'm|for my|grade|my class|years old|for a /, /\d|list|bullet|table|steps|words|short|simple|sentences|paragraph/][i].test(ta.value.toLowerCase()) ? "✓ " + x : "○ " + x).join("   "); } };
+    ta.addEventListener("input", () => { C[k] = ta.value; saveC(); upd(); }); upd();
+    const stars = el("div", {class:"stars"}, el("span", {class:"muted", style:"font-size:14px"}, "Gemini's answer:"), ...[1, 2, 3, 4, 5].map(v => el("button", {class:"star" + (C["s" + k] >= v ? " on" : ""), type:"button", "aria-label":v + " stars", onclick:() => { C["s" + k] = v; saveC(); drawTri(); }}, "★")));
+    return el("div", {class:"card tcard " + cls}, el("span", {class:"tag"}, n), el("p", {class:"muted", style:"margin:4px 0 8px;font-size:15px"}, hint), ta, ...(meter ? [meter] : []),
+      el("div", {class:"row", style:"margin:8px 0"}, el("button", {class:"btn sm", type:"button", onclick:() => C[k].trim() ? copy(C[k].trim(), ta, "a NEW Gemini chat") : K.toast("Write your prompt first.")}, "📋 Copy"), el("a", {class:"btn sm alt", href:GEM, target:"_blank", rel:"noopener", style:"text-decoration:none"}, "↗ Open Gemini")), stars);
+  }));
+  const all = C.sa && C.sb && C.sc; $("#cmp").hidden = !all;
+  if (all){ $("#cmpBars").replaceChildren(...TRI.map(([k, n, , cls]) => el("div", {class:"cbar"}, el("span", null, n), el("i", null, el("b", {class:{tA:"bad", tB:"mid", tC:"pro"}[cls], style:"width:" + C["s" + k] * 20 + "%"})), el("em", null, "★".repeat(C["s" + k])))));
+    $("#l5").hidden = false; done(3); }
 }
-function ticks(){ if (me().team) L1.tick(0); if (B.place && B.must.length) L1.tick(1); if (Object.values(dmap).filter(k => (D[k] || "").trim()).length >= 4) L1.tick(5); if ((D.mine || "").trim().length > 5) L1.tick(6); }
-document.addEventListener("input", ticks);
-function all(){ loadRecipe(); briefUI.draw(); drawBrief(); drawCard(); ticks(); }
-picker($("#proj"), all);
-all();
+$("#cmpWhy").value = C.why; $("#cmpWhy").addEventListener("input", () => { C.why = $("#cmpWhy").value; saveC(); });
+drawTri();
+
 K.start();
 })();
 </script>
