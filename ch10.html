@@ -462,7 +462,7 @@ img.fprev{background:var(--paper)}
   <p class="ttl" style="margin-top:20px">Step 2 · Check 3 facts from Gemini’s answer, like a detective</p>
   <div class="card howto">
     <span class="tag">For each fact, 4 small steps</span>
-    <ol class="how4"><li><b>Copy</b> one fact from Gemini’s answer.</li><li><b>Open</b> a reliable source (list above) and look for it.</li><li><b>Decide:</b> ✓ the source says the same · ✗ the source says something different · ? you can’t find it.</li><li><b>Write</b> what the source says, in a few words.</li></ol>
+    <ol class="how4"><li><b>Copy</b> one fact from Gemini’s answer: Gemini numbers them 1, 2, 3. Fact 1 goes in box 1, fact 2 in box 2, fact 3 in box 3.</li><li><b>Open</b> a reliable source (list above) and look for it.</li><li><b>Decide:</b> ✓ the source says the same · ✗ the source says something different · ? you can’t find it.</li><li><b>Write</b> what the source says, in a few words.</li></ol>
     <div class="exr" style="border-left-color:var(--green)"><span class="tag">Example, done for you</span>
       <p style="font-weight:400;font-size:16px;margin:6px 0 0"><b>Fact from Gemini:</b> “Mars has two small moons.”<br><b>My source:</b> NASA Space Place<br><b>Verdict:</b> ✓ Verified<br><b>The source says:</b> Mars has two moons, called Phobos and Deimos.</p></div>
   </div>
@@ -861,7 +861,7 @@ sortGame($("#g3"), [
 const TOP = ["Mars", "the Cedars of Lebanon", "the human heart", "the Mediterranean Sea", "octopuses", "the Olympic Games"];
 const R = Object.assign({topic:"Mars", rows:[{}, {}, {}]}, store.get("report") || {});
 const saveR = () => store.set("report", R);
-const pr = () => "Give me 3 short facts about " + R.topic + " for a Grade 7 student. Include at least one number.";
+const pr = () => "Give me 3 short facts about " + R.topic + " for a Grade 7 student, numbered 1, 2 and 3. Include at least one number.";
 function drawTopics(){ $("#topics").replaceChildren(...TOP.map(t => el("button", {class:"chip" + (R.topic === t ? " on" : ""), type:"button", "aria-pressed":String(R.topic === t), onclick:() => { R.topic = t; saveR(); drawTopics(); }}, t))); $("#detP").textContent = "“" + pr() + "”"; }
 $("#detCopy").onclick = () => copy(pr(), $("#detP"), "a new Gemini chat");
 drawTopics();
@@ -869,7 +869,7 @@ function drawReport(){
   $("#report").replaceChildren(...R.rows.map((r, i) => {
     const inp = (k, ph) => { const x = el(k === "note" ? "textarea" : "input", Object.assign({placeholder:ph}, k === "note" ? {rows:"2"} : {type:"text"})); x.value = r[k] || ""; x.addEventListener("input", () => { r[k] = x.value; saveR(); badge(); }); return x; };
     return el("div", {class:"rrow"}, el("span", {class:"rn"}, "FACT " + (i + 1) + " OF 3"),
-      el("label", null, "① Fact from Gemini", inp("claim", "Copy one fact from Gemini’s answer")),
+      el("label", null, "① Fact number " + (i + 1) + " in Gemini’s answer", inp("claim", "Copy Gemini’s fact number " + (i + 1) + " here")),
       el("label", null, "② My source (where I checked)", inp("src", "e.g. Britannica Kids")), el("span", {class:"muted", style:"font-weight:700;font-size:15px"}, "③ My verdict"),
       el("div", {class:"verd"}, ...[["v", "✓ Verified"], ["x", "✗ Incorrect"], ["u", "? Unclear"]].map(([k, l]) => el("button", {class:k + (r.v === k ? " on" : ""), type:"button", onclick:() => { r.v = k; saveR(); drawReport(); }}, l))),
       el("label", null, "④ What does the source say?", inp("note", "The source says…")));
