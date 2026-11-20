@@ -1,7 +1,8 @@
 /* AI Creators · gates: a student cannot move past a mission until its piece of the project is done.
    Only for logged-in students (the teacher showing the course on the board is never blocked). */
 (function(){
-  const CH = +((location.pathname.match(/ch(\d)\.html/) || [])[1] || 0);
+  const CH = +((location.pathname.match(/ch(\d+)\.html/) || [])[1] || 0);
+  const DN = n => ({1:1, 2:2, 3:3, 10:4, 4:5, 5:6, 11:7, 12:8, 13:9, 14:10, 15:11, 16:12, 8:13, 9:14})[n] || n; /* file number → chapter number (AI Explorers, 14 chapters) */
   /* after:n = a student cannot go past segment n until "need" is done */
   const RULES = {
     4:[{after:3, need:["story"]}],
@@ -21,13 +22,13 @@
     if (need.includes("card")){ const c = raw("ch3-card") || {}; const m = [!c.name && "a name", !(c.i1 && c.i2 && c.i3) && "3 big ideas", !(c.day || "").trim() && "a day in it", !(c.mine || "").trim() && "your own idea"].filter(Boolean);
       if (m.length) out.push({kind:"text", ch:3, text:"Your design card (Chapter 3) needs " + m.join(", ") + ".", href:"ch3.html#seg-3"}); }
     if (need.includes("story")){ const s = raw("ch4-story") || {}, c = raw("ch4-char") || {}; const m = [!c.name && "your character's name", !(s.title || "").trim() && "a title", words(s.text) < 40 && "the story itself (at least 40 words)"].filter(Boolean);
-      if (m.length) out.push({kind:"text", ch:4, text:"Your story (Chapter 4) needs " + m.join(", ") + ".", href:"ch4.html#seg-" + (c.name ? 3 : 2)}); }
+      if (m.length) out.push({kind:"text", ch:4, text:"Your story (Chapter " + DN(4) + ") needs " + m.join(", ") + ".", href:"ch4.html#seg-" + (c.name ? 3 : 2)}); }
     const fileNeed = need.filter(n => ["pics", "page"].includes(n));
     if (fileNeed.length && filesOn()){
       let fs = []; try { fs = await window.F.list(true); } catch(e){ return out; }
       const has = s => fs.some(f => f.slot === s);
-      if (fileNeed.includes("pics")){ const m = PICK().filter(k => !has(k)); if (m.length) out.push({kind:"file", ch:5, text:"Pictures not saved yet (Chapter 5): " + m.map(LABEL).join(", ") + "."}); }
-      if (fileNeed.includes("page") && !has("page")) out.push({kind:"file", ch:8, text:CH === 8 ? "Your website is not published yet. Press 🌐 Publish my website first." : "Your website is not published yet (Chapter 6)."});
+      if (fileNeed.includes("pics")){ const m = PICK().filter(k => !has(k)); if (m.length) out.push({kind:"file", ch:5, text:"Pictures not saved yet (Chapter " + DN(5) + "): " + m.map(LABEL).join(", ") + "."}); }
+      if (fileNeed.includes("page") && !has("page")) out.push({kind:"file", ch:8, text:CH === 8 ? "Your website is not published yet. Press 🌐 Publish my website first." : "Your website is not published yet (Chapter " + DN(8) + ")."});
     }
     return out;
   }
@@ -75,7 +76,7 @@
     const again = document.createElement("button"); again.className = "btn"; again.type = "button"; again.textContent = "Check again";
     again.onclick = async () => { const mm = await missing([...new Set(RULES.filter(r => target >= r.after).flatMap(r => r.need))]); if (!mm.length){ dlg.close(); pass = true; try { redo(); } finally { pass = false; } } else show(mm, target, redo); };
     act.append(again);
-    links.forEach(x => { const a = document.createElement("a"); a.className = "btn alt"; a.href = x.href; a.textContent = "Open Chapter " + (x.ch >= 8 ? x.ch - 2 : x.ch); act.append(a); });
+    links.forEach(x => { const a = document.createElement("a"); a.className = "btn alt"; a.href = x.href; a.textContent = "Open Chapter " + DN(x.ch); act.append(a); });
     const stay = document.createElement("button"); stay.className = "btn alt"; stay.type = "button"; stay.textContent = "Stay here"; stay.onclick = () => dlg.close(); act.append(stay);
     box.append(act); dlg.append(box);
     if (!dlg.open) dlg.showModal();

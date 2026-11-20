@@ -232,13 +232,14 @@ const ERR = c => ({wrong_login:"Wrong username or password. Check with your teac
 
 /* ---------- course data in this browser ---------- */
 const CH = [
-  {n:1, t:"Meet AI", s:"1", f:"ch1.html", learn:"What AI is, and how it learns from what we teach it", lists:[], extra: d => d["meet-ai-idea"] ? 1 : 0, of:1},
-  {n:2, t:"AI Training", s:"2–3", f:"ch2.html", learn:"Train a real AI, test it with a friend, get your AI Trainer certificate", lists:[["ch2-list1",6]]},
-  {n:3, t:"Become a Prompt Engineer", s:"4", f:"ch3.html", learn:"Give AI smart instructions: role, task, context, output", lists:[["ch3-prog",4]]},
-  {n:4, t:"AI Storytelling", s:"5", f:"ch4.html", learn:"A story from the future, with your own character", lists:[["ch4-list1",6],["ch4-hunt",5]]},
-  {n:5, t:"AI Images", s:"6", f:"ch5.html", learn:"3 to 5 pictures you choose, saved in your folder", lists:[["ch5-list1",8]]},
-  {n:6, t:"Website Building", s:"7–8", f:"ch8.html", learn:"Your own website: about you, your dream job or your football team", lists:[["ch8-list1",6],["ch8-better",3],["ch8-launch",7]]},
-  {n:7, t:"The Exhibition", s:"9–10", f:"ch9.html", learn:"Your pitch, and both websites go live", lists:[["ch9-rehearse",4]], extra: d => (pj(d["ch9-pitch"]) && Object.values(pj(d["ch9-pitch"])).filter(v => (v || "").trim()).length >= 3 ? 1 : 0) + (d["ch9-job"] ? 1 : 0), of:2}
+  {n:1, t:"What Is AI?", s:"1", f:"ch1.html", learn:"What AI is, and how it learns from what we teach it", lists:[], extra: d => d["meet-ai-idea"] ? 1 : 0, of:1},
+  {n:2, t:"How AI Learns", s:"2", f:"ch2.html", learn:"Train a real AI, test it with a friend, get your AI Trainer certificate", lists:[["ch2-list1",6]]},
+  {n:3, t:"Become a Prompt Engineer", s:"3", f:"ch3.html", learn:"Give AI smart instructions: role, task, context, output", lists:[["ch3-prog",4]]},
+  {n:4, t:"AI Can Be Wrong", s:"4", f:"ch10.html", learn:"Fact-check AI answers like a detective", lists:[["ch10-prog",4]]},
+  {n:5, t:"AI Storytelling", s:"5", f:"ch4.html", learn:"A story from the future, with your own character", lists:[["ch4-list1",6],["ch4-hunt",5]]},
+  {n:6, t:"AI Images", s:"6", f:"ch5.html", learn:"3 to 5 pictures you choose, saved in your folder", lists:[["ch5-list1",8]]},
+  {n:13, t:"Website Building", s:"13", f:"ch8.html", learn:"Your own website: about you, your dream job or your football team", lists:[["ch8-list1",6],["ch8-better",3],["ch8-launch",7]]},
+  {n:14, t:"Final Showcase", s:"14", f:"ch9.html", learn:"Your pitch, and both websites go live", lists:[["ch9-rehearse",4]], extra: d => (pj(d["ch9-pitch"]) && Object.values(pj(d["ch9-pitch"])).filter(v => (v || "").trim()).length >= 3 ? 1 : 0) + (d["ch9-job"] ? 1 : 0), of:2}
 ];
 function pj(v){ if (v == null) return null; if (typeof v !== "string") return v; try { return JSON.parse(v); } catch(e){ return v; } }
 function progress(d){ return CH.map(c => { let done = 0, total = c.of || 0; c.lists.forEach(([k, n]) => { total += n; const a = pj(d[k]); if (Array.isArray(a)) done += a.filter(Boolean).length; }); if (c.extra) done += c.extra(d); return total ? Math.min(100, Math.round(done / total * 100)) : 0; }); }
@@ -284,8 +285,8 @@ function renderHome(){
   const lastI = pr.reduce((a, v, i) => v > 0 ? i : a, -1), next = lastI < 0 ? CH[0] : pr[lastI] < 100 ? CH[lastI] : CH[Math.min(lastI + 1, CH.length - 1)];
   $("#app").replaceChildren(
     el("section", {class:"welcome"},
-      el("div", null, el("span", {class:"tag"}, "10 sessions · 7 chapters"), el("h1", null, ACC ? "Hi " + ACC.name + "!" : "AI Creators"),
-        el("p", {class:"lead"}, seg ? "Your project: " + seg + ". Every chapter adds one piece to your page of the team website." : "Two teams, two websites: School 2040 and Planet 2050. Pick your team and your part in Chapter 1.")),
+      el("div", null, el("span", {class:"tag"}, "14 weeks · 14 chapters"), el("h1", null, ACC ? "Hi " + ACC.name + "!" : "AI Creators"),
+        el("p", {class:"lead"}, seg ? "Your project: " + seg + ". Every chapter adds one piece to your page of the team website." : "14 chapters to understand, use and question AI, and to build something real.")),
       el("div", {class:"card total"}, el("span", {class:"tag"}, "Your course"), el("b", null, all + "%"), el("div", {class:"bar"}, el("i", {style:"width:" + all + "%"})),
         el("a", {class:"btn", href:next.f}, (all === 100 ? "All done! Review Chapter " : all ? "Continue: Chapter " : "Start: Chapter ") + next.n))),
     el("div", {class:"chapters"}, ...CH.map((c, i) => el("a", {class:"ch" + (pr[i] === 100 ? " done" : ""), href:c.f},

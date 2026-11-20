@@ -1,8 +1,8 @@
 /* AI Creators · "Today's mission": the same clear brief at the top of every chapter,
    a reminder at the top of every mission, and the project strip (what you have, what you make today). */
 (function(){
-  const CH = +((location.pathname.match(/ch(\d)\.html/) || [])[1] || 0);
-  const DN = n => n >= 8 ? n - 2 : n; /* the voice and video chapters were removed: file ch8 is Chapter 6, ch9 is Chapter 7 */
+  const CH = +((location.pathname.match(/ch(\d+)\.html/) || [])[1] || 0);
+  const DN = n => ({1:1, 2:2, 3:3, 10:4, 4:5, 5:6, 11:7, 12:8, 13:9, 14:10, 15:11, 16:12, 8:13, 9:14})[n] || n; /* file number → chapter number (AI Explorers, 14 chapters) */
   const B = {
     1:{goal:"Discover what AI really is, and choose your part of the project.",
        make:[["🧭", "Your team and your part"], ["💡", "Your first idea for it"]],
