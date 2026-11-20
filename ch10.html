@@ -355,6 +355,10 @@ img.fprev{background:var(--paper)}
 .howto{display:grid;gap:10px;margin-bottom:12px}
 .how4{margin:0;padding-left:24px;display:grid;gap:4px;font-size:17px}
 .stp2{margin:4px 0 0;font-weight:700;font-size:16px}.stp2 b{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:13px;margin-right:4px}
+.srcbook{border:2px solid var(--green);background:var(--green-soft);border-radius:16px;padding:16px 18px;align-self:start;position:sticky;top:84px}
+.srcbook p{margin:8px 0 0;font-size:19px;line-height:1.6}
+.case .claim{cursor:default}
+@media (max-width:900px){.srcbook{position:static}}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -440,32 +444,10 @@ img.fprev{background:var(--paper)}
 
 <!-- 5 create -->
 <section class="seg" id="seg-5" data-min="20" data-title="Mission: AI Detective" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: AI Detective Report</h2><p>20 minutes · check 3 real AI claims</p></div></div>
-  <div class="grid g2">
-    <div class="card">
-      <span class="tag">Step 1 · Ask Gemini</span>
-      <p style="margin:6px 0 8px">Choose a topic. Copy the prompt, paste it in a new Gemini chat.</p>
-      <div class="chips" id="topics"></div>
-      <p class="prompt sm" id="detP" style="margin:12px 0"></p>
-      <div class="row"><button class="btn sm" id="detCopy" type="button">📋 Copy the prompt</button><a class="btn sm alt" href="https://gemini.google.com/app" target="_blank" rel="noopener" style="text-decoration:none">↗ Open Gemini</a></div>
-    </div>
-    <div class="card">
-      <span class="tag">Reliable sources for kids</span>
-      <ul class="srclist">
-        <li><a href="https://spaceplace.nasa.gov/" target="_blank" rel="noopener">NASA Space Place</a> · space and Earth</li>
-        <li><a href="https://kids.britannica.com/" target="_blank" rel="noopener">Britannica Kids</a> · everything</li>
-        <li><a href="https://kids.nationalgeographic.com/" target="_blank" rel="noopener">National Geographic Kids</a> · animals, nature, places</li>
-        <li><a href="https://www.who.int/" target="_blank" rel="noopener">World Health Organization</a> · health</li>
-      </ul>
-      <p class="muted" style="margin:10px 0 0;font-size:15px">Never type your name, address or photos into an AI tool.</p>
-    </div>
-  </div>
-  <p class="ttl" style="margin-top:20px">Step 2 · Check 3 facts from Gemini’s answer, like a detective</p>
-  <div class="card howto">
-    <span class="tag">How? 3 taps for each fact</span>
-    <ol class="how4"><li><b>Copy</b> the fact from Gemini (fact 1 in box 1, fact 2 in box 2, fact 3 in box 3).</li><li><b>Tap a website</b> (NASA, Britannica Kids…). It opens and searches your fact there.</li><li><b>Compare</b>: does the website say the same thing as Gemini? Tap ✓, ✗ or ?.</li></ol>
-  </div>
-  <div class="report" id="report"></div>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: AI Detective</h2><p>20 minutes · 3 cases, 3 hidden mistakes</p></div></div>
+  <p class="big">In each case, an AI answered a question. One sentence is wrong. Compare every sentence with the source book, and catch the mistake.</p>
+  <div class="row" id="caseTabs" style="margin-bottom:12px"></div>
+  <div class="case" id="case"></div>
   <div id="detBadge"></div>
 </section>
 
@@ -856,35 +838,38 @@ sortGame($("#g3"), [
   ["An AI gives you a quote from a famous person, with no link. What do you do?", "b", "AIs sometimes invent quotes. Check it in a reliable source first."]
 ], [["a", "📤 Share it"], ["b", "🔍 Search for the original"], ["c", "👍 Believe it, it has details"]], null, () => done(1));
 
-/* ---------- 5 AI detective report ---------- */
-const TOP = ["Mars", "the Cedars of Lebanon", "the human heart", "the Mediterranean Sea", "octopuses", "the Olympic Games"];
-const R = Object.assign({topic:"Mars", rows:[{}, {}, {}]}, store.get("report") || {});
-const saveR = () => store.set("report", R);
-const pr = () => "Give me 3 short facts about " + R.topic + " for a Grade 7 student, numbered 1, 2 and 3. Include at least one number.";
-function drawTopics(){ $("#topics").replaceChildren(...TOP.map(t => el("button", {class:"chip" + (R.topic === t ? " on" : ""), type:"button", "aria-pressed":String(R.topic === t), onclick:() => { R.topic = t; saveR(); drawTopics(); }}, t))); $("#detP").textContent = "“" + pr() + "”"; }
-$("#detCopy").onclick = () => copy(pr(), $("#detP"), "a new Gemini chat");
-drawTopics();
-const SITES = [["NASA Space Place", "spaceplace.nasa.gov"], ["Britannica Kids", "kids.britannica.com"], ["Nat Geo Kids", "kids.nationalgeographic.com"], ["WHO", "who.int"]];
-function drawReport(){
-  $("#report").replaceChildren(...R.rows.map((r, i) => {
-    const x = el("input", {type:"text", placeholder:"Copy Gemini’s fact number " + (i + 1) + " here"}); x.value = r.claim || ""; x.addEventListener("input", () => { r.claim = x.value; saveR(); badge(); });
-    const step = (n, t) => el("p", {class:"stp2"}, el("b", null, n), " " + t);
-    return el("div", {class:"rrow"}, el("span", {class:"rn"}, "FACT " + (i + 1) + " OF 3"),
-      step("1", "Copy Gemini’s fact number " + (i + 1) + ":"), x,
-      step("2", "Choose a website and check the fact there:"),
-      el("div", {class:"verd"}, ...SITES.map(([n, d]) => el("button", {class:"v" + (r.src === n ? " on" : ""), type:"button", onclick:() => { if (!(r.claim || "").trim()){ K.toast("First copy the fact (step 1)."); return; } r.src = n; saveR(); drawReport(); window.open("https://www.google.com/search?q=" + encodeURIComponent(r.claim.slice(0, 120) + " site:" + d), "_blank", "noopener"); }}, "🔍 " + n))),
-      step("3", "Does the website say the same thing?"),
-      el("div", {class:"verd"}, ...[["v", "✓ Yes, the same"], ["x", "✗ No, something different"], ["u", "? I couldn’t find it"]].map(([k, l]) => el("button", {class:k + (r.v === k ? " on" : ""), type:"button", onclick:() => { if (!r.src){ K.toast("First check it on a website (step 2)."); return; } r.v = k; saveR(); drawReport(); }}, l))),
-      ...(r.v ? [el("p", {class:"fb", style:"margin:0;font-weight:700;color:" + (r.v === "v" ? "var(--green)" : r.v === "x" ? "var(--onair)" : "var(--gold)")}, r.v === "v" ? "✓ Verified: Gemini was right." : r.v === "x" ? "✗ Gemini made a mistake here! Good catch, detective." : "? Unclear: we can't be sure. Don't use this fact without checking more.")] : []));
-  }));
-  badge();
+/* ---------- 5 AI detective: 3 cases, compare with the source book ---------- */
+const CASES = [
+  {t:"🪐 Mars", q:"Tell me 4 facts about Mars.",
+   claims:[["Mars is called the Red Planet.", true], ["Mars has two small moons, Phobos and Deimos.", true], ["Mars is the closest planet to the Sun.", false], ["Mars has the biggest volcano in the solar system, Olympus Mons.", true]],
+   book:"Mars is the fourth planet from the Sun. It is called the Red Planet because of rusty iron in its dust. It has two small moons, Phobos and Deimos. Its volcano, Olympus Mons, is the biggest in the solar system. Mercury is the planet closest to the Sun."},
+  {t:"🇱🇧 Lebanon", q:"Tell me 4 facts about Lebanon.",
+   claims:[["Beirut is the capital of Lebanon.", true], ["A cedar tree is on the flag of Lebanon.", true], ["Lebanon is on the coast of the Red Sea.", false], ["The ancient city of Byblos is in Lebanon.", true]],
+   book:"Lebanon is a country on the eastern coast of the Mediterranean Sea. Its capital is Beirut. A green cedar tree is in the middle of its flag. Byblos, one of the oldest cities in the world, is in Lebanon."},
+  {t:"🫀 The human body", q:"Tell me 4 facts about the human body.",
+   claims:[["The heart pumps blood around the body.", true], ["An adult has 206 bones.", true], ["The brain stops working when we sleep.", false], ["The skin is the largest organ of the body.", true]],
+   book:"The heart pumps blood around the body. An adult skeleton has 206 bones. The skin is the body's largest organ. When we sleep, the brain stays active: it sorts our memories and keeps us breathing."}
+];
+const CS = store.get("cases") || CASES.map(() => ({}));
+let ci = 0;
+function drawCase(){
+  const c = CASES[ci], ans = CS[ci];
+  $("#caseTabs").replaceChildren(...CASES.map((x, k) => { const fin = Object.keys(CS[k]).length === 4; return el("button", {class:"btn sm" + (k === ci ? "" : " alt"), type:"button", onclick:() => { ci = k; drawCase(); }}, (fin ? "✓ " : "") + "Case " + (k + 1) + ": " + x.t); }));
+  const found = c.claims.every((_, k) => ans[k] != null), right = c.claims.filter(([, ok], k) => ans[k] === ok).length;
+  $("#case").replaceChildren(el("div", {class:"grid g2"},
+    el("div", {class:"claimbox"}, el("div", {class:"aihead"}, el("span", {class:"av"}, "🤖"), el("span", null, "AI answer to: “" + c.q + "”")),
+      ...c.claims.map(([t, ok], k) => { const a = ans[k];
+        return el("div", {class:"claim" + (a == null ? "" : a === ok ? " ok" : " no")}, el("span", null, (k + 1) + ". " + t),
+          el("div", {class:"verd", style:"margin-top:8px"}, ...[[true, "✓ Same as the book"], [false, "✗ Different"]].map(([v, l]) => el("button", {class:(v ? "v" : "x") + (a === v ? " on" : ""), type:"button", onclick:() => { ans[k] = v; store.set("cases", CS); drawCase(); badge(); }}, l))),
+          ...(a == null ? [] : [el("small", null, a === ok ? (ok ? "✓ Right: the book says the same." : "✓ Well caught! The book says something different. The AI was wrong.") : (ok ? "✗ Look again: the book says the same thing." : "✗ Look again: the book says something different!"))])); })),
+    el("div", {class:"srcbook"}, el("span", {class:"tag"}, "📖 The source book (checked by experts)"), el("p", null, c.book))),
+    ...(found ? [el("p", {class:"fb", style:"font-weight:700;font-size:18px;margin:12px 0 0;color:" + (right === 4 ? "var(--green)" : "var(--gold)")}, right === 4 ? "🕵️ Case solved! You caught the AI's mistake." + (ci < 2 ? " Go to case " + (ci + 2) + "." : "") : right + " of 4 right. Fix the red ones.")] : []));
 }
 function badge(){
-  const full = R.rows.every(r => (r.claim || "").trim() && r.src && r.v);
-  $("#detBadge").replaceChildren(...(full ? [el("div", {class:"badgewin"}, el("span", {class:"bi"}, "🕵️"), el("div", null, el("b", null, "Badge: AI Detective"), el("span", null, "You checked 3 AI claims with real sources. Saved in your portfolio.")))] : []));
-  if (full){ done(2); store.set("badge", "AI Detective"); }
+  const all = CASES.every((c, k) => c.claims.every(([, ok], j) => CS[k][j] === ok));
+  if (all){ $("#detBadge").replaceChildren(el("div", {class:"badgewin"}, el("span", {class:"bi"}, "🕵️"), el("div", null, el("b", null, "Badge: AI Detective"), el("span", null, "You caught 3 AI mistakes by checking a reliable source. Saved in your portfolio.")))); done(2); store.set("badge", "AI Detective"); } else $("#detBadge").replaceChildren();
 }
-drawReport();
+drawCase(); badge();
 
 /* ---------- 6 quiz + reflect ---------- */
 const QZ = [
