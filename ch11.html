@@ -492,7 +492,7 @@ img.fprev{background:var(--paper)}
 <!-- 4 brain -->
 <section class="seg" id="seg-4" data-min="10" data-title="Brain challenge" hidden>
   <div class="lower"><div class="no">04</div><div class="name"><h2>Brain challenge</h2><p>10 minutes · 3 games</p></div></div>
-  <div class="card"><span class="tag">Game 1 · Order the scenes</span><div id="g1" style="margin-top:8px"></div></div>
+  <div class="card"><span class="tag">Game 1 · Order the scenes</span><p style="margin:6px 0 10px;font-size:18px">A student made a 30-second video about saving water, but the 4 scenes got mixed up! Put them back in the right order.</p><div id="g1"></div></div>
   <div class="card" style="margin-top:14px"><span class="tag">Game 2 · Choose the right tool</span><div class="sortg" id="g2" style="margin-top:10px"></div></div>
   <div class="card" style="margin-top:14px"><span class="tag">Game 3 · Safety check</span><div class="sortg" id="g3" style="margin-top:10px"></div></div>
 </section>
@@ -1000,7 +1000,7 @@ $("#sendAI").onclick = () => { vStop(); $("#sendAI").disabled = true; $("#demoPl
 $("#demoPlay").onclick = () => videoPlay($("#demoStage"), DEMOV, $("#demoPlay"));
 
 /* 4 brain */
-X.order($("#g1"), ["Introduce the topic or the problem", "Explain why it matters", "Show two solutions", "End with a call to action"]);
+X.order($("#g1"), ["🎯 The problem: “We waste water every day.”", "❗ Why it matters: “Water can run out.”", "💡 Two solutions: “Turn off the tap. Catch the shower water.”", "📣 Call to action: “Start today!”"], null, ["A video starts by showing the PROBLEM. Which card shows the problem?", "After the problem, say WHY it is important.", "Now give the SOLUTIONS.", ""]);
 X.sort($("#g2"), [
   ["You recorded an interview and need the words written down.", "stt", "Speech-to-text writes down what people said."],
   ["A blind classmate needs to hear your poster's text.", "tts", "Text-to-speech reads it aloud."],
