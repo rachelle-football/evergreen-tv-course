@@ -412,7 +412,7 @@ img.fprev{background:var(--paper)}
     <div class="row" style="margin-top:10px;align-items:center">
       <label class="kv">Speed <input type="range" id="ttsRate" min="0.6" max="1.6" step="0.1" value="1"></label>
       <label class="kv">Tone <input type="range" id="ttsPitch" min="0.5" max="1.8" step="0.1" value="1"></label>
-      <button class="btn sm" id="ttsGo" type="button">🔊 Read it aloud</button>
+      <button class="btn sm" id="ttsGo" type="button">🔊 Read it aloud</button><button class="btn sm alt" id="ttsStop" type="button">⏹ Stop</button>
     </div>
     <p class="muted" style="margin:8px 0 0;font-size:15px">Change the speed and tone. Same words, different feeling. Nothing is recorded: the voice comes from your computer.</p>
   </div>
@@ -424,7 +424,7 @@ img.fprev{background:var(--paper)}
 <!-- 3 watch -->
 <section class="seg" id="seg-3" data-min="8" data-title="Watch a storyboard" hidden>
   <div class="lower"><div class="no">03</div><div class="name"><h2>Watch a storyboard come alive</h2><p>8 minutes · “One Small Way to Save Water”</p></div></div>
-  <p class="big">Every good short video has 4 scenes: the problem, idea 1, idea 2, and a call to action. Press play and watch.</p>
+  <p class="big">Every good short video has 4 scenes: the problem, idea 1, idea 2, and a call to action. Press play: you hear the narrator and see which scene is on screen, like a real video.</p>
   <div class="sboard" id="demoBoard"></div>
   <div class="row" style="margin-top:12px"><button class="btn" id="demoPlay" type="button">▶ Play the narration</button></div>
   <div class="card" style="margin-top:14px"><span class="tag">The idea</span><p style="margin:6px 0 0;font-size:18px">Before making a video, you <b>plan</b> it on paper: a storyboard. For each scene you write 2 things: <b>👁 what we see</b> and <b>🎙 what the narrator says</b>. 4 short scenes, about 70 words: that's 30 seconds. In your mission, you plan your own.</p></div>
@@ -845,6 +845,7 @@ $("#hookQ").replaceChildren(...[["A real teacher, recorded", false], ["A compute
 
 /* 2 learn */
 $("#ttsGo").onclick = () => say($("#ttsText").value, {rate:+$("#ttsRate").value, pitch:+$("#ttsPitch").value});
+$("#ttsStop").onclick = () => { try { speechSynthesis.cancel(); } catch(e){} };
 X.vocab($("#vocab"), [["Text-to-speech", "The computer reads written text aloud."], ["Speech-to-text", "The computer writes down what someone says."], ["Narration", "The voice that tells the story in a video."], ["Storyboard", "A plan of the video, scene by scene, with pictures and words."], ["Synthetic media", "Voices, pictures or videos made by a computer."], ["Consent", "Asking for permission, and getting a clear yes."]]);
 
 /* 3 demo storyboard */
@@ -854,12 +855,19 @@ function board(box, scenes, edit){
     el("p", {class:"see"}, "👁 " + see), el("p", {class:"nar"}, "🎙 “" + say2 + "”"))));
 }
 board($("#demoBoard"), DEMO);
-function playScenes(box, scenes){
+/* play the scenes one by one; the same button becomes ⏹ Stop while it plays */
+let playing = null;
+function stopAll(){ try { speechSynthesis.cancel(); } catch(e){} if (playing){ playing.cards.forEach(c => c.classList.remove("live")); playing.btn.textContent = playing.label; playing = null; } }
+function playScenes(box, scenes, btn){
+  if (playing && playing.btn === btn){ stopAll(); return; }
+  stopAll();
   const cards = [...box.querySelectorAll(".scene")]; let i = 0;
-  const next = () => { cards.forEach(c => c.classList.remove("live")); if (i >= scenes.length) return; cards[i].classList.add("live"); const t = scenes[i][3]; i++; if (!X.speak(t, {onend:next})){ K.toast("Your browser can't read aloud here."); cards.forEach(c => c.classList.remove("live")); } };
+  playing = {cards, btn, label:btn.textContent}; btn.textContent = "⏹ Stop"; const me = playing;
+  const next = () => { if (playing !== me) return; cards.forEach(c => c.classList.remove("live")); if (i >= scenes.length){ stopAll(); return; } cards[i].classList.add("live"); const t = scenes[i][3]; i++; if (!X.speak(t, {onend:next})){ K.toast("Your browser can't read aloud here."); stopAll(); } };
   next();
 }
-$("#demoPlay").onclick = () => { playScenes($("#demoBoard"), DEMO); done(0); };
+addEventListener("hashchange", stopAll);
+$("#demoPlay").onclick = () => { playScenes($("#demoBoard"), DEMO, $("#demoPlay")); done(0); };
 
 /* 4 brain */
 X.order($("#g1"), ["Introduce the topic or the problem", "Explain why it matters", "Show two solutions", "End with a call to action"]);
@@ -890,7 +898,7 @@ $("#myBoard").replaceChildren(...NAMES.map(([ic, name, ex1, ex2], i) => { const 
   see.oninput = () => { V.s[i].see = see.value; saveV(); count(); }; nar.oninput = () => { V.s[i].say = nar.value; saveV(); count(); };
   return el("div", {class:"scene"}, el("div", {class:"sic"}, ic), el("span", {class:"tag"}, "Scene " + (i + 1) + " · " + name), el("label", {class:"ff"}, el("b", null, "👁 What we see"), see), el("label", {class:"ff"}, el("b", null, "🎙 Narration"), nar)); }));
 count();
-$("#myPlay").onclick = () => script() ? playScenes($("#myBoard"), V.s.map(x => ["", "", x.see, x.say || ""])) : K.toast("Write the narration first.");
+$("#myPlay").onclick = () => script() ? playScenes($("#myBoard"), V.s.map(x => ["", "", x.see, x.say || ""]), $("#myPlay")) : K.toast("Write the narration first.");
 $("#myCopy").onclick = () => copy("30-second explainer: " + V.topic + "\n\n" + V.s.map((x, i) => "Scene " + (i + 1) + " (" + NAMES[i][1] + ")\nWe see: " + (x.see || "") + "\nNarrator: " + (x.say || "")).join("\n\n"), null, "your document");
 
 /* 6 reflect */
