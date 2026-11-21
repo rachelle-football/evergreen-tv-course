@@ -392,6 +392,7 @@ img.fprev{background:var(--paper)}
 .icpick{display:flex;flex-wrap:wrap;gap:4px}
 .icpick button{font-size:20px;line-height:1;padding:4px 6px;border-radius:8px;border:2px solid transparent;background:var(--paper);cursor:pointer}
 .icpick button.on{border-color:var(--green);background:var(--green-soft)}
+.vart.shrink{animation:vshrink 2.5s ease-in both}@keyframes vshrink{0%{transform:translate(-50%,-50%) scale(1.4)}100%{transform:translate(-50%,-50%) scale(.4);opacity:.3}}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -899,39 +900,55 @@ function playScenes(box, scenes, btn){
   next();
 }
 addEventListener("hashchange", stopAll);
-/* ---------- a tiny video player: scenes come alive with moving pictures, subtitles and the narrator's voice ---------- */
+/* ---------- a tiny video player. Each scene has "beats": one sentence + its own pictures.
+   Every sentence is spoken on its own, and its pictures appear exactly when the voice starts it,
+   so the pictures, the subtitles and the voice always match. ---------- */
 const BGS = ["linear-gradient(160deg,#5B7A99,#2E4A66)", "linear-gradient(160deg,#7FB3D5,#2F6F99)", "linear-gradient(160deg,#A8D5BA,#3F8A5C)", "linear-gradient(160deg,#FFD27F,#E8742A)"];
+const est = t => Math.max(2.2, X.words(t) / 2.5);   /* seconds, at normal speaking speed */
 let vp = null;
-function vStop(){ try { speechSynthesis.cancel(); } catch(e){} if (vp){ vp.alive = false; clearTimeout(vp.t); cancelAnimationFrame(vp.raf); vp.btn.textContent = vp.label; vp.stage.classList.remove("on"); vp = null; } }
+function vStop(){ try { speechSynthesis.cancel(); } catch(e){} if (vp){ vp.alive = false; clearTimeout(vp.t); clearTimeout(vp.w); cancelAnimationFrame(vp.raf); vp.btn.textContent = vp.label; vp = null; } }
 function videoPlay(stage, scenes, btn){
   if (vp && vp.btn === btn){ vStop(); return; }
   vStop();
-  const total = scenes.reduce((s, x) => s + Math.max(4, X.words(x.sub) / 2.4), 0);
-  const me = vp = {alive:true, stage, btn, label:btn.textContent, t:0, raf:0}; btn.textContent = "⏹ Stop"; stage.classList.add("on");
+  const flat = []; scenes.forEach((sc, si) => sc.beats.forEach((b, bi) => flat.push({sc, si, b, first:bi === 0})));
+  const total = flat.reduce((s, x) => s + est(x.b.t) + .35, 0);
+  const me = vp = {alive:true, btn, label:btn.textContent, t:0, w:0, raf:0}; btn.textContent = "⏹ Stop";
   const start = performance.now(), time = el("span", {class:"vtime"}), prog = el("i");
   const fmt = s => "0:" + String(Math.min(59, Math.round(s))).padStart(2, "0");
-  const tick = () => { if (!me.alive) return; const e = (performance.now() - start) / 1000; time.textContent = fmt(e) + " / " + fmt(total); prog.style.width = Math.min(100, e / total * 100) + "%"; me.raf = requestAnimationFrame(tick); };
-  let i = 0;
+  const tick = () => { if (!me.alive) return; const e = (performance.now() - start) / 1000; time.textContent = fmt(Math.min(e, total)) + " / " + fmt(total); prog.style.width = Math.min(100, e / total * 100) + "%"; me.raf = requestAnimationFrame(tick); };
+  let i = 0, bg = null;
   const show = () => {
-    if (!me.alive) return; if (i >= scenes.length){ stage.querySelector(".vsub").textContent = "🎬 The end"; setTimeout(() => { if (me.alive) vStop(); }, 1500); return; }
-    const sc = scenes[i];
-    stage.replaceChildren(el("div", {class:"vbg", style:"background:" + (sc.bg || BGS[i % 4])}),
-      ...sc.art.map(([ic, cls, st]) => el("span", {class:"vart " + (cls || ""), style:st || ""}, ic)),
+    if (!me.alive) return;
+    if (i >= flat.length){ const s = stage.querySelector(".vsub"); if (s) s.textContent = "🎬 The end"; me.t = setTimeout(() => { if (me.alive) vStop(); }, 1500); return; }
+    const {sc, si, b} = flat[i]; i++;
+    stage.replaceChildren(el("div", {class:"vbg", style:"background:" + (sc.bg || BGS[si % 4])}),
+      ...b.art.map(([ic, cls, st]) => el("span", {class:"vart " + (cls || ""), style:st || ""}, ic)),
       ...(sc.cap ? [el("span", {class:"vcap"}, "👁 " + sc.cap)] : []),
-      el("span", {class:"vchip"}, "Scene " + (i + 1) + " · " + sc.title), time, el("p", {class:"vsub"}, sc.sub), el("div", {class:"vprog"}, prog));
-    i++;
-    const next = () => { if (me.alive) show(); };
-    if (!X.speak(sc.sub, {onend:() => { me.t = setTimeout(next, 350); }})) me.t = setTimeout(next, Math.max(4, X.words(sc.sub) / 2.4) * 1000);
+      el("span", {class:"vchip"}, "Scene " + (si + 1) + " · " + sc.title), time, el("p", {class:"vsub"}, b.t), el("div", {class:"vprog"}, prog));
+    let moved = false; const next = () => { if (moved || !me.alive) return; moved = true; clearTimeout(me.w); me.t = setTimeout(show, 350); };
+    me.w = setTimeout(next, (est(b.t) * 2 + 2) * 1000);          /* safety: never get stuck if the voice is silent */
+    if (!X.speak(b.t, {onend:next})){ clearTimeout(me.w); me.w = setTimeout(next, est(b.t) * 1000); }
   };
   tick(); show();
 }
 addEventListener("hashchange", vStop);
+/* split a narration into sentences (one beat each) */
+const sentences = t => (String(t || "").match(/[^.!?]+[.!?]*/g) || []).map(x => x.trim()).filter(Boolean);
+
 
 const DEMOV = [
-  {title:"The problem", sub:DEMO[0][3], art:[["🚿", "big2x", "left:50%;top:26%"], ["💧", "drop", "left:44%;top:40%"], ["💧", "drop", "left:50%;top:40%;animation-delay:.3s"], ["💧", "drop", "left:56%;top:40%;animation-delay:.6s"], ["💧", "drop", "left:47%;top:40%;animation-delay:.9s"], ["😟", "bob", "left:18%;top:62%"]]},
-  {title:"Idea 1", sub:DEMO[1][3], art:[["🧒", "bob big2x", "left:30%;top:48%"], ["🪥", "wig", "left:45%;top:44%"], ["🚰", "big2x", "left:68%;top:40%"], ["✋", "pop", "left:68%;top:62%;animation-delay:1.2s"], ["✅", "pop", "left:82%;top:24%;animation-delay:2s"]]},
-  {title:"Idea 2", sub:DEMO[2][3], art:[["🚿", "", "left:22%;top:30%"], ["💧", "drop", "left:22%;top:42%"], ["🪣", "big2x", "left:48%;top:52%"], ["🪴", "grow big2x", "left:76%;top:50%;animation-delay:1.5s"]]},
-  {title:"Call to action", sub:DEMO[3][3], art:[["🌍", "spin big3x", "left:50%;top:40%"], ["👧", "bob", "left:24%;top:66%"], ["🧒", "bob", "left:36%;top:68%;animation-delay:.2s"], ["👦", "bob", "left:64%;top:68%;animation-delay:.4s"], ["👩", "bob", "left:76%;top:66%;animation-delay:.6s"], ["Start today!", "pop txt", "left:50%;top:14%;animation-delay:1s"]]}
+  {title:"The problem", beats:[
+    {t:"Every day, we waste clean water without even noticing.", art:[["🚿", "big2x", "left:42%;top:24%"], ["💧", "drop", "left:39%;top:40%"], ["💧", "drop", "left:43%;top:40%;animation-delay:.4s"], ["💧", "drop", "left:46%;top:40%;animation-delay:.8s"], ["🧒", "big2x", "left:72%;top:52%"], ["📱", "wig", "left:80%;top:56%"]]},
+    {t:"Water is precious, and it can run out.", art:[["🏜️", "big3x", "left:50%;top:44%"], ["💧", "shrink", "left:50%;top:22%"]]}]},
+  {title:"Idea 1", beats:[
+    {t:"Idea one: turn off the tap while you brush your teeth.", art:[["🧒", "big2x", "left:28%;top:48%"], ["🪥", "wig", "left:42%;top:46%"], ["🚰", "big2x", "left:68%;top:34%"], ["💧", "drop", "left:66%;top:50%"], ["✋", "pop", "left:78%;top:30%;animation-delay:1.4s"]]},
+    {t:"It is easy, and it saves a lot of water.", art:[["🚰", "big2x", "left:40%;top:40%"], ["✅", "pop big2x", "left:62%;top:40%"], ["💧", "pop", "left:30%;top:68%;animation-delay:.3s"], ["💧", "pop", "left:40%;top:70%;animation-delay:.5s"], ["💧", "pop", "left:50%;top:68%;animation-delay:.7s"]]}]},
+  {title:"Idea 2", beats:[
+    {t:"Idea two: catch the cold water before your shower in a bucket,", art:[["🚿", "big2x", "left:46%;top:22%"], ["💧", "drop", "left:44%;top:36%"], ["💧", "drop", "left:48%;top:36%;animation-delay:.5s"], ["🪣", "big2x", "left:46%;top:62%"]]},
+    {t:"and use it to water the plants.", art:[["🪣", "big2x", "left:30%;top:50%"], ["💧", "drop", "left:52%;top:40%"], ["🪴", "grow big3x", "left:68%;top:50%"]]}]},
+  {title:"Call to action", beats:[
+    {t:"One small action, every day, by every student.", art:[["👧", "bob big2x", "left:22%;top:52%"], ["🧒", "bob big2x", "left:40%;top:54%;animation-delay:.2s"], ["👦", "bob big2x", "left:60%;top:54%;animation-delay:.4s"], ["👩", "bob big2x", "left:78%;top:52%;animation-delay:.6s"]]},
+    {t:"Together, we can save our water. Start today!", art:[["🌍", "spin big3x", "left:50%;top:46%"], ["Start today!", "pop txt", "left:50%;top:14%;animation-delay:.6s"]]}]}
 ];
 $("#demoPlay").onclick = () => { videoPlay($("#demoStage"), DEMOV, $("#demoPlay")); done(0); };
 
@@ -968,7 +985,8 @@ $("#myBoard").replaceChildren(...NAMES.map(([ic, name, ex1, ex2], i) => { const 
   return el("div", {class:"scene"}, big, el("span", {class:"tag"}, "Scene " + (i + 1) + " · " + name), el("span", {class:"muted", style:"font-size:13px;font-weight:700"}, "Choose its picture:"), pick, el("label", {class:"ff"}, el("b", null, "👁 What we see"), see), el("label", {class:"ff"}, el("b", null, "🎙 Narration"), nar)); }));
 count();
 $("#myPlay").onclick = () => { if (!script()){ K.toast("Write the narration first."); return; } $("#myStage").hidden = false;
-  videoPlay($("#myStage"), V.s.map((x, i) => ({title:NAMES[i][1], sub:x.say || "…", cap:x.see || "", art:[[x.ic || NAMES[i][0], ["bob", "pop", "grow", "spin"][i] + " big3x", "left:50%;top:44%"]]})), $("#myPlay")); };
+  const ANIM = ["bob", "pop", "grow", "spin"];
+  videoPlay($("#myStage"), V.s.map((x, i) => ({title:NAMES[i][1], cap:x.see || "", beats:(sentences(x.say).length ? sentences(x.say) : ["…"]).map((t, k) => ({t, art:[[x.ic || NAMES[i][0], ANIM[(i + k) % 4] + " big3x", "left:50%;top:44%"]]}))})), $("#myPlay")); };
 $("#myCopy").onclick = () => copy("30-second explainer: " + V.topic + "\n\n" + V.s.map((x, i) => "Scene " + (i + 1) + " (" + NAMES[i][1] + ")\nWe see: " + (x.see || "") + "\nNarrator: " + (x.say || "")).join("\n\n"), null, "your document");
 
 /* 6 reflect */

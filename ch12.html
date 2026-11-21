@@ -392,6 +392,7 @@ img.fprev{background:var(--paper)}
 .icpick{display:flex;flex-wrap:wrap;gap:4px}
 .icpick button{font-size:20px;line-height:1;padding:4px 6px;border-radius:8px;border:2px solid transparent;background:var(--paper);cursor:pointer}
 .icpick button.on{border-color:var(--green);background:var(--green-soft)}
+.vart.shrink{animation:vshrink 2.5s ease-in both}@keyframes vshrink{0%{transform:translate(-50%,-50%) scale(1.4)}100%{transform:translate(-50%,-50%) scale(.4);opacity:.3}}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
