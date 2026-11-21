@@ -402,6 +402,20 @@ img.fprev{background:var(--paper)}
 .layer small{color:var(--muted);font-size:14px}
 .layer.on{border-color:var(--green);background:var(--green-soft)}
 @media (max-width:760px){.layers{grid-template-columns:1fr}}
+.factory{display:flex;align-items:stretch;gap:6px;flex-wrap:wrap}
+.fst{flex:1 1 150px;border:2px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--panel);display:grid;gap:3px;align-content:start;transition:border-color .2s,background .2s,transform .2s}
+.fst .fic{font-size:30px;line-height:1}
+.fst b{font-size:16px}
+.fst small{font-size:13px;color:var(--muted);line-height:1.3}
+.fst .fout{font:700 13px/1.3 var(--mono);color:var(--muted);margin-top:4px}
+.fst.work{border-color:var(--gold);background:var(--gold-soft);transform:translateY(-3px)}
+.fst.work .fout{color:var(--gold)}
+.fst.done{border-color:var(--green);background:var(--green-soft)}
+.fst.done .fout{color:var(--green)}
+.farr{align-self:center;font-weight:800;color:var(--muted);font-size:22px}
+.factory.sm .fst{flex-basis:120px;padding:8px}
+.factory.sm .fst small{display:none}
+@media (max-width:760px){.farr{display:none}.fst{flex-basis:45%}}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -465,14 +479,13 @@ img.fprev{background:var(--paper)}
   <p class="big">A video = pictures + voice + subtitles, in the right order. First you plan it (storyboard). Then each part is made, often by AI, and put together.</p>
   <p class="ttl">1 · The plan (storyboard)</p>
   <div class="sboard" id="demoBoard"></div>
-  <p class="ttl" style="margin-top:18px">2 · How does the plan become a video? Build it, layer by layer</p>
-  <div class="layers">
-    <div class="lmap"><span class="tag">From the storyboard…</span><p>👁 <b>What we see</b> → becomes the <b>pictures</b></p><p>🎙 <b>Narration</b> → becomes the <b>voice</b> and the <b>subtitles</b></p></div>
-    <div class="lbtns" id="layers"></div>
-  </div>
-  <p class="lead" id="layerSay" style="margin:10px 0 12px;font-weight:700">Turn on one layer, press ▶, and watch. Then add the next layer.</p>
-  <div class="vplayer" id="demoStage"><div class="vbg" style="background:linear-gradient(160deg,#5B7A99,#2E4A66)"></div><span class="vart big2x" style="left:50%;top:42%">🎬</span><p class="vsub">Press ▶ to watch the video</p></div>
-  <div class="row" style="margin-top:12px"><button class="btn" id="demoPlay" type="button">▶ Play</button></div>
+  <p class="ttl" style="margin-top:18px">2 · Send the plan to the AI tools</p>
+  <p class="lead" style="margin:0 0 10px">Each AI tool makes one part of the video. Then a video editor puts everything together.</p>
+  <div class="factory" id="factory"></div>
+  <div class="row" style="margin-top:12px"><button class="btn" id="sendAI" type="button">🤖 Send the storyboard to the AI</button></div>
+  <p class="ttl" style="margin-top:18px">3 · The video is ready</p>
+  <div class="vplayer" id="demoStage"><div class="vbg" style="background:#1d2b36"></div><span class="vart big2x" style="left:50%;top:42%">⏳</span><p class="vsub">First send the storyboard to the AI (step 2)</p></div>
+  <div class="row" style="margin-top:12px"><button class="btn" id="demoPlay" type="button" disabled>▶ Play the video</button></div>
   <div class="card" style="margin-top:14px"><span class="tag">The idea</span><p style="margin:6px 0 0;font-size:18px">Before making a video, you <b>plan</b> it on paper: a storyboard. For each scene you write 2 things: <b>👁 what we see</b> and <b>🎙 what the narrator says</b>. 4 short scenes, about 70 words: that's 30 seconds. In your mission, you plan your own.</p></div>
 </section>
 
@@ -495,8 +508,9 @@ img.fprev{background:var(--paper)}
   <div class="sboard edit" id="myBoard"></div>
   <div class="card" style="margin-top:14px">
     <div class="kv"><span class="tag">Your script</span><b id="wc" class="pill">0 words</b><span class="muted" id="wcHint">Aim for 60 to 75 words (about 30 seconds).</span></div>
+    <div class="factory sm" id="myFactory" hidden style="margin-top:12px"></div>
     <div class="vplayer" id="myStage" hidden style="margin-top:12px"></div>
-    <div class="row" style="margin-top:10px"><button class="btn" id="myPlay" type="button">▶ Watch my video</button><button class="btn alt" id="myCopy" type="button">📋 Copy my storyboard</button></div>
+    <div class="row" style="margin-top:10px"><button class="btn" id="myPlay" type="button">🤖 Make my video with AI</button><button class="btn alt" id="myCopy" type="button">📋 Copy my storyboard</button></div>
   </div>
   <div id="vBadge"></div>
 </section>
@@ -952,26 +966,38 @@ const sentences = t => (String(t || "").match(/[^.!?]+[.!?]*/g) || []).map(x => 
 
 
 const DEMOV = [
-  {title:"The problem", beats:[
+  {ic:"🚿", title:"The problem", beats:[
     {t:"Every day, we waste clean water without even noticing.", art:[["🚿", "big2x", "left:42%;top:24%"], ["💧", "drop", "left:39%;top:40%"], ["💧", "drop", "left:43%;top:40%;animation-delay:.4s"], ["💧", "drop", "left:46%;top:40%;animation-delay:.8s"], ["🧒", "big2x", "left:72%;top:52%"], ["📱", "wig", "left:80%;top:56%"]]},
     {t:"Water is precious, and it can run out.", art:[["🏜️", "big3x", "left:50%;top:44%"], ["💧", "shrink", "left:50%;top:22%"]]}]},
-  {title:"Idea 1", beats:[
+  {ic:"🪥", title:"Idea 1", beats:[
     {t:"Idea one: turn off the tap while you brush your teeth.", art:[["🧒", "big2x", "left:28%;top:48%"], ["🪥", "wig", "left:42%;top:46%"], ["🚰", "big2x", "left:68%;top:34%"], ["💧", "drop", "left:66%;top:50%"], ["✋", "pop", "left:78%;top:30%;animation-delay:1.4s"]]},
     {t:"It is easy, and it saves a lot of water.", art:[["🚰", "big2x", "left:40%;top:40%"], ["✅", "pop big2x", "left:62%;top:40%"], ["💧", "pop", "left:30%;top:68%;animation-delay:.3s"], ["💧", "pop", "left:40%;top:70%;animation-delay:.5s"], ["💧", "pop", "left:50%;top:68%;animation-delay:.7s"]]}]},
-  {title:"Idea 2", beats:[
+  {ic:"🪣", title:"Idea 2", beats:[
     {t:"Idea two: catch the cold water before your shower in a bucket,", art:[["🚿", "big2x", "left:46%;top:22%"], ["💧", "drop", "left:44%;top:36%"], ["💧", "drop", "left:48%;top:36%;animation-delay:.5s"], ["🪣", "big2x", "left:46%;top:62%"]]},
     {t:"and use it to water the plants.", art:[["🪣", "big2x", "left:30%;top:50%"], ["💧", "drop", "left:52%;top:40%"], ["🪴", "grow big3x", "left:68%;top:50%"]]}]},
-  {title:"Call to action", beats:[
+  {ic:"🌍", title:"Call to action", beats:[
     {t:"One small action, every day, by every student.", art:[["👧", "bob big2x", "left:22%;top:52%"], ["🧒", "bob big2x", "left:40%;top:54%;animation-delay:.2s"], ["👦", "bob big2x", "left:60%;top:54%;animation-delay:.4s"], ["👩", "bob big2x", "left:78%;top:52%;animation-delay:.6s"]]},
     {t:"Together, we can save our water. Start today!", art:[["🌍", "spin big3x", "left:50%;top:46%"], ["Start today!", "pop txt", "left:50%;top:14%;animation-delay:.6s"]]}]}
 ];
-const LAY = {pics:false, voice:false, subs:false};
-const LDEF = [["pics", "🖼️ Pictures", "made from “what we see”: by an image AI (like Chapter 6) or your own drawings"], ["voice", "🔊 Voice", "made from the narration: by a text-to-speech AI"], ["subs", "💬 Subtitles", "the narration as text: by a speech-to-text AI"]];
-const LSAY = l => { const on = LDEF.filter(([k]) => l[k]).map(([, n]) => n.slice(3));
-  return !on.length ? "Turn on one layer, press ▶, and watch. Then add the next layer." : on.length === 3 ? "🎬 Pictures + voice + subtitles, in the right order and time: that's a video!" : "Now you have: " + on.join(" + ") + ". Something is missing… add another layer."; };
-function drawLayers(){ $("#layers").replaceChildren(...LDEF.map(([k, n, d]) => el("button", {class:"layer" + (LAY[k] ? " on" : ""), type:"button", "aria-pressed":String(LAY[k]), onclick:() => { LAY[k] = !LAY[k]; vStop(); drawLayers(); }}, el("b", null, (LAY[k] ? "✓ " : "+ ") + n), el("small", null, d)))); $("#layerSay").textContent = LSAY(LAY); }
-drawLayers();
-$("#demoPlay").onclick = () => { if (!LAY.pics && !LAY.voice && !LAY.subs){ K.toast("Turn on at least one layer first."); return; } videoPlay($("#demoStage"), DEMOV, $("#demoPlay"), LAY); if (LAY.pics && LAY.voice && LAY.subs) done(0); };
+/* the "AI factory": the storyboard goes to 3 AI tools, then a video editor puts the parts together */
+function factory(box, scenes, speed){
+  const pics = scenes.map(sc => sc.ic || (sc.beats[0].art[0] || ["🎬"])[0]).join(" ");
+  const nSent = scenes.reduce((n, sc) => n + sc.beats.length, 0), secs = Math.round(scenes.reduce((s2, sc) => s2 + sc.beats.reduce((t, b) => t + est(b.t) + .35, 0), 0));
+  const ST = [["📝", "Your storyboard", "goes in", scenes.length + " scenes, " + nSent + " sentences"],
+    ["🖼️", "Image AI", "draws the pictures from “what we see”", pics],
+    ["🔊", "Voice AI", "reads the narration aloud", "🔊 ▁▃▆▃▅▂▆▄ " + secs + " s of voice"],
+    ["💬", "Subtitle AI", "writes the words on screen", nSent + " subtitles"],
+    ["🎬", "Video editor", "puts pictures + voice + subtitles together", "✓ video ready!"]];
+  box.replaceChildren(...ST.flatMap(([ic, n, d], i) => [el("div", {class:"fst", "data-i":String(i)}, el("span", {class:"fic"}, ic), el("b", null, n), el("small", null, d), el("span", {class:"fout"}, "waiting…")), ...(i < ST.length - 1 ? [el("span", {class:"farr", "aria-hidden":"true"}, "→")] : [])]));
+  const cards = [...box.querySelectorAll(".fst")];
+  return new Promise(res => { let i = 0; const step = () => { if (i > 0){ cards[i - 1].classList.remove("work"); cards[i - 1].classList.add("done"); cards[i - 1].querySelector(".fout").textContent = ST[i - 1][3]; }
+    if (i >= cards.length){ res(); return; } cards[i].classList.add("work"); cards[i].querySelector(".fout").textContent = "working…"; i++; setTimeout(step, speed); }; step(); });
+}
+const factoryIdle = () => factory($("#factory"), DEMOV, 0).then(() => [...$("#factory").querySelectorAll(".fst")].forEach(c => { c.classList.remove("done"); c.querySelector(".fout").textContent = "waiting…"; }));
+factoryIdle();
+$("#sendAI").onclick = () => { vStop(); $("#sendAI").disabled = true; $("#demoPlay").disabled = true;
+  factory($("#factory"), DEMOV, 1100).then(() => { $("#sendAI").disabled = false; $("#sendAI").textContent = "🤖 Send it again"; $("#demoPlay").disabled = false; videoPlay($("#demoStage"), DEMOV, $("#demoPlay")); done(0); }); };
+$("#demoPlay").onclick = () => videoPlay($("#demoStage"), DEMOV, $("#demoPlay"));
 
 /* 4 brain */
 X.order($("#g1"), ["Introduce the topic or the problem", "Explain why it matters", "Show two solutions", "End with a call to action"]);
@@ -1005,9 +1031,12 @@ $("#myBoard").replaceChildren(...NAMES.map(([ic, name, ex1, ex2], i) => { const 
   see.oninput = () => { V.s[i].see = see.value; saveV(); count(); }; nar.oninput = () => { V.s[i].say = nar.value; saveV(); count(); };
   return el("div", {class:"scene"}, big, el("span", {class:"tag"}, "Scene " + (i + 1) + " · " + name), el("span", {class:"muted", style:"font-size:13px;font-weight:700"}, "Choose its picture:"), pick, el("label", {class:"ff"}, el("b", null, "👁 What we see"), see), el("label", {class:"ff"}, el("b", null, "🎙 Narration"), nar)); }));
 count();
-$("#myPlay").onclick = () => { if (!script()){ K.toast("Write the narration first."); return; } $("#myStage").hidden = false;
+$("#myPlay").onclick = () => { if (!script()){ K.toast("Write the narration first."); return; }
+  if (vp && vp.btn === $("#myPlay")){ vStop(); return; }
   const ANIM = ["bob", "pop", "grow", "spin"];
-  videoPlay($("#myStage"), V.s.map((x, i) => ({title:NAMES[i][1], cap:x.see || "", beats:(sentences(x.say).length ? sentences(x.say) : ["…"]).map((t, k) => ({t, art:[[x.ic || NAMES[i][0], ANIM[(i + k) % 4] + " big3x", "left:50%;top:44%"]]}))})), $("#myPlay")); };
+  const scenes = V.s.map((x, i) => ({ic:x.ic || NAMES[i][0], title:NAMES[i][1], cap:x.see || "", beats:(sentences(x.say).length ? sentences(x.say) : ["…"]).map((t, k) => ({t, art:[[x.ic || NAMES[i][0], ANIM[(i + k) % 4] + " big3x", "left:50%;top:44%"]]}))}));
+  $("#myFactory").hidden = false; $("#myPlay").disabled = true;
+  factory($("#myFactory"), scenes, 600).then(() => { $("#myPlay").disabled = false; $("#myStage").hidden = false; videoPlay($("#myStage"), scenes, $("#myPlay")); }); };
 $("#myCopy").onclick = () => copy("30-second explainer: " + V.topic + "\n\n" + V.s.map((x, i) => "Scene " + (i + 1) + " (" + NAMES[i][1] + ")\nWe see: " + (x.see || "") + "\nNarrator: " + (x.say || "")).join("\n\n"), null, "your document");
 
 /* 6 reflect */
