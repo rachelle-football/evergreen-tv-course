@@ -364,6 +364,34 @@ img.fprev{background:var(--paper)}
 .shake{animation:shake .35s}
 @keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 @media (prefers-reduced-motion: reduce){.shake{animation:none}}
+.vplayer{position:relative;aspect-ratio:16/9;width:100%;max-width:860px;border-radius:18px;overflow:hidden;background:#1d2b36;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.vbg{position:absolute;inset:0}
+.vart{position:absolute;transform:translate(-50%,-50%);font-size:clamp(34px,6vw,64px);line-height:1;filter:drop-shadow(0 4px 6px rgba(0,0,0,.2))}
+.vart.big2x{font-size:clamp(50px,9vw,96px)}
+.vart.big3x{font-size:clamp(64px,13vw,140px)}
+.vart.txt{font:800 clamp(24px,4vw,44px)/1 var(--display);color:#fff;text-shadow:0 3px 10px rgba(0,0,0,.35);white-space:nowrap}
+.vchip{position:absolute;left:14px;top:12px;font:700 13px/1 var(--mono);color:#fff;background:rgba(0,0,0,.35);padding:6px 10px;border-radius:999px}
+.vtime{position:absolute;right:14px;top:12px;font:700 13px/1 var(--mono);color:#fff;background:rgba(0,0,0,.35);padding:6px 10px;border-radius:999px}
+.vcap{position:absolute;left:50%;top:13%;transform:translateX(-50%);font-size:clamp(13px,1.6vw,16px);color:#fff;background:rgba(0,0,0,.28);padding:6px 12px;border-radius:10px;max-width:80%;text-align:center}
+.vsub{position:absolute;left:5%;right:5%;bottom:22px;margin:0;text-align:center;color:#fff;font:700 clamp(15px,2.2vw,22px)/1.35 var(--display);background:rgba(0,0,0,.55);padding:8px 14px;border-radius:12px}
+.vprog{position:absolute;left:0;right:0;bottom:0;height:6px;background:rgba(255,255,255,.25)}
+.vprog i{display:block;height:100%;width:0;background:#FFD27F}
+.vart.drop{animation:vdrop 1.2s linear infinite}
+.vart.bob{animation:vbob 1.4s ease-in-out infinite}
+.vart.wig{animation:vwig .5s ease-in-out infinite}
+.vart.pop{animation:vpop .5s cubic-bezier(.2,1.6,.4,1) both}
+.vart.grow{animation:vgrow 2.2s ease-out both}
+.vart.spin{animation:vspin 9s linear infinite}
+@keyframes vdrop{0%{transform:translate(-50%,-50%);opacity:1}100%{transform:translate(-50%,180%);opacity:0}}
+@keyframes vbob{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,-62%)}}
+@keyframes vwig{0%,100%{transform:translate(-50%,-50%) rotate(-12deg)}50%{transform:translate(-50%,-50%) rotate(12deg)}}
+@keyframes vpop{0%{transform:translate(-50%,-50%) scale(0)}100%{transform:translate(-50%,-50%) scale(1)}}
+@keyframes vgrow{0%{transform:translate(-50%,-50%) scale(.3)}100%{transform:translate(-50%,-50%) scale(1)}}
+@keyframes vspin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.vart{animation:none!important}}
+.icpick{display:flex;flex-wrap:wrap;gap:4px}
+.icpick button{font-size:20px;line-height:1;padding:4px 6px;border-radius:8px;border:2px solid transparent;background:var(--paper);cursor:pointer}
+.icpick button.on{border-color:var(--green);background:var(--green-soft)}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -424,9 +452,12 @@ img.fprev{background:var(--paper)}
 <!-- 3 watch -->
 <section class="seg" id="seg-3" data-min="8" data-title="Watch a storyboard" hidden>
   <div class="lower"><div class="no">03</div><div class="name"><h2>Watch a storyboard come alive</h2><p>8 minutes · “One Small Way to Save Water”</p></div></div>
-  <p class="big">Every good short video has 4 scenes: the problem, idea 1, idea 2, and a call to action. Press play: you hear the narrator and see which scene is on screen, like a real video.</p>
+  <p class="big">First you plan a video on paper: 4 scenes. Then the plan becomes a real video. Look at the plan, then press ▶.</p>
+  <p class="ttl">1 · The plan (storyboard)</p>
   <div class="sboard" id="demoBoard"></div>
-  <div class="row" style="margin-top:12px"><button class="btn" id="demoPlay" type="button">▶ Play the narration</button></div>
+  <p class="ttl" style="margin-top:18px">2 · The plan comes alive</p>
+  <div class="vplayer" id="demoStage"><div class="vbg" style="background:linear-gradient(160deg,#5B7A99,#2E4A66)"></div><span class="vart big2x" style="left:50%;top:42%">🎬</span><p class="vsub">Press ▶ to watch the video</p></div>
+  <div class="row" style="margin-top:12px"><button class="btn" id="demoPlay" type="button">▶ Watch the video</button></div>
   <div class="card" style="margin-top:14px"><span class="tag">The idea</span><p style="margin:6px 0 0;font-size:18px">Before making a video, you <b>plan</b> it on paper: a storyboard. For each scene you write 2 things: <b>👁 what we see</b> and <b>🎙 what the narrator says</b>. 4 short scenes, about 70 words: that's 30 seconds. In your mission, you plan your own.</p></div>
 </section>
 
@@ -449,7 +480,8 @@ img.fprev{background:var(--paper)}
   <div class="sboard edit" id="myBoard"></div>
   <div class="card" style="margin-top:14px">
     <div class="kv"><span class="tag">Your script</span><b id="wc" class="pill">0 words</b><span class="muted" id="wcHint">Aim for 60 to 75 words (about 30 seconds).</span></div>
-    <div class="row" style="margin-top:10px"><button class="btn" id="myPlay" type="button">🔊 Hear my script</button><button class="btn alt" id="myCopy" type="button">📋 Copy my storyboard</button></div>
+    <div class="vplayer" id="myStage" hidden style="margin-top:12px"></div>
+    <div class="row" style="margin-top:10px"><button class="btn" id="myPlay" type="button">▶ Watch my video</button><button class="btn alt" id="myCopy" type="button">📋 Copy my storyboard</button></div>
   </div>
   <div id="vBadge"></div>
 </section>
@@ -867,7 +899,41 @@ function playScenes(box, scenes, btn){
   next();
 }
 addEventListener("hashchange", stopAll);
-$("#demoPlay").onclick = () => { playScenes($("#demoBoard"), DEMO, $("#demoPlay")); done(0); };
+/* ---------- a tiny video player: scenes come alive with moving pictures, subtitles and the narrator's voice ---------- */
+const BGS = ["linear-gradient(160deg,#5B7A99,#2E4A66)", "linear-gradient(160deg,#7FB3D5,#2F6F99)", "linear-gradient(160deg,#A8D5BA,#3F8A5C)", "linear-gradient(160deg,#FFD27F,#E8742A)"];
+let vp = null;
+function vStop(){ try { speechSynthesis.cancel(); } catch(e){} if (vp){ vp.alive = false; clearTimeout(vp.t); cancelAnimationFrame(vp.raf); vp.btn.textContent = vp.label; vp.stage.classList.remove("on"); vp = null; } }
+function videoPlay(stage, scenes, btn){
+  if (vp && vp.btn === btn){ vStop(); return; }
+  vStop();
+  const total = scenes.reduce((s, x) => s + Math.max(4, X.words(x.sub) / 2.4), 0);
+  const me = vp = {alive:true, stage, btn, label:btn.textContent, t:0, raf:0}; btn.textContent = "⏹ Stop"; stage.classList.add("on");
+  const start = performance.now(), time = el("span", {class:"vtime"}), prog = el("i");
+  const fmt = s => "0:" + String(Math.min(59, Math.round(s))).padStart(2, "0");
+  const tick = () => { if (!me.alive) return; const e = (performance.now() - start) / 1000; time.textContent = fmt(e) + " / " + fmt(total); prog.style.width = Math.min(100, e / total * 100) + "%"; me.raf = requestAnimationFrame(tick); };
+  let i = 0;
+  const show = () => {
+    if (!me.alive) return; if (i >= scenes.length){ stage.querySelector(".vsub").textContent = "🎬 The end"; setTimeout(() => { if (me.alive) vStop(); }, 1500); return; }
+    const sc = scenes[i];
+    stage.replaceChildren(el("div", {class:"vbg", style:"background:" + (sc.bg || BGS[i % 4])}),
+      ...sc.art.map(([ic, cls, st]) => el("span", {class:"vart " + (cls || ""), style:st || ""}, ic)),
+      ...(sc.cap ? [el("span", {class:"vcap"}, "👁 " + sc.cap)] : []),
+      el("span", {class:"vchip"}, "Scene " + (i + 1) + " · " + sc.title), time, el("p", {class:"vsub"}, sc.sub), el("div", {class:"vprog"}, prog));
+    i++;
+    const next = () => { if (me.alive) show(); };
+    if (!X.speak(sc.sub, {onend:() => { me.t = setTimeout(next, 350); }})) me.t = setTimeout(next, Math.max(4, X.words(sc.sub) / 2.4) * 1000);
+  };
+  tick(); show();
+}
+addEventListener("hashchange", vStop);
+
+const DEMOV = [
+  {title:"The problem", sub:DEMO[0][3], art:[["🚿", "big2x", "left:50%;top:26%"], ["💧", "drop", "left:44%;top:40%"], ["💧", "drop", "left:50%;top:40%;animation-delay:.3s"], ["💧", "drop", "left:56%;top:40%;animation-delay:.6s"], ["💧", "drop", "left:47%;top:40%;animation-delay:.9s"], ["😟", "bob", "left:18%;top:62%"]]},
+  {title:"Idea 1", sub:DEMO[1][3], art:[["🧒", "bob big2x", "left:30%;top:48%"], ["🪥", "wig", "left:45%;top:44%"], ["🚰", "big2x", "left:68%;top:40%"], ["✋", "pop", "left:68%;top:62%;animation-delay:1.2s"], ["✅", "pop", "left:82%;top:24%;animation-delay:2s"]]},
+  {title:"Idea 2", sub:DEMO[2][3], art:[["🚿", "", "left:22%;top:30%"], ["💧", "drop", "left:22%;top:42%"], ["🪣", "big2x", "left:48%;top:52%"], ["🪴", "grow big2x", "left:76%;top:50%;animation-delay:1.5s"]]},
+  {title:"Call to action", sub:DEMO[3][3], art:[["🌍", "spin big3x", "left:50%;top:40%"], ["👧", "bob", "left:24%;top:66%"], ["🧒", "bob", "left:36%;top:68%;animation-delay:.2s"], ["👦", "bob", "left:64%;top:68%;animation-delay:.4s"], ["👩", "bob", "left:76%;top:66%;animation-delay:.6s"], ["Start today!", "pop txt", "left:50%;top:14%;animation-delay:1s"]]}
+];
+$("#demoPlay").onclick = () => { videoPlay($("#demoStage"), DEMOV, $("#demoPlay")); done(0); };
 
 /* 4 brain */
 X.order($("#g1"), ["Introduce the topic or the problem", "Explain why it matters", "Show two solutions", "End with a call to action"]);
@@ -895,10 +961,14 @@ function count(){ const n = X.words(script()); $("#wc").textContent = n + " word
   if (full){ X.badge($("#vBadge"), "🎬", "Creative Director", "Your storyboard and script are saved in your portfolio."); done(2); } else $("#vBadge").replaceChildren(); }
 $("#myBoard").replaceChildren(...NAMES.map(([ic, name, ex1, ex2], i) => { const see = el("textarea", {rows:"2", placeholder:"e.g. " + ex1}), nar = el("textarea", {rows:"3", placeholder:"e.g. " + ex2});
   see.value = V.s[i].see || ""; nar.value = V.s[i].say || "";
+  const ICS = ["💧", "🚿", "🪥", "🪣", "🌍", "🌱", "♻️", "🛍️", "🥤", "🚶", "🚌", "😴", "🛏️", "🍎", "📚", "🤝", "😊", "📣"];
+  const pick = el("div", {class:"icpick"}, ...ICS.map(c => el("button", {type:"button", class:(V.s[i].ic || ic) === c ? "on" : "", "aria-label":"Picture " + c, onclick:e => { V.s[i].ic = c; saveV(); [...pick.children].forEach(b => b.classList.toggle("on", b.textContent === c)); big.textContent = c; }}, c)));
+  const big = el("div", {class:"sic"}, V.s[i].ic || ic);
   see.oninput = () => { V.s[i].see = see.value; saveV(); count(); }; nar.oninput = () => { V.s[i].say = nar.value; saveV(); count(); };
-  return el("div", {class:"scene"}, el("div", {class:"sic"}, ic), el("span", {class:"tag"}, "Scene " + (i + 1) + " · " + name), el("label", {class:"ff"}, el("b", null, "👁 What we see"), see), el("label", {class:"ff"}, el("b", null, "🎙 Narration"), nar)); }));
+  return el("div", {class:"scene"}, big, el("span", {class:"tag"}, "Scene " + (i + 1) + " · " + name), el("span", {class:"muted", style:"font-size:13px;font-weight:700"}, "Choose its picture:"), pick, el("label", {class:"ff"}, el("b", null, "👁 What we see"), see), el("label", {class:"ff"}, el("b", null, "🎙 Narration"), nar)); }));
 count();
-$("#myPlay").onclick = () => script() ? playScenes($("#myBoard"), V.s.map(x => ["", "", x.see, x.say || ""]), $("#myPlay")) : K.toast("Write the narration first.");
+$("#myPlay").onclick = () => { if (!script()){ K.toast("Write the narration first."); return; } $("#myStage").hidden = false;
+  videoPlay($("#myStage"), V.s.map((x, i) => ({title:NAMES[i][1], sub:x.say || "…", cap:x.see || "", art:[[x.ic || NAMES[i][0], ["bob", "pop", "grow", "spin"][i] + " big3x", "left:50%;top:44%"]]})), $("#myPlay")); };
 $("#myCopy").onclick = () => copy("30-second explainer: " + V.topic + "\n\n" + V.s.map((x, i) => "Scene " + (i + 1) + " (" + NAMES[i][1] + ")\nWe see: " + (x.see || "") + "\nNarrator: " + (x.say || "")).join("\n\n"), null, "your document");
 
 /* 6 reflect */
