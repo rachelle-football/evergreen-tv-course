@@ -417,6 +417,7 @@ img.fprev{background:var(--paper)}
 .factory.sm .fst small{display:none}
 @media (max-width:760px){.farr{display:none}.fst{flex-basis:45%}}
 .sboard.edit{grid-template-columns:1fr}@media(min-width:760px){.sboard.edit{grid-template-columns:1fr 1fr}}
+.icpick.lab button{font-size:15px;display:flex;align-items:center;gap:6px;padding:6px 10px;font-weight:600;color:var(--ink)}.icpick.lab .e{font-size:22px}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -1020,14 +1021,33 @@ const TOP = ["Save water", "Say no to plastic", "Be kind at school", "Sleep well
 const V = Object.assign({topic:"", s:[{}, {}, {}, {}]}, store.get("video") || {});
 const saveV = () => store.set("video", V);
 const NAMES = [["🎯", "The problem", "Show the problem."], ["💡", "Solution 1", "Give your first solution."], ["💡", "Solution 2", "Give your second solution."], ["📣", "Call to action", "Tell people what to do now."]];
+/* each scene: [what we see example, narrator example, 3 pictures that fit THIS scene] */
 const TX = {
-  "Save water": {ics:["💧", "🚿", "🪥", "🪣", "🌱", "🌍"], ex:[["a tap left running", "Every day, we waste a lot of water at home and at school."], ["a student turns off the tap while brushing", "Turn off the tap while you brush your teeth."], ["a bucket under the shower", "Catch the cold shower water and use it for plants."], ["the whole class smiling", "Every drop counts. Start saving water today!"]]},
-  "Say no to plastic": {ics:["🛍️", "🥤", "♻️", "🌊", "🐢", "🌍"], ex:[["plastic bags on the beach", "Plastic bags and bottles end up in our sea."], ["a student with a cloth bag", "Use a cloth bag when you go shopping."], ["a water bottle you can use again", "Bring your own bottle to school."], ["a clean beach", "Say no to plastic. Start today!"]]},
-  "Be kind at school": {ics:["🤝", "😊", "📚", "🎒", "💬", "❤️"], ex:[["a student sitting alone at break", "Some students feel alone at school."], ["a student invites them to play", "Invite someone new to play with you."], ["a student helps with homework", "Help a classmate who is stuck."], ["friends laughing together", "A small kind act can change a day. Be kind!"]]},
-  "Sleep well": {ics:["😴", "🛏️", "📱", "🌙", "⏰", "📚"], ex:[["a tired student yawning in class", "Many students are tired in class."], ["a phone put away at night", "Put your phone away one hour before bed."], ["a clock showing 9:30 pm", "Go to bed at the same time every night."], ["a happy student waking up", "Sleep well, learn better. Start tonight!"]]},
-  "Walk more, drive less": {ics:["🚶", "🚗", "🚌", "🚲", "🌳", "🌍"], ex:[["traffic and smoke in the street", "Too many cars make our air dirty."], ["friends walking to school", "If school is close, walk with a friend."], ["a school bus", "Take the bus or share a car."], ["a clean green street", "Walk more, drive less. Our air will thank you!"]]}
+  "Save water": [["a tap left running", "Every day, we waste a lot of water at home and at school.", [["🚰", "Tap left running"], ["💧", "Wasted water"], ["🏜️", "Dry land"]]],
+    ["a student turns off the tap while brushing", "Turn off the tap while you brush your teeth.", [["🪥", "Tap off while brushing"], ["🚰", "Close the tap"], ["🔧", "Fix the leak"]]],
+    ["a bucket under the shower", "Catch the cold shower water and use it for plants.", [["🪣", "Bucket in the shower"], ["🌱", "Water the plants"], ["🚿", "Short shower"]]],
+    ["the whole class smiling", "Every drop counts. Start saving water today!", [["💧", "Every drop counts"], ["😊", "Happy class"], ["🌍", "Save our planet"]]]],
+  "Say no to plastic": [["plastic bags on the beach", "Plastic bags and bottles end up in our sea.", [["🛍️", "Plastic bags"], ["🌊", "Dirty sea"], ["🐢", "Turtle in danger"]]],
+    ["a student with a cloth bag", "Use a cloth bag when you go shopping.", [["👜", "Cloth bag"], ["🧺", "Basket"], ["🎒", "Your own backpack"]]],
+    ["a student fills their own bottle", "Bring your own bottle to school.", [["🚰", "Refill your bottle"], ["🍴", "Your own fork and spoon"], ["♻️", "Recycle"]]],
+    ["a clean beach", "Say no to plastic. Start today!", [["🏖️", "Clean beach"], ["🌍", "Save our planet"], ["😊", "Happy friends"]]]],
+  "Be kind at school": [["a student sitting alone at break", "Some students feel alone at school.", [["😔", "Student alone"], ["😢", "Sad face"], ["💬", "Mean words"]]],
+    ["a student invites them to play", "Invite someone new to play with you.", [["🤝", "Invite to play"], ["⚽", "Play together"], ["👋", "Say hello"]]],
+    ["a student helps with homework", "Help a classmate who is stuck.", [["📚", "Help with homework"], ["✏️", "Share a pencil"], ["💬", "Kind words"]]],
+    ["friends laughing together", "A small kind act can change a day. Be kind!", [["❤️", "Be kind"], ["😊", "Happy friends"], ["🌟", "A kind school"]]]],
+  "Sleep well": [["a tired student yawning in class", "Many students are tired in class.", [["🥱", "Tired in class"], ["😴", "Falling asleep"], ["📱", "Phone late at night"]]],
+    ["a phone put away at night", "Put your phone away one hour before bed.", [["📵", "Phone away"], ["📖", "Read a book"], ["🌙", "Quiet night"]]],
+    ["a clock showing 9 pm", "Go to bed at the same time every night.", [["⏰", "Same bedtime"], ["🛏️", "Go to bed early"], ["🕘", "9 pm"]]],
+    ["a happy student waking up", "Sleep well, learn better. Start tonight!", [["☀️", "Fresh morning"], ["😊", "Happy student"], ["💪", "Full of energy"]]]],
+  "Walk more, drive less": [["traffic and smoke in the street", "Too many cars make our air dirty.", [["🚗", "Too many cars"], ["💨", "Smoke"], ["🚦", "Traffic"]]],
+    ["friends walking to school", "If school is close, walk with a friend.", [["🚶", "Walk to school"], ["🚲", "Ride a bike"], ["👫", "Walk with a friend"]]],
+    ["a school bus", "Take the bus or share a car.", [["🚌", "School bus"], ["🚙", "Share a car"], ["🛴", "Scooter"]]],
+    ["a clean green street", "Walk more, drive less. Our air will thank you!", [["🌳", "Green street"], ["🌍", "Clean air"], ["😊", "Healthy kids"]]]]
 };
-const OWN = {ics:["🎯", "💡", "📣", "🌍", "😊", "📚", "❤️", "⭐"], ex:[["what the problem looks like", "Say the problem in one sentence."], ["someone doing your first solution", "Say your first solution."], ["someone doing your second solution", "Say your second solution."], ["people happy at the end", "Tell people what to do, starting today!"]]};
+const OWN = [["what the problem looks like", "Say the problem in one sentence.", [["😟", "A problem"], ["⚠️", "Danger"], ["😢", "Sad"]]],
+  ["someone doing your first solution", "Say your first solution.", [["💡", "An idea"], ["🛠️", "Fix it"], ["🤝", "Help"]]],
+  ["someone doing your second solution", "Say your second solution.", [["✅", "Do it"], ["🌱", "A small step"], ["💡", "Another idea"]]],
+  ["people happy at the end", "Tell people what to do, starting today!", [["📣", "Tell everyone"], ["😊", "Happy people"], ["🌍", "A better world"]]]];
 const T = () => TX[V.topic] || OWN;
 function drawBoard(){
   const has = !!(V.topic || "").trim();
@@ -1035,15 +1055,15 @@ function drawBoard(){
   if (!has){ $("#myBoard").replaceChildren(); return; }
   const t = T();
   $("#myBoard").replaceChildren(...NAMES.map(([ic, name, job], i) => {
-    const [ex1, ex2] = t.ex[i];
+    const [ex1, ex2, pics] = t[i];
     const see = el("textarea", {rows:"2", placeholder:"Example: " + ex1}), nar = el("textarea", {rows:"3", placeholder:"Example: " + ex2});
     see.value = V.s[i].see || ""; nar.value = V.s[i].say || "";
-    const cur = t.ics.includes(V.s[i].ic) ? V.s[i].ic : "";
+    const cur = pics.some(x => x[0] === V.s[i].ic) ? V.s[i].ic : "";
     const big = el("div", {class:"sic"}, cur || ic);
-    const pick = el("div", {class:"icpick"}, ...t.ics.map(c => el("button", {type:"button", class:cur === c ? "on" : "", "aria-label":"Picture " + c, onclick:() => { V.s[i].ic = c; saveV(); [...pick.children].forEach(b => b.classList.toggle("on", b.textContent === c)); big.textContent = c; }}, c)));
+    const pick = el("div", {class:"icpick lab"}, ...pics.map(([c, l]) => el("button", {type:"button", class:cur === c ? "on" : "", "data-ic":c, onclick:() => { V.s[i].ic = c; saveV(); [...pick.children].forEach(b => b.classList.toggle("on", b.dataset.ic === c)); big.textContent = c; }}, el("span", {class:"e"}, c), el("span", null, l))));
     see.oninput = () => { V.s[i].see = see.value; saveV(); count(); }; nar.oninput = () => { V.s[i].say = nar.value; saveV(); count(); };
     return el("div", {class:"scene"}, big, el("span", {class:"tag"}, "Scene " + (i + 1) + " · " + name), el("b", {style:"font-size:15px"}, job),
-      el("span", {class:"muted", style:"font-size:13px;font-weight:700"}, "1 · Choose its picture:"), pick,
+      el("span", {class:"muted", style:"font-size:13px;font-weight:700"}, "1 · Choose a picture for this scene:"), pick,
       el("label", {class:"ff"}, el("b", null, "2 · 👁 What we see"), see), el("label", {class:"ff"}, el("b", null, "3 · 🎙 What the narrator says"), nar)); }));
 }
 function drawTopics(){ $("#vTopics").replaceChildren(...TOP.map(t => el("button", {class:"chip" + (V.topic === t ? " on" : ""), type:"button", "aria-pressed":String(V.topic === t), onclick:() => { V.topic = t; saveV(); drawTopics(); drawBoard(); }}, t)), el("input", {type:"text", placeholder:"or your own message", value:TOP.includes(V.topic) ? "" : V.topic, style:"font:inherit;padding:7px 12px;border:1.5px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink)", onchange:e => { V.topic = e.target.value; saveV(); drawTopics(); drawBoard(); }})); }
