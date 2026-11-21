@@ -416,6 +416,7 @@ img.fprev{background:var(--paper)}
 .factory.sm .fst{flex-basis:120px;padding:8px}
 .factory.sm .fst small{display:none}
 @media (max-width:760px){.farr{display:none}.fst{flex-basis:45%}}
+.sboard.edit{grid-template-columns:1fr}@media(min-width:760px){.sboard.edit{grid-template-columns:1fr 1fr}}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -504,7 +505,9 @@ img.fprev{background:var(--paper)}
     <span class="tag">Step 1 · Your message</span>
     <div class="chips" id="vTopics" style="margin-top:8px"></div>
   </div>
-  <p class="ttl" style="margin-top:18px">Step 2 · Plan 4 scenes: what we see, and what the narrator says</p>
+  <p class="ttl" style="margin-top:18px">Step 2 · Plan your 4 scenes</p>
+  <p class="muted" id="myHow" style="margin:0 0 10px">For each scene: <b>1)</b> choose a picture, <b>2)</b> write what we see, <b>3)</b> write what the narrator says. The grey text is an example to help you: write your own words.</p>
+  <p class="card" id="myWait" style="font-weight:700">👆 Choose your message in Step 1 first.</p>
   <div class="sboard edit" id="myBoard"></div>
   <div class="card" style="margin-top:14px">
     <div class="kv"><span class="tag">Your script</span><b id="wc" class="pill">0 words</b><span class="muted" id="wcHint">Aim for 60 to 75 words (about 30 seconds).</span></div>
@@ -1016,20 +1019,40 @@ X.sort($("#g3"), [
 const TOP = ["Save water", "Say no to plastic", "Be kind at school", "Sleep well", "Walk more, drive less"];
 const V = Object.assign({topic:"", s:[{}, {}, {}, {}]}, store.get("video") || {});
 const saveV = () => store.set("video", V);
-const NAMES = [["🎯", "The problem", "a tap left running", "Every day, we waste…"], ["💡", "Idea 1", "a student turns off the tap", "Turn off…"], ["💡", "Idea 2", "a bucket under the shower", "Catch…"], ["📣", "Call to action", "the whole class smiling", "Start today!…"]];
-function drawTopics(){ $("#vTopics").replaceChildren(...TOP.map(t => el("button", {class:"chip" + (V.topic === t ? " on" : ""), type:"button", "aria-pressed":String(V.topic === t), onclick:() => { V.topic = t; saveV(); drawTopics(); }}, t)), el("input", {type:"text", placeholder:"or your own message", value:TOP.includes(V.topic) ? "" : V.topic, style:"font:inherit;padding:7px 12px;border:1.5px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink)", oninput:e => { V.topic = e.target.value; saveV(); }})); }
+const NAMES = [["🎯", "The problem", "Show the problem."], ["💡", "Solution 1", "Give your first solution."], ["💡", "Solution 2", "Give your second solution."], ["📣", "Call to action", "Tell people what to do now."]];
+const TX = {
+  "Save water": {ics:["💧", "🚿", "🪥", "🪣", "🌱", "🌍"], ex:[["a tap left running", "Every day, we waste a lot of water at home and at school."], ["a student turns off the tap while brushing", "Turn off the tap while you brush your teeth."], ["a bucket under the shower", "Catch the cold shower water and use it for plants."], ["the whole class smiling", "Every drop counts. Start saving water today!"]]},
+  "Say no to plastic": {ics:["🛍️", "🥤", "♻️", "🌊", "🐢", "🌍"], ex:[["plastic bags on the beach", "Plastic bags and bottles end up in our sea."], ["a student with a cloth bag", "Use a cloth bag when you go shopping."], ["a water bottle you can use again", "Bring your own bottle to school."], ["a clean beach", "Say no to plastic. Start today!"]]},
+  "Be kind at school": {ics:["🤝", "😊", "📚", "🎒", "💬", "❤️"], ex:[["a student sitting alone at break", "Some students feel alone at school."], ["a student invites them to play", "Invite someone new to play with you."], ["a student helps with homework", "Help a classmate who is stuck."], ["friends laughing together", "A small kind act can change a day. Be kind!"]]},
+  "Sleep well": {ics:["😴", "🛏️", "📱", "🌙", "⏰", "📚"], ex:[["a tired student yawning in class", "Many students are tired in class."], ["a phone put away at night", "Put your phone away one hour before bed."], ["a clock showing 9:30 pm", "Go to bed at the same time every night."], ["a happy student waking up", "Sleep well, learn better. Start tonight!"]]},
+  "Walk more, drive less": {ics:["🚶", "🚗", "🚌", "🚲", "🌳", "🌍"], ex:[["traffic and smoke in the street", "Too many cars make our air dirty."], ["friends walking to school", "If school is close, walk with a friend."], ["a school bus", "Take the bus or share a car."], ["a clean green street", "Walk more, drive less. Our air will thank you!"]]}
+};
+const OWN = {ics:["🎯", "💡", "📣", "🌍", "😊", "📚", "❤️", "⭐"], ex:[["what the problem looks like", "Say the problem in one sentence."], ["someone doing your first solution", "Say your first solution."], ["someone doing your second solution", "Say your second solution."], ["people happy at the end", "Tell people what to do, starting today!"]]};
+const T = () => TX[V.topic] || OWN;
+function drawBoard(){
+  const has = !!(V.topic || "").trim();
+  $("#myWait").hidden = has; $("#myBoard").hidden = !has; $("#myHow").hidden = !has;
+  if (!has){ $("#myBoard").replaceChildren(); return; }
+  const t = T();
+  $("#myBoard").replaceChildren(...NAMES.map(([ic, name, job], i) => {
+    const [ex1, ex2] = t.ex[i];
+    const see = el("textarea", {rows:"2", placeholder:"Example: " + ex1}), nar = el("textarea", {rows:"3", placeholder:"Example: " + ex2});
+    see.value = V.s[i].see || ""; nar.value = V.s[i].say || "";
+    const cur = t.ics.includes(V.s[i].ic) ? V.s[i].ic : "";
+    const big = el("div", {class:"sic"}, cur || ic);
+    const pick = el("div", {class:"icpick"}, ...t.ics.map(c => el("button", {type:"button", class:cur === c ? "on" : "", "aria-label":"Picture " + c, onclick:() => { V.s[i].ic = c; saveV(); [...pick.children].forEach(b => b.classList.toggle("on", b.textContent === c)); big.textContent = c; }}, c)));
+    see.oninput = () => { V.s[i].see = see.value; saveV(); count(); }; nar.oninput = () => { V.s[i].say = nar.value; saveV(); count(); };
+    return el("div", {class:"scene"}, big, el("span", {class:"tag"}, "Scene " + (i + 1) + " · " + name), el("b", {style:"font-size:15px"}, job),
+      el("span", {class:"muted", style:"font-size:13px;font-weight:700"}, "1 · Choose its picture:"), pick,
+      el("label", {class:"ff"}, el("b", null, "2 · 👁 What we see"), see), el("label", {class:"ff"}, el("b", null, "3 · 🎙 What the narrator says"), nar)); }));
+}
+function drawTopics(){ $("#vTopics").replaceChildren(...TOP.map(t => el("button", {class:"chip" + (V.topic === t ? " on" : ""), type:"button", "aria-pressed":String(V.topic === t), onclick:() => { V.topic = t; saveV(); drawTopics(); drawBoard(); }}, t)), el("input", {type:"text", placeholder:"or your own message", value:TOP.includes(V.topic) ? "" : V.topic, style:"font:inherit;padding:7px 12px;border:1.5px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink)", onchange:e => { V.topic = e.target.value; saveV(); drawTopics(); drawBoard(); }})); }
 drawTopics();
 const script = () => V.s.map(x => (x.say || "").trim()).filter(Boolean).join(" ");
 function count(){ const n = X.words(script()); $("#wc").textContent = n + " words"; $("#wc").style.borderColor = n >= 60 && n <= 75 ? "var(--green)" : "var(--gold)"; $("#wcHint").textContent = n < 60 ? "Aim for 60 to 75 words (about 30 seconds). " + (60 - n) + " more." : n <= 75 ? "Perfect length: about 30 seconds! 🎬" : "A bit long: cut " + (n - 75) + " words.";
   const full = V.topic && V.s.every(x => (x.see || "").trim() && (x.say || "").trim()) && n >= 50;
   if (full){ X.badge($("#vBadge"), "🎬", "Creative Director", "Your storyboard and script are saved in your portfolio."); done(2); } else $("#vBadge").replaceChildren(); }
-$("#myBoard").replaceChildren(...NAMES.map(([ic, name, ex1, ex2], i) => { const see = el("textarea", {rows:"2", placeholder:"e.g. " + ex1}), nar = el("textarea", {rows:"3", placeholder:"e.g. " + ex2});
-  see.value = V.s[i].see || ""; nar.value = V.s[i].say || "";
-  const ICS = ["💧", "🚿", "🪥", "🪣", "🌍", "🌱", "♻️", "🛍️", "🥤", "🚶", "🚌", "😴", "🛏️", "🍎", "📚", "🤝", "😊", "📣"];
-  const pick = el("div", {class:"icpick"}, ...ICS.map(c => el("button", {type:"button", class:(V.s[i].ic || ic) === c ? "on" : "", "aria-label":"Picture " + c, onclick:e => { V.s[i].ic = c; saveV(); [...pick.children].forEach(b => b.classList.toggle("on", b.textContent === c)); big.textContent = c; }}, c)));
-  const big = el("div", {class:"sic"}, V.s[i].ic || ic);
-  see.oninput = () => { V.s[i].see = see.value; saveV(); count(); }; nar.oninput = () => { V.s[i].say = nar.value; saveV(); count(); };
-  return el("div", {class:"scene"}, big, el("span", {class:"tag"}, "Scene " + (i + 1) + " · " + name), el("span", {class:"muted", style:"font-size:13px;font-weight:700"}, "Choose its picture:"), pick, el("label", {class:"ff"}, el("b", null, "👁 What we see"), see), el("label", {class:"ff"}, el("b", null, "🎙 Narration"), nar)); }));
+drawBoard();
 count();
 $("#myPlay").onclick = () => { if (!script()){ K.toast("Write the narration first."); return; }
   if (vp && vp.btn === $("#myPlay")){ vStop(); return; }
