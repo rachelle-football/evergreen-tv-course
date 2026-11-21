@@ -268,7 +268,7 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 <!-- PERIOD 1 -->
 <section class="seg" id="seg-1" data-min="3" data-title="Today" data-period="1">
   <div class="lower"><div class="no">01</div><div class="name"><h2>Today you are an AI engineer</h2><p>Period 1 · 3 minutes</p></div></div>
-  <p class="big">Last week you learned WHAT AI is. Today you learn HOW to train a GOOD one, and how to measure it. You choose what you teach it:</p>
+  <p class="big">In Chapter 1 you learned WHAT AI is. Today you learn HOW to train a GOOD one, and how to measure it. You choose what you teach it:</p>
   <div class="grid g3">
     <div class="card"><span class="tag">Choice 1 · 🏫</span><h3 style="font-size:24px;margin:6px 0">School objects</h3><p style="margin:0">Teach a real AI to recognise school things it has never seen: a pencil, a book, a backpack…</p></div>
     <div class="card"><span class="tag">Choice 2 · ♻️</span><h3 style="font-size:24px;margin:6px 0">Recycling robot</h3><p style="margin:0">Teach a robot to sort waste: a bottle, a can, a banana peel… Watch it go from "no idea" to "I know this!"</p></div>
@@ -293,7 +293,10 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
   <p class="big">Who got the highest accuracy? What did they do differently?</p>
   <div class="grid g2">
     <div class="card"><span class="tag">Ask the class</span><ul class="lead" style="margin:8px 0 0;padding-left:22px"><li>What was your exam score? And with your friend?</li><li>Why did your AI get worse with your friend's drawings?</li><li>What made it better?</li><li>Would you trust your AI to do this job alone? Why?</li></ul></div>
-    <div class="card" style="background:var(--gold-soft);border-color:transparent"><span class="tag">Remember for next week</span><p class="lead" style="margin:8px 0 0">An AI is only as good as its examples: many, different, and from many people.</p></div>
+    <div class="card" style="background:var(--gold-soft);border-color:transparent"><span class="tag">Remember</span><p class="lead" style="margin:8px 0 0">An AI is only as good as its examples: many, different, and from many people.</p></div>
+    <p class="lead" style="margin:18px 0 6px"><b>Key words.</b> Tap each one.</p>
+    <div class="kw3" id="kw3"></div>
+    <p class="ar3" lang="ar" dir="rtl"><b>بالعربي:</b> الـAI بيتعلّم من الأمثلة. كل ما كانت الأمثلة أكتر ومتنوّعة أكتر ومن ناس أكتر، كل ما صار أذكى وأعدل. ومنقيس قوّته بامتحان فيه أمثلة جديدة ما شافها قبل (الدقّة).</p>
   </div>
 </section>
 
@@ -308,7 +311,7 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
   </div>
   <div class="card lab" id="lab3" style="max-width:780px"></div>
   <div class="def" id="biasDef" hidden>
-    <span class="tag">This is called bias</span>
+    <span class="tag">This is bias (remember Chapter 2?)</span>
     <p>When the examples are one-sided, the AI is unfair to everything it did not see.</p>
     <div class="note" style="color:var(--ink);font-size:17px">It happens in real life, and not only with trees. In 2018, researchers tested face programs from big companies: they made under 1% mistakes on light-skinned men, and up to 35% on dark-skinned women, because most of their examples were light-skinned men. (<a href="https://proceedings.mlr.press/v81/buolamwini18a.html" target="_blank" rel="noopener">Gender Shades study</a>)</div>
   </div>
@@ -346,7 +349,7 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
         <li>Scribble something quickly: a cat, a house, a bike…</li>
         <li>Look at the top bar: the AI guesses your drawing and offers clean pictures. Click one!</li>
       </ol>
-      <p class="muted" style="margin:0;font-size:15px">It learned from the drawings of people who played Quick, Draw! (like you did in Chapter 1).</p>
+      <p class="muted" style="margin:0;font-size:15px">It learned from the drawings of people who played Quick, Draw!. Millions of people drew for it.</p>
     </div>
     <div class="card">
       <span class="tag">Your AI vs. Google's</span>
@@ -363,13 +366,15 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 
 <section class="seg" id="seg-7" data-min="5" data-title="Your certificate" data-period="2" hidden>
   <div class="lower"><div class="no">07</div><div class="name"><h2>Your AI Trainer certificate</h2><p>Period 2 · 5 minutes · show it at home</p></div></div>
+  <div class="card" style="margin-bottom:16px"><span class="tag">Check yourself · 4 questions</span><div id="q3" class="q3"></div><p id="q3s" class="q3s"></p></div>
   <p class="big">You trained a real AI, tested it, and made it better. Here is your certificate.</p>
   <div class="card certbox">
-    <label class="labname">Your name on the certificate<input id="certName" type="text" maxlength="30" autocomplete="off" placeholder="Your first and last name"></label>
+    <label class="labname">Your name on the certificate<input id="certName" type="text" maxlength="30" autocomplete="off" placeholder="Your first name"></label>
     <p class="muted" id="certNote" style="margin:0;font-size:15px"></p>
     <canvas id="cert" width="1200" height="850" aria-label="Your AI Trainer certificate"></canvas>
     <div class="row"><a class="btn" id="certDl" download="AI-Trainer-certificate.png" href="#">⬇ Download my certificate</a></div>
   </div>
+  <div class="home3"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Open AutoDraw with your family. Everyone draws the same thing (a cat, a car…). Does the AI guess everyone's drawing? Whose drawing was the hardest for it, and why?</p></div>
   <p class="note" style="margin-top:16px">Next week: Prompt Engineering. You learn to talk to AI so it does exactly what you want.</p>
 </section>
 
@@ -934,7 +939,7 @@ stageLab($("#lab1"), {
   $("#certName").value = store.get("certName") || who;
   function draw(){
     d = store.get("cert") || {};
-    $("#certNote").textContent = d.words && d.exam ? "Your AI's results are on it. Check your name, then download." : "Finish the mission in step 3 (teach your AI and give it the exam) and your results appear here.";
+    $("#certNote").textContent = d.words && d.exam ? "Your AI's results are on it. Check your name, then download." : "Finish the mission in step 2 (teach your AI and give it the exam) and your results appear here.";
     const W = 1200, H = 850, name = $("#certName").value.trim() || "AI Trainer";
     g.fillStyle = "#FBF7EE"; g.fillRect(0, 0, W, H);
     g.strokeStyle = "#1E7A55"; g.lineWidth = 14; g.strokeRect(30, 30, W - 60, H - 60);
@@ -1015,6 +1020,34 @@ go(start >= 0 ? start : 0);
     if (ok === 8 || tests >= 4) $$("#bLesson").hidden = false;
   };
   drawHelpers();
+})();
+</script>
+<style>
+.kw3{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}
+.kw3 button{text-align:left;font:inherit;border:2px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink);padding:10px 12px;cursor:pointer;display:grid;gap:2px}
+.kw3 button b{font-size:18px}.kw3 button span{font-size:14px;color:var(--muted)}
+.kw3 button.open{border-color:var(--green);background:var(--green-soft)}.kw3 button.open span{color:var(--ink);font-size:15px}
+.ar3{background:var(--gold-soft);border-radius:12px;padding:10px 14px;margin:12px 0 0;font-size:17px;line-height:1.7}
+.q3{display:grid;gap:12px;margin-top:8px}.q3 h4{margin:0 0 6px;font-size:18px}
+.q3 .o{display:grid;gap:6px}.q3 .o button{text-align:left;font:inherit;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);cursor:pointer}
+.q3 .o button.right{border-color:var(--green);background:var(--green-soft);font-weight:700}.q3 .o button.wrong{border-color:var(--onair);background:var(--onair-soft)}
+.q3 .w{margin:6px 0 0;font-weight:700;font-size:15px}.q3s{margin:10px 0 0;font-weight:700;font-size:18px;color:var(--green)}
+.home3{background:var(--paper);border:2px dashed var(--line);border-radius:14px;padding:12px 14px;margin:16px 0}
+</style>
+<script>
+(function(){
+  const $ = q => document.querySelector(q);
+  const el = (tag, attrs, ...kids) => { const e = document.createElement(tag); for (const k in (attrs || {})){ if (k.startsWith("on")) e.addEventListener(k.slice(2), attrs[k]); else e.setAttribute(k, attrs[k]); } kids.flat().forEach(c => { if (c != null) e.append(c); }); return e; };
+  const KW = [["Training data", "All the examples we give the AI to learn from."], ["Example", "One drawing or picture the AI learns from."], ["Exam (test)", "New examples the AI has never seen, to check what it learned."], ["Accuracy", "How many answers the AI gets right, in %."], ["Bias", "When the examples are one-sided, so the AI is unfair."], ["Neuron", "A little helper in the AI's brain that gives its opinion."]];
+  const box = $("#kw3"); if (box) box.replaceChildren(...KW.map(([w, m]) => { const b = el("button", {type:"button"}, el("b", null, w), el("span", null, "Tap to see")); b.onclick = () => { b.classList.add("open"); b.querySelector("span").textContent = m; }; return b; }));
+  const QS = [["How does an AI learn?", ["From many examples", "It already knows everything", "By magic"], 0, "AI learns from examples, like the drawings you taught it."],
+    ["Your AI got 90% on your drawings, but 40% on your friend's. Why?", ["Your friend draws badly", "It only saw YOUR way of drawing", "The AI is broken"], 1, "It learned one style only. It needs examples from many people."],
+    ["How do you make an AI stronger?", ["Give it the same drawing 100 times", "More examples, different ones, from many people", "Make the screen bigger"], 1, "Many, different, from many people: that's the secret."],
+    ["What is accuracy?", ["How fast the AI answers", "How many answers it gets right, in %", "How big the AI is"], 1, "Accuracy = right answers ÷ all answers, in %."]];
+  let n = 0, ok = 0; const q = $("#q3");
+  if (q) q.replaceChildren(...QS.map(([t, opts, a, why]) => { const w = el("p", {class:"w"}); let d = false;
+    const bs = opts.map((o, i) => el("button", {type:"button", onclick:() => { if (d) return; d = true; n++; if (i === a) ok++; bs[a].classList.add("right"); if (i !== a) bs[i].classList.add("wrong"); w.textContent = (i === a ? "✓ " : "✗ ") + why; w.style.color = i === a ? "var(--green)" : "var(--onair)"; if (n === QS.length) $("#q3s").textContent = "You got " + ok + " of " + QS.length + (ok === QS.length ? ". 🏅 Real AI Trainer!" : ". Read the ✗ answers again."); }}, o));
+    return el("div", null, el("h4", null, t), el("div", {class:"o"}, ...bs), w); }));
 })();
 </script>
 <script src="config.js"></script>
