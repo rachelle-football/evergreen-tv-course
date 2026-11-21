@@ -418,6 +418,7 @@ img.fprev{background:var(--paper)}
 @media (max-width:760px){.farr{display:none}.fst{flex-basis:45%}}
 .sboard.edit{grid-template-columns:1fr}@media(min-width:760px){.sboard.edit{grid-template-columns:1fr 1fr}}
 .icpick.lab button{font-size:15px;display:flex;align-items:center;gap:6px;padding:6px 10px;font-weight:600;color:var(--ink)}.icpick.lab .e{font-size:22px}
+.scene .sic{display:flex;justify-content:center;align-items:center;gap:14px}.scene .sic .sx{font-size:36px;animation:vpop .5s cubic-bezier(.2,1.6,.4,1) both}.aisees{margin:-4px 0 0;font-size:14px;font-weight:700;color:var(--green)}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -1049,6 +1050,15 @@ const OWN = [["what the problem looks like", "Say the problem in one sentence.",
   ["someone doing your second solution", "Say your second solution.", [["✅", "Do it"], ["🌱", "A small step"], ["💡", "Another idea"]]],
   ["people happy at the end", "Tell people what to do, starting today!", [["📣", "Tell everyone"], ["😊", "Happy people"], ["🌍", "A better world"]]]];
 const T = () => TX[V.topic] || OWN;
+/* the "AI" reads "What we see" and finds things it can draw */
+const SEEW = {kid:"🧒", kids:"🧒", child:"🧒", children:"🧒", boy:"👦", girl:"👧", student:"🧑‍🎓", pupil:"🧑‍🎓", teacher:"🧑‍🏫", mom:"👩", mother:"👩", dad:"👨", father:"👨", friend:"👫", friends:"👫", family:"👨‍👩‍👧", baby:"👶", grandma:"👵", teta:"👵", grandpa:"👴",
+  class:"🏫", classroom:"🏫", school:"🏫", home:"🏠", house:"🏠", room:"🛏️", kitchen:"🍳",
+  phone:"📱", mobile:"📱", screen:"📱", tablet:"📱", bed:"🛏️", sleep:"😴", sleeping:"😴", asleep:"😴", tired:"🥱", yawning:"🥱", yawn:"🥱", clock:"⏰", alarm:"⏰", pm:"🕘", night:"🌙", moon:"🌙", sun:"☀️", morning:"☀️", book:"📖", read:"📖", reading:"📖", homework:"📚", pencil:"✏️",
+  happy:"😊", smile:"😊", smiling:"😊", laugh:"😂", laughing:"😂", sad:"😢", cry:"😢", crying:"😢", alone:"😔", angry:"😠", ball:"⚽", football:"⚽", play:"⚽", playing:"⚽", hello:"👋", wave:"👋", heart:"❤️", kind:"❤️", love:"❤️", help:"🤝", helping:"🤝", helps:"🤝",
+  water:"💧", drop:"💧", tap:"🚰", sink:"🚰", shower:"🚿", bucket:"🪣", plant:"🌱", plants:"🌱", tree:"🌳", trees:"🌳", flower:"🌸", flowers:"🌸", garden:"🌱", toothbrush:"🪥", brushing:"🪥", teeth:"🪥", leak:"🔧",
+  plastic:"🛍️", bag:"🛍️", bags:"🛍️", bottle:"🧴", bottles:"🧴", cup:"🥤", straw:"🥤", sea:"🌊", ocean:"🌊", beach:"🏖️", turtle:"🐢", fish:"🐟", recycle:"♻️", recycling:"♻️", trash:"🗑️", rubbish:"🗑️", garbage:"🗑️", bin:"🗑️", basket:"🧺",
+  car:"🚗", cars:"🚗", bus:"🚌", bike:"🚲", bicycle:"🚲", walk:"🚶", walking:"🚶", walks:"🚶", traffic:"🚦", smoke:"💨", air:"💨", street:"🛣️", road:"🛣️", earth:"🌍", planet:"🌍", world:"🌍", city:"🏙️", dog:"🐕", cat:"🐈", food:"🍎", apple:"🍎", eat:"🍎", eating:"🍎", strong:"💪", energy:"💪", star:"⭐", rain:"🌧️", money:"💰"};
+function seeIcons(t){ const out = []; String(t || "").toLowerCase().split(/[^a-z]+/).forEach(w => { const e = SEEW[w] || (w.endsWith("s") && SEEW[w.slice(0, -1)]); if (e && !out.some(o => o[0] === e) && out.length < 3) out.push([e, w]); }); return out; }
 function drawBoard(){
   const has = !!(V.topic || "").trim();
   $("#myWait").hidden = has; $("#myBoard").hidden = !has; $("#myHow").hidden = !has;
@@ -1059,12 +1069,15 @@ function drawBoard(){
     const see = el("textarea", {rows:"2", placeholder:"Example: " + ex1}), nar = el("textarea", {rows:"3", placeholder:"Example: " + ex2});
     see.value = V.s[i].see || ""; nar.value = V.s[i].say || "";
     const cur = pics.some(x => x[0] === V.s[i].ic) ? V.s[i].ic : "";
-    const big = el("div", {class:"sic"}, cur || ic);
-    const pick = el("div", {class:"icpick lab"}, ...pics.map(([c, l]) => el("button", {type:"button", class:cur === c ? "on" : "", "data-ic":c, onclick:() => { V.s[i].ic = c; saveV(); [...pick.children].forEach(b => b.classList.toggle("on", b.dataset.ic === c)); big.textContent = c; }}, el("span", {class:"e"}, c), el("span", null, l))));
-    see.oninput = () => { V.s[i].see = see.value; saveV(); count(); }; nar.oninput = () => { V.s[i].say = nar.value; saveV(); count(); };
+    const big = el("div", {class:"sic"}), aiSees = el("p", {class:"aisees"});
+    const paint = () => { const main = V.s[i].ic && pics.some(x => x[0] === V.s[i].ic) ? V.s[i].ic : ic, ex = seeIcons(see.value);
+      big.replaceChildren(el("span", null, main), ...ex.map(([e]) => el("span", {class:"sx"}, e)));
+      aiSees.textContent = ex.length ? "🤖 The AI will draw: " + ex.map(([e, w]) => e + " " + w).join(" · ") : (see.value.trim() ? "🤖 The AI can't find a thing to draw. Try words like kid, phone, bed, tree, car…" : "🤖 Write what we see, and the AI will draw it."); };
+    const pick = el("div", {class:"icpick lab"}, ...pics.map(([c, l]) => el("button", {type:"button", class:cur === c ? "on" : "", "data-ic":c, onclick:() => { V.s[i].ic = c; saveV(); [...pick.children].forEach(b => b.classList.toggle("on", b.dataset.ic === c)); paint(); }}, el("span", {class:"e"}, c), el("span", null, l))));
+    see.oninput = () => { V.s[i].see = see.value; saveV(); count(); paint(); }; paint(); nar.oninput = () => { V.s[i].say = nar.value; saveV(); count(); };
     return el("div", {class:"scene"}, big, el("span", {class:"tag"}, "Scene " + (i + 1) + " · " + name), el("b", {style:"font-size:15px"}, job),
       el("span", {class:"muted", style:"font-size:13px;font-weight:700"}, "1 · Choose a picture for this scene:"), pick,
-      el("label", {class:"ff"}, el("b", null, "2 · 👁 What we see"), see), el("label", {class:"ff"}, el("b", null, "3 · 🎙 What the narrator says"), nar)); }));
+      el("label", {class:"ff"}, el("b", null, "2 · 👁 What we see"), see), aiSees, el("label", {class:"ff"}, el("b", null, "3 · 🎙 What the narrator says"), nar)); }));
 }
 function drawTopics(){ $("#vTopics").replaceChildren(...TOP.map(t => el("button", {class:"chip" + (V.topic === t ? " on" : ""), type:"button", "aria-pressed":String(V.topic === t), onclick:() => { V.topic = t; saveV(); drawTopics(); drawBoard(); }}, t)), el("input", {type:"text", placeholder:"or your own message", value:TOP.includes(V.topic) ? "" : V.topic, style:"font:inherit;padding:7px 12px;border:1.5px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink)", onchange:e => { V.topic = e.target.value; saveV(); drawTopics(); drawBoard(); }})); }
 drawTopics();
@@ -1077,7 +1090,7 @@ count();
 $("#myPlay").onclick = () => { if (!script()){ K.toast("Write the narration first."); return; }
   if (vp && vp.btn === $("#myPlay")){ vStop(); return; }
   const ANIM = ["bob", "pop", "grow", "spin"];
-  const scenes = V.s.map((x, i) => ({ic:x.ic || NAMES[i][0], title:NAMES[i][1], cap:x.see || "", beats:(sentences(x.say).length ? sentences(x.say) : ["…"]).map((t, k) => ({t, art:[[x.ic || NAMES[i][0], ANIM[(i + k) % 4] + " big3x", "left:50%;top:44%"]]}))}));
+  const scenes = V.s.map((x, i) => ({ic:x.ic || NAMES[i][0], title:NAMES[i][1], cap:x.see || "", beats:(sentences(x.say).length ? sentences(x.say) : ["…"]).map((t, k) => ({t, art:[[x.ic || NAMES[i][0], ANIM[(i + k) % 4] + " big3x", "left:50%;top:44%"], ...seeIcons(x.see).map(([e], j) => [e, "pop big2x", ["left:16%;top:42%", "left:84%;top:42%", "left:84%;top:68%"][j]])]}))}));
   $("#myFactory").hidden = false; $("#myPlay").disabled = true;
   factory($("#myFactory"), scenes, 600).then(() => { $("#myPlay").disabled = false; $("#myStage").hidden = false; videoPlay($("#myStage"), scenes, $("#myPlay")); }); };
 $("#myCopy").onclick = () => copy("30-second explainer: " + V.topic + "\n\n" + V.s.map((x, i) => "Scene " + (i + 1) + " (" + NAMES[i][1] + ")\nWe see: " + (x.see || "") + "\nNarrator: " + (x.say || "")).join("\n\n"), null, "your document");
