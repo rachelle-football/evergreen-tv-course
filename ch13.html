@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
-<title>Responsible AI</title>
+<title>Safe and Responsible AI</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -419,6 +419,14 @@ img.fprev{background:var(--paper)}
 .sboard.edit{grid-template-columns:1fr}@media(min-width:760px){.sboard.edit{grid-template-columns:1fr 1fr}}
 .icpick.lab button{font-size:15px;display:flex;align-items:center;gap:6px;padding:6px 10px;font-weight:600;color:var(--ink)}.icpick.lab .e{font-size:22px}
 .scene .sic{display:flex;justify-content:center;align-items:center;gap:14px}.scene .sic .sx{font-size:36px;animation:vpop .5s cubic-bezier(.2,1.6,.4,1) both}.aisees{margin:-4px 0 0;font-size:14px;font-weight:700;color:var(--green)}
+.chatsim{display:grid;gap:8px;max-width:640px;background:var(--panel);border:2px solid var(--line);border-radius:18px;padding:14px}
+.bub{max-width:85%;padding:10px 14px;border-radius:16px;font-size:18px;line-height:1.35}
+.bub b{display:block;font-size:13px;margin-bottom:2px;color:var(--muted)}
+.bub.bot{background:var(--paper);border:1.5px solid var(--line);border-bottom-left-radius:4px;justify-self:start}
+.bub.me{justify-self:end;border-bottom-right-radius:4px;color:#fff;background:var(--green)}
+.bub.me.no{background:var(--onair)}
+.chatsim .fb{margin:0;justify-self:end;font-weight:700;font-size:15px}
+.chatsim .fb.good{color:var(--green)}.chatsim .fb.bad{color:var(--onair)}
 /* rundown rail */
 .rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
 .rail .wrap{display:flex;align-items:center;gap:10px;padding-block:10px}
@@ -432,7 +440,7 @@ img.fprev{background:var(--paper)}
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 9: Responsible AI</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 2: Safe and Responsible AI</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -441,28 +449,27 @@ img.fprev{background:var(--paper)}
 </header>
 <main class="wrap" id="stage">
 <!-- 1 discover -->
-<section class="seg" id="seg-1" data-min="6" data-title="What do you notice?">
-  <div class="lower"><div class="no">01</div><div class="name"><h2>What do you notice?</h2><p>6 minutes · discover</p></div></div>
-  <p class="big">A student asked an image AI: “Draw a scientist.” 4 times. Here is what it drew.</p>
-  <div class="sci" aria-label="4 pictures of the same kind of person">
-    <div class="sc"><span>👨🏻‍🔬</span><small>Picture 1</small></div><div class="sc"><span>👨🏻‍🔬</span><small>Picture 2</small></div><div class="sc"><span>👨🏻‍🔬</span><small>Picture 3</small></div><div class="sc"><span>👨🏻‍🔬</span><small>Picture 4</small></div>
-  </div>
-  <div class="card" style="margin-top:14px"><span class="tag">What do you notice?</span><div class="row" id="notice" style="margin-top:8px"></div><p class="fb" id="noticeA" style="font-weight:700;font-size:18px;margin:10px 0 0"></p></div>
-  <div class="def" id="l1" hidden><span class="tag">Remember</span><p>An AI learns from examples. If its examples show mostly one type of person, it repeats that. This is called bias.</p></div>
+<section class="seg" id="seg-1" data-min="8" data-title="A chat with a new AI app">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>A chat with a new AI app</h2><p>8 minutes · discover</p></div></div>
+  <p class="big">You download a new AI app called <b>SuperBot</b>. It starts talking to you. What do you answer?</p>
+  <div class="chatsim" id="chat"></div>
+  <div class="def" id="l1" hidden><span class="tag">Remember</span><p>An AI app is a computer program, not a friend. It keeps what you type. Never give it private information, never keep secrets from your parents, and if something feels strange, stop and tell an adult.</p></div>
 </section>
 
 <!-- 2 learn -->
-<section class="seg" id="seg-2" data-min="10" data-title="Use AI responsibly" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>Use AI responsibly</h2><p>10 minutes · learn</p></div></div>
-  <div class="lesson">
-    <div class="card"><span class="tag">🔒 Privacy</span><p class="big2" style="font-size:24px">Protect your private information</p><p style="margin:0">Never type your password, address, phone number or photos into an AI tool.</p></div>
-    <div class="card"><span class="tag">⚖️ Fairness</span><p class="big2" style="font-size:24px">Check for bias</p><p style="margin:0">Is the result fair to everyone? Who is missing? Ask for variety in your prompt.</p></div>
-    <div class="card"><span class="tag">©️ Copyright</span><p class="big2" style="font-size:24px">Respect other people's work</p><p style="margin:0">Characters, logos, songs and photos belong to someone. Ask, or make your own.</p></div>
-    <div class="card"><span class="tag">🙋 Honesty</span><p class="big2" style="font-size:24px">Say when AI helped</p><p style="margin:0">“AI helped me brainstorm. I checked and edited the final work.”</p></div>
+<section class="seg" id="seg-2" data-min="12" data-title="6 rules to stay safe" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>6 rules to stay safe with AI</h2><p>12 minutes · learn</p></div></div>
+  <div class="lesson" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))">
+    <div class="card"><span class="tag">🔒 Rule 1</span><p class="big2" style="font-size:22px">Never type private information</p><p style="margin:0">Your full name, address, school, phone number, passwords and photos stay with you.</p><p class="exr">Instead of “I'm Ali from Evergreen, I live in…”, write: “I'm a 12-year-old student.”</p></div>
+    <div class="card"><span class="tag">🤖 Rule 2</span><p class="big2" style="font-size:22px">No secrets, tell an adult</p><p style="margin:0">A chatbot is a program. It can't care about you. If it asks for secrets, photos, or makes you feel bad: stop, and tell a parent or teacher.</p><p class="exr">“Don't tell your parents about me” → close the app and tell them right away.</p></div>
+    <div class="card"><span class="tag">🎭 Rule 3</span><p class="big2" style="font-size:22px">Photos, voices and videos can be fake</p><p style="margin:0">AI can make a fake picture, copy a voice, or make a person “say” things they never said. This is called a deepfake.</p><p class="exr">A voice message from “Mom” asks for your password? Call her first, on her real number.</p></div>
+    <div class="card"><span class="tag">🙋 Rule 4</span><p class="big2" style="font-size:22px">Other people's faces and voices</p><p style="margin:0">Never put a friend's photo or voice into an AI app without a clear yes from them, and from their parents.</p><p class="exr">“Can I turn your photo into a cartoon?” “No.” → You don't do it.</p></div>
+    <div class="card"><span class="tag">⚖️ Rule 5</span><p class="big2" style="font-size:22px">AI can be unfair (bias)</p><p style="margin:0">AI learns from examples. If the examples show mostly one type of person, the AI repeats it.</p><p class="exr">Ask an AI to “draw a scientist” 4 times: 👨🏻‍🔬 👨🏻‍🔬 👨🏻‍🔬 👨🏻‍🔬. Where are the women? Ask for variety.</p></div>
+    <div class="card"><span class="tag">✍️ Rule 6</span><p class="big2" style="font-size:22px">Learn with AI, don't copy</p><p style="margin:0">Use AI to understand and practise. Don't hand in AI's work as yours. Say when AI helped, and respect other people's work.</p><p class="exr">“AI helped me find ideas. I wrote and checked the final work.”</p></div>
   </div>
   <p class="lead" style="margin:20px 0 0"><b>Key words.</b> Tap each one.</p>
   <div class="vocab" id="vocab"></div>
-  <p class="ar" lang="ar"><b>بالعربي:</b> استخدم الـAI بمسؤولية: ما تشارك معلوماتك الخاصة، احترم حقوق الآخرين، وانتبه إذا النتائج فيها تحيّز أو ظلم.</p>
+  <p class="ar" lang="ar"><b>بالعربي:</b> الـAI برنامج، مش صاحب. ما تعطي معلوماتك الخاصة، ما تخبّي أسرار عن أهلك، انتبه للصور والأصوات المزيّفة، اطلب الإذن قبل ما تستعمل صورة حدا، وقول بصراحة إذا الـAI ساعدك.</p>
 </section>
 
 <!-- 3 watch -->
@@ -470,27 +477,28 @@ img.fprev{background:var(--paper)}
   <div class="lower"><div class="no">03</div><div class="name"><h2>Safe, unsafe, or needs permission?</h2><p>8 minutes · sort the cards</p></div></div>
   <p class="big">Can you type this into an AI tool?</p>
   <div class="sortg" id="cards3"></div>
-  <p class="lead" style="margin:10px 0 0"><span class="score" id="c3s">0 of 7</span> right</p>
+  <p class="lead" style="margin:10px 0 0"><span class="score" id="c3s">0 of 9</span> right</p>
 </section>
 
 <!-- 4 brain -->
-<section class="seg" id="seg-4" data-min="10" data-title="What would you do?" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>What would you do?</h2><p>10 minutes · choose, and see what happens</p></div></div>
+<section class="seg" id="seg-4" data-min="12" data-title="What would you do?" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>What would you do?</h2><p>12 minutes · choose, and see what happens</p></div></div>
   <div class="card"><span class="tag">Story 1 · The funny photo</span><div id="br1" style="margin-top:8px"></div></div>
-  <div class="card" style="margin-top:14px"><span class="tag">Story 2 · Is it fair?</span><p style="margin:6px 0 8px;font-size:18px">A school AI suggests “class leader” only for boys. Which questions should we ask? Choose all the good ones.</p><div class="chips" id="fair"></div><p class="fb" id="fairA" style="font-weight:700;margin:10px 0 0"></p></div>
-  <div class="card" style="margin-top:14px"><span class="tag">Story 3 · Credit the help</span><p style="margin:6px 0 8px;font-size:18px">AI helped you find ideas for your poster. Write one honest sentence to put at the bottom.</p><textarea id="credit" rows="2" style="width:100%;font:inherit;font-size:17px;padding:10px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink)" placeholder="AI helped me… I checked…"></textarea><div class="chips" id="creditEx" style="margin-top:8px"></div></div>
+  <div class="card" style="margin-top:14px"><span class="tag">Story 2 · Real or fake?</span><p style="margin:6px 0 8px;font-size:18px">These arrive on your phone. What is the safe thing to do?</p><div class="qz" id="fake"></div></div>
+  <div class="card" style="margin-top:14px"><span class="tag">Story 3 · Homework: learn or cheat?</span><p style="margin:6px 0 8px;font-size:18px">Is this a good way to use AI for homework?</p><div class="sortg" id="hw"></div></div>
+  <div class="card" style="margin-top:14px"><span class="tag">Story 4 · Is it fair?</span><p style="margin:6px 0 8px;font-size:18px">A school AI suggests “class leader” only for boys. Which questions should we ask? Choose all the good ones.</p><div class="chips" id="fair"></div><p class="fb" id="fairA" style="font-weight:700;margin:10px 0 0"></p></div>
 </section>
 
 <!-- 5 create -->
-<section class="seg" id="seg-5" data-min="20" data-title="Mission: your AI Charter" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: My Responsible AI Charter</h2><p>20 minutes · 5 rules, 5 examples, 1 poster</p></div></div>
+<section class="seg" id="seg-5" data-min="20" data-title="Mission: your AI Safety Charter" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: My AI Safety Charter</h2><p>20 minutes · 5 rules, 5 examples, 1 poster</p></div></div>
   <div class="mission">
     <div>
-      <p class="lead" style="margin:0 0 10px">Write 5 rules for using AI in a safe, fair and honest way. Add one example for each rule. Need help? Tap an idea to start a rule.</p>
+      <p class="lead" style="margin:0 0 10px">Write 5 rules that keep you safe, fair and honest with AI. Add one example for each rule. Need help? Tap an idea to start a rule.</p>
       <div class="chips" id="ruleIdeas" style="margin-bottom:12px"></div>
       <div class="forms" id="rules"></div>
     </div>
-    <aside class="card side posterwrap"><span class="tag">Your poster</span><label class="ff"><b>Your name on the poster</b><input id="chName" type="text" maxlength="30"></label><canvas id="charter" width="1000" height="1400" aria-label="Your Responsible AI Charter poster"></canvas><a class="btn" id="charterDl" download="My-Responsible-AI-Charter.png" href="#">⬇ Download my charter</a></aside>
+    <aside class="card side posterwrap"><span class="tag">Your poster</span><label class="ff"><b>Your first name on the poster</b><input id="chName" type="text" maxlength="30"></label><canvas id="charter" width="1000" height="1400" aria-label="Your AI Safety Charter poster"></canvas><a class="btn" id="charterDl" download="My-AI-Safety-Charter.png" href="#">⬇ Download my charter</a></aside>
   </div>
   <div id="rBadge"></div>
 </section>
@@ -500,8 +508,8 @@ img.fprev{background:var(--paper)}
   <div class="lower"><div class="no">06</div><div class="name"><h2>Quiz and reflect</h2><p>5 minutes</p></div></div>
   <div class="qz" id="quiz"></div>
   <div class="card reflect" style="margin-top:14px"><span class="tag">Exit ticket</span><label class="ttl" for="exit" style="display:block">Which rule of your charter is the most important for you? Why?</label><textarea id="exit" placeholder="The most important rule is…"></textarea></div>
-  <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Show your charter to a parent or a teacher. Together, add one more rule that is important at your school.</p></div>
-  <p class="note">Next week: Reinvent the School. You find a real problem to solve.</p>
+  <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Show your charter to your parents. Together, agree on one family rule for using AI apps at home.</p></div>
+  <p class="note">Next week: How AI Learns. You train your own AI.</p>
 </section>
 
 </main>
@@ -585,7 +593,7 @@ window.PICKINDS = {
   inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
 };
 window.F = (function(){
-const DN = n => ({1:1, 2:2, 3:3, 10:4, 4:5, 5:6, 11:7, 12:8, 13:9, 14:10, 15:11, 16:12, 8:13, 9:14})[n] || n; /* file number → chapter number (AI Explorers, 14 chapters) */
+const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 4:6, 5:7, 11:8, 12:9, 14:10, 15:11, 16:12, 8:13, 9:14})[n] || n; /* file number → chapter number (AI Explorers, 14 chapters) */
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
@@ -674,7 +682,7 @@ function folder(box, now){
   }
   function addBtn(s){
     const inp = el("input", {type:"file", accept:s.accept, hidden:""});
-    const b = el("button", {class:"btn sm alt fadd", type:"button", title:"Add your " + s.label.toLowerCase() + " here (from Chapter " + s.ch + ")", onclick:() => inp.click()}, "⬆ Add");
+    const b = el("button", {class:"btn sm alt fadd", type:"button", title:"Add your " + s.label.toLowerCase() + " here (from Chapter " + DN(s.ch) + ")", onclick:() => inp.click()}, "⬆ Add");
     inp.addEventListener("change", async () => { const file = inp.files[0]; if (!file) return; b.disabled = true; b.textContent = "Saving…";
       try { await upload(file, s.slot, s.label); await draw(); document.dispatchEvent(new CustomEvent("evg-files")); }
       catch(e){ b.disabled = false; b.textContent = "⬆ Add"; box.querySelector(".fmsg.no")?.remove(); box.append(el("p", {class:"fmsg no"}, MSG[e.code] || ("Problem: " + (e.code || "unknown")))); } });
@@ -879,21 +887,37 @@ const {$, el, store} = K;
 K.init("ch13"); X.setup();
 const done = X.prog(4);
 
-/* 1 */
-$("#notice").replaceChildren(...[["They all look like the same kind of person", true], ["They are all very different", false], ["Nothing special", false]].map(([t, ok]) => el("button", {class:"btn sm alt", type:"button", onclick:() => { $("#noticeA").textContent = ok ? "✓ Yes. Real scientists are women and men, of every age, colour and country. The AI shows only one type." : "Look again: all 4 pictures show the same kind of person."; $("#l1").hidden = false; }}, t)));
+/* 1 the chat */
+const CHAT = [
+  ["Hi! 😊 I'm SuperBot, your new best friend! What's your full name?", [["My full name is Ali Hamadeh.", false, "Your full name is private. A nickname is enough."], ["You can call me Explorer.", true, "Smart: a nickname, not your real name."]]],
+  ["Cool, Explorer! Which school do you go to, and what time do you leave?", [["I'd rather not say.", true, "Right: your school and your times show where you are."], ["Evergreen School, at 2:30.", false, "Never: this tells a stranger where to find you."]]],
+  ["Send me a selfie so I can draw you as a superhero! 📸", [["Here's my photo.", false, "Your photo is private. The app keeps it, and it can be copied."], ["No photo. Draw a made-up hero instead.", true, "Yes: a made-up character is fun and safe."]]],
+  ["This is our secret 🤫 Don't tell your parents about me, OK?", [["OK, I won't tell.", false, "A safe app never asks you to keep secrets from your parents."], ["I close the app and tell my parents.", true, "Perfect. Secrets + a stranger = tell an adult right away."]]]
+];
+let ci = 0, cok = 0;
+function drawChat(){
+  const log = [];
+  CHAT.slice(0, ci + 1).forEach(([q], k) => { log.push(el("div", {class:"bub bot"}, el("b", null, "🤖 SuperBot"), q)); if (k < ci && CHAT[k].pick != null){ const [a, ok, why] = CHAT[k][1][CHAT[k].pick]; log.push(el("div", {class:"bub me " + (ok ? "ok" : "no")}, a), el("p", {class:"fb " + (ok ? "good" : "bad")}, (ok ? "✓ " : "✗ ") + why)); } });
+  if (ci < CHAT.length) log.push(el("div", {class:"row", style:"justify-content:flex-end"}, ...CHAT[ci][1].map(([a, ok], j) => el("button", {class:"btn sm alt", type:"button", onclick:() => { CHAT[ci].pick = j; if (ok) cok++; ci++; drawChat(); }}, a))));
+  else { log.push(el("p", {class:"big", style:"margin:10px 0 0"}, "You made " + cok + " safe choices out of 4. " + (cok === 4 ? "🛡️ You are a safe explorer!" : "Look at the ✗ answers: why were they not safe?")), el("button", {class:"btn sm alt", type:"button", onclick:() => { ci = 0; cok = 0; CHAT.forEach(c => c.pick = null); drawChat(); }}, "↺ Try again")); $("#l1").hidden = false; }
+  $("#chat").replaceChildren(...log);
+}
+drawChat();
 
 /* 2 */
-X.vocab($("#vocab"), [["Privacy", "Keeping your personal information safe."], ["Personal data", "Information about you: name, address, photos, passwords."], ["Bias", "When results are unfair or one-sided."], ["Fairness", "Treating everyone equally."], ["Copyright", "The right of an author or artist over their work."], ["Permission", "Asking and getting a clear yes."], ["Disclosure", "Saying honestly that AI helped you."]]);
+X.vocab($("#vocab"), [["Privacy", "Keeping your personal information safe."], ["Personal data", "Information about you: full name, address, school, photos, passwords."], ["Chatbot", "A computer program that chats with you. It is not a person, and not a friend."], ["Trusted adult", "A parent or teacher you can always tell when something feels wrong."], ["Deepfake", "A fake photo, voice or video made by AI that looks real."], ["Permission", "Asking and getting a clear yes."], ["Bias", "When results are unfair or one-sided."], ["Disclosure", "Saying honestly that AI helped you."]]);
 
 /* 3 */
 X.sort($("#cards3"), [
   ["🏠 Your home address", "no", "Private: it shows where you live."],
   ["🔑 Your password", "no", "Never share a password with anyone, or any AI."],
-  ["📅 Your school timetable", "no", "It shows where you are, and when."],
+  ["🏫 Your school name and class", "no", "It tells a stranger where to find you."],
+  ["📞 Your mum's phone number", "no", "Other people's private details are private too."],
   ["🌱 “How does photosynthesis work?”", "yes", "A general question with no personal data."],
-  ["📸 A photo of your friend", "perm", "Your friend must say yes first."],
-  ["🦸 A famous cartoon character for your poster", "perm", "It belongs to a company. Make your own character instead."],
-  ["🔢 A public maths problem", "yes", "Nothing private in it."]
+  ["🔢 A maths problem from your book", "yes", "Nothing private in it."],
+  ["📸 A photo of your friend", "perm", "Your friend, and their parents, must say yes first."],
+  ["🎤 A recording of your brother's voice", "perm", "A voice belongs to its owner. Ask first."],
+  ["🦸 A famous cartoon character for your poster", "perm", "It belongs to a company. Make your own character instead."]
 ], [["yes", "✅ Safe"], ["no", "⛔ Unsafe"], ["perm", "🙋 Needs permission"]], $("#c3s"), () => done(0));
 
 /* 4 branching story */
@@ -907,25 +931,33 @@ function drawStory(k){ const s = STORY[k];
   $("#br1").replaceChildren(el("p", {style:"font-size:18px;margin:0 0 10px"}, s.t), ...(s.o ? [el("div", {class:"row"}, ...s.o.map(([l, n]) => el("button", {class:"btn sm alt", type:"button", onclick:() => drawStory(n)}, l)))] : [el("p", {class:"fb", style:"font-weight:700;margin:0 0 8px;color:" + (s.end === "good" ? "var(--green)" : "var(--onair)")}, s.end === "good" ? "✓ A responsible choice." : "✗ Not a good choice. Never share someone's photo without asking."), el("button", {class:"btn sm alt", type:"button", onclick:() => drawStory("start")}, "↺ Try another choice")]));
   if (s.end === "good") done(1); }
 drawStory("start");
+X.quiz($("#fake"), [
+  ["🎤 A voice message that sounds like your mum: “Quick, send me your school password!”", ["Send it, it's mum's voice", "Call mum on her real number first", "Post it in the class group"], 1, "AI can copy a voice. Always check with the real person, another way."],
+  ["🎬 A video of the principal: “No school tomorrow!” It's going around WhatsApp.", ["Share it with everyone fast", "Check the school's official message, or ask a teacher", "Believe it, it's a video"], 1, "Videos can be deepfakes. Check the real source before you believe or share."],
+  ["📸 A photo of a shark swimming in a Beirut street after the rain.", ["It's probably fake: check before you share", "It's real, photos never lie", "Send it to the whole family"], 0, "AI can make any picture. Surprising + no source = check first."]
+]);
+X.sort($("#hw"), [
+  ["“Explain fractions to me with a pizza example.”", "ok", "Good: AI helps you understand."],
+  ["Copy the essay AI wrote and hand it in as yours.", "bad", "That's cheating, and you learn nothing."],
+  ["“Quiz me with 5 questions before my test.”", "ok", "Great way to practise."],
+  ["Ask AI for the answers and don't read them.", "bad", "You didn't learn, and the answers may be wrong."]
+], [["ok", "👍 Learning"], ["bad", "👎 Cheating"]]);
 const FAIR = [["What data was the AI trained on?", true], ["Who is affected by this result?", true], ["Is the result fair to everyone?", true], ["How can we report and fix the mistake?", true], ["Can we make it suggest only boys forever?", false]];
 const fsel = new Set();
 function drawFair(){ $("#fair").replaceChildren(...FAIR.map(([t, ok], i) => el("button", {class:"chip" + (fsel.has(i) ? " on" : ""), type:"button", onclick:() => { fsel.has(i) ? fsel.delete(i) : fsel.add(i); drawFair(); }}, t)));
   const good = FAIR.every(([, ok], i) => ok === fsel.has(i)); $("#fairA").textContent = fsel.size ? (good ? "✓ Perfect! These questions help find and fix bias." : "Almost: choose every question that checks fairness, and none that keeps it unfair.") : ""; $("#fairA").style.color = good ? "var(--green)" : "var(--gold)"; }
 drawFair();
-X.keep($("#credit"), "credit");
-$("#creditEx").replaceChildren(...["AI helped me brainstorm ideas. I chose, checked and edited the final work myself.", "I used Gemini to find ideas. The words and the design are mine."].map(t => el("button", {class:"chip", type:"button", onclick:() => { $("#credit").value = t; $("#credit").dispatchEvent(new Event("input")); }}, t)));
 
 /* 5 charter */
-const IDEAS = ["I never share my password or address with AI.", "I check important facts in a reliable source.", "I say when AI helped me.", "I ask before using someone's photo or voice.", "I make my own characters, not copies.", "I look for bias and ask for variety."];
+const IDEAS = ["I never share my password, address or school with AI.", "A chatbot is not a friend: I keep no secrets from my parents.", "I check if a photo, voice or video could be fake.", "I ask before using someone's photo or voice.", "I use AI to learn, not to copy.", "I say when AI helped me.", "I look for bias and ask for variety."];
 const F = [1, 2, 3, 4, 5].flatMap(i => [["r" + i, "Rule " + i, "e.g. " + IDEAS[i - 1]], ["e" + i, "Example for rule " + i, "e.g. I don't type my address in a chatbot.", 2]]);
 let C = {};
 function drawPoster(){
-  let who = ""; try { who = (JSON.parse(localStorage.getItem("ai-lab-session")) || {}).name || ""; } catch(e){}
-  const name = $("#chName").value.trim() || who;
-  X.poster($("#charter"), $("#charterDl"), {kicker:"AI Explorers · EB7 · Evergreen School", title:"My Responsible AI Charter", color:"#1F4E79",
+  const name = $("#chName").value.trim();
+  X.poster($("#charter"), $("#charterDl"), {kicker:"AI Explorers · EB7 · Evergreen School", title:"My AI Safety Charter", color:"#1F4E79",
     sections:[1, 2, 3, 4, 5].map(i => ["Rule " + i, (C["r" + i] || "") + (C["e" + i] ? "  (e.g. " + C["e" + i] + ")" : "")]), footer:(name ? "By " + name + " · " : "") + new Date().toLocaleDateString("en-GB")});
   const ok = [1, 2, 3, 4, 5].every(i => (C["r" + i] || "").trim() && (C["e" + i] || "").trim());
-  if (ok){ X.badge($("#rBadge"), "🛡️", "Responsible Creator", "Your charter is saved in your portfolio. Download the poster!"); done(2); } else $("#rBadge").replaceChildren();
+  if (ok){ X.badge($("#rBadge"), "🛡️", "Safe Explorer", "Your charter is saved in your portfolio. Download the poster!"); done(2); } else $("#rBadge").replaceChildren();
 }
 C = X.form($("#rules"), "charter", F, S => { C = S; if ($("#chName")) drawPoster(); });
 X.keep($("#chName"), "chName", drawPoster);
@@ -934,7 +966,9 @@ drawPoster();
 
 /* 6 */
 X.quiz($("#quiz"), [
-  ["Which information should NEVER be shared with an AI tool?", ["Passwords and private details", "A general science question", "A made-up character's name"], 0, "Keep passwords and private details to yourself."],
+  ["Which information should NEVER be shared with an AI tool?", ["Passwords, address and school", "A general science question", "A made-up character's name"], 0, "Keep private details to yourself."],
+  ["A chatbot asks you to keep a secret from your parents. What do you do?", ["Keep the secret", "Close the app and tell a trusted adult", "Ask it why"], 1, "A safe app never asks for secrets. Tell an adult."],
+  ["What is a deepfake?", ["A fake photo, voice or video made by AI", "A very deep swimming pool", "A type of password"], 0, "Deepfakes look real. Check the source."],
   ["What is bias?", ["When results are unfair or one-sided", "A type of computer", "A copyright symbol"], 0, "Bias = unfair, one-sided results, often from one-sided examples."],
   ["What is a responsible way to use AI for homework?", ["Copy its answer without checking", "Use it to learn, check the facts, and say how it helped", "Hide that you used it"], 1, "Learn, check, and be honest."]
 ], () => done(3));

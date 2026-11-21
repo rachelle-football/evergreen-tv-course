@@ -241,7 +241,7 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 5: AI Storytelling</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 6: AI Storytelling</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">06:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -423,7 +423,7 @@ window.PICKINDS = {
   inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
 };
 window.F = (function(){
-const DN = n => ({1:1, 2:2, 3:3, 10:4, 4:5, 5:6, 11:7, 12:8, 13:9, 14:10, 15:11, 16:12, 8:13, 9:14})[n] || n; /* file number → chapter number (AI Explorers, 14 chapters) */
+const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 4:6, 5:7, 11:8, 12:9, 14:10, 15:11, 16:12, 8:13, 9:14})[n] || n; /* file number → chapter number (AI Explorers, 14 chapters) */
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
@@ -512,7 +512,7 @@ function folder(box, now){
   }
   function addBtn(s){
     const inp = el("input", {type:"file", accept:s.accept, hidden:""});
-    const b = el("button", {class:"btn sm alt fadd", type:"button", title:"Add your " + s.label.toLowerCase() + " here (from Chapter " + s.ch + ")", onclick:() => inp.click()}, "⬆ Add");
+    const b = el("button", {class:"btn sm alt fadd", type:"button", title:"Add your " + s.label.toLowerCase() + " here (from Chapter " + DN(s.ch) + ")", onclick:() => inp.click()}, "⬆ Add");
     inp.addEventListener("change", async () => { const file = inp.files[0]; if (!file) return; b.disabled = true; b.textContent = "Saving…";
       try { await upload(file, s.slot, s.label); await draw(); document.dispatchEvent(new CustomEvent("evg-files")); }
       catch(e){ b.disabled = false; b.textContent = "⬆ Add"; box.querySelector(".fmsg.no")?.remove(); box.append(el("p", {class:"fmsg no"}, MSG[e.code] || ("Problem: " + (e.code || "unknown")))); } });

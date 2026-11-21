@@ -2,7 +2,7 @@
    Only for logged-in students (the teacher showing the course on the board is never blocked). */
 (function(){
   const CH = +((location.pathname.match(/ch(\d+)\.html/) || [])[1] || 0);
-  const DN = n => ({1:1, 2:2, 3:3, 10:4, 4:5, 5:6, 11:7, 12:8, 13:9, 14:10, 15:11, 16:12, 8:13, 9:14})[n] || n; /* file number → chapter number (AI Explorers, 14 chapters) */
+  const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 4:6, 5:7, 11:8, 12:9, 14:10, 15:11, 16:12, 8:13, 9:14})[n] || n; /* file number → chapter number (AI Explorers, 14 chapters) */
   /* after:n = a student cannot go past segment n until "need" is done */
   const RULES = {
     4:[{after:3, need:["story"]}],

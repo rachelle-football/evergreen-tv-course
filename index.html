@@ -233,14 +233,14 @@ const ERR = c => ({wrong_login:"Wrong username or password. Check with your teac
 /* ---------- course data in this browser ---------- */
 const CH = [
   {n:1, t:"What Is AI?", s:"1", f:"ch1.html", learn:"What AI is, and how it learns from what we teach it", lists:[], extra: d => d["meet-ai-idea"] ? 1 : 0, of:1},
-  {n:2, t:"How AI Learns", s:"2", f:"ch2.html", learn:"Train a real AI, test it with a friend, get your AI Trainer certificate", lists:[["ch2-list1",6]]},
-  {n:3, t:"Become a Prompt Engineer", s:"3", f:"ch3.html", learn:"Give AI smart instructions: role, task, context, output", lists:[["ch3-prog",4]]},
-  {n:4, t:"AI Can Be Wrong", s:"4", f:"ch10.html", learn:"Fact-check AI answers like a detective", lists:[["ch10-prog",4]]},
-  {n:5, t:"AI Storytelling", s:"5", f:"ch4.html", learn:"A story from the future, with your own character", lists:[["ch4-list1",6],["ch4-hunt",5]]},
-  {n:6, t:"AI Images", s:"6", f:"ch5.html", learn:"3 to 5 pictures you choose, saved in your folder", lists:[["ch5-list1",8]]},
-  {n:7, t:"Voice, Audio and Video", s:"7", f:"ch11.html", learn:"Plan a 30-second explainer: storyboard and script", lists:[["ch11-prog",4]]},
-  {n:8, t:"Algorithms and Coding", s:"8", f:"ch12.html", learn:"Steps, if/else, and code your own quiz", lists:[["ch12-prog",4]]},
-  {n:9, t:"Responsible AI", s:"9", f:"ch13.html", learn:"Privacy, bias, copyright: your AI charter", lists:[["ch13-prog",4]]},
+  {n:2, t:"Safe and Responsible AI", s:"2", f:"ch13.html", learn:"Stay safe with AI: privacy, fakes, permission, honesty", lists:[["ch13-prog",4]]},
+  {n:3, t:"How AI Learns", s:"3", f:"ch2.html", learn:"Train a real AI, test it with a friend, get your AI Trainer certificate", lists:[["ch2-list1",6]]},
+  {n:4, t:"Become a Prompt Engineer", s:"4", f:"ch3.html", learn:"Give AI smart instructions: role, task, context, output", lists:[["ch3-prog",4]]},
+  {n:5, t:"AI Can Be Wrong", s:"5", f:"ch10.html", learn:"Fact-check AI answers like a detective", lists:[["ch10-prog",4]]},
+  {n:6, t:"AI Storytelling", s:"6", f:"ch4.html", learn:"A story from the future, with your own character", lists:[["ch4-list1",6],["ch4-hunt",5]]},
+  {n:7, t:"AI Images", s:"7", f:"ch5.html", learn:"3 to 5 pictures you choose, saved in your folder", lists:[["ch5-list1",8]]},
+  {n:8, t:"Voice, Audio and Video", s:"8", f:"ch11.html", learn:"Plan a 30-second explainer: storyboard and script", lists:[["ch11-prog",4]]},
+  {n:9, t:"Algorithms and Coding", s:"9", f:"ch12.html", learn:"Steps, if/else, and code your own quiz", lists:[["ch12-prog",4]]},
   {n:10, t:"Reinvent the School: the Problem", s:"10", f:"ch14.html", learn:"Find a real school problem: your innovation brief", lists:[["ch14-prog",4]]},
   {n:11, t:"Reinvent the School: the Prototype", s:"11", f:"ch15.html", learn:"Build it, test it, improve it", lists:[["ch15-prog",4]]},
   {n:12, t:"The Future of Our Planet", s:"12", f:"ch16.html", learn:"AI for good: your planet project", lists:[["ch16-prog",4]]},
@@ -380,7 +380,7 @@ function hub(tok){
   const ago = t => { if (!t) return "never"; const m = (Date.now() - new Date(t)) / 60000; return m < 60 ? Math.round(m) + " min ago" : m < 1440 ? Math.round(m / 60) + " h ago" : Math.round(m / 1440) + " days ago"; };
   function work(s){ const d = s.course || {}, ch = pj(d["ch4-char"]) || {}, card = pj(d["ch3-card"]) || {}, st = pj(d["ch4-story"]) || {}, pitch = pj(d["ch9-pitch"]) || {}, t1 = [pj(d["ch2-tally1"]), pj(d["ch2-score1"])].find(t => Array.isArray(t) && t[0] && (t[0].r + t[0].w) > 0), acc = Array.isArray(t1) && t1[0] && (t1[0].r + t1[0].w) ? Math.round(t1[0].r / (t1[0].r + t1[0].w) * 100) + "%" : "—";
     const item = (k, v) => v ? el("div", {class:"wk"}, el("span", {class:"tag"}, k), el("p", null, String(v))) : null;
-    const items = [item("Dream job", pj(d["ch1-job"])), item("Goal for the year", pj(d["meet-ai-idea"])), item("Chapter 2 AI accuracy", acc !== "—" ? acc : null),
+    const items = [item("Dream job", pj(d["ch1-job"])), item("Goal for the year", pj(d["meet-ai-idea"])), item("Chapter 3 AI accuracy", acc !== "—" ? acc : null),
       item("Design card", card.name ? card.name + ": " + [card.i1, card.i2, card.i3, card.mine].filter(Boolean).join(" · ") : null), item("Character", ch.name ? ch.name + " (" + (ch.who || "") + ")" + (ch.pers && ch.pers.length ? ": " + [].concat(ch.pers).join(", ") : "") + (ch.power ? " · " + ch.power : "") : null),
       item("Story", st.text ? (st.title ? st.title + ": " : "") + st.text : null), item("Pitch", ["p1","p2","p3","p4","p5"].map(k => pitch[k]).filter(Boolean).join(" ")), item("Exhibition job", pj(d["ch9-job"]))].filter(Boolean);
     return el("div", {class:"work"}, ...(items.length ? items : [el("p", {class:"muted"}, "No work saved yet.")])); }
