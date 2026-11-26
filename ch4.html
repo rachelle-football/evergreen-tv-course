@@ -253,7 +253,7 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
 
 <section class="seg" id="seg-1" data-min="6" data-title="What makes a story">
   <div class="lower"><div class="no">01</div><div class="name"><h2>What makes a story?</h2><p>6 minutes · the lesson</p></div></div>
-  <p class="big">A design card says what the future looks like. A story makes people <i>feel</i> it. Every good story has the same 4 parts.</p>
+  <p class="big">Today you write a story from the future, with the help of AI. But first: what makes a story GOOD? Every good story has the same 4 parts. Read one, then press “Show the 4 parts”.</p>
   <div class="grid g2" style="align-items:start">
     <div class="card">
       <div class="row" id="storyTabs" style="margin-bottom:10px"></div>
@@ -262,9 +262,9 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
       <div class="row" style="margin-top:12px"><button class="btn sm" id="showParts" type="button">Show the 4 parts</button></div>
     </div>
     <div class="grid" style="gap:10px">
-      <div class="card sp sp1"><span class="tag">1 · Character</span><p style="margin:4px 0 0">Who is it about? We care about a person, not a building.</p></div>
+      <div class="card sp sp1"><span class="tag">1 · Character</span><p style="margin:4px 0 0">Who is it about? We care about a person (or a robot, or an animal).</p></div>
       <div class="card sp sp2"><span class="tag">2 · Problem</span><p style="margin:4px 0 0">What goes wrong, or what do they want?</p></div>
-      <div class="card sp sp3"><span class="tag">3 · The future helps</span><p style="margin:4px 0 0">Your design is the hero's secret weapon.</p></div>
+      <div class="card sp sp3"><span class="tag">3 · The future helps</span><p style="margin:4px 0 0">A gadget, a robot or an AI from the future helps the hero.</p></div>
       <div class="card sp sp4"><span class="tag">4 · Ending</span><p style="margin:4px 0 0">How did they change? End with a smile or a surprise.</p></div>
     </div>
   </div>
@@ -272,7 +272,6 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
 
 <section class="seg" id="seg-2" data-min="10" data-title="Your character" hidden>
   <div class="lower"><div class="no">02</div><div class="name"><h2>Invent your character</h2><p>10 minutes · then ask Gemini for help</p></div></div>
-  <div class="card myproj" id="proj"></div>
   <div class="mission">
     <div class="card">
       <span class="tag">Your character</span>
@@ -286,7 +285,7 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
       <span class="tag" style="display:block;margin-top:14px">2 · Paste Gemini's answer here</span>
       <textarea id="charPaste" rows="4" placeholder="Copy Gemini's 5 lines (look, talk, habit, secret, funny thing) and paste them here…"></textarea>
       <div class="row"><button class="btn sm" id="addMore" type="button">Add it to my character card</button></div>
-      <p class="muted" style="margin:0;font-size:14px">Keep the lines you love, change the rest. Your story and your pictures will use them.</p>
+      <p class="muted" style="margin:0;font-size:14px">Keep the lines you love, change the rest. Your story (and your pictures next week) will use them.</p>
     </div>
     <aside class="card side">
       <span class="tag">Character card</span>
@@ -307,7 +306,6 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
       <pre class="prompt small" id="storyOut"></pre>
       <div class="row"><button class="btn sm" id="copyStory" type="button">Copy story prompt</button></div>
       <p class="newchat">🆕 Paste it in a <b>NEW</b> Gemini chat (press <b>New chat</b> first), so Gemini does not mix it with your other work.</p>
-      <p class="note" id="noCard"></p>
       <span class="tag" style="display:block;margin-top:12px">2 · Optional: make it better (copy into the same chat)</span>
       <div class="row" id="better" style="margin-top:6px"></div>
     </div>
@@ -318,28 +316,28 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
       <p class="lead" style="margin:8px 0"><span class="score" id="wc">0 words</span> · about <span class="score" id="secs">0 seconds</span> to read aloud <span class="muted" id="fit"></span></p>
       <span class="tag">4 · Story check</span>
       <ol class="checklist compact" id="hunt"></ol>
-      <p class="note">Keep this story. Your pictures in Chapter 6 show it.</p>
+      <p class="note">Keep this story: you read it to the class in step 4.</p>
     </div>
   </div>
   <ol class="checklist" id="list1" style="margin-top:16px"></ol>
 </section>
 
 <section class="seg" id="seg-4" data-min="5" data-title="Read aloud" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Story time</h2><p>5 minutes · 2 readers from each team</p></div></div>
-  <p class="big">Two students from each team read their story. The class listens for the 4 parts.</p>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Story time</h2><p>5 minutes · a few readers</p></div></div>
+  <p class="big">A few students read their story. The class listens for the 4 parts.</p>
   <div class="card" style="border-color:var(--green);background:var(--green-soft)"><span class="tag">🎤 The reader says</span>
     <ol class="lead" style="margin:6px 0 0;padding-left:22px;line-height:1.6">
-      <li><b>Hello:</b> <span id="rdHello">"My name is … My story is called … It happens in …, my design."</span></li>
+      <li><b>Hello:</b> <span id="rdHello">"My name is … My story is called … It happens in …"</span></li>
       <li><b>Read</b> your story slowly, loud and clear.</li>
-      <li><b>Ask the class:</b> "Who is my character? Where is it? What is the problem? How does my design help?"</li>
+      <li><b>Ask the class:</b> "Who is my character? What is the problem? How does the future help? How does it end?"</li>
       <li><b>Say:</b> "The sentence I changed into my own words is: …"</li>
     </ol></div>
   <div class="grid g3" style="margin-top:16px">
-    <div class="card"><span class="tag">The class listens for 4 parts</span><p class="lead" style="margin:6px 0 0">1 The character · 2 The place · 3 The problem · 4 How the design helps</p></div>
+    <div class="card"><span class="tag">The class listens for 4 parts</span><p class="lead" style="margin:6px 0 0">1 The character · 2 The problem · 3 How the future helps · 4 The ending</p></div>
     <div class="card"><span class="tag">The class asks</span><p class="lead" style="margin:6px 0 0">"Which sentence did you change into your own words?"</p></div>
     <div class="card"><span class="tag">The rule</span><p class="lead" style="margin:6px 0 0">AI writes fast. You make it true, kind and yours.</p></div>
   </div>
-  <div class="card" style="margin-top:16px;background:var(--gold-soft);border-color:transparent"><span class="tag">Next week</span><p class="lead" style="margin:6px 0 0">AI Images: you choose 3 to 5 pictures of your design and make them. Your design card and your story tell you what to draw.</p></div>
+  <div class="card" style="margin-top:16px;background:var(--gold-soft);border-color:transparent"><span class="tag">Next week</span><p class="lead" style="margin:6px 0 0">AI Images: you learn how image AI works and make your own AI pictures. Your character from today can appear in them.</p></div>
 </section>
 
 </main>
@@ -641,7 +639,7 @@ return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fi
 </script>
 <script>
 (function(){
-const {$, el, store, copy, checklist, me, picker} = K;
+const {$, el, store, copy, checklist} = K;
 K.init("ch4");
 
 /* 1 example stories with their 4 parts */
@@ -655,7 +653,7 @@ const EX = {
     ["f", " He took it to the recycling robot by the boardwalk. It beeped, scanned the bottle and said, \"Made in 2024. Turning it into a bench.\" The sea behind him was clean and full of fish."],
     ["e", " Karim smiled. His grandmother had told him the beaches used to be full of bottles. He wrote her a message: \"You were right to clean them.\""]]]
 };
-let exTeam = me().team || "school", shown = false;
+let exTeam = "school", shown = false;
 function drawEx(){
   const [title, parts] = EX[exTeam];
   $("#exTitle").textContent = title;
@@ -679,7 +677,7 @@ const C = Object.assign({name:"", who:"", look:[], pers:[], power:"", want:"", f
 if (!Array.isArray(C.pers)) C.pers = C.pers ? [C.pers] : [];
 $("#cName").value = C.name || "";
 $("#cName").addEventListener("input", () => { C.name = $("#cName").value; onChar(false); });
-function world(){ const m = me(); return m.T ? m.T.world : "the future"; }
+function world(){ try { return S.place || "the future"; } catch(e){ return "the future"; } }
 const J = window.B.join;
 function charText(){
   return "Role: You are a creative character designer for children's stories.\nTask: Bring my character to life for a story set in " + world() + ".\n" +
@@ -706,70 +704,61 @@ function parseMore(t){ const out = {};
     if (!out[key]) out[key] = v; });
   return out; }
 $("#addMore").onclick = () => { const t = $("#charPaste").value.trim(); if (!t){ K.toast("Paste Gemini's answer first."); $("#charPaste").focus(); return; }
-  if (/big ideas?/i.test(t) || (/^\W*name\W*\s*:/im.test(t) && /^\W*\d+[.)]\s/m.test(t))){ if (!/^\W*(look|habit|secret)/im.test(t)){ K.toast("This looks like your DESIGN card (name, big ideas), not your character. Paste the answer to the character prompt."); return; } }
   const m = parseMore(t), n = Object.keys(m).length; if (!n){ K.toast("I could not find the 5 lines. Ask Gemini again with the prompt, then paste its answer."); return; }
-  C.more = Object.assign(C.more || {}, m); store.set("char", C); drawChar(); drawStory(); L1.tick(1);
+  C.more = Object.assign(C.more || {}, m); store.set("char", C); drawChar(); drawStory(); L1.tick(0);
   K.toast(n + " lines added to your character card!"); };
 function onChar(redraw){ store.set("char", C); if (redraw) charUI.draw(); drawChar(); drawStory(); }
 charUI = window.B.make($("#charB"), CSPEC, C, onChar);
-$("#copyChar").onclick = () => { if (!window.B.guard(CSPEC, C, $("#charB"), K.toast)) return; copy(charText(), $("#charOut"), "a NEW Gemini chat"); L1.tick(1); };
+$("#copyChar").onclick = () => { if (!window.B.guard(CSPEC, C, $("#charB"), K.toast)) return; copy(charText(), $("#charOut"), "a NEW Gemini chat"); L1.tick(0); };
 
 /* 3 story: choose, and the prompt builds itself */
-const PROBS = {
-  school:["the robot teacher breaks down before the big exam","the hero is lost on the first day","the school's power goes out","a hologram goes crazy and copies everyone","the class robot pet escapes","the flying school bus gets stuck in a cloud"],
-  planet:["a storm is coming to the city","the last cedar tree is sick","a giant wave of plastic is coming","the city's water machine stops","a family of sea turtles is in danger","the solar city loses all its power"]
-};
+const PROBS = ["the robot teacher breaks down before the big exam","the school's power goes out","a hologram goes crazy and copies everyone","the class robot pet escapes","the flying school bus gets stuck in a cloud","the last cedar tree is sick","a giant wave of plastic is coming to the beach","a family of sea turtles is in danger"];
 const SSPEC = [
+  {id:"place", icon:"📍", title:"Where does it happen?", one:true, opts:["a school in 2040","a library of the future","Beirut in 2050","a city on Mars","a floating city above the sea","a school on a space station"]},
   {id:"genre", icon:"🎬", title:"Kind of story", one:true, opts:["adventure","funny","mystery","science fiction","friendship story","race against time"]},
-  {id:"prob", icon:"⚠️", title:"The problem", one:true, opts:() => PROBS[team()]},
-  {id:"helps", icon:"🤝", title:"What helps the hero?", max:2, opts:["robots that help","a flying vehicle","an AI that solves problems","friends working together","nature and plants","my design ideas from Chapter 3"]},
+  {id:"prob", icon:"⚠️", title:"The problem", one:true, opts:PROBS},
+  {id:"helps", icon:"🤝", title:"What helps the hero?", max:2, opts:["robots that help","a flying vehicle","an AI that solves problems","friends working together","nature and plants","a gadget the hero invents"]},
   {id:"ending", icon:"🏁", title:"The ending", one:true, opts:["a happy ending","a surprise twist","a funny ending","an ending with a message for the planet","a cliffhanger: to be continued…"]},
   {id:"len", icon:"📏", title:"Length", one:true, opts:["about 100 words","about 150 words","about 200 words"]},
   {id:"idea", title:"✨ Your own idea for the story", text:true, ph:"e.g. the robot can only speak in rhymes", hint:"makes it yours"},
   {id:"talk", toggle:true, label:"Include dialogue (characters talking)"},
   {id:"joke", toggle:true, label:"Add a funny moment"}
 ];
-function team(){ return me().team === "planet" ? "planet" : "school"; }
-const S = Object.assign({genre:"", prob:"", helps:[], ending:"", len:"about 150 words", idea:"", talk:true, joke:false, title:"", text:""}, store.get("story") || {});
+const S = Object.assign({place:"", genre:"", prob:"", helps:[], ending:"", len:"about 150 words", idea:"", talk:true, joke:false, title:"", text:""}, store.get("story") || {});
 $("#sTitle").value = S.title || ""; $("#story").value = S.text || "";
-function card(){ return store.raw("ch3-card") || {}; }
 function storyText(){
-  const d = card(), ideas = [d.i1, d.i2, d.i3, d.mine].filter(Boolean), helps = S.helps.filter(h => h !== "my design ideas from Chapter 3");
+  const helps = S.helps.filter(h => h !== "my design ideas from Chapter 3");
   return "Role: You are a children's author who writes exciting stories about the future.\n" +
-    "Task: Write " + (S.genre ? (/^[aeiou]/.test(S.genre) ? "an " : "a ") + S.genre + " story" : "a short story") + " set in " + (d.name ? d.name + ", my design for " + world() + (ideas.length ? ". This place has: " + ideas.map(x => x.trim().replace(/[.!]+$/, "")).join("; ") : "") : world()) + ".\n" +
+    "Task: Write " + (S.genre ? (/^[aeiou]/.test(S.genre) ? "an " : "a ") + S.genre + " story" : "a short story") + " set in " + world() + ".\n" +
     "Context: The hero is " + (C.name || "my character") + ", " + (C.who || "a kid from the future") + (C.pers.length ? ", who is " + J(C.pers) : "") + (C.power ? ", with " + C.power : "") + (C.want ? ", and wants " + C.want : "") + "." +
     (C.more && Object.values(C.more).some(Boolean) ? " More about the hero: " + MORE.filter(([k]) => C.more[k]).map(([k, , label]) => label + ": " + C.more[k].trim().replace(/([^.!?"”])$/, "$1.")).join(" ") : "") +
     (S.prob ? " The problem: " + S.prob + "." : "") +
     (helps.length ? " What helps: " + J(helps) + "." : "") +
-    (S.helps.includes("my design ideas from Chapter 3") ? (d.name ? " The ideas of " + d.name + " help the hero solve the problem." : " The ideas of my design help the hero solve the problem.") : "") +
     ((S.idea || "").trim() ? " My own idea: " + S.idea.trim() + "." : "") +
     "\nFormat: A title, then " + (S.len || "about 150 words") + ". Beginning, problem, how the future helps, and " + (S.ending || "a happy ending") + "." + (S.talk ? " Include some dialogue." : "") + (S.joke ? " Add one funny moment." : "") + " Easy English for 12-year-olds. No real people's names, nothing scary or violent.";
 }
 let storyUI;
-function drawStory(){ window.B.show($("#storyOut"), SSPEC, S, storyText()); window.B.meter($("#storyP"), SSPEC, S); window.B.lock($("#copyStory"), SSPEC, S); const d = card(); $("#noCard").textContent = d.name ? "📍 Your story happens in " + d.name + ", your design from Chapter 3. Its big ideas are already in the prompt." : "⚠ Your design card (Chapter 3) is empty: fill it first, your story happens inside your design."; }
-function onStory(redraw){ store.set("story", S); if (redraw) storyUI.draw(); drawStory(); if (S.prob) L1.tick(2); }
+function drawStory(){ window.B.show($("#storyOut"), SSPEC, S, storyText()); window.B.meter($("#storyP"), SSPEC, S); window.B.lock($("#copyStory"), SSPEC, S); }
+function onStory(redraw){ store.set("story", S); if (redraw) storyUI.draw(); drawStory(); drawChar(); drawHello(); if (S.prob) L1.tick(1); }
 storyUI = window.B.make($("#storyB"), SSPEC, S, onStory);
-$("#copyStory").onclick = () => { if (!window.B.guard(SSPEC, S, $("#storyB"), K.toast)) return; copy(storyText(), $("#storyOut"), "a NEW Gemini chat"); L1.tick(3); };
-const BETTER = [["Add a funny moment", "Add one funny moment to the story. Keep it under 160 words."], ["Surprise ending", "Make the ending more surprising, but still happy."], ["More of my design", "Show my design ideas more clearly in the middle of the story."], ["Shorter", "Make it shorter: about 120 words, so I can read it in 1 minute."]];
-$("#better").replaceChildren(...BETTER.map(([n, t]) => el("button", {class:"btn sm alt", type:"button", title:t, onclick:() => { copy(t, null, "the same Gemini chat"); L1.tick(4); }}, "Copy: " + n)));
+$("#copyStory").onclick = () => { if (!window.B.guard(SSPEC, S, $("#storyB"), K.toast)) return; copy(storyText(), $("#storyOut"), "a NEW Gemini chat"); L1.tick(2); };
+const BETTER = [["Add a funny moment", "Add one funny moment to the story. Keep it under 160 words."], ["Surprise ending", "Make the ending more surprising, but still happy."], ["More talking", "Add more dialogue: the characters talk to each other more."], ["Shorter", "Make it shorter: about 120 words, so I can read it in 1 minute."]];
+$("#better").replaceChildren(...BETTER.map(([n, t]) => el("button", {class:"btn sm alt", type:"button", title:t, onclick:() => { copy(t, null, "the same Gemini chat"); L1.tick(3); }}, "Copy: " + n)));
 function count(){ const w = ($("#story").value.match(/\S+/g) || []).length, s = Math.round(w / 2.3);
   $("#wc").textContent = w + " words"; $("#secs").textContent = s + " seconds"; $("#fit").textContent = !w ? "" : w < 90 ? "(a bit short)" : w > 190 ? "(too long: cut it)" : "(good length)"; return w; }
-$("#story").addEventListener("input", () => { S.text = $("#story").value; store.set("story", S); if (count() > 60) L1.tick(5); });
+$("#story").addEventListener("input", () => { S.text = $("#story").value; store.set("story", S); if (count() > 60) L1.tick(4); });
 $("#sTitle").addEventListener("input", () => { S.title = $("#sTitle").value; store.set("story", S); });
-function drawHello(){ try { const c = JSON.parse(localStorage.getItem("ch3-card")) || {}, a = JSON.parse(localStorage.getItem("ai-lab-session")) || {}, nm = a.display_name || a.name || "…"; $("#rdHello").textContent = "\u201CMy name is " + nm + ". My story is called " + (S.title || "…") + ". It happens in " + (c.name || "…") + ", my design.\u201D"; } catch(e){} }
+function drawHello(){ try { const a = JSON.parse(localStorage.getItem("ai-lab-session")) || {}, nm = a.display_name || a.name || "(your name)"; $("#rdHello").textContent = "\u201CMy name is " + nm + ". My story is called " + (S.title || "(your title)") + ". It happens in " + (S.place || "(the place)") + ".\u201D"; } catch(e){} }
 drawHello(); $("#sTitle").addEventListener("input", drawHello); addEventListener("hashchange", drawHello);
 count();
-checklist("hunt", [["It uses ideas from my design", ""], ["My character is the hero", ""], ["Invented names only, no real people", ""], ["Nothing scary, rude or untrue about real places", ""], ["I changed at least 3 sentences into my own words", ""]], true);
+checklist("hunt", [["It has the 4 parts: character, problem, the future helps, ending", ""], ["My character is the hero", ""], ["Invented names only, no real people", ""], ["Nothing scary, rude or untrue about real places", ""], ["I changed at least 3 sentences into my own words", ""]], true);
 const L1 = checklist("list1", [
-  ["Pick your team", "In part 02, at the top. Some choices change with your team."],
   ["Build your character", "Choose who they are, their look, personality, gadget, what they want and what they fear. Copy the prompt into Gemini, then paste its answer back here."],
-  ["Build your story", "Choose the kind of story, the problem, what helps, the ending. Aim for 5 stars."],
+  ["Build your story", "Choose where it happens, the kind of story, the problem, what helps, the ending. Aim for 5 stars."],
   ["Ask Gemini for the story", "Copy the story prompt into a new Gemini chat."],
   ["Make it better (optional)", "Not happy with the story? Copy one follow-up prompt into the same chat."],
   ["Paste and make it yours", "Paste the story, give it a title, change 3 sentences into your own words."]
 ]);
-picker($("#proj"), () => { storyUI.draw(); drawChar(); drawStory(); if (me().team) L1.tick(0); });
-if (me().team) L1.tick(0);
 drawChar(); drawStory();
 K.start();
 })();
