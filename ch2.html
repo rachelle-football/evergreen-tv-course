@@ -374,8 +374,7 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
   <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: train and test your AI</h2><p>Period 1 · 27 minutes · 6 stages, right here on this page</p></div></div>
   <div class="mission one">
     <div>
-      <p class="lead" id="lab1lead">This AI has never seen a pencil, a bottle or a banana peel. You will teach it, the way real engineers do: with examples.</p>
-      <div class="teamnote"><b>First, choose what you teach your AI:</b><div class="teamrow" id="pickWhat" style="margin-top:8px"></div></div>
+      <p class="lead" id="lab1lead">This AI has never seen a pencil, a book or a clock. You will teach it, the way real engineers do: with examples.</p>
       <div class="card lab" id="lab1"></div>
     </div>
   </div>
@@ -985,7 +984,7 @@ function confetti(){
 
 /* lab 1: teach your AI (3 stages) */
 const WHAT = store.get("what") === "planet" ? "planet" : store.get("what") === "school" ? "school" : null;
-const CHIPS1 = {school:["pencil","book","backpack","clock","chair","scissors","ruler"], planet:["bottle","can","banana peel","paper bag","apple core","battery","glass jar"]}[WHAT] || ["pencil","book","bottle","can","banana peel","clock"];
+const CHIPS1 = ["pencil","book","clock","chair","scissors","apple","cup","bottle"];
 const examResult = (r, w) => { const p = Math.round(r / (r + w) * 100);
   return el("div", {class:"bigscore"}, el("span", {class:"tag"}, "Your AI's score"), el("div", {class:"pct"}, r + "/" + (r + w) + " = " + p + "%"),
     el("p", null, p >= 80 ? "🏆 Your AI is smart! Your examples were good." : p >= 50 ? "👍 Not bad! More examples, a bit different each time, make an AI smarter." : "🤔 Your AI is confused. Maybe your 3 things look too much alike, or it needs more examples.")); };
@@ -1066,8 +1065,6 @@ stageLab($("#lab1"), {
 
 /* pick a segment */
 /* what to teach: school objects or a recycling robot (no teams) */
-$("#pickWhat").replaceChildren(...[["school", "🏫 School objects"], ["planet", "♻️ Recycling robot"]].map(([k, t]) => el("button", {class:"teambtn", type:"button", "aria-pressed":String(WHAT === k), onclick:() => { if (WHAT === k) return; store.set("what", k); location.reload(); }}, t)));
-if (WHAT === "planet") $("#lab1lead").textContent = "A recycling robot must know a bottle from a banana peel. This one knows nothing about waste yet. You will teach it, the way real engineers do: with examples.";
 
 const start = segs.findIndex(s => "#" + s.id === location.hash);
 go(start >= 0 ? start : 0);
