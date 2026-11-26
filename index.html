@@ -218,7 +218,7 @@ td.ok{background:var(--green-soft);font-weight:700;text-align:center}td.part{bac
 (function(){
 const $ = s => document.querySelector(s);
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => { if (c != null && c !== false) e.append(c); }); return e; };
-const C = window.EVG_CLOUD || {}, ON = !!(C.url && C.key), SESS = "ai-lab-session", RX = /^(ch[1-9]-|meet-ai-)/, TKEY = "evg-teacher";
+const C = window.EVG_CLOUD || {}, ON = !!(C.url && C.key), SESS = "ai-lab-session", RX = /^(ch\d+-|meet-ai-)/, TKEY = "evg-teacher";
 let ACC = null; try { ACC = ON ? JSON.parse(localStorage.getItem(SESS) || "null") : null; } catch(e) {}
 let tt; function toast(m){ const t = $("#toast"); t.textContent = m; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 2600); }
 
@@ -240,10 +240,9 @@ const CH = [
   {n:6, t:"AI Media Studio", s:"6", f:"ch11.html", learn:"Invent a product and make its AI commercial: poster, voice-over, storyboard and a real 30-second video", lists:[["ch11-prog",6]]},
   {n:7, t:"Algorithms and Coding", s:"7", f:"ch12.html", learn:"Think like a programmer, build a smart classroom, and create your first program with AI", lists:[["ch12-prog",5]]},
   {n:8, t:"Reinvent the School: the Problem", s:"8", f:"ch14.html", learn:"Be a school detective, find the root cause, and plan your project: your innovation brief", lists:[["ch14-prog",6]]},
-  {n:9, t:"Reinvent the School: the Prototype", s:"9", f:"ch15.html", learn:"Build it, test it, improve it", lists:[["ch15-prog",4]]},
-  {n:10, t:"The Future of Our Planet", s:"10", f:"ch16.html", learn:"AI for good: your planet project", lists:[["ch16-prog",4]]},
-  {n:11, t:"Website Building", s:"11", f:"ch8.html", learn:"Your own website: about you, your dream job or your football team", lists:[["ch8-list1",6],["ch8-better",3],["ch8-launch",7]]},
-  {n:12, t:"Final Showcase", s:"12", f:"ch9.html", learn:"Present your project and explain how you used AI", lists:[["ch9-rehearse",4]], extra: d => (pj(d["ch9-pitch"]) && Object.values(pj(d["ch9-pitch"])).filter(v => (v || "").trim()).length >= 3 ? 1 : 0) + (d["ch9-job"] ? 1 : 0), of:2}
+  {n:9, t:"Reinvent the School: Build Your Solution", s:"9", f:"ch15.html", learn:"Design, build and test a real app for your school problem, then make Version 2", lists:[["ch15-prog",6]]},
+  {n:10, t:"Save Our Planet with Data", s:"10", f:"ch16.html", learn:"Collect data, analyse it with AI, and plan your impact", lists:[["ch16-prog",5]]},
+  {n:11, t:"Final Showcase", s:"11", f:"ch9.html", learn:"Present your project and explain how you used AI", lists:[["ch9-rehearse",4]], extra: d => (pj(d["ch9-pitch"]) && Object.values(pj(d["ch9-pitch"])).filter(v => (v || "").trim()).length >= 3 ? 1 : 0) + (d["ch9-job"] ? 1 : 0), of:2}
 ];
 function pj(v){ if (v == null) return null; if (typeof v !== "string") return v; try { return JSON.parse(v); } catch(e){ return v; } }
 function progress(d){ return CH.map(c => { let done = 0, total = c.of || 0; c.lists.forEach(([k, n]) => { total += n; const a = pj(d[k]); if (Array.isArray(a)) done += a.filter(Boolean).length; }); if (c.extra) done += c.extra(d); return total ? Math.min(100, Math.round(done / total * 100)) : 0; }); }
@@ -289,8 +288,8 @@ function renderHome(){
   const lastI = pr.reduce((a, v, i) => v > 0 ? i : a, -1), next = lastI < 0 ? CH[0] : pr[lastI] < 100 ? CH[lastI] : CH[Math.min(lastI + 1, CH.length - 1)];
   $("#app").replaceChildren(
     el("section", {class:"welcome"},
-      el("div", null, el("span", {class:"tag"}, "12 weeks · 12 chapters"), el("h1", null, ACC ? "Hi " + ACC.name + "!" : "AI Creators"),
-        el("p", {class:"lead"}, seg ? "Your project: " + seg + ". Every chapter adds one piece to your page of the team website." : "12 chapters to understand, use and question AI, and to build something real.")),
+      el("div", null, el("span", {class:"tag"}, "11 chapters"), el("h1", null, ACC ? "Hi " + ACC.name + "!" : "AI Creators"),
+        el("p", {class:"lead"}, seg ? "Your project: " + seg + ". Every chapter adds one piece to your page of the team website." : "11 chapters to understand, use and question AI, and to build something real.")),
       el("div", {class:"card total"}, el("span", {class:"tag"}, "Your course"), el("b", null, all + "%"), el("div", {class:"bar"}, el("i", {style:"width:" + all + "%"})),
         el("a", {class:"btn", href:next.f}, (all === 100 ? "All done! Review Chapter " : all ? "Continue: Chapter " : "Start: Chapter ") + next.n))),
     el("div", {class:"chapters"}, ...CH.map((c, i) => el("a", {class:"ch" + (pr[i] === 100 ? " done" : ""), href:c.f},
@@ -354,8 +353,8 @@ function hub(tok){
       !rows.length ? el("p", {class:"muted"}, "No files yet. Students upload their pictures in Chapter 5.") :
       el("div", {class:"folders"}, ...Object.entries(by).map(([u, v]) => { const b = el("button", {class:"btn sm alt", type:"button", onclick:() => zipFolders([[u, v.files]], u, b)}, "⬇ Folder");
         return el("div", {class:"fold"}, el("div", {class:"row", style:"justify-content:space-between"}, el("div", null, el("b", null, v.name), el("br"), el("small", {class:"muted"}, u + " · " + v.cls + " · " + mb(v.files.reduce((a, f) => a + (+f.size || 0), 0)))), b),
-          (() => { const PIC = ["big","close","char","robot","poster","before","map","inside"], has = k => v.files.some(f => f.slot === k), np = v.files.filter(f => PIC.includes(f.slot)).length;
-            const miss = [np < 3 && "pictures (" + np + " of 3)", !has("page") && "web page"].filter(Boolean);
+          (() => { const has = k => v.files.some(f => f.slot === k);
+            const miss = [["license", "AI license"], ["big", "poster"], ["video", "commercial"], ["smart", "smart system"], ["page", "school app"]].filter(([k]) => !has(k)).map(([, l]) => l);
             return el("p", {style:"margin:6px 0;font-size:14px;font-weight:600;color:" + (miss.length ? "#b42318" : "#1e7a4f")}, miss.length ? "Missing: " + miss.join(", ") : "✓ Project complete"); })(),
           el("div", {class:"thumbs"}, ...v.files.map(f => el("a", {href:/html/.test(f.mime || "") ? new URL("view.html?p=" + f.path, location.href).href : FURL(f.path), target:"_blank", rel:"noopener", title:f.label, class:"th"}, /^image\//.test(f.mime) ? el("img", {src:FURL(f.path), alt:f.label, loading:"lazy"}) : el("span", null, /^video|^audio/.test(f.mime) ? "🎬" : "📄"), el("small", null, fname(f)))))); }))));
   }

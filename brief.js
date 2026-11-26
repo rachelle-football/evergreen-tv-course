@@ -2,7 +2,7 @@
    a reminder at the top of every mission, and the project strip (what you have, what you make today). */
 (function(){
   const CH = +((location.pathname.match(/ch(\d+)\.html/) || [])[1] || 0);
-  const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 11:6, 12:7, 14:8, 15:9, 16:10, 8:11, 9:12})[n] || n; /* file number → chapter number (AI Explorers, 12 chapters) */
+  const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 11:6, 12:7, 14:8, 15:9, 16:10, 9:11})[n] || n; /* file number → chapter number (AI Creators, 11 chapters) */
   const B = {
     1:{goal:"Discover what AI really is, and choose your part of the project.",
        make:[["🧭", "Your team and your part"], ["💡", "Your first idea for it"]],
@@ -23,11 +23,10 @@
        missions:{5:"Your output: a smart classroom program that passes 4 of 4 tests.", 6:"Your output: My First Smart System, a working HTML program, saved in your folder."}},
     14:{goal:"Find a real problem in your school, dig to its root cause, and plan a project to solve it.", make:[], steps:[], done:"",
        missions:{5:"Your output: 2 real observations, the problem you choose, and its root cause.", 6:"Your output: the idea you will build, because it attacks the root cause.", 7:"Your output: your School Innovation Brief, ready for prototyping in Chapter 9.", 8:"Your output: a better idea, after AI asked you good questions."}},
-    8:{goal:"Build your own website with a strong prompt, and get your own link.",
-       make:[["🌐", "Your website: about you, your dream job or your football team"], ["🔗", "Your own link to share"]],
-       steps:["Learn what makes a website prompt strong", "Choose your topic", "Fill in your details, add your pictures, choose a style and colours: you see it change live", "Publish it and get your link", "A classmate tests it, you make it better"],
-       done:"Your website is published with its own link, and the launch checklist is 7 of 7.",
-       missions:{2:"Choose your topic: about me, when I grow up, or my football team.", 3:"Your output: your website, published, with your own link.", 4:"Your output: a feedback card for a classmate: a star and a wish.", 5:"Your output: a better website. Press Publish again when you are done."}},
+    15:{goal:"Build a real app that solves your school problem: design it, build it with AI, test it, and make Version 2.", make:[], steps:[], done:"",
+       missions:{3:"Your output: your app, built with Gemini, running in the page.", 4:"Your output: Version 1, saved, after you changed one thing yourself.", 5:"Your output: a real test by a classmate, with a score and feedback.", 6:"Your output: Version 2, your final app, saved in your folder.", 7:"Your output: proof that your app meets your success criteria."}},
+    16:{goal:"Use data and AI to understand an environmental problem at school, and plan a real impact.", make:[], steps:[], done:"",
+       missions:{3:"Your output: your own analysis, and a check of the AI's numbers.", 4:"Your output: a realistic target and its impact over one school year.", 5:"Your output: 3 solutions compared, and your decision.", 6:"Your output: your Planet Impact Report."}},
     9:{goal:"Present your work to parents and guests, and launch the two team websites.",
        make:[["🎤", "Your 30-second pitch"], ["🚀", "Both team websites, live"]],
        steps:["Write your pitch line by line", "Rehearse it with a partner", "Pick your Expo job", "Launch day: present your page"],
@@ -51,7 +50,7 @@
   document.head.append(css);
   const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.textContent = h; return e; };
   /* the 7 pieces of every student's project */
-  const PIECES = [["card", "📝", "Design card", 3], ["pics", "🖼️", "Pictures", 11], ["page", "🌐", "Website", 8], ["pitch", "🎤", "Pitch", 9]];
+  const PIECES = [["card", "📝", "Design card", 3], ["pics", "🖼️", "Pictures", 11], ["page", "🚀", "School app", 15], ["pitch", "🎤", "Pitch", 9]];
   async function have(){
     const c = raw("ch3-card") || {}, s = raw("ch4-story") || {}, p = raw("ch9-pitch") || {};
     const h = {card:!!(c.name && c.i1 && c.i2 && c.i3), story:!!((s.title || "").trim() && words(s.text) >= 40), pitch:["p1", "p2", "p3", "p4", "p5"].filter(k => (p[k] || "").trim()).length >= 4};

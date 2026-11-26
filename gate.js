@@ -2,11 +2,10 @@
    Only for logged-in students (the teacher showing the course on the board is never blocked). */
 (function(){
   const CH = +((location.pathname.match(/ch(\d+)\.html/) || [])[1] || 0);
-  const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 11:6, 12:7, 14:8, 15:9, 16:10, 8:11, 9:12})[n] || n; /* file number → chapter number (AI Explorers, 12 chapters) */
+  const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 11:6, 12:7, 14:8, 15:9, 16:10, 9:11})[n] || n; /* file number → chapter number (AI Creators, 11 chapters) */
   /* after:n = a student cannot go past segment n until "need" is done */
   const RULES = {
     11:[{after:4, need:["pics"]}],
-    8:[{after:3, need:["page"]}],
     9:[{after:1, need:["page"]}]
   }[CH];
   if (!RULES) return;
@@ -27,7 +26,7 @@
       let fs = []; try { fs = await window.F.list(true); } catch(e){ return out; }
       const has = s => fs.some(f => f.slot === s);
       if (fileNeed.includes("pics")){ const m = PICK().filter(k => !has(k)); if (m.length) out.push({kind:"file", ch:11, text:"Poster not saved yet (Chapter " + DN(11) + "): " + m.map(LABEL).join(", ") + "."}); }
-      if (fileNeed.includes("page") && !has("page")) out.push({kind:"file", ch:8, text:CH === 8 ? "Your website is not published yet. Press 🌐 Publish my website first." : "Your website is not published yet (Chapter " + DN(8) + ")."});
+      if (fileNeed.includes("page") && !has("page")) out.push({kind:"file", ch:15, text:"Your school app is not saved yet (Chapter " + DN(15) + ")."});
     }
     return out;
   }

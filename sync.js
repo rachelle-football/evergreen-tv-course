@@ -1,6 +1,6 @@
 /* Saves every chapter's progress to the student's account. Loaded at the end of each chapter page. */
 (function(){
-  var C = window.EVG_CLOUD || {}, on = !!(C.url && C.key), SESS = "ai-lab-session", RX = /^(ch[1-9]-|meet-ai-)/;
+  var C = window.EVG_CLOUD || {}, on = !!(C.url && C.key), SESS = "ai-lab-session", RX = /^(ch\d+-|meet-ai-)/;
   var acc = null; try { acc = JSON.parse(localStorage.getItem(SESS) || "null"); } catch(e) {}
   if (on && !acc){ location.replace("index.html"); return; }
   var css = document.createElement("style");
@@ -18,7 +18,7 @@
   var last = JSON.stringify(snap()), busy = false;
   function push(keepalive){
     var s = snap(), j = JSON.stringify(s); if (j === last || busy) return; busy = true; setSave("Saving…");
-    fetch(C.url.replace(/\/+$/, "") + "/rest/v1/rpc/ailab_course_save", {method:"POST", keepalive: !!keepalive,
+    fetch(C.url.replace(/\/+$/, "") + "/rest/v1/rpc/ailab_course_save", {method:"POST", keepalive: !!keepalive && j.length < 60000,
       headers: Object.assign({"apikey": C.key, "Content-Type": "application/json"}, /^eyJ/.test(C.key) ? {"Authorization": "Bearer " + C.key} : {}),
       body: JSON.stringify({p_token: acc.token, p_data: s})})
     .then(function(r){ return r.text().then(function(t){ var m = null; try { m = JSON.parse(t); } catch(e) {} if (!r.ok) throw {code: (m && m.message) || ("http_" + r.status)}; }); })

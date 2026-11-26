@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
-<title>The Future of Our Planet</title>
+<title>Save Our Planet with Data</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -437,10 +437,30 @@ img.fprev{background:var(--paper)}
 .step[aria-current="step"]{border-top-color:var(--onair);color:var(--ink);font-weight:700}
 @media (max-width:700px){.bug small{display:none}.step .t{display:none}.clock .lbl{display:none}body{font-size:17px}.lead{font-size:18px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---- Chapter 10 · planet data ---- */
+.missions{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.mis{border:2px solid var(--line);border-radius:16px;background:var(--panel);padding:16px;display:grid;gap:4px;text-align:left;font:inherit;color:var(--ink);cursor:pointer}.mis .mic{font-size:38px}.mis b{font-size:19px}.mis small{color:var(--muted);font-size:15px}
+.mis[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+.dtab{border-collapse:collapse;width:100%;font-size:17px}.dtab th,.dtab td{padding:6px 8px;border-bottom:1.5px solid var(--line);text-align:left}.dtab th{font:700 12px var(--mono);letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.dtab input{font:inherit;font-size:17px;width:120px;padding:6px 8px;border:1.5px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink)}
+.bars{width:100%;height:auto;display:block}.bars .grid{stroke:var(--line);stroke-width:1}.bars .ax{font:13px Arial,sans-serif;fill:var(--muted)}.bars .val{font:700 14px Arial,sans-serif;fill:var(--ink)}
+.anq{display:grid;gap:12px;margin-top:8px}.anq input{font:inherit;font-size:17px;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);width:160px}
+.fit{font-size:13px;font-weight:700}.fit.ok{color:var(--green)}.fit.no{color:var(--onair)}
+.chkai{display:grid;gap:8px}.aiq{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--panel);font-size:16px}
+.aiwarn{margin:4px 0 0;padding:10px 12px;border-radius:10px;background:var(--onair-soft);color:var(--onair);font-weight:700}
+#cause{font:inherit;font-size:16px;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box}
+.simrow{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1.5px solid var(--line);font-size:16px}.simrow b{font-size:18px;min-width:60px;text-align:right}
+.simrow input[type=number]{font:inherit;font-size:16px;padding:4px 8px;border:1.5px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink)}
+.simout{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.simout div{border-radius:12px;background:var(--paper);padding:12px;display:grid;gap:4px}.simout small{color:var(--muted);font-size:14px}.simout b{font-size:26px}.simout .good{background:var(--green-soft)}.simout .good b{color:var(--green)}
+.ba{display:grid;gap:4px;margin:10px 0 14px}.ba span{font-size:15px;color:var(--muted)}.ba b{font-size:18px}.bt{height:30px;border-radius:8px;background:var(--paper);overflow:hidden}.bt i{display:block;height:100%;border-radius:8px;transition:width .4s}
+.sols{display:grid;gap:8px}.srow{display:grid;grid-template-columns:minmax(0,1fr) 96px 96px 96px 52px;gap:8px;align-items:center}.srow.sh span{font:700 12px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.srow input,.srow select{font:inherit;font-size:15px;padding:7px 8px;border:1.5px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);min-width:0}.srow b{font-size:16px;text-align:center}
+@media (max-width:720px){.srow{grid-template-columns:1fr 1fr 1fr}.srow input{grid-column:1/-1}.srow.sh{display:none}}
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 10: The Future of Our Planet</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 10: Save Our Planet with Data</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -448,72 +468,100 @@ img.fprev{background:var(--paper)}
   </div>
 </header>
 <main class="wrap" id="stage">
-<!-- 1 discover -->
-<section class="seg" id="seg-1" data-min="7" data-title="Be the litter AI">
-  <div class="lower"><div class="no">01</div><div class="name"><h2>Can AI help clean a beach?</h2><p>7 minutes · discover</p></div></div>
-  <p class="big">A drone takes photos of a beach. An AI says where the rubbish is. Check its answers: is the AI right?</p>
-  <div class="beach" id="beach"></div>
-  <p class="lead" style="margin:12px 0 0"><span class="score" id="bs">0 of 6</span> checked</p>
-  <div class="def" id="l1" hidden><span class="tag">Remember</span><p>AI can help us see faster, but it makes mistakes. A human checks, and decides what to do.</p></div>
+<!-- 1 choose -->
+<section class="seg" id="seg-1" data-min="5" data-title="Choose your mission" data-period="1">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>Save Our Planet with Data</h2><p>Period 1 · 5 minutes · choose your mission</p></div></div>
+  <p class="big">Good decisions start with numbers, not guesses. Today you collect data, analyse it with AI, and decide what to change.</p>
+  <div class="missions" id="missions"></div>
+  <p class="fb" id="mMsg" style="font-weight:700;margin:10px 0 0"></p>
 </section>
 
-<!-- 2 learn -->
-<section class="seg" id="seg-2" data-min="10" data-title="AI for good" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>AI for the planet</h2><p>10 minutes · learn</p></div></div>
-  <p class="big">AI has 3 big powers that can help the planet. None of them is magic.</p>
-  <div class="lesson">
-    <div class="card"><span class="tag">👁 It can SEE</span><p class="big2" style="font-size:24px">Image recognition</p><p style="margin:0">Find litter in photos, count animals in the forest, spot fires from satellites.</p></div>
-    <div class="card"><span class="tag">🔮 It can PREDICT</span><p class="big2" style="font-size:24px">Forecasting</p><p style="margin:0">Predict tomorrow's electricity use, the weather, or where the sea will flood.</p></div>
-    <div class="card"><span class="tag">✍️ It can WRITE</span><p class="big2" style="font-size:24px">Language generation</p><p style="margin:0">Write campaign slogans, explain a problem simply, translate a message.</p></div>
-  </div>
-  <div class="card" style="margin-top:14px"><span class="tag">⚠️ But…</span><p style="margin:6px 0 0;font-size:18px">AI needs <b>good data</b> (many correct examples) and <b>human oversight</b> (people who check it and decide).</p></div>
-  <p class="lead" style="margin:20px 0 0"><b>Key words.</b> Tap each one.</p>
-  <div class="vocab" id="vocab"></div>
-</section>
-
-<!-- 3 watch -->
-<section class="seg" id="seg-3" data-min="8" data-title="Predict energy" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>An AI predicts the school's energy</h2><p>8 minutes · forecasting</p></div></div>
-  <p class="big">The AI learned from last month and predicts tomorrow's electricity use. Can you save energy?</p>
-  <div class="grid g2">
-    <div class="card"><span class="tag">Tomorrow, hour by hour (prediction)</span><div class="chart" id="chart"></div></div>
-    <div class="card" style="display:grid;gap:10px;align-content:start">
-      <span class="tag">Your actions</span>
-      <label class="ck2"><input type="checkbox" id="a1"> 💡 Lights off in empty classrooms at lunch</label>
-      <label class="ck2"><input type="checkbox" id="a2"> ❄️ Air conditioning at 24 °C, not 18 °C</label>
-      <label class="ck2"><input type="checkbox" id="a3"> 💻 Computers off at the end of the day</label>
-      <p class="big2" id="save">0% saved</p>
-      <p class="muted" style="margin:0;font-size:15px">Example numbers, to show the idea. What could go wrong with the prediction? A holiday, a heat wave, a broken sensor…</p>
+<!-- 2 collect -->
+<section class="seg" id="seg-2" data-min="12" data-title="Collect data" data-period="1" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>Collect data</h2><p>Period 1 · 12 minutes · one week of numbers</p></div></div>
+  <div class="card"><span class="tag">How to measure</span><p class="lead" id="howM" style="margin:6px 0 0"></p></div>
+  <div class="grid g2" style="margin-top:14px;align-items:start">
+    <div class="card"><span class="tag">My data</span>
+      <div class="row" style="margin:8px 0 10px"><button class="btn sm" id="useSample" type="button">Use the sample data</button><button class="btn sm alt" id="useOwn" type="button">I measured my own</button></div>
+      <table class="dtab" id="dtab"></table>
+      <p class="muted" id="dNote" style="font-size:14px;margin:8px 0 0"></p>
     </div>
+    <div class="card"><span class="tag">Your data as a chart</span><div id="chart1"></div></div>
+  </div>
+  <div class="card bad" style="margin-top:14px"><span class="tag">🔒 Data rules</span><p class="lead" style="margin:6px 0 0">Count things, not people. No names, no photos. Write down the real numbers, even if they look bad.</p></div>
+</section>
+
+<!-- 3 analyse -->
+<section class="seg" id="seg-3" data-min="28" data-title="Analyse with AI" data-period="1" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Analyse the data, then check the AI</h2><p>Period 1 · 28 minutes · you first, then Gemini</p></div></div>
+  <div class="grid g2" style="align-items:start">
+    <div class="card"><span class="tag">Step 1 · You are the analyst</span>
+      <div class="anq" id="anq"></div>
+      <p class="fb" id="anMsg" style="font-weight:700;margin:10px 0 0"></p>
+    </div>
+    <div class="card"><span class="tag">The chart</span><div id="chart2"></div></div>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 2 · Ask Gemini to analyse it</span>
+    <p class="prompt sm" id="aPrompt" style="margin-top:8px"></p>
+    <div class="row"><button class="btn" id="aCopy" type="button">📋 Copy the prompt</button><a class="btn alt" href="https://gemini.google.com/app" target="gemini" rel="noopener">↗ Open Gemini</a></div>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 3 · Check the AI's numbers</span>
+    <p style="margin:6px 0 10px;font-size:17px">AI can be wrong with numbers. Compare its answers with YOUR answers.</p>
+    <div class="chkai" id="chkai"></div>
+    <label class="ff" style="margin-top:12px"><b>What could cause the worst day? (your idea, or Gemini's if you agree)</b><input id="cause" type="text" maxlength="160" placeholder="e.g. On Thursday there is pasta, and many students don't like it."></label>
   </div>
 </section>
 
-<!-- 4 brain -->
-<section class="seg" id="seg-4" data-min="10" data-title="Brain challenge" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Brain challenge</h2><p>10 minutes · 2 games</p></div></div>
-  <div class="card"><span class="tag">Game 1 · Match the AI power to the task</span><div class="sortg" id="g1" style="margin-top:10px"></div></div>
-  <div class="card" style="margin-top:14px"><span class="tag">Game 2 · Why do mistakes happen?</span><p style="margin:6px 0 8px;font-size:18px">A photo AI thinks a dark shadow on the sand is rubbish. Why? Choose all the good reasons.</p><div class="chips" id="why"></div><p class="fb" id="whyA" style="font-weight:700;margin:10px 0 0"></p></div>
-</section>
-
-<!-- 5 create -->
-<section class="seg" id="seg-5" data-min="22" data-title="Mission: planet project" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: Future of Our Planet</h2><p>22 minutes · your AI-for-good idea</p></div></div>
-  <div class="card"><span class="tag">Step 1 · Choose your project</span><div class="themes" id="themes" style="margin-top:8px"></div></div>
-  <div class="mission" style="margin-top:14px">
-    <div class="forms" id="plan"></div>
-    <aside class="card side posterwrap"><span class="tag">Your project poster</span><canvas id="pp" width="1000" height="1400" aria-label="Your planet project poster"></canvas><a class="btn" id="ppDl" download="Planet-Project.png" href="#">⬇ Download my poster</a></aside>
+<!-- 4 what-if -->
+<section class="seg" id="seg-4" data-min="12" data-title="What-if simulator" data-period="2" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Planet Lab: impact simulator</h2><p>Period 2 · 12 minutes · what if we change something?</p></div></div>
+  <p class="big" id="simQ">Can you reduce it?</p>
+  <div class="grid g2" style="align-items:start">
+    <div class="card"><span class="tag">Your numbers</span>
+      <div class="simrow"><span>Weekly total (your data)</span><b id="sWeek"></b></div>
+      <label class="simrow"><span>Target reduction</span><input type="range" id="sPct" min="5" max="60" step="5"><b id="sPctV"></b></label>
+      <label class="simrow"><span>School weeks in a year</span><input type="number" id="sWeeks" min="1" max="52" style="width:70px"></label>
+      <div class="simout"><div><small>Now, in one school year</small><b id="sNow"></b></div><div class="good"><small>Avoided with your solution</small><b id="sSave"></b></div></div>
+    </div>
+    <div class="card"><span class="tag">Before and after (one year)</span><div id="simBars"></div></div>
   </div>
-  <div class="card" style="margin-top:14px"><span class="tag">Need a reliable fact?</span><p style="margin:6px 0 0">Look on <a href="https://kids.nationalgeographic.com/" target="_blank" rel="noopener">National Geographic Kids</a>, <a href="https://climatekids.nasa.gov/" target="_blank" rel="noopener">NASA Climate Kids</a> or <a href="https://kids.britannica.com/" target="_blank" rel="noopener">Britannica Kids</a>, and write the source.</p></div>
-  <div id="gBadge"></div>
+  <p class="muted" style="margin-top:10px;font-size:15px">Projection: it assumes every week is like your week, and that your solution works the same every week.</p>
+  <div class="card" style="margin-top:14px"><span class="tag">Think</span><p style="margin:6px 0 8px;font-size:17px">Which target is realistic for a school team in a few weeks?</p><div class="row" id="realQ"></div><p class="fb" id="realA" style="font-weight:700;margin:8px 0 0"></p></div>
 </section>
 
-<!-- 6 reflect -->
-<section class="seg" id="seg-6" data-min="5" data-title="Reflect" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>Quiz and reflect</h2><p>5 minutes</p></div></div>
-  <div class="qz" id="quiz"></div>
-  <div class="card reflect" style="margin-top:14px"><span class="tag">Exit ticket</span><label class="ttl" for="exit" style="display:block">Name one way AI can help the planet, and one limit.</label><textarea id="exit" placeholder="AI can help by… but…"></textarea></div>
-  <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Find one reliable fact about your environmental issue, and add the source to your project.</p></div>
-  <p class="note">Next: your own website, then the Final Showcase.</p>
+<!-- 5 consultant -->
+<section class="seg" id="seg-5" data-min="15" data-title="AI consultant" data-period="2" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>AI environmental consultant</h2><p>Period 2 · 15 minutes · compare solutions, then decide</p></div></div>
+  <div class="card"><span class="tag">Step 1 · Ask Gemini for solutions</span>
+    <p class="prompt sm" id="cPrompt" style="margin-top:8px"></p>
+    <div class="row"><button class="btn" id="cCopy" type="button">📋 Copy the prompt</button><a class="btn alt" href="https://gemini.google.com/app" target="gemini" rel="noopener">↗ Open Gemini</a></div>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 2 · Compare 3 solutions</span>
+    <p style="margin:6px 0 10px;font-size:17px">Write the 3 solutions in your own words. Rate each one: <b>cost</b> (low is better), <b>impact</b> and <b>how easy</b> (high is better).</p>
+    <div class="sols" id="sols"></div>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 3 · Your decision</span><div class="row" id="solPick" style="margin-top:6px"></div><p class="fb" id="solMsg" style="font-weight:700;margin:10px 0 0"></p></div>
+</section>
+
+<!-- 6 report -->
+<section class="seg" id="seg-6" data-min="12" data-title="Impact report" data-period="2" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>My Planet Impact Report</h2><p>Period 2 · 12 minutes · final deliverable</p></div></div>
+  <div class="mission">
+    <div class="forms" id="rep"></div>
+    <aside class="card side posterwrap"><span class="tag">Your report</span><canvas id="rp" width="1000" height="1120" aria-label="Your Planet Impact Report"></canvas><a class="btn" id="rpDl" download="Planet-Impact-Report.png" href="#">⬇ Download my report</a></aside>
+  </div>
+  <div id="rBadge"></div>
+</section>
+
+<!-- 7 reflect -->
+<section class="seg" id="seg-7" data-min="6" data-title="Reflect" data-period="2" hidden>
+  <div class="lower"><div class="no">07</div><div class="name"><h2>Quiz and reflect</h2><p>Period 2 · 6 minutes</p></div></div>
+  <p class="lead" style="margin:0 0 6px"><b>Key words.</b> Tap each one.</p>
+  <div class="vocab" id="vocab"></div>
+  <div class="qz" id="quiz" style="margin-top:16px"></div>
+  <div class="card reflect" style="margin-top:14px"><span class="tag">Exit ticket</span><label class="ttl" for="exit" style="display:block">Why must you check the numbers an AI gives you?</label><textarea id="exit" placeholder="Because…"></textarea></div>
+  <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Measure the same thing at home for 5 days (water, lights left on, or food thrown away). Is there a worst day? Why?</p></div>
+  <p class="note">Next week: the Final Showcase. You present your app and your project.</p>
 </section>
 
 </main>
@@ -597,7 +645,7 @@ window.PICKINDS = {
   inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
 };
 window.F = (function(){
-const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 11:6, 12:7, 14:8, 15:9, 16:10, 8:11, 9:12})[n] || n; /* file number → chapter number (AI Explorers, 12 chapters) */
+const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 11:6, 12:7, 14:8, 15:9, 16:10, 9:11})[n] || n; /* file number → chapter number (AI Creators, 11 chapters) */
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
@@ -672,7 +720,7 @@ function slotBox(box, s, onDone){
 function plan(){
   const kinds = ["big"], K = window.PICKINDS || {};
   return kinds.map(k => ({slot:k, label:k === "big" ? "My Advertisement Poster" : (K[k] && K[k].label) || k, ch:11, accept:"image/*"})).concat([
-    {slot:"license", label:"My AI Driving License", ch:13, accept:"image/png"}, {slot:"video", label:"My AI Commercial", ch:11, accept:"video/*"}, {slot:"smart", label:"My First Smart System", ch:12, accept:".html,text/html"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
+    {slot:"license", label:"My AI Driving License", ch:13, accept:"image/png"}, {slot:"video", label:"My AI Commercial", ch:11, accept:"video/*"}, {slot:"smart", label:"My First Smart System", ch:12, accept:".html,text/html"}, {slot:"app1", label:"My app · Version 1", ch:15, accept:".html,text/html"}, {slot:"page", label:"My school app", ch:15, accept:".html,text/html"}]);
 }
 function folder(box, now){
   async function draw(){
@@ -768,7 +816,7 @@ return {make, power, meter, join, missing, guard, show, lock};
 
 window.K = (function(){
 const $ = s => document.querySelector(s);
-const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => { if (c != null && c !== false) e.append(c); }); return e; };
 let PFX = "k";
 const store = { get(k){ try { return JSON.parse(localStorage.getItem(PFX + "-" + k)); } catch(e){ return null; } }, set(k, v){ try { localStorage.setItem(PFX + "-" + k, JSON.stringify(v)); } catch(e){} }, raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
 let segs = [], cur = 0, stepBtns = [], left = 0, tick = null, tt;
@@ -786,7 +834,7 @@ function go(i){
 function init(prefix, p2){
   PFX = prefix; segs = [...document.querySelectorAll(".seg")];
   const box = $("#steps");
-  segs.forEach((s, i) => { if (p2 && i === p2) box.append(el("span", {class:"pdiv", "aria-hidden":"true"}, "P2")); box.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))); });
+  segs.forEach((s, i) => { if (i && s.dataset.period !== segs[i - 1].dataset.period) box.append(el("span", {class:"pdiv", "aria-hidden":"true"}, "P" + s.dataset.period)); box.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))); });
   stepBtns = [...box.querySelectorAll(".step")];
   $("#prev").onclick = () => go(cur - 1); $("#next").onclick = () => go(cur + 1);
   addEventListener("keydown", e => { if (e.target.matches("textarea,input,select")) return; if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); });
@@ -887,62 +935,180 @@ window.X = (function(){
 </script>
 <script>
 (function(){
-const {$, el, store} = K;
+const {$, el, store, copy} = K;
 K.init("ch16"); X.setup();
-const done = X.prog(4);
+const done = X.prog(5);
 
-/* 1 beach */
-const BE = [["🥤", "Plastic cup", "rubbish", true], ["🐚", "Seashell", "rubbish", false], ["🛍️", "Plastic bag", "rubbish", true], ["🌑", "Dark shadow of a rock", "rubbish", false], ["🪵", "Piece of driftwood", "nature", true], ["🥫", "Old can", "nature", false]];
-let bn = 0;
-$("#beach").replaceChildren(...BE.map(([ic, what, ai, right]) => { const c = el("div", {class:"bcell"}); let d = false; const fb = el("small");
-  c.append(el("span", {class:"bic"}, ic), el("b", null, "🤖 AI says: " + (ai === "rubbish" ? "RUBBISH" : "NOT rubbish")), el("div", {class:"row", style:"justify-content:center"}, ...[["✓ AI is right", true], ["✗ AI is wrong", false]].map(([l, v]) => el("button", {class:"btn sm alt", type:"button", onclick:() => { if (d) return; d = true; bn++; const ok = v === right; c.classList.add(ok ? "ok" : "no"); fb.textContent = (ok ? "✓ " : "✗ ") + "It's a " + what.toLowerCase() + ". The AI was " + (right ? "right." : "WRONG."); $("#bs").textContent = bn + " of 6"; if (bn === 6){ $("#l1").hidden = false; done(0); } }}, l))), fb);
-  return c; }));
+const lc0 = t => { t = String(t || "").trim().replace(/[.!]+$/, ""); return /^[A-Z](?:[a-z]|\s)/.test(t) ? t[0].toLowerCase() + t.slice(1) : t; };
+const nw = t => (String(t || "").trim().match(/\S+/g) || []).length;
+const fmt = n => (Math.round(n * 10) / 10).toLocaleString("en-US");
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+const MIS = {
+  water:{ic:"💧", t:"Water waste", goal:"Reduce water use", what:"water used", unit:"litres", u:"L", sample:[3200, 3500, 2900, 4100, 2700], how:"Ask the school caretaker to read the water meter at the same time every day, and write the number of litres used.", noun:"water", color:"#2F80C9"},
+  energy:{ic:"⚡", t:"Energy waste", goal:"Reduce electricity use", what:"electricity used", unit:"kWh", u:"kWh", sample:[140, 155, 150, 170, 120], how:"Ask the caretaker to read the electricity meter every day at the same time. A kWh is a unit of electricity.", noun:"electricity", color:"#D99A00"},
+  food:{ic:"🍽️", t:"Food waste", goal:"Reduce cafeteria waste", what:"food thrown away", unit:"kg", u:"kg", sample:[12, 18, 10, 22, 8], how:"With the cafeteria staff, weigh the food thrown away after lunch every day, in kilograms.", noun:"food waste", color:"#2E9E5B"},
+  air:{ic:"🚗", t:"Air pollution", goal:"Fewer car trips to school", what:"cars dropping students at the gate", unit:"cars", u:"cars", sample:[85, 92, 78, 110, 70], how:"Count the cars dropping students at the school gate between 7:30 and 8:00 every morning. Fewer cars = cleaner air.", noun:"car trips", color:"#7A6FB0"}
+};
+const PL = Object.assign({m:"", src:"", d:["", "", "", "", ""], an:{}, ai:{}, cause:"", pct:30, weeks:36, real:"", sols:[{}, {}, {}], pick:-1}, store.get("pl") || {});
+const saveP = () => store.set("pl", PL);
+const M = () => MIS[PL.m] || null;
+const vals = () => PL.d.map(x => parseFloat(String(x).replace(",", ".")));
+const dataOk = () => vals().every(x => isFinite(x) && x >= 0);
+const total = () => vals().reduce((a, b) => a + b, 0);
+const avg = () => total() / 5;
+const worst = () => { const v = vals(); return v.indexOf(Math.max(...v)); };
 
-/* 2 */
-X.vocab($("#vocab"), [["Sustainability", "Using what we need today, and keeping enough for the future."], ["Renewable energy", "Energy that doesn't run out: sun, wind, water."], ["Conservation", "Protecting nature and animals."], ["Monitoring", "Watching something over time, like the sea or a forest."], ["Forecast", "A prediction about the future."], ["Human oversight", "People check what the AI does, and decide."]]);
-
-/* 3 energy chart */
-const HRS = ["7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18"], BASE = [20, 55, 70, 75, 80, 85, 78, 82, 76, 60, 40, 30];
-function drawChart(){
-  const a1 = $("#a1").checked, a2 = $("#a2").checked, a3 = $("#a3").checked;
-  const v = BASE.map((x, i) => Math.round(x * (a2 ? 0.8 : 1) - (a1 && (i === 5 || i === 6) ? 18 : 0) - (a3 && i >= 10 ? x * 0.5 : 0)));
-  const tot = BASE.reduce((s, x) => s + x, 0), now = v.reduce((s, x) => s + x, 0), pct = Math.round((1 - now / tot) * 100);
-  $("#chart").replaceChildren(...HRS.map((h, i) => el("div", {class:"cb"}, el("i", {style:"height:" + BASE[i] + "%", class:"ghost2"}), el("i", {style:"height:" + v[i] + "%"}), el("small", null, h))));
-  $("#save").textContent = pct + "% saved" + (pct >= 25 ? " 🌍" : ""); if (pct > 0) done(1);
+/* 1 choose a mission */
+function drawMissions(){
+  $("#missions").replaceChildren(...Object.entries(MIS).map(([k, m]) => el("button", {class:"mis", type:"button", "aria-pressed":String(PL.m === k), onclick:() => { if (PL.m !== k){ PL.m = k; PL.src = ""; PL.d = ["", "", "", "", ""]; PL.an = {}; PL.ai = {}; saveP(); } drawAll(); }},
+    el("span", {class:"mic"}, m.ic), el("b", null, m.t), el("small", null, m.goal + "."))));
+  $("#mMsg").textContent = M() ? "✓ Your mission: " + M().t + ". Next: collect the data." : "Choose one mission.";
+  $("#mMsg").style.color = M() ? "var(--green)" : "var(--muted)";
 }
-["a1", "a2", "a3"].forEach(id => $("#" + id).onchange = drawChart); drawChart();
 
-/* 4 */
-X.sort($("#g1"), [
-  ["Find litter in 1,000 beach photos", "see", "Image recognition."],
-  ["Guess how much electricity the school needs tomorrow", "pred", "A forecast."],
-  ["Write a slogan for a recycling campaign", "write", "Language generation."],
-  ["Count turtles in drone photos", "see", "Image recognition."]
-], [["see", "👁 See"], ["pred", "🔮 Predict"], ["write", "✍️ Write"]]);
-const WHY = [["The light and the shadows", true], ["The angle of the photo", true], ["A blurry, low-quality photo", true], ["It never saw shadows in its examples", true], ["The AI is angry", false]];
-const ws = new Set();
-function drawWhy(){ $("#why").replaceChildren(...WHY.map(([t], i) => el("button", {class:"chip" + (ws.has(i) ? " on" : ""), type:"button", onclick:() => { ws.has(i) ? ws.delete(i) : ws.add(i); drawWhy(); }}, t)));
-  const good = WHY.every(([, ok], i) => ok === ws.has(i)); $("#whyA").textContent = ws.size ? (good ? "✓ Exactly. Light, angle, quality and missing examples cause mistakes. That's why a human checks." : "Almost: choose every real reason, and nothing silly.") : ""; $("#whyA").style.color = good ? "var(--green)" : "var(--gold)"; if (good) done(2); }
-drawWhy();
+/* 2 collect the data */
+function chart(box){
+  const m = M(); if (!m || !dataOk()){ box.replaceChildren(el("p", {class:"muted"}, "Your chart appears here when the 5 days are filled in.")); return; }
+  const v = vals(), mx = Math.max(...v) || 1, W = 520, H = 280, bw = 64, gap = (W - 60 - bw * 5) / 4, top = Math.ceil(mx / 4) * 4 || 4;
+  const NS = "http://www.w3.org/2000/svg", s = document.createElementNS(NS, "svg"); s.setAttribute("viewBox", "0 0 " + W + " " + H); s.setAttribute("class", "bars"); s.setAttribute("role", "img"); s.setAttribute("aria-label", "Bar chart of " + m.what + " per day");
+  const add = (t, a, txt) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (txt != null) e.textContent = txt; s.append(e); return e; };
+  for (let i = 0; i <= 4; i++){ const y = 230 - i * 50; add("line", {x1:50, x2:W, y1:y, y2:y, class:"grid"}); add("text", {x:44, y:y + 5, class:"ax", "text-anchor":"end"}, fmt(top / 4 * i)); }
+  v.forEach((x, i) => { const h = x / top * 200, X = 60 + i * (bw + gap); add("rect", {x:X, y:230 - h, width:bw, height:h, rx:6, fill:m.color}); add("text", {x:X + bw / 2, y:224 - h, class:"val", "text-anchor":"middle"}, fmt(x)); add("text", {x:X + bw / 2, y:254, class:"ax", "text-anchor":"middle"}, DAYS[i].slice(0, 3)); });
+  add("text", {x:W / 2, y:H - 4, class:"ax", "text-anchor":"middle"}, m.what + " (" + m.unit + ")");
+  box.replaceChildren(s);
+}
+function drawData(){
+  const m = M();
+  $("#howM").textContent = m ? m.ic + " " + m.how : "👆 First choose your mission in Section 1.";
+  $("#useSample").disabled = !m; $("#useOwn").disabled = !m;
+  $("#useSample").className = "btn sm" + (PL.src === "sample" ? "" : " alt"); $("#useOwn").className = "btn sm" + (PL.src === "own" ? "" : " alt");
+  $("#dtab").replaceChildren(el("tr", null, el("th", null, "Day"), el("th", null, m ? m.what + " (" + m.unit + ")" : "Value")), ...DAYS.map((d, i) => { const inp = el("input", {type:"text", inputmode:"decimal", "aria-label":d, value:PL.d[i], disabled:m ? null : "", placeholder:"0"});
+    inp.oninput = () => { PL.d[i] = inp.value.trim(); if (PL.src === "sample") PL.src = "own"; PL.an = {}; saveP(); $("#useSample").className = "btn sm alt"; $("#useOwn").className = "btn sm"; chart($("#chart1")); note(); };
+    return el("tr", null, el("td", null, d), el("td", null, inp)); }));
+  chart($("#chart1")); note();
+}
+function note(){ $("#dNote").textContent = PL.src === "sample" ? "Sample dataset for classroom practice, not real school measurements." : PL.src === "own" ? "Your own measurements." : ""; }
+$("#useSample").onclick = () => { if (!M()) return; PL.src = "sample"; PL.d = M().sample.map(String); PL.an = {}; PL.ai = {}; saveP(); drawData(); };
+$("#useOwn").onclick = () => { if (!M()) return; PL.src = "own"; if (PL.d.join() === M().sample.map(String).join()) PL.d = ["", "", "", "", ""]; PL.an = {}; PL.ai = {}; saveP(); drawData(); };
 
-/* 5 project */
-const TH = [["🌊", "Ocean Guardians", "An awareness campaign to keep our sea clean."], ["🦊", "Wildlife Watch", "An AI that recognises animals in photos."], ["♻️", "Smart Recycling Station", "A station that tells you which bin to use."], ["🏙️", "Future Green City", "A city with sun power, buses and gardens."], ["💧", "Water Wise", "Help families save water at home."]];
-const PL = Object.assign({theme:""}, store.get("planetTheme") ? {theme:store.get("planetTheme")} : {});
-const F = [["problem", "The problem", "What is wrong? Where?", 2], ["users", "Who is it for?", "e.g. families in Beirut, beach visitors"], ["data", "Data the AI needs", "e.g. 1,000 photos of beach litter, labelled", 2], ["ai", "The AI's job", "What does the AI do? See, predict or write?", 2], ["human", "The human's job", "What do people check and decide?", 2], ["risk", "One risk or limit", "e.g. a shadow can look like rubbish", 2], ["fact", "One reliable fact + its source", "e.g. … (Source: NASA Climate Kids)", 2]];
-let D = {};
-function drawPoster(){ const t = TH.find(x => x[1] === PL.theme);
-  X.poster($("#pp"), $("#ppDl"), {kicker:"The Future of Our Planet · AI Explorers", title:t ? t[0] + " " + t[1] : "My Planet Project", color:"#0B6E4F", sections:F.map(([k, l]) => [l, D[k]])});
-  const ok = PL.theme && F.every(([k]) => (D[k] || "").trim()); if (ok){ X.badge($("#gBadge"), "🌍", "Planet Problem-Solver", "Your project is saved in your portfolio. Download your poster!"); done(3); } else $("#gBadge").replaceChildren(); }
-function drawThemes(){ $("#themes").replaceChildren(...TH.map(([ic, n, d]) => el("button", {class:"card theme" + (PL.theme === n ? " on" : ""), type:"button", "aria-pressed":String(PL.theme === n), onclick:() => { PL.theme = n; store.set("planetTheme", n); drawThemes(); drawPoster(); }}, el("span", {class:"tic"}, ic), el("b", null, n), el("span", {class:"muted"}, d)))); }
-D = X.form($("#plan"), "planet", F, S => { D = S; drawPoster(); });
-drawThemes(); drawPoster();
+/* 3 analyse: the kid first, then Gemini, then compare */
+function drawAnalysis(){
+  const m = M(), ok = !!m && dataOk();
+  chart($("#chart2"));
+  if (!ok){ $("#anq").replaceChildren(el("p", {class:"muted"}, "👆 First fill in your data (Section 2).")); $("#anMsg").textContent = ""; drawAPrompt(); drawChkAI(); return; }
+  const num = (k, label, ans, tol) => { const i = el("input", {type:"text", inputmode:"decimal", placeholder:m.u, value:PL.an[k] || ""}), f = el("small", {class:"fit"});
+    const chk = () => { const x = parseFloat(String(i.value).replace(",", ".")); if (!i.value.trim()){ f.textContent = ""; f.className = "fit"; return; } const good = Math.abs(x - ans) <= tol; f.textContent = good ? "✓ Correct" : "✗ Not yet. Check your calculation."; f.className = "fit " + (good ? "ok" : "no"); };
+    i.oninput = () => { PL.an[k] = i.value; saveP(); chk(); anMsg(); }; chk(); return el("label", {class:"ff"}, el("b", null, label), i, f); };
+  const days = el("div", {class:"chips"}, ...DAYS.map((d, i) => el("button", {class:"chip", type:"button", "aria-pressed":String(PL.an.worst === i), onclick:() => { PL.an.worst = i; saveP(); drawAnalysis(); }}, d.slice(0, 3))));
+  const wf = PL.an.worst == null ? "" : PL.an.worst === worst() ? "✓ Correct: the highest bar." : "✗ Look at the chart: which bar is the highest?";
+  $("#anq").replaceChildren(el("div", {class:"ff"}, el("b", null, "1 · Which day was the worst?"), days, el("small", {class:"fit " + (wf.startsWith("✓") ? "ok" : wf ? "no" : "")}, wf)),
+    num("tot", "2 · The weekly total (add the 5 days)", total(), 0.05), num("avg", "3 · The daily average (total ÷ 5)", avg(), 0.15));
+  anMsg(); drawAPrompt(); drawChkAI();
+}
+const anOk = () => !!M() && dataOk() && PL.an.worst === worst() && Math.abs(parseFloat(String(PL.an.tot).replace(",", ".")) - total()) <= 0.05 && Math.abs(parseFloat(String(PL.an.avg).replace(",", ".")) - avg()) <= 0.15;
+function anMsg(){ $("#anMsg").textContent = anOk() ? "✓ You analysed the data yourself. Now see what the AI says." : "Answer the 3 questions. Use the chart and a calculator if you need."; $("#anMsg").style.color = anOk() ? "var(--green)" : "var(--muted)"; analysisDone(); }
+const dataLine = () => DAYS.map((d, i) => d + " " + fmt(vals()[i]) + " " + M().u).join(", ");
+const aPrompt = () => "Act as a data analyst for a Grade 7 student. Here is my data about " + M().what + " at my school, for one week: " + dataLine() + ". Find the worst day, the weekly total and the daily average. Make a simple bar chart. Explain in simple English what the data shows, and what could cause the worst day. Do not invent any numbers.";
+function drawAPrompt(){ $("#aPrompt").textContent = M() && dataOk() ? "“" + aPrompt() + "”" : "Your prompt appears here when your data is ready."; }
+$("#aCopy").onclick = () => { if (!M() || !dataOk()){ K.toast("First fill in your data (Section 2)."); return; } copy(aPrompt(), $("#aPrompt"), "Gemini"); };
+const AIQ = [["worst", "Did Gemini find the same worst day?"], ["tot", "The same weekly total?"], ["avg", "The same daily average?"]];
+function drawChkAI(){
+  $("#chkai").replaceChildren(...AIQ.map(([k, q]) => el("div", {class:"aiq"}, el("span", null, q), el("div", {class:"row"}, ...[["yes", "✓ Same"], ["no", "✗ Different"]].map(([v2, l]) => el("button", {class:"btn sm" + (PL.ai[k] === v2 ? "" : " alt"), type:"button", onclick:() => { PL.ai[k] = v2; saveP(); drawChkAI(); }}, l))))),
+    Object.values(PL.ai).includes("no") ? el("p", {class:"aiwarn"}, "⚠️ The AI made a mistake! This is why you always check numbers yourself. Trust YOUR calculation, and tell Gemini: “Your total is wrong. Please check again.”") : "");
+  analysisDone();
+}
+$("#cause").value = PL.cause; $("#cause").addEventListener("input", () => { PL.cause = $("#cause").value; saveP(); analysisDone(); });
+function analysisDone(){ if (anOk() && AIQ.every(([k]) => PL.ai[k]) && nw(PL.cause) >= 5) done(0); }
 
-/* 6 */
+/* 4 the what-if simulator */
+function drawSim(){
+  const m = M(), ok = !!m && dataOk();
+  $("#simQ").textContent = ok ? "Can you reduce the " + m.noun + "? Move the target and see the impact over one school year." : "👆 First fill in your data (Section 2).";
+  $("#sPct").value = PL.pct; $("#sPctV").textContent = PL.pct + "%"; $("#sWeeks").value = PL.weeks;
+  if (!ok){ ["#sWeek", "#sNow", "#sSave"].forEach(x => $(x).textContent = "…"); $("#simBars").replaceChildren(); return; }
+  const wk = total(), year = wk * PL.weeks, saved = year * PL.pct / 100, after = year - saved;
+  $("#sWeek").textContent = fmt(wk) + " " + m.u; $("#sNow").textContent = fmt(year) + " " + m.u; $("#sSave").textContent = fmt(saved) + " " + m.u;
+  $("#simBars").replaceChildren(el("div", {class:"ba"}, el("span", null, "Before your solution"), el("div", {class:"bt"}, el("i", {style:"width:100%;background:#B8C2BD"})), el("b", null, fmt(year) + " " + m.u)),
+    el("div", {class:"ba"}, el("span", null, "After your solution"), el("div", {class:"bt"}, el("i", {style:"width:" + (100 - PL.pct) + "%;background:" + m.color})), el("b", null, fmt(after) + " " + m.u)));
+  if (PL.real) done(1);
+}
+$("#sPct").oninput = () => { PL.pct = +$("#sPct").value; saveP(); drawSim(); };
+$("#sWeeks").oninput = () => { const w = Math.round(+$("#sWeeks").value); if (w >= 1 && w <= 52){ PL.weeks = w; saveP(); drawSim(); drawRep(); } };
+const REAL = [["10–30%", "ok", "✓ Good thinking. 10 to 30% is realistic for a first project. You can aim higher next year."], ["50–60%", "hard", "Very ambitious! It's possible, but hard in a few weeks. Make sure you can really do it."], ["100%", "no", "100% means zero. That almost never happens: choose a target you can really reach."]];
+function drawReal(){ $("#realQ").replaceChildren(...REAL.map(([t, k]) => el("button", {class:"btn sm" + (PL.real === k ? "" : " alt"), type:"button", onclick:() => { PL.real = k; saveP(); drawReal(); drawSim(); }}, t)));
+  const r = REAL.find(x => x[1] === PL.real); $("#realA").textContent = r ? r[2] : ""; $("#realA").style.color = PL.real === "ok" ? "var(--green)" : "var(--gold)"; }
+drawReal();
+
+/* 5 the AI consultant: compare 3 solutions */
+const cPrompt = () => "Act as an environmental consultant for a Grade 7 student. My school data about " + M().what + " for one week: " + dataLine() + " (total " + fmt(total()) + " " + M().u + ")." + (nw(PL.cause) >= 3 ? " A possible cause of the worst day: " + lc0(PL.cause) + "." : "") + " Suggest 3 simple solutions that a team of students could do at school. For each one, say if the cost is low, medium or high, if the impact is low, medium or high, and if it is easy or hard to do, and explain why. Do not invent new data.";
+function drawCPrompt(){ $("#cPrompt").textContent = M() && dataOk() ? "“" + cPrompt() + "”" : "Your prompt appears here when your data is ready."; }
+$("#cCopy").onclick = () => { if (!M() || !dataOk()){ K.toast("First fill in your data (Section 2)."); return; } copy(cPrompt(), $("#cPrompt"), "Gemini"); };
+PL.sols = [0, 1, 2].map(i => Object.assign({t:"", cost:"", imp:"", easy:""}, (PL.sols || [])[i] || {}));
+const LV = ["Low", "Medium", "High"], SC = {cost:{Low:3, Medium:2, High:1}, imp:{Low:1, Medium:2, High:3}, easy:{Low:1, Medium:2, High:3}};
+const solOk = s => nw(s.t) >= 3 && s.cost && s.imp && s.easy;
+const solScore = s => solOk(s) ? SC.cost[s.cost] + SC.imp[s.imp] + SC.easy[s.easy] : 0;
+function drawSols(){
+  $("#sols").replaceChildren(el("div", {class:"srow sh"}, el("span", null, "Solution"), el("span", null, "Cost"), el("span", null, "Impact"), el("span", null, "How easy"), el("span", null, "Score")),
+    ...PL.sols.map((s, i) => { const t = el("input", {type:"text", maxlength:"120", placeholder:"Solution " + (i + 1) + ", e.g. " + ["smaller portions, more if you want", "a poster campaign", "a weekly class competition"][i], value:s.t});
+      t.oninput = () => { s.t = t.value; saveP(); drawPick(); sc.textContent = solScore(s) ? solScore(s) + "/9" : "–"; };
+      const sel = k => { const x = el("select", {"aria-label":k}, el("option", {value:""}, "…"), ...LV.map(l => el("option", {value:l}, l))); x.value = s[k]; x.onchange = () => { s[k] = x.value; saveP(); sc.textContent = solScore(s) ? solScore(s) + "/9" : "–"; drawPick(); }; return x; };
+      const sc = el("b", null, solScore(s) ? solScore(s) + "/9" : "–");
+      return el("div", {class:"srow"}, t, sel("cost"), sel("imp"), sel("easy"), sc); }));
+  drawPick();
+}
+function drawPick(){
+  const ok = PL.sols.map(solOk), best = Math.max(...PL.sols.map(solScore));
+  $("#solPick").replaceChildren(...PL.sols.map((s, i) => el("button", {class:"btn sm" + (PL.pick === i ? "" : " alt"), type:"button", disabled:ok[i] ? null : "", onclick:() => { PL.pick = i; saveP(); drawPick(); drawRep(); }}, (PL.pick === i ? "✓ " : "") + "Choose solution " + (i + 1))));
+  const n = ok.filter(Boolean).length;
+  $("#solMsg").textContent = n < 3 ? "Write and rate the 3 solutions (" + n + " of 3)." : PL.pick < 0 ? "Which one will you choose? The score helps, but YOU decide." : "✓ Your choice: " + PL.sols[PL.pick].t.trim() + (solScore(PL.sols[PL.pick]) < best ? ". Not the highest score: be ready to explain why!" : ".");
+  $("#solMsg").style.color = n === 3 && PL.pick >= 0 ? "var(--green)" : "var(--muted)";
+  if (n === 3 && PL.pick >= 0 && ok[PL.pick]) done(2);
+}
+
+/* 6 the impact report */
+let R = {};
+function repForm(){ const s = Object.assign({}, store.get("rep") || {});
+  if (!(s.sol || "").trim() && PL.pick >= 0 && solOk(PL.sols[PL.pick])) s.sol = PL.sols[PL.pick].t.trim();
+  if (!(s.measure || "").trim() && M()) s.measure = "Measure the " + M().what + " again for one week after the solution, and compare with this week.";
+  store.set("rep", s);
+  R = X.form($("#rep"), "rep", [["title", "Report title", "e.g. A Greener School"], ["sol", "My proposed solution", "e.g. Students choose smaller portions and ask for more if needed.", 2], ["measure", "How to measure success", "", 2]], S => { R = S; drawRep(); }); }
+function drawRep(){
+  const c = $("#rp"); if (!c) return; const g = c.getContext("2d"), W = c.width, H = c.height, m = M(), G = "#1E7A55", INK = "#13221C";
+  g.fillStyle = "#FBF7EE"; g.fillRect(0, 0, W, H); g.fillStyle = G; g.fillRect(0, 0, W, 210);
+  g.textAlign = "left"; g.fillStyle = "#CFEBDD"; g.font = "700 22px Arial, sans-serif"; g.fillText("EVERGREEN · AI CREATORS", 50, 60);
+  g.fillStyle = "#fff"; g.font = "800 50px Georgia, serif"; g.fillText(((R.title || "").trim() || "A Greener School").slice(0, 34), 50, 128);
+  g.fillStyle = "#E3F1E9"; g.font = "24px Arial, sans-serif"; g.fillText("Student Environmental Impact Report" + (m ? " · " + m.t : ""), 50, 172);
+  let y = 0; const wrap = (t, x, maxW, lh, font, color, maxY) => { g.font = font; g.fillStyle = color; const ws = String(t || "").trim().split(/\s+/); let line = "";
+    for (const w of ws){ const test = line ? line + " " + w : w; if (g.measureText(test).width > maxW && line){ if (y + lh > maxY){ g.fillText(line + " …", x, y); y += lh; return; } g.fillText(line, x, y); y += lh; line = w; } else line = test; } if (line){ g.fillText(line, x, y); y += lh; } };
+  const ok = !!m && dataOk(), wk = ok ? total() : 0, saved = wk * PL.weeks * PL.pct / 100;
+  const stat = (x, label, val) => { g.fillStyle = "#fff"; g.fillRect(x, 250, 430, 130); g.strokeStyle = "#D7DFD9"; g.lineWidth = 2; g.strokeRect(x, 250, 430, 130); g.fillStyle = "#56665E"; g.font = "700 20px Arial, sans-serif"; g.fillText(label, x + 24, 292); g.fillStyle = G; g.font = "800 46px Arial, sans-serif"; g.fillText(val, x + 24, 352); };
+  stat(50, "WEEKLY " + (m ? m.what.toUpperCase().slice(0, 24) : "DATA"), ok ? fmt(wk) + " " + m.u : "…"); stat(520, "REDUCTION TARGET", PL.pct + "%");
+  const sec = (label, text, maxY) => { g.fillStyle = G; g.font = "700 21px Arial, sans-serif"; g.fillText(label, 50, y); y += 38; wrap(text, 50, W - 100, 36, "27px Arial, sans-serif", INK, maxY); y += 26; };
+  y = 440; sec("THE DATA", ok ? "Worst day: " + DAYS[worst()] + " (" + fmt(vals()[worst()]) + " " + m.u + "). Daily average: " + fmt(avg()) + " " + m.u + "." + (PL.cause.trim() ? " Possible cause: " + lc0(PL.cause) + "." : "") : "…", y + 150);
+  sec("PROPOSED SOLUTION", (R.sol || "").trim() || "…", y + 150);
+  sec("PROJECTED ANNUAL IMPACT", ok ? fmt(saved) + " " + m.u + " less " + m.noun + " over " + PL.weeks + " school weeks." : "…", y + 120);
+  sec("HOW TO MEASURE SUCCESS", (R.measure || "").trim() || "…", y + 150);
+  g.fillStyle = "#56665E"; g.font = "19px Arial, sans-serif"; g.fillText((PL.src === "sample" ? "Sample data for classroom practice · " : "") + "Projected impact, assuming every week is the same · " + new Date().toLocaleDateString("en-GB", {day:"numeric", month:"long", year:"numeric"}), 50, H - 34);
+  try { $("#rpDl").href = c.toDataURL("image/png"); } catch(e){}
+  const done2 = ok && anOk() && nw(R.sol) >= 4 && nw(R.measure) >= 4;
+  if (done2){ X.badge($("#rBadge"), "🌍", "Planet Data Analyst", "You collected data, checked the AI, and planned a real impact."); done(3); } else $("#rBadge").replaceChildren();
+}
+
+function drawAll(){ drawMissions(); drawData(); drawAnalysis(); drawSim(); drawCPrompt(); drawSols(); repForm(); drawRep(); }
+drawAll();
+const ON_SHOW = {"seg-2":drawData, "seg-3":drawAnalysis, "seg-4":drawSim, "seg-5":() => { drawCPrompt(); drawSols(); }, "seg-6":() => { repForm(); drawRep(); }};
+const mo = new MutationObserver(ms => ms.forEach(m => { if (!m.target.hidden && ON_SHOW[m.target.id]) ON_SHOW[m.target.id](); }));
+document.querySelectorAll("section.seg").forEach(sec => mo.observe(sec, {attributes:true, attributeFilter:["hidden"]}));
+
+/* 7 reflect */
+X.vocab($("#vocab"), [["Data", "Facts and numbers we collect, like kilograms or litres."], ["Total", "All the numbers added together."], ["Average", "The total divided by how many numbers: the “usual” value."], ["Chart", "A picture of data that makes it easy to compare."], ["Projection", "An estimate of the future, based on today's data."], ["Impact", "How much difference a solution makes."], ["Feasibility", "How easy and realistic it is to do."]]);
 X.quiz($("#quiz"), [
-  ["Which AI power helps find litter in photos?", ["Image recognition", "Language generation", "A calculator"], 0, "The AI “sees” patterns in photos."],
-  ["Why do we need human oversight?", ["Because AI can make mistakes, and people must decide", "Because AI gets tired", "We don't need it"], 0, "People check, and decide what to do."],
-  ["Is AI a magic solution for the planet?", ["Yes, it solves everything alone", "No: it needs good data, people, and real actions", "Only on sunny days"], 1, "AI is a helper, not magic."]
-]);
+  ["The data: 12, 18, 10, 22, 8. What is the total?", ["60", "70", "72"], 1, "12 + 18 + 10 + 22 + 8 = 70."],
+  ["The total is 70 for 5 days. What is the daily average?", ["14", "7", "35"], 0, "70 ÷ 5 = 14."],
+  ["Gemini says the total is 75, but you found 70. What do you do?", ["Trust Gemini", "Check again and tell Gemini it is wrong", "Change your data"], 1, "AI can be wrong with numbers. Check, and correct it."],
+  ["Which solution is usually best for a school team?", ["High cost, low impact", "Low cost, high impact, easy", "High cost, hard"], 1, "Compare cost, impact and how easy it is."],
+  ["Why use real data instead of guessing?", ["Guessing is faster", "Data shows the real problem, so you choose better solutions", "Data is always perfect"], 1, "Decisions based on data are better decisions."]
+], () => done(4));
 X.keep($("#exit"), "exit");
 K.start();
 })();

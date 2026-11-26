@@ -258,7 +258,7 @@ img.fprev{background:var(--paper)}
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 12: The Final Showcase</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 11: The Final Showcase</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -425,7 +425,7 @@ window.PICKINDS = {
   inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
 };
 window.F = (function(){
-const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 11:6, 12:7, 14:8, 15:9, 16:10, 8:11, 9:12})[n] || n; /* file number → chapter number (AI Explorers, 12 chapters) */
+const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 11:6, 12:7, 14:8, 15:9, 16:10, 9:11})[n] || n; /* file number → chapter number (AI Creators, 11 chapters) */
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
@@ -500,7 +500,7 @@ function slotBox(box, s, onDone){
 function plan(){
   const kinds = ["big"], K = window.PICKINDS || {};
   return kinds.map(k => ({slot:k, label:k === "big" ? "My Advertisement Poster" : (K[k] && K[k].label) || k, ch:11, accept:"image/*"})).concat([
-    {slot:"license", label:"My AI Driving License", ch:13, accept:"image/png"}, {slot:"video", label:"My AI Commercial", ch:11, accept:"video/*"}, {slot:"smart", label:"My First Smart System", ch:12, accept:".html,text/html"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
+    {slot:"license", label:"My AI Driving License", ch:13, accept:"image/png"}, {slot:"video", label:"My AI Commercial", ch:11, accept:"video/*"}, {slot:"smart", label:"My First Smart System", ch:12, accept:".html,text/html"}, {slot:"app1", label:"My app · Version 1", ch:15, accept:".html,text/html"}, {slot:"page", label:"My school app", ch:15, accept:".html,text/html"}]);
 }
 function folder(box, now){
   async function draw(){

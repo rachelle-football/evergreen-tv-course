@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
-<title>Reinvent the School: the Prototype</title>
+<title>Reinvent the School: Build Your Solution</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -437,10 +437,29 @@ img.fprev{background:var(--paper)}
 .step[aria-current="step"]{border-top-color:var(--onair);color:var(--ink);font-weight:700}
 @media (max-width:700px){.bug small{display:none}.step .t{display:none}.clock .lbl{display:none}body{font-size:17px}.lead{font-size:18px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---- Chapter 9 · build your solution ---- */
+.def.sm p{font-size:19px;line-height:1.45;font-weight:600}
+ol.how{margin:8px 0 4px;padding-left:24px;display:grid;gap:6px;font-size:17px;line-height:1.45}
+.mono{font-family:var(--mono)}
+.mock{border:2px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;color:#13221C;margin-top:8px;font-family:Arial,sans-serif}
+.mhead{background:#1B2A5A;color:#fff;padding:14px 16px;display:grid;gap:2px}.mhead b{font-size:20px}.mhead small{color:#C9D4F2;font-size:14px}
+.mbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px}.mbtns button{font:700 16px Arial,sans-serif;padding:14px 8px;border-radius:12px;border:2px solid #1B2A5A;background:#EEF2FF;color:#1B2A5A;cursor:pointer}
+.mlh{display:block;padding:4px 14px;font-size:15px}.mitem{display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;padding:8px 14px;border-top:1px solid #E5E7EB}.mitem span{font-size:22px}.mitem b{display:block;font-size:15px}.mitem small{color:#667085}
+.mitem em{font-style:normal;font-size:12px;font-weight:700;background:#DCFCE7;color:#166534;border-radius:99px;padding:3px 8px}
+.mok{margin:12px 14px;padding:12px;border-radius:10px;background:#DCFCE7;color:#166534;font-weight:700}.mback{margin:0 14px 14px;font:700 14px Arial,sans-serif;border:0;background:none;color:#1B2A5A;cursor:pointer}
+.lang{display:grid;gap:6px;border-top:6px solid}.lang b{font-size:20px}.lang span{font-size:15px;color:var(--muted)}.lang.l1{border-top-color:#E07A2F}.lang.l2{border-top-color:#2F6FD1}.lang.l3{border-top-color:#E0B000}.lang.l4{border-top-color:#1E7A55}
+.codein{width:100%;box-sizing:border-box;font:14px/1.5 var(--mono);padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);margin-top:8px}
+.runbox{width:100%;height:520px;border:2px solid var(--line);border-radius:14px;background:#fff;margin-top:12px}.runbox.sm{height:440px;margin-top:0}
+.fit{font-size:13px;font-weight:700}.fit.ok{color:var(--green)}.fit.no{color:var(--onair)}
+.chk{list-style:none;margin:0;padding:0;display:grid;gap:8px}.chk label{display:flex;gap:10px;align-items:flex-start;font-size:16px}.chk input{width:20px;height:20px;margin-top:2px;flex:none}
+.qascore{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;font-weight:700}.qascore b{font-size:26px;color:var(--green)}
+.sw{font:800 26px var(--mono);min-width:90px}
+.pdone{font-weight:700;display:flex;gap:8px;align-items:center;font-size:16px}.pdone input{width:20px;height:20px}
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 9: Reinvent the School: the Prototype</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 9: Reinvent the School: Build Your Solution</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -448,71 +467,139 @@ img.fprev{background:var(--paper)}
   </div>
 </header>
 <main class="wrap" id="stage">
-<!-- 1 discover -->
-<section class="seg" id="seg-1" data-min="5" data-title="What is a prototype?">
-  <div class="lower"><div class="no">01</div><div class="name"><h2>What is a prototype?</h2><p>5 minutes · discover</p></div></div>
-  <p class="big">Before building a real app, engineers make a quick, simple version, and test it with people.</p>
-  <div class="grid g3">
-    <div class="card"><span class="tag">1 · Paper sketch</span><p class="big2" style="font-size:40px">✏️📄</p><p style="margin:0">5 minutes. Ugly is OK!</p></div>
-    <div class="card"><span class="tag">2 · Clickable mock-up</span><p class="big2" style="font-size:40px">📱👆</p><p style="margin:0">Screens with buttons that link to each other.</p></div>
-    <div class="card"><span class="tag">3 · The real thing</span><p class="big2" style="font-size:40px">🚀</p><p style="margin:0">Only after testing and improving.</p></div>
+<!-- 1 from idea to prototype -->
+<section class="seg" id="seg-1" data-min="8" data-title="From idea to prototype" data-period="1">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>From idea to prototype</h2><p>Period 1 · 8 minutes · your project from Chapter 8</p></div></div>
+  <p class="big">Last week you planned a solution. This week you build it: a real app that works in a browser.</p>
+  <div class="card" id="proj"></div>
+  <div class="loop3" style="margin-top:14px">
+    <div class="card"><span class="tag">1</span><p class="big2" style="font-size:26px">🛠️ Build</p><p style="margin:0">A first version: the prototype.</p></div>
+    <span class="farrow" aria-hidden="true">→</span>
+    <div class="card"><span class="tag">2</span><p class="big2" style="font-size:26px">🧪 Test</p><p style="margin:0">A classmate tries it. You watch.</p></div>
+    <span class="farrow" aria-hidden="true">→</span>
+    <div class="card"><span class="tag">3</span><p class="big2" style="font-size:26px">🔁 Improve</p><p style="margin:0">Version 2 is better than version 1.</p></div>
   </div>
-  <div class="card" style="margin-top:14px"><span class="tag">Quick question</span><p style="margin:6px 0 8px;font-size:18px">Why make a simple version first?</p><div class="row" id="why"></div><p class="fb" id="whyA" style="font-weight:700;font-size:18px;margin:10px 0 0"></p></div>
+  <div class="def sm"><span class="tag">Remember</span><p>A <b>prototype</b> is a first version you build to test your idea with real users, before you make the final product.</p></div>
 </section>
 
-<!-- 2 learn -->
-<section class="seg" id="seg-2" data-min="8" data-title="Build, test, improve" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>Build, test, improve</h2><p>8 minutes · learn</p></div></div>
-  <div class="loop3">
-    <div class="card"><span class="tag">1</span><p class="big2" style="font-size:28px">🛠️ Build</p><p style="margin:0">A small, simple version.</p></div>
-    <span class="farrow" aria-hidden="true">→</span>
-    <div class="card"><span class="tag">2</span><p class="big2" style="font-size:28px">🧪 Test</p><p style="margin:0">A user tries it. You watch, you don't help.</p></div>
-    <span class="farrow" aria-hidden="true">→</span>
-    <div class="card"><span class="tag">3</span><p class="big2" style="font-size:28px">🔁 Improve</p><p style="margin:0">Change one thing, then test again.</p></div>
-  </div>
-  <div class="card" style="margin-top:14px"><span class="tag">🤖 AI's role</span><p style="margin:6px 0 0;font-size:18px">AI can suggest ideas, texts or pictures for your prototype. <b>But YOU decide</b> what to build, and why.</p></div>
-  <p class="lead" style="margin:20px 0 0"><b>Key words.</b> Tap each one.</p>
-  <div class="vocab" id="vocab"></div>
-</section>
-
-<!-- 3 watch -->
-<section class="seg" id="seg-3" data-min="8" data-title="Test a prototype" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Be a tester</h2><p>8 minutes · a study-helper prototype</p></div></div>
-  <p class="big">Your task as a tester: <u>find practice questions about the water cycle</u>. Go!</p>
+<!-- 2 UI and UX -->
+<section class="seg" id="seg-2" data-min="17" data-title="Design your interface" data-period="1" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>Design your interface</h2><p>Period 1 · 17 minutes · UI and UX</p></div></div>
   <div class="grid g2">
-    <div class="phone" id="demo"></div>
-    <div class="card"><span class="tag">The engineer watches</span><p class="big2" id="clicks">0 clicks</p><p id="demoNote" style="margin:0;font-size:18px">The engineer writes down where the tester gets stuck. They don't help!</p></div>
+    <div class="card"><span class="tag">UI · User Interface</span><p class="big2" style="font-size:24px">What you SEE</p><p style="margin:0">Buttons, colours, text, pictures, where things are on the screen.</p></div>
+    <div class="card"><span class="tag">UX · User Experience</span><p class="big2" style="font-size:24px">How it FEELS to use</p><p style="margin:0">Is it easy? Fast? Do you know what to do without asking anyone?</p></div>
+  </div>
+  <div class="grid g2" style="margin-top:14px;align-items:start">
+    <div class="card"><span class="tag">Example · student prototype</span>
+      <div class="mock" id="mock"></div>
+      <p class="muted" style="font-size:14px;margin:8px 0 0">Example made up for this lesson, with fictional data. Click the buttons.</p></div>
+    <div class="card"><span class="tag">4 rules of a good app</span>
+      <ol class="how">
+        <li><b>One main job per screen.</b> The user knows at once what it is for.</li>
+        <li><b>Big, clear buttons</b> with words that say what they do: “I lost something”, not “Go”.</li>
+        <li><b>Simple words</b> and a short title.</li>
+        <li><b>Feedback:</b> when you click, something happens or a message appears.</li>
+      </ol></div>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Game · UI or UX?</span><div class="sortg" id="uiux" style="margin-top:10px"></div></div>
+  <div class="card" style="margin-top:14px"><span class="tag">Plan your main screen</span><div class="forms" id="uiPlan" style="margin-top:8px"></div><b style="display:block;margin-top:10px">Colours</b><div class="chips" id="uiStyle" style="margin-top:6px"></div></div>
+</section>
+
+<!-- 3 build with AI -->
+<section class="seg" id="seg-3" data-min="20" data-title="Build with AI" data-period="1" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Build with AI</h2><p>Period 1 · 20 minutes · Gemini is your coding assistant</p></div></div>
+  <p class="big">A web app is made of 3 languages. You don't learn them by heart: you learn what each one does.</p>
+  <div class="grid g4">
+    <div class="card lang l1"><b>🧱 HTML</b><span>Structure: the title, the buttons, the lists. Like the walls and rooms of a house.</span></div>
+    <div class="card lang l2"><b>🎨 CSS</b><span>Design: colours, sizes, spaces. Like the paint and furniture.</span></div>
+    <div class="card lang l3"><b>⚡ JavaScript</b><span>Interaction: what happens when you click. Like the electricity.</span></div>
+    <div class="card lang l4"><b>🤖 AI</b><span>Your coding assistant. It writes code fast, but YOU decide and YOU check.</span></div>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 1 · Ask Gemini to build your app</span>
+    <p class="prompt sm" id="bPrompt" style="margin-top:8px"></p>
+    <div class="row"><button class="btn" id="bCopy" type="button">📋 Copy the prompt</button><a class="btn alt" href="https://gemini.google.com/app" target="gemini" rel="noopener">↗ Open Gemini</a></div>
+    <p class="muted" style="margin:8px 0 0;font-size:15px">In Gemini: paste (Ctrl+V), press Enter, then click <b>Copy code</b> at the top of the code box.</p>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 2 · Run your app</span>
+    <textarea id="codeIn" class="codein" rows="8" spellcheck="false" placeholder="Paste Gemini's code here (Ctrl+V). It starts with &lt;!DOCTYPE html&gt; or &lt;html&gt;."></textarea>
+    <div class="row" style="margin-top:10px"><button class="btn" id="runCode" type="button">▶ Run my app</button><span class="muted" id="codeInfo" style="font-size:15px"></span></div>
+    <iframe id="runBox" class="runbox" title="Your app" sandbox="allow-scripts allow-forms allow-modals" hidden></iframe>
   </div>
 </section>
 
-<!-- 4 brain -->
-<section class="seg" id="seg-4" data-min="9" data-title="Brain challenge" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Brain challenge</h2><p>9 minutes · good test questions</p></div></div>
-  <div class="card"><span class="tag">Game 1 · Neutral or leading?</span><p class="muted" style="margin:4px 0 10px">A good test question doesn't push the tester to say “yes”.</p><div class="sortg" id="g1"></div></div>
-  <div class="card" style="margin-top:14px"><span class="tag">Game 2 · Use the feedback</span><div class="qz" id="g2" style="margin-top:10px"></div></div>
-</section>
-
-<!-- 5 create -->
-<section class="seg" id="seg-5" data-min="28" data-title="Mission: your prototype" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: build and test your prototype</h2><p>28 minutes · 3 screens, 1 test, 1 improvement</p></div></div>
-  <div class="card" id="myBrief"></div>
-  <p class="ttl" style="margin-top:16px">Step 1 · Build 3 screens</p>
-  <div class="mission">
-    <div class="forms" id="screens"></div>
-    <aside class="card side"><span class="tag">Try it: your clickable prototype</span><div class="phone" id="proto"></div></aside>
+<!-- 4 make it yours -->
+<section class="seg" id="seg-4" data-min="15" data-title="Version 1" data-period="2" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Understand it, change it, save Version 1</h2><p>Period 2 · 15 minutes · a coder understands the code</p></div></div>
+  <div class="card"><span class="tag">Step 1 · Find the 3 languages in your code</span>
+    <p style="margin:6px 0 10px;font-size:17px">Copy ONE line of each from your code (Section 3). Not sure? Ask Gemini: “Which lines are HTML, CSS and JavaScript?”</p>
+    <div class="forms" id="finds"></div>
   </div>
-  <p class="ttl" style="margin-top:16px">Step 2 · Test it with a classmate, then improve it</p>
-  <div class="forms" id="test"></div>
-  <div id="pBadge"></div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 2 · Change one thing yourself</span>
+    <p style="margin:6px 0 10px;font-size:17px">No AI this time! In your code (Section 3), change the title text or a colour, then press ▶ Run again.</p>
+    <label class="ff"><b>What did you change?</b><input id="myChange" type="text" maxlength="140" placeholder="e.g. I changed the title colour from blue to green."></label>
+    <p class="fb" id="chMsg" style="font-weight:700;margin:8px 0 0"></p>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 3 · Save Version 1</span>
+    <p style="margin:6px 0 10px;font-size:17px">Your first working version. Keep it: at the Final Showcase you will show how it improved.</p>
+    <div class="row"><button class="btn" id="saveV1" type="button">💾 Save Version 1</button></div>
+    <p class="fmsg" id="v1Msg"></p>
+  </div>
 </section>
 
-<!-- 6 reflect -->
-<section class="seg" id="seg-6" data-min="5" data-title="Reflect" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>Quiz and reflect</h2><p>5 minutes</p></div></div>
-  <div class="qz" id="quiz"></div>
+<!-- 5 QA lab -->
+<section class="seg" id="seg-5" data-min="30" data-title="Test your app" data-period="2" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Quality Assurance Lab: test the app</h2><p>Period 2 · 30 minutes · swap computers with a classmate</p></div></div>
+  <p class="big">Swap computers. You test your classmate's app, on THEIR computer. Be honest and kind.</p>
+  <div class="grid g2" style="align-items:start">
+    <div class="card"><span class="tag">The app to test</span><p id="qaFor" style="margin:6px 0 8px;font-size:17px"></p><iframe id="qaBox" class="runbox sm" title="The app to test" sandbox="allow-scripts allow-forms allow-modals"></iframe><p class="muted" id="qaNone" style="font-size:15px" hidden>No Version 1 saved on this computer yet (Section 4).</p></div>
+    <div>
+      <div class="card"><span class="tag">Test my application</span><ul class="chk" id="qa" style="margin-top:8px"></ul><div class="qascore">Test score <b id="qaScore">0/5</b></div></div>
+      <div class="card" style="margin-top:12px"><span class="tag">⏱ Success test</span><p id="succT" style="margin:6px 0 8px;font-size:17px"></p>
+        <div class="row"><button class="btn sm" id="swGo" type="button">▶ Start</button><b class="sw" id="sw">0.0 s</b></div>
+        <p class="muted" style="margin:6px 0 0;font-size:15px">The tester does the task. The app owner starts and stops the timer, without helping.</p></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">The tester's feedback</span><div class="forms" id="fb" style="margin-top:8px"></div></div>
+</section>
+
+<!-- 6 improve -->
+<section class="seg" id="seg-6" data-min="25" data-title="Version 2" data-period="3" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>Improve your app: Version 2</h2><p>Period 3 · 25 minutes · feedback → Gemini → a better app</p></div></div>
+  <div class="card"><span class="tag">Step 1 · Ask Gemini to improve it</span>
+    <p class="prompt sm" id="iPrompt" style="margin-top:8px"></p>
+    <div class="row"><button class="btn" id="iCopy" type="button">📋 Copy the prompt</button><button class="btn alt" id="iCopy2" type="button">📋 Copy the prompt + my Version 1 code</button><a class="btn alt" href="https://gemini.google.com/app" target="gemini" rel="noopener">↗ Open Gemini</a></div>
+    <p class="muted" style="margin:8px 0 0;font-size:15px">Same Gemini chat as before? Use the first button. A new chat? Use the second one, so Gemini sees your code.</p>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 2 · Run Version 2</span>
+    <textarea id="code2" class="codein" rows="7" spellcheck="false" placeholder="Paste Gemini's new code here (Ctrl+V)."></textarea>
+    <div class="row" style="margin-top:10px"><button class="btn" id="run2" type="button">▶ Run Version 2</button><button class="btn sm alt" id="seeV1" type="button">👀 Compare with Version 1</button></div>
+    <iframe id="box2" class="runbox" title="Version 2" sandbox="allow-scripts allow-forms allow-modals" hidden></iframe>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 3 · Check it and save it</span>
+    <label class="ff"><b>What is better in Version 2?</b><input id="better" type="text" maxlength="160" placeholder="e.g. The buttons are bigger and a message says “Saved!”."></label>
+    <label class="pdone" style="margin-top:8px"><input type="checkbox" id="v2ok"> I tested Version 2: everything that worked before still works.</label>
+    <div class="row" style="margin-top:10px"><button class="btn" id="saveV2" type="button">💾 Save Version 2 (my final app)</button><button class="btn alt" id="dlV2" type="button">⬇ Download (.html)</button></div>
+    <p class="fmsg" id="v2Msg"></p>
+  </div>
+</section>
+
+<!-- 7 success -->
+<section class="seg" id="seg-7" data-min="10" data-title="Does it solve it?" data-period="3" hidden>
+  <div class="lower"><div class="no">07</div><div class="name"><h2>Does it solve the problem?</h2><p>Period 3 · 10 minutes · check your success criteria</p></div></div>
+  <div class="card" id="succCard"></div>
+  <div class="card" style="margin-top:14px"><span class="tag">My folder</span><p style="margin:6px 0 10px;font-size:17px">Your two versions, ready for the Final Showcase.</p><div class="grid g2"><div id="slotV1"></div><div id="slotV2"></div></div></div>
+  <div id="appBadge" style="margin-top:14px"></div>
+</section>
+
+<!-- 8 reflect -->
+<section class="seg" id="seg-8" data-min="10" data-title="Reflect" data-period="3" hidden>
+  <div class="lower"><div class="no">08</div><div class="name"><h2>Quiz and reflect</h2><p>Period 3 · 10 minutes</p></div></div>
+  <p class="lead" style="margin:0 0 6px"><b>Key words.</b> Tap each one.</p>
+  <div class="vocab" id="vocab"></div>
+  <div class="qz" id="quiz" style="margin-top:16px"></div>
   <div class="card reflect" style="margin-top:14px"><span class="tag">Exit ticket</span><label class="ttl" for="exit" style="display:block">What did you change after the test, and why?</label><textarea id="exit" placeholder="I changed… because my tester…"></textarea></div>
-  <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Prepare a 60-second explanation: the problem, the user, your prototype, and what changed after testing.</p></div>
-  <p class="note">Next week: The Future of Our Planet.</p>
+  <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Show Version 1 and Version 2 to your family. Can they see what got better? Prepare 60 seconds: the problem, the root cause, your app, and what changed after testing.</p></div>
+  <p class="note">Next week: The Future of Our Planet. You use AI to understand data.</p>
 </section>
 
 </main>
@@ -596,7 +683,7 @@ window.PICKINDS = {
   inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
 };
 window.F = (function(){
-const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 11:6, 12:7, 14:8, 15:9, 16:10, 8:11, 9:12})[n] || n; /* file number → chapter number (AI Explorers, 12 chapters) */
+const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 11:6, 12:7, 14:8, 15:9, 16:10, 9:11})[n] || n; /* file number → chapter number (AI Creators, 11 chapters) */
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
@@ -671,7 +758,7 @@ function slotBox(box, s, onDone){
 function plan(){
   const kinds = ["big"], K = window.PICKINDS || {};
   return kinds.map(k => ({slot:k, label:k === "big" ? "My Advertisement Poster" : (K[k] && K[k].label) || k, ch:11, accept:"image/*"})).concat([
-    {slot:"license", label:"My AI Driving License", ch:13, accept:"image/png"}, {slot:"video", label:"My AI Commercial", ch:11, accept:"video/*"}, {slot:"smart", label:"My First Smart System", ch:12, accept:".html,text/html"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
+    {slot:"license", label:"My AI Driving License", ch:13, accept:"image/png"}, {slot:"video", label:"My AI Commercial", ch:11, accept:"video/*"}, {slot:"smart", label:"My First Smart System", ch:12, accept:".html,text/html"}, {slot:"app1", label:"My app · Version 1", ch:15, accept:".html,text/html"}, {slot:"page", label:"My school app", ch:15, accept:".html,text/html"}]);
 }
 function folder(box, now){
   async function draw(){
@@ -767,7 +854,7 @@ return {make, power, meter, join, missing, guard, show, lock};
 
 window.K = (function(){
 const $ = s => document.querySelector(s);
-const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => { if (c != null && c !== false) e.append(c); }); return e; };
 let PFX = "k";
 const store = { get(k){ try { return JSON.parse(localStorage.getItem(PFX + "-" + k)); } catch(e){ return null; } }, set(k, v){ try { localStorage.setItem(PFX + "-" + k, JSON.stringify(v)); } catch(e){} }, raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
 let segs = [], cur = 0, stepBtns = [], left = 0, tick = null, tt;
@@ -785,7 +872,7 @@ function go(i){
 function init(prefix, p2){
   PFX = prefix; segs = [...document.querySelectorAll(".seg")];
   const box = $("#steps");
-  segs.forEach((s, i) => { if (p2 && i === p2) box.append(el("span", {class:"pdiv", "aria-hidden":"true"}, "P2")); box.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))); });
+  segs.forEach((s, i) => { if (i && s.dataset.period !== segs[i - 1].dataset.period) box.append(el("span", {class:"pdiv", "aria-hidden":"true"}, "P" + s.dataset.period)); box.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))); });
   stepBtns = [...box.querySelectorAll(".step")];
   $("#prev").onclick = () => go(cur - 1); $("#next").onclick = () => go(cur + 1);
   addEventListener("keydown", e => { if (e.target.matches("textarea,input,select")) return; if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); });
@@ -886,71 +973,161 @@ window.X = (function(){
 </script>
 <script>
 (function(){
-const {$, el, store} = K;
+const {$, el, store, copy} = K;
 K.init("ch15"); X.setup();
-const done = X.prog(4);
+const done = X.prog(6);
 
-/* 1 */
-$("#why").replaceChildren(...[["To find problems early, when they are cheap to fix", true], ["Because engineers are lazy", false], ["To show off", false]].map(([t, ok]) => el("button", {class:"btn sm alt", type:"button", onclick:() => { $("#whyA").textContent = ok ? "✓ Yes! It's much easier to fix a paper sketch than a finished app." : "✗ No: we test early to find the problems while they are easy to fix."; }}, t)));
-
-/* 2 */
-X.vocab($("#vocab"), [["Prototype", "An early, simple version of an idea, made to be tested."], ["Wireframe", "A simple drawing of a screen: boxes and buttons, no colours."], ["Feedback", "What testers tell you, or what you see them do."], ["Iteration", "Improve, test again, improve again."], ["Usability", "How easy it is to use."], ["Test", "A user tries it while you watch."]]);
-
-/* phone prototype player */
-function play(box, screens, onGo){
-  let cur = 0;
-  const draw = () => { const s = screens[cur] || {}; box.replaceChildren(el("div", {class:"pbar"}, "9:41 · " + (s.title || "Screen " + (cur + 1))), el("div", {class:"pbody"}, el("h4", null, s.title || "…"), el("p", null, s.text || ""), ...(s.btns || []).filter(b => b.label).map(b => el("button", {class:"pbtn", type:"button", onclick:() => { cur = Math.max(0, Math.min(screens.length - 1, b.to)); if (onGo) onGo(cur, b); draw(); }}, b.label)))); };
-  draw(); return {reset:() => { cur = 0; draw(); }};
-}
-
-/* 3 demo */
-const DEMO = [
-  {title:"Study Helper", text:"What do you want to do?", btns:[{label:"📖 Explain a topic", to:1}, {label:"📝 Practice", to:2}, {label:"📅 Revision plan", to:3}]},
-  {title:"Explain a topic", text:"The water cycle: water evaporates, makes clouds, and falls as rain. (Example content)", btns:[{label:"← Back", to:0}]},
-  {title:"Practice", text:"Choose a subject:", btns:[{label:"🔬 Science", to:4}, {label:"← Back", to:0}]},
-  {title:"Revision plan", text:"Monday: science · Tuesday: maths · Wednesday: English", btns:[{label:"← Back", to:0}]},
-  {title:"Science practice", text:"1) What makes clouds?  2) Why does it rain?  3) Where does the water go?", btns:[{label:"← Back", to:0}]}
-];
-let dc = 0;
-play($("#demo"), DEMO, (cur) => { dc++; $("#clicks").textContent = dc + " click" + (dc > 1 ? "s" : ""); if (cur === 4){ $("#demoNote").textContent = "✓ Found in " + dc + " clicks! The engineer notes: “Practice” is not clear: is it questions? Maybe rename it “Practice questions”. That's feedback!"; done(0); } });
-
-/* 4 */
-X.sort($("#g1"), [
-  ["“You love it, right?”", "lead", "It pushes the tester to say yes."],
-  ["“What did you try to do first?”", "ok", "Open and neutral."],
-  ["“Where did you get stuck?”", "ok", "It helps you find problems."],
-  ["“It's easy, isn't it?”", "lead", "Leading: they will just agree."],
-  ["“What would you change?”", "ok", "Open: you learn new ideas."]
-], [["ok", "👍 Neutral"], ["lead", "👉 Leading"]]);
-X.quiz($("#g2"), [
-  ["Feedback: “I didn't see the Start button.” Best change?", ["Make the button bigger and put it at the top", "Delete the button", "Tell the tester to look better"], 0, "Change your design, not the user."],
-  ["Feedback: “The words are too hard.” Best change?", ["Add more words", "Use short, simple words", "Change the colours"], 1, "Connect each change to the feedback."]
-], () => done(1));
-
-/* 5 create */
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
-const br = raw("ch14-brief") || {};
-$("#myBrief").replaceChildren(el("span", {class:"tag"}, "Your problem (from Chapter 8)"), el("p", {style:"margin:6px 0 0;font-size:18px"}, br.stmt || br.problem ? (br.stmt || br.problem) : "You don't have a brief yet. Write your problem in one sentence in screen 1, or finish Chapter 8 first."),
-  (br.root || "").trim() ? el("p", {style:"margin:4px 0 0;font-size:16px"}, "🎯 Root cause: " + br.root.trim() + ". Your prototype must attack it.") : "");
-const P = Object.assign({s:[{title:"Home", text:"", b1:"", b2:""}, {title:"", text:"", b1:"← Back", b2:""}, {title:"", text:"", b1:"← Back", b2:""}], t:{}}, store.get("proto") || {});
-const saveP = () => { store.set("proto", P); drawProto(); };
-$("#screens").replaceChildren(...P.s.map((s, i) => { const f = (k, ph, rows) => { const x = el(rows ? "textarea" : "input", Object.assign({placeholder:ph}, rows ? {rows:"2"} : {type:"text"})); x.value = s[k] || ""; x.oninput = () => { s[k] = x.value; saveP(); }; return x; };
-  return el("div", {class:"rrow"}, el("span", {class:"rn"}, "SCREEN " + (i + 1) + (i === 0 ? " · the first screen" : "")),
-    el("label", null, "Title", f("title", i === 0 ? "e.g. Homework Finder" : "e.g. Today's homework")), el("label", null, "What it shows", f("text", "e.g. Choose your subject", true)),
-    el("label", null, "Button 1 " + (i === 0 ? "(goes to screen 2)" : "(goes to screen 1)"), f("b1", i === 0 ? "e.g. 📚 Today's homework" : "← Back")), el("label", null, "Button 2 " + (i === 0 ? "(goes to screen 3)" : "(optional, goes to screen 3)"), f("b2", i === 0 ? "e.g. ❓ Ask a question" : ""))); }));
-let player;
-function drawProto(){ const scr = P.s.map((s, i) => ({title:s.title, text:s.text, btns:i === 0 ? [{label:s.b1, to:1}, {label:s.b2, to:2}] : [{label:s.b1, to:0}, {label:s.b2, to:2}]})); player = play($("#proto"), scr); badge(); }
-const T = X.form($("#test"), "test", [["task", "The task you gave your tester", "e.g. Find today's maths homework"], ["happened", "What happened? Where did they get stuck?", "e.g. They clicked the wrong button first", 2], ["fb", "Their feedback", "e.g. “The button name is not clear”", 2], ["change", "The ONE change you made", "e.g. I renamed the button “Today's homework”", 2]], S => { P.t = S; store.set("proto", P); badge(); });
-function badge(){ const ok = P.s.every(s => (s.title || "").trim() && (s.text || "").trim()) && (P.s[0].b1 || "").trim() && ["task", "happened", "fb", "change"].every(k => ((P.t || {})[k] || "").trim());
-  if (ok){ X.badge($("#pBadge"), "🛠️", "Prototype Builder", "3 screens, 1 test, 1 improvement. Saved in your portfolio."); done(2); } else $("#pBadge").replaceChildren(); }
-drawProto();
+const nw = t => (String(t || "").trim().match(/\S+/g) || []).length;
+const strip = t => String(t || "").trim().replace(/[.!]+$/, "");
+const clean = t => { t = String(t || "").trim(); const m = t.match(/```(?:html)?\s*([\s\S]*?)```/i); return m ? m[1].trim() : t; };
+const isHtml = t => /<(!doctype|html|body|button|input|script|div)/i.test(t);
+let READY = false;
+const kidName = () => { const a = raw("ai-lab-session"); return a && a.name ? String(a.name).trim().split(/\s+/)[0] : ""; };
 
-/* 6 */
+/* 1 the project: from the Chapter 8 brief (editable here if it's missing) */
+const PF = [["name", "Project name", "e.g. Evergreen Lost & Found"], ["problem", "The problem", "e.g. Students lose their belongings."], ["root", "The root cause", "e.g. There is no organised lost-and-found system."], ["user", "My users", "e.g. Grade 7 students"],
+  ["solution", "My solution", "e.g. A digital lost-and-found app."], ["f1", "Feature 1", "e.g. Report a found item"], ["f2", "Feature 2", "e.g. Search by colour or place"], ["f3", "Feature 3", "e.g. Mark an item as returned"], ["success", "Success criteria", "e.g. A student finds a lost item in under 2 minutes."]];
+const br = raw("ch14-brief") || {};
+if (!store.get("proj")){ const p = {}; PF.forEach(([k]) => p[k] = (br[k] || (k === "problem" ? br.stmt : "") || "").trim()); store.set("proj", p); }
+const PJ = X.form($("#proj"), "proj", PF, () => { drawPrompt(); drawSucc(); });
+$("#proj").prepend(el("span", {class:"tag"}, "Your project"), el("p", {class:"muted", style:"margin:4px 0 10px;font-size:15px"}, br.problem || br.stmt ? "From your School Innovation Brief (Chapter 8). You can improve it here." : "No brief from Chapter 8 on this computer: write your project here."));
+
+/* 2 UI and UX */
+const MOCK = {view:"home"};
+const ITEMS = [["🎒", "Blue backpack", "Playground"], ["⌚", "Black watch", "Library"], ["📓", "Math notebook", "Classroom"]];
+function drawMock(){
+  const head = el("div", {class:"mhead"}, el("b", null, "Evergreen Lost & Found"), el("small", null, "Lost something? Let's find it."));
+  let body;
+  if (MOCK.view === "home") body = el("div", null, el("div", {class:"mbtns"}, el("button", {type:"button", onclick:() => { MOCK.view = "lost"; drawMock(); }}, "🔍 I lost something"), el("button", {type:"button", onclick:() => { MOCK.view = "found"; drawMock(); }}, "📦 I found something")),
+    el("b", {class:"mlh"}, "Recently found items"), ...ITEMS.map(([i, n, w]) => el("div", {class:"mitem"}, el("span", null, i), el("div", null, el("b", null, n), el("small", null, w)), el("em", null, "Found"))));
+  else if (MOCK.view === "lost") body = el("div", null, el("b", {class:"mlh"}, "What did you lose?"), el("div", {class:"mbtns"}, ...["🎒 Bag", "⌚ Watch", "📓 Book"].map(t => el("button", {type:"button", onclick:() => { MOCK.view = "match"; MOCK.pick = t; drawMock(); }}, t))), el("button", {class:"mback", type:"button", onclick:() => { MOCK.view = "home"; drawMock(); }}, "← Back"));
+  else if (MOCK.view === "match") body = el("div", null, el("p", {class:"mok"}, "✓ 1 match found: " + (MOCK.pick.includes("Bag") ? "Blue backpack, Playground" : MOCK.pick.includes("Watch") ? "Black watch, Library" : "Math notebook, Classroom") + ". Go to the school office to get it."), el("button", {class:"mback", type:"button", onclick:() => { MOCK.view = "home"; drawMock(); }}, "← Back"));
+  else body = el("div", null, el("p", {class:"mok"}, "📦 Thank you! Bring the item to the school office. It will appear in the list."), el("button", {class:"mback", type:"button", onclick:() => { MOCK.view = "home"; drawMock(); }}, "← Back"));
+  $("#mock").replaceChildren(head, body);
+}
+drawMock();
+X.sort($("#uiux"), [["The colour of the buttons", "ui", "You see it: UI."], ["The user finds a lost bag in 2 clicks", "ux", "How easy it is: UX."], ["The size of the title", "ui", "You see it: UI."], ["The user knows what to do without asking", "ux", "How it feels: UX."], ["A “Thank you!” message after you click", "ux", "Feedback makes the experience better: UX."]], [["ui", "👁 UI"], ["ux", "🙂 UX"]], null, () => done(0));
+const UI = X.form($("#uiPlan"), "ui", [["title", "App title (short)", "e.g. Evergreen Lost & Found"], ["tag", "One line under the title", "e.g. Lost something? Let's find it."], ["b1", "Main button 1", "e.g. I lost something"], ["b2", "Main button 2", "e.g. I found something"], ["list", "What the first screen also shows", "e.g. A list of recently found items"]], () => drawPrompt());
+const STYLES = [["blue", "Calm blue and white"], ["green", "Fresh green and white"], ["orange", "Sunny orange and cream"], ["dark", "Dark mode with bright buttons"]];
+const US = Object.assign({style:"blue"}, store.get("uistyle") || {});
+function drawStyle(){ $("#uiStyle").replaceChildren(...STYLES.map(([k, l]) => el("button", {class:"chip", type:"button", "aria-pressed":String(US.style === k), onclick:() => { US.style = k; store.set("uistyle", US); drawStyle(); drawPrompt(); }}, l))); }
+drawStyle();
+
+/* 3 build with AI */
+const v = k => strip((store.get("proj") || {})[k]) || "…";
+const u = k => strip((store.get("ui") || {})[k]);
+function buildPrompt(){ const P = store.get("proj") || {};
+  return "Act as a coding teacher for a Grade 7 student. Help me build a simple web app as ONE HTML file, with the HTML, CSS and JavaScript together. " +
+    "My project: " + v("name") + ". The problem: " + v("problem") + ". The root cause: " + v("root") + ". My users: " + v("user") + ". My solution: " + v("solution") + ". " +
+    "The main screen shows the title “" + (u("title") || v("name")) + "”" + (u("tag") ? ", the line “" + u("tag") + "”" : "") + (u("b1") ? ", and big buttons: “" + u("b1") + "”" + (u("b2") ? " and “" + u("b2") + "”" : "") : "") + (u("list") ? ". It also shows " + u("list").replace(/^[A-Z]/, c => c.toLowerCase()) : "") + ". " +
+    "Features: 1) " + v("f1") + ". 2) " + v("f2") + ". 3) " + v("f3") + ". " +
+    "Use " + (STYLES.find(x => x[0] === US.style) || STYLES[0])[1].toLowerCase() + " colours, big clear buttons and simple English. Show a message when the user clicks. Use made-up example data only, no real names. Keep the data in the page: no login and no database. " +
+    "Then explain in simple English which parts are HTML, CSS and JavaScript."; }
+function drawPrompt(){ if (!READY) return; $("#bPrompt").textContent = "“" + buildPrompt() + "”"; drawIPrompt(); }
+$("#bCopy").onclick = () => { const P = store.get("proj") || {}; if (nw(P.problem) < 2 || nw(P.solution) < 2){ K.toast("First write your problem and your solution (Section 1)."); return; } copy(buildPrompt(), $("#bPrompt"), "Gemini"); };
+const AP = Object.assign({code:"", v1:"", ran:false, finds:{}, change:"", code2:"", v2:"", better:"", v2ok:false, v1at:"", v2at:""}, store.get("app") || {});
+const saveAP = () => { store.set("app", AP); };
+$("#codeIn").value = AP.code;
+function codeInfo(){ const c = clean(AP.code); $("#codeInfo").textContent = !c ? "" : isHtml(c) ? (n => n + (n === 1 ? " line" : " lines") + " of code")(c.split("\n").length) : "⚠️ This doesn't look like HTML code. In Gemini, click Copy code."; }
+codeInfo();
+$("#codeIn").addEventListener("input", () => { AP.code = $("#codeIn").value; saveAP(); codeInfo(); chMsg(); });
+$("#runCode").onclick = () => { const c = clean(AP.code); if (!c){ K.toast("Paste Gemini's code first."); return; } if (!isHtml(c)){ K.toast("This is not HTML code. In Gemini, click Copy code."); return; }
+  const f = $("#runBox"); f.hidden = false; f.srcdoc = c; AP.ran = true; saveAP(); };
+
+/* 4 understand, change, save version 1 */
+const LNAME = {html:"HTML", css:"CSS", js:"JavaScript"};
+const FINDS = [["html", "🧱 One HTML line", "e.g. <button>I lost something</button>", t => /<[a-z!][^>]*>/i.test(t)], ["css", "🎨 One CSS line", "e.g. background: #1E3A8A;", t => /[a-z-]+\s*:\s*[^;]+;?|\{/.test(t) && !/<[a-z]/i.test(t)], ["js", "⚡ One JavaScript line", "e.g. button.addEventListener(\"click\", showForm);", t => /(function|=>|addEventListener|getElementById|querySelector|let |const |var |if\s*\(|\.textContent|\.innerHTML|onclick)/.test(t)]];
+$("#finds").replaceChildren(...FINDS.map(([k, l, ph, ok]) => { const i = el("input", {type:"text", maxlength:"200", placeholder:ph, spellcheck:"false", class:"mono"}), m = el("small", {class:"fit"}); i.value = AP.finds[k] || "";
+  const chk = () => { const t = i.value.trim(); m.textContent = !t ? "" : ok(t) ? "✓ Yes, that looks like " + LNAME[k] + "." : "Hmm, that doesn't look like " + LNAME[k] + ". Look again."; m.className = "fit " + (!t ? "" : ok(t) ? "ok" : "no"); };
+  i.oninput = () => { AP.finds[k] = i.value; saveAP(); chk(); chMsg(); }; chk(); return el("label", {class:"ff"}, el("b", null, l), i, m); }));
+$("#myChange").value = AP.change; $("#myChange").addEventListener("input", () => { AP.change = $("#myChange").value; saveAP(); chMsg(); });
+const findsOk = () => FINDS.every(([k, , , ok]) => ok((AP.finds[k] || "").trim()));
+function chMsg(){ const m = []; if (!AP.ran) m.push("run your app (Section 3)"); if (!findsOk()) m.push("find the 3 languages"); if (nw(AP.change) < 4) m.push("say what you changed");
+  $("#chMsg").textContent = m.length ? "Still to do: " + m.join(", ") + "." : "✓ You understand your code, and you changed it yourself."; $("#chMsg").style.color = m.length ? "var(--muted)" : "var(--green)"; }
+chMsg();
+const fileOf = (code, name) => new File([code], name, {type:"text/html"});
+async function saveTo(slot, label, code, msgEl){
+  if (!F.on() || !(raw("ai-lab-session") || {}).token){ msgEl.textContent = "✓ Saved on this computer. Log in to save it in your folder too."; msgEl.className = "fmsg ok"; return; }
+  msgEl.textContent = "Saving…"; msgEl.className = "fmsg";
+  try { await F.upload(fileOf(code, slot + ".html"), slot, label); msgEl.textContent = "✓ Saved in your folder!"; msgEl.className = "fmsg ok"; document.dispatchEvent(new CustomEvent("evg-files")); }
+  catch(e){ msgEl.textContent = F.MSG[e.code] || ("Problem: " + (e.code || "unknown")); msgEl.className = "fmsg no"; } }
+$("#saveV1").onclick = () => { const c = clean(AP.code); if (!isHtml(c) || !AP.ran){ $("#v1Msg").textContent = "First paste your code and run it (Section 3)."; $("#v1Msg").className = "fmsg no"; return; }
+  if (!findsOk() || nw(AP.change) < 4){ $("#v1Msg").textContent = "First finish Steps 1 and 2."; $("#v1Msg").className = "fmsg no"; return; }
+  AP.v1 = c; AP.v1at = new Date().toISOString(); saveAP(); saveTo("app1", "My app · Version 1", c, $("#v1Msg")); done(1); drawQA(); drawIPrompt(); };
+
+/* 5 the QA lab */
+const QA = Object.assign({c:[], t:null, fb:{}}, store.get("qa") || {});
+const QAC = ["All buttons work", "The interface is easy to understand", "The application addresses the original problem", "No private information is exposed", "The success criteria from Chapter 8 are met"];
+function drawQA(){
+  const has = !!AP.v1; $("#qaNone").hidden = has; $("#qaBox").hidden = !has; if (has && $("#qaBox").srcdoc !== AP.v1) $("#qaBox").srcdoc = AP.v1;
+  $("#qaFor").textContent = has ? "“" + (u("title") || v("name")) + "”, Version 1. Problem: " + v("problem") + "." : "";
+  $("#qa").replaceChildren(...QAC.map((t, i) => { const c = el("input", {type:"checkbox"}); c.checked = !!QA.c[i]; c.onchange = () => { QA.c[i] = c.checked; store.set("qa", QA); score(); drawIPrompt(); }; return el("li", null, el("label", null, c, el("span", null, t))); }));
+  $("#succT").textContent = "Task: " + v("success"); score();
+}
+function score(){ const n = QAC.filter((t, i) => QA.c[i]).length; $("#qaScore").textContent = n + "/5"; qaDone(); }
+let swT = null, sw0 = 0;
+$("#swGo").onclick = () => { if (swT){ clearInterval(swT); swT = null; QA.t = Math.round((performance.now() - sw0) / 100) / 10; store.set("qa", QA); $("#swGo").textContent = "↻ Start again"; $("#sw").textContent = QA.t + " s"; qaDone(); return; }
+  sw0 = performance.now(); $("#swGo").textContent = "⏹ Stop"; swT = setInterval(() => $("#sw").textContent = ((performance.now() - sw0) / 1000).toFixed(1) + " s", 100); };
+if (QA.t != null) $("#sw").textContent = QA.t + " s";
+const FB = X.form($("#fb"), "qafb", [["star", "⭐ One thing that works well", "e.g. The big buttons are very clear."], ["wish", "🙏 One thing to improve", "e.g. I didn't know where to type the colour of my bag.", 2]], S => { QA.fb = S; qaDone(); drawIPrompt(); });
+function qaOk(){ return !!AP.v1 && QA.t != null && nw((QA.fb || {}).star) >= 3 && nw((QA.fb || {}).wish) >= 4; }
+function qaDone(){ if (qaOk()) done(2); }
+drawQA();
+
+/* 6 version 2 */
+function iPrompt(){ const miss = QAC.filter((t, i) => !QA.c[i]);
+  return "My tester tried my app " + (u("title") ? "“" + u("title") + "” " : "") + "and gave me this feedback: “" + (strip((QA.fb || {}).wish) || "…") + "”." + (miss.length ? " These checks failed: " + miss.join("; ").toLowerCase() + "." : "") +
+    " Please improve my app: fix these points, keep everything that already works, and give me the full code again as ONE HTML file. Then explain in simple English what you changed."; }
+function drawIPrompt(){ if (READY && $("#iPrompt")) $("#iPrompt").textContent = "“" + iPrompt() + "”"; }
+const needFb = () => { if (nw((QA.fb || {}).wish) < 4){ K.toast("First get your tester's feedback (Section 5)."); return false; } return true; };
+$("#iCopy").onclick = () => { if (needFb()) copy(iPrompt(), $("#iPrompt"), "Gemini"); };
+$("#iCopy2").onclick = () => { if (!needFb()) return; if (!AP.v1){ K.toast("Save Version 1 first (Section 4)."); return; } copy(iPrompt() + "\n\nHere is my Version 1 code:\n\n" + AP.v1, null, "Gemini"); };
+$("#code2").value = AP.code2; $("#code2").addEventListener("input", () => { AP.code2 = $("#code2").value; saveAP(); });
+let showing = "";
+$("#run2").onclick = () => { const c = clean(AP.code2); if (!isHtml(c)){ K.toast("Paste Gemini's new code first."); return; } const f = $("#box2"); f.hidden = false; f.srcdoc = c; showing = "v2"; $("#seeV1").textContent = "👀 Compare with Version 1"; AP.ran2 = true; saveAP(); };
+$("#seeV1").onclick = () => { if (!AP.v1){ K.toast("No Version 1 saved yet (Section 4)."); return; } const f = $("#box2"); f.hidden = false;
+  if (showing === "v1"){ const c = clean(AP.code2); if (isHtml(c)){ f.srcdoc = c; showing = "v2"; $("#seeV1").textContent = "👀 Compare with Version 1"; } }
+  else { f.srcdoc = AP.v1; showing = "v1"; $("#seeV1").textContent = "👀 Back to Version 2"; } };
+$("#better").value = AP.better; $("#better").addEventListener("input", () => { AP.better = $("#better").value; saveAP(); });
+$("#v2ok").checked = AP.v2ok; $("#v2ok").onchange = () => { AP.v2ok = $("#v2ok").checked; saveAP(); };
+$("#saveV2").onclick = () => { const c = clean(AP.code2), m = $("#v2Msg");
+  if (!isHtml(c) || !AP.ran2){ m.textContent = "First paste Version 2 and run it (Step 2)."; m.className = "fmsg no"; return; }
+  if (nw(AP.better) < 4 || !AP.v2ok){ m.textContent = "First say what is better, and tick the test box (Step 3)."; m.className = "fmsg no"; return; }
+  AP.v2 = c; AP.v2at = new Date().toISOString(); saveAP(); saveTo("page", "My school app", c, m); done(3); drawSucc(); };
+$("#dlV2").onclick = () => { const c = clean(AP.code2); if (!isHtml(c)){ K.toast("Paste Version 2 first."); return; } const a = el("a", {href:URL.createObjectURL(fileOf(c, "app.html")), download:"my-school-app.html"}); document.body.append(a); a.click(); a.remove(); };
+
+/* 7 does it solve the problem? */
+const SU = Object.assign({met:"", why:""}, store.get("succ") || {});
+function drawSucc(){
+  if (!READY) return;
+  const card = $("#succCard");
+  card.replaceChildren(el("span", {class:"tag"}, "Your success criteria (Chapter 8)"), el("p", {class:"big2", style:"font-size:22px;margin:6px 0 4px"}, "“" + v("success") + "”"),
+    el("p", {class:"muted", style:"margin:0 0 10px;font-size:16px"}, QA.t != null ? "Your tester's time in the success test: " + QA.t + " seconds. Tester's score: " + QAC.filter((t, i) => QA.c[i]).length + "/5." : "Do the success test in Section 5 first."),
+    el("b", null, "Did your app meet it?"), el("div", {class:"row", style:"margin-top:6px"}, ...[["yes", "✅ Yes"], ["partly", "🟡 Partly"], ["no", "❌ Not yet"]].map(([k, l]) => el("button", {class:"btn sm" + (SU.met === k ? "" : " alt"), type:"button", onclick:() => { SU.met = k; store.set("succ", SU); drawSucc(); }}, l))),
+    (() => { const i = el("input", {type:"text", maxlength:"160", placeholder:SU.met === "yes" ? "e.g. My tester found the bag in 40 seconds." : "e.g. It took 3 minutes: next I will add a search box."}); i.value = SU.why; i.oninput = () => { SU.why = i.value; store.set("succ", SU); badge(); }; return el("label", {class:"ff", style:"margin-top:10px"}, el("b", null, "How do you know? (your evidence)"), i); })());
+  badge();
+}
+function badge(){ const ok = !!AP.v1 && !!AP.v2 && SU.met && nw(SU.why) >= 4;
+  if (ok){ X.badge($("#appBadge"), "🚀", "App Builder", "A working app that attacks a real school problem: Version 1, a real test, and a better Version 2."); done(4); } else $("#appBadge").replaceChildren(); }
+F.slotBox($("#slotV1"), {slot:"app1", label:"My app · Version 1", accept:".html,text/html"});
+F.slotBox($("#slotV2"), {slot:"page", label:"My school app (Version 2)", accept:".html,text/html"});
+READY = true; drawPrompt(); drawSucc();
+
+/* when a section opens, show the newest work */
+const ON_SHOW = {"seg-3":drawPrompt, "seg-4":chMsg, "seg-5":drawQA, "seg-6":drawIPrompt, "seg-7":drawSucc};
+const mo = new MutationObserver(ms => ms.forEach(m => { if (!m.target.hidden && ON_SHOW[m.target.id]) ON_SHOW[m.target.id](); }));
+document.querySelectorAll("section.seg").forEach(sec => mo.observe(sec, {attributes:true, attributeFilter:["hidden"]}));
+
+/* 8 reflect */
+X.vocab($("#vocab"), [["Prototype", "A first version you build to test your idea with real users."], ["UI", "User Interface: what you see, like buttons and colours."], ["UX", "User Experience: how easy and pleasant it is to use."], ["HTML", "The structure of a web page: titles, buttons, lists."], ["CSS", "The design: colours, sizes, spaces."], ["JavaScript", "The interaction: what happens when you click."], ["Quality assurance", "Testing carefully to make sure it works well."], ["Version", "Each new, improved copy of your app: Version 1, Version 2…"]]);
 X.quiz($("#quiz"), [
-  ["What is a prototype?", ["An early version of an idea, made for testing", "The final product that can never change", "A password"], 0, "Early, simple, made to be tested and improved."],
-  ["During a test, what does the engineer do?", ["Helps the tester at every step", "Watches and notes where the tester gets stuck", "Leaves the room"], 1, "Watch, don't help: that's how you find problems."],
-  ["Who decides what to build: you or the AI?", ["The AI", "You: AI only suggests ideas", "Nobody"], 1, "AI supports your decisions, it doesn't replace them."]
-], () => done(3));
+  ["Which language makes the button DO something when you click?", ["HTML", "CSS", "JavaScript"], 2, "JavaScript is the interaction."],
+  ["“The buttons are blue and big.” Is that UI or UX?", ["UI", "UX"], 0, "You see it: User Interface."],
+  ["During the test, your tester is stuck. What do you do?", ["Help them at once", "Watch and write down where they got stuck", "Tell them they are wrong"], 1, "You learn the most from where users get stuck."],
+  ["Why keep Version 1?", ["To show how your app improved after testing", "Because Version 2 is always worse", "No reason"], 0, "Version 1 → test → Version 2 is the story of your project."],
+  ["Gemini wrote your code. Who is responsible for checking it?", ["Gemini", "You", "Nobody"], 1, "AI is your assistant. You test it and you decide."]
+], () => done(5));
 X.keep($("#exit"), "exit");
 K.start();
 })();
