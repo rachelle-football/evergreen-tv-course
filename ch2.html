@@ -291,7 +291,7 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 3: AI Training</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 3: How AI Learns</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">03:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -762,7 +762,7 @@ function drawLab(box, o){
     if (mine.length >= 40){ say("bad", "My memory is full (40 drawings).", "Click a small drawing in my memory to forget it."); return; }
     mine.push({l:label, raw, f:DL.feat(raw)}); save(); paintMem(); taughtRev = rev; lastAsk = null;
     const n = exampleCount(label);
-    say("good", "Got it! This is a " + label + ".", "Now I remember " + n + " drawing" + (n > 1 ? "s" : "") + " of a " + label + ". Ask me again and see!" + (n < 5 ? " Then draw another " + label + " (the board clears by itself), a bit different, and teach me again." : ""),
+    say("good", "Got it! This is a " + label + ".", "Now I remember " + n + " drawing" + (n > 1 ? "s" : "") + " of " + (/^[aeiou]/.test(label) ? "an " : "a ") + label + " from you." + (n < 3 ? " ✏️ Press “Clear and draw a new one”, draw another one, a bit different, and press Teach again (" + n + " of 3)." : " ✅ That's enough! Now press “Clear and draw a new one”, draw a NEW one, and press “Ask me again” to test me."),
       [el("div", {class:"judge"}, el("button", {class:"btn sm", type:"button", onclick:ask}, "🤖 Ask me again"), el("button", {class:"btn sm alt", type:"button", onclick:() => { clear(); say("", "Draw a new one!", "Make it a bit different: bigger, smaller, another pose."); }}, "Clear and draw a new one"))]);
     o.on("taught", {label, n, counts:counts()});
   }
@@ -888,7 +888,12 @@ function stageLab(box, cfg){
     const n = count(label), st = S[si], left = st.type === "teach" && got(st, label) < goal(st);
     const k = got(st, label), need = st.type === "teach" ? goal(st) : 0;
     clear();
-    say("good", "Got it! This is " + an(label) + ".", left ? "✏️ Next: the board is clean. Draw " + label + " number " + (k + 1) + " of " + need + ", a bit different (bigger, smaller, or turned). Then press Teach again." : "I remember " + n + " drawing" + (n > 1 ? "s" : "") + " of " + an(label) + ". ✅ Done! Test me: draw one more and press “Ask the AI”. Then press the black “Next” button below.");
+    const lack = st.type === "teach" ? actv(st).find(l => got(st, l) < need) : null, wordsReady = st.type !== "teach" || st.labels || words.length >= st.pickTo;
+    const msg = left ? "✏️ Next: the board is clean. Draw " + label + " number " + (k + 1) + " of " + need + ", a bit different (bigger, smaller, or turned). Then press “Teach: this is " + an(label) + "” again."
+      : lack ? "✅ " + label + ": " + need + " of " + need + ", done! Now draw " + an(lack) + " (" + (got(st, lack) + 1) + " of " + need + ") and press “Teach: this is " + an(lack) + "”."
+      : !wordsReady ? "✅ " + label + ": done! Now choose your next word above."
+      : "✅ Stage done! I remember " + n + " drawings of " + an(label) + ". Test me: draw one of your things and press “Ask the AI”. Then press the black “Next” button below.";
+    say("good", "Got it! This is " + an(label) + ".", msg);
     render();
   }
 
@@ -961,7 +966,7 @@ function stageLab(box, cfg){
       const fin = st.type === "exam" ? st.result(exam.r, exam.w) : null;
       if (fin) kids.push(fin);
       kids.push(el("div", {class:"stdone"}, el("b", null, "✓ Stage " + (si + 1) + " done!"),
-        si < S.length - 1 ? el("button", {class:"btn", type:"button", onclick:() => enter(si + 1)}, "Next: " + S[si + 1].short + " →") : (cfg.after ? cfg.after(enter) : el("span"))));
+        si < S.length - 1 ? el("button", {class:"btn", type:"button", onclick:() => enter(si + 1)}, "Next: " + S[si + 1].short + " →") : (cfg.after ? cfg.after(enter) : el("span", {style:"font-weight:700"}, "🏅 Mission complete! Your scores go on your certificate (step 8). Press Next → at the bottom to continue."))));
       if (si === S.length - 1 && cfg.onEnd) cfg.onEnd();
     }
     body.replaceChildren(...kids);
