@@ -331,7 +331,7 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 
 <section class="seg warm" id="seg-2" data-min="10" data-title="Warm-up: teach the AI" data-period="1" hidden>
   <div class="lower"><div class="no">02</div><div class="name"><h2>Warm-up: teach a tiny AI</h2><p>Period 1 · 10 minutes · you teach the AI</p></div></div>
-  <p class="big">An AI knows nothing at first. You teach it. Then it starts to think by itself.</p>
+  <p class="big">An AI knows nothing at first. You teach it. Then it can decide by itself.</p>
 
   <div class="card part">
     <span class="tag">Part 1 · The AI knows nothing</span>
@@ -353,7 +353,7 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
     <div class="def" id="l1" hidden>
       <span class="tag">What did you learn?</span>
       <p>The AI only knows what you teach it. Teach it wrong, and it says wrong.</p>
-      <div class="note" style="color:var(--ink);font-size:17px">Look at your friend's screen: does his AI say the same thing as yours?</div>
+      <div class="note" style="color:var(--ink);font-size:17px">Look at your friend's screen: does their AI say the same thing as yours?</div>
     </div>
   </div>
 
@@ -377,7 +377,7 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
     </div>
     <div class="def" id="l2" hidden>
       <span class="tag">What did you learn?</span>
-      <p>You never taught it these colours. It looked at what it learned, found the closest, and decided by itself. That is how AI learns and gets better.</p>
+      <p>You never taught it these colours. It looked at what it learned, found the closest, and decided by itself. That is how an AI decides about things it has never seen.</p>
       <div class="note" style="color:var(--ink);font-size:17px">AI = a machine that learns from examples, then decides by itself on new things it has never seen.</div>
     </div>
   </div>
@@ -395,13 +395,13 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 </section>
 
 <section class="seg" id="seg-4" data-min="5" data-title="You train AI every day" data-period="1" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>You train AI every day</h2><p>Period 1 · 5 minutes · tap each card</p></div></div>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Share, then: you train AI every day</h2><p>Period 1 · 5 minutes · tap each card</p></div></div>
+  <div class="card" style="margin-bottom:16px"><span class="tag">First, share with the class</span><ul class="lead" style="margin:8px 0 0;padding-left:22px"><li>Who got the highest exam score? What did they do differently?</li><li>Why did your AI get worse with your friend's drawings?</li></ul></div>
   <p class="big">You just trained an AI with drawings. But you already train AIs every day, without knowing it. What does each AI learn from you?</p>
   <div class="daily" id="daily"></div>
   <p class="lead" id="dailyEnd" hidden style="margin:14px 0 0"><b>Every click, every skip, every word is an example.</b> That's how apps learn about you, and why your data matters (remember Chapter 2?).</p>
-  <div class="card" style="margin-top:16px"><span class="tag">Ask the class</span><ul class="lead" style="margin:8px 0 0;padding-left:22px"><li>Who got the highest exam score? What did they do differently?</li><li>Why did your AI get worse with your friend's drawings?</li></ul></div>
-  <p class="lead" style="margin:18px 0 6px"><b>Key words.</b> Tap each one.</p>
-  <div class="kw3" id="kw3"></div>
+
+
 </section>
 
 <!-- PERIOD 2 -->
@@ -433,8 +433,8 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
   </div>
   <div class="def" id="bLesson" hidden>
     <span class="tag">What did you learn?</span>
-    <p>The helpers are the AI's <b>neurons</b>. The stars are how much it listens to each one. When an AI learns, it changes the stars by itself, again and again, until it makes no mistakes.</p>
-    <div class="note" style="color:var(--ink);font-size:17px">ChatGPT has billions of helpers. That's why it can do so much.</div>
+    <p>The helpers are the AI's <b>neurons</b>. The stars are called <b>weights</b>: how much the AI listens to each one. When an AI learns, it changes the weights by itself, again and again, to make fewer and fewer mistakes. You just did it by hand!</p>
+    <div class="note" style="color:var(--ink);font-size:17px">ChatGPT's brain has billions of these weights. That's why it can do so much.</div>
   </div>
 </section>
 
@@ -446,7 +446,7 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
       <span class="tag">How to use it (free, no account)</span>
       <ol class="lead ad-steps" style="margin:8px 0 12px;padding-left:22px">
         <li><a class="btn sm" href="https://www.autodraw.com/" target="autodraw" rel="noopener">✏️ Open AutoDraw</a> It opens in a new tab.</li>
-        <li>On the left, the black pen with stars ✨ is already chosen. <b>Draw</b> in the big white space with your mouse.</li>
+        <li>On the left, the black pen with stars ✨ is already chosen. <b>Draw</b> in the big white space with your mouse (or your finger on a tablet).</li>
         <li>Look at the <b>top of the page</b>: a row of clean pictures appears (“Do you mean…”). That's the AI guessing!</li>
         <li>Click a picture: your scribble becomes a clean drawing. Then come back to this tab.</li>
       </ol>
@@ -471,7 +471,9 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 
 <section class="seg" id="seg-7" data-min="15" data-title="Your certificate" data-period="2" hidden>
   <div class="lower"><div class="no">07</div><div class="name"><h2>Your AI Trainer certificate</h2><p>Period 2 · 15 minutes · show it at home</p></div></div>
-  <div class="card" style="margin-bottom:16px"><span class="tag">Check yourself · 4 questions</span><div id="q3" class="q3"></div><p id="q3s" class="q3s"></p></div>
+    <p class="lead" style="margin:0 0 6px"><b>Key words.</b> Tap each one.</p>
+  <div class="kw3" id="kw3"></div>
+  <div class="card" style="margin:16px 0"><span class="tag">Check yourself · 4 questions</span><div id="q3" class="q3"></div><p id="q3s" class="q3s"></p></div>
   <p class="big">You trained a real AI, tested it, and made it better. Here is your certificate.</p>
   <div class="card certbox">
     <label class="labname">Your name on the certificate<input id="certName" type="text" maxlength="30" autocomplete="off" placeholder="Your first name"></label>
@@ -1007,14 +1009,14 @@ stageLab($("#lab1"), {
   stages:[
     {type:"teach", short:"Teach 1 thing", title:"Teach your AI 1 thing", text:"Choose a word. Draw it and press Teach. Do it 5 times, a bit different each time (bigger, smaller, turned).", pickText:"What do you teach it first?", from:0, pickTo:1, need:5, hello:["Hi! My brain is empty.", "I don't know anything yet. Teach me!"]},
     {type:"teach", short:"Teach 2 more", title:"Teach it 2 more things", text:"Choose 2 more words. Draw each one 5 times and press Teach. Then press Ask: can it tell your 3 things apart?", pickText:"Choose your second word:", from:1, pickTo:3, need:5, hello:["I know 1 thing now.", "Teach me 2 more!"]},
-    {type:"exam", short:"The exam", title:"The exam: 10 new drawings", text:"Draw one of your 3 things, NEW, and press Ask the AI. Then press ✓ if it was right, ✗ if it was wrong. 10 times.", tries:10, examHint:w => "draw a NEW " + w.slice(0, 3).join(" / ") + ".", hello:["Exam time! 📝", "Draw one of your 3 things. I will guess."],
+    {type:"exam", short:"The exam", title:"The exam: 10 new drawings", text:"Draw one of your 3 things, NEW, and press Ask the AI. Then press ✓ if it was right, ✗ if it was wrong. 10 times.", tries:10, examHint:w => "draw a NEW one: " + list(w).replace(/, ([^,]*)$/, " or $1") + ".", hello:["Exam time! 📝", "Draw one of your 3 things. I will guess."],
       onExam:(r, w) => { store.set("tally1", [{r, w}]); setCert({exam:{r, w}}); if (r / (r + w) >= .8) confetti(); }, onDone:w => setCert({words:w.slice(0, 3)}), result:examResult},
-    {type:"exam", who:"👫 Your friend's turn! Give the mouse to a classmate.", short:"Friend test", title:"Friend test", text:w => "Your friend draws your 3 things (" + list(w) + "), in THEIR own way. You press ✓ or ✗. 5 times. Will your AI know your friend's drawings?", tries:5, examHint:w => "your friend draws a " + w.slice(0, 3).join(" / ") + ".", hello:["A new person? 😳", "I only learned YOUR drawings. Let's see…"],
+    {type:"exam", who:"👫 Your friend's turn! Give the mouse to a classmate.", short:"Friend test", title:"Friend test", text:w => "Your friend draws your 3 things (" + list(w) + "), in THEIR own way. You press ✓ or ✗. 5 times. Will your AI know your friend's drawings?", tries:5, examHint:w => "your friend draws one of them: " + list(w).replace(/, ([^,]*)$/, " or $1") + ".", hello:["A new person? 😳", "I only learned YOUR drawings. Let's see…"],
       onExam:(r, w) => { f1 = {r, w}; setCert({f1:{r, w}}); },
       result:(r, w) => el("div", {class:"bigscore" + (r < 4 ? " bad" : "")}, el("span", {class:"tag"}, "Friend test"), el("div", {class:"pct"}, r + "/" + (r + w)),
         el("p", null, r < 4 ? "Your AI got confused! It only learned YOUR way of drawing. Real AIs need examples from many different people." : "Wow, your AI knew your friend's drawings too! Let's make it even stronger."))},
     {type:"teach", who:"👫 Still your friend's turn.", short:"Friend teaches", title:"Your friend teaches your AI", text:"Your friend draws each of your 3 things 2 times, their way, and presses Teach. Now your AI learns from 2 people.", labels:w => w.slice(0, 3), plus:2, hello:["Teach me your way!", "2 drawings of each thing, please."]},
-    {type:"exam", who:"👫 Your friend draws again.", short:"Test again", title:"Friend test again", text:w => "Your friend draws " + list(w) + " again. You press ✓ or ✗. 5 times. Is your AI better now?", tries:5, examHint:w => "your friend draws a " + w.slice(0, 3).join(" / ") + ".", hello:["I learned from 2 people now!", "Test me again."],
+    {type:"exam", who:"👫 Your friend draws again.", short:"Test again", title:"Friend test again", text:w => "Your friend draws " + list(w) + " again. You press ✓ or ✗. 5 times. Is your AI better now?", tries:5, examHint:w => "your friend draws one of them: " + list(w).replace(/, ([^,]*)$/, " or $1") + ".", hello:["I learned from 2 people now!", "Test me again."],
       onExam:(r, w) => { setCert({f2:{r, w}}); if (!f1 || r > f1.r) confetti(); },
       result:(r, w) => el("div", {class:"bigscore"}, el("span", {class:"tag"}, "Friend test: before → after"), el("div", {class:"pct"}, (f1 ? f1.r : "?") + "/5 → " + r + "/5"),
         el("p", null, !f1 || r > f1.r ? "🎉 Better! More people's examples made a smarter AI. That's why real AIs learn from millions of people." : r === f1.r ? "Same score. Try with more drawings: more examples from more people make a stronger AI." : "Hmm, not better this time. Real engineers test again and again, with more examples."))}
@@ -1146,7 +1148,7 @@ go(start >= 0 ? start : 0);
 (function(){
   const $ = q => document.querySelector(q);
   const el = (tag, attrs, ...kids) => { const e = document.createElement(tag); for (const k in (attrs || {})){ if (k.startsWith("on")) e.addEventListener(k.slice(2), attrs[k]); else e.setAttribute(k, attrs[k]); } kids.flat().forEach(c => { if (c != null) e.append(c); }); return e; };
-  const KW = [["Training data", "All the examples we give the AI to learn from."], ["Example", "One drawing or picture the AI learns from."], ["Exam (test)", "New examples the AI has never seen, to check what it learned."], ["Accuracy", "How many answers the AI gets right, in %."], ["Neuron", "A little helper in the AI's brain that gives its opinion."]];
+  const KW = [["Training data", "All the examples we give the AI to learn from."], ["Example", "One drawing or picture the AI learns from."], ["Exam (test)", "New examples the AI has never seen, to check what it learned."], ["Accuracy", "How many answers the AI gets right, in %."], ["Neuron", "A little helper in the AI's brain that gives its opinion."], ["Weight", "How much the AI listens to one helper (the stars)."]];
   const box = $("#kw3"); if (box) box.replaceChildren(...KW.map(([w, m]) => { const b = el("button", {type:"button"}, el("b", null, w), el("span", null, "Tap to see")); b.onclick = () => { b.classList.add("open"); b.querySelector("span").textContent = m; }; return b; }));
   const QS = [["How does an AI learn?", ["From many examples", "It already knows everything", "By magic"], 0, "AI learns from examples, like the drawings you taught it."],
     ["Your AI got 90% on your drawings, but 40% on your friend's. Why?", ["Your friend draws badly", "It only saw YOUR way of drawing", "The AI is broken"], 1, "It learned one style only. It needs examples from many people."],
@@ -1225,7 +1227,7 @@ drawSw();
     ["⌨️", "You type messages on your phone.", "Your keyboard learns your words, and guesses the next one."],
     ["🎵", "You skip a song after 5 seconds.", "The music app learns you don't like it, and plays it less."],
     ["🔍", "You type “how to” in Google.", "It guesses the rest (“how to draw a cat”…), because it learned from what millions of people searched."],
-    ["🙂", "You unlock your phone with your face.", "Face unlock keeps learning your face, even with new glasses or hair."],
+    ["🙂", "You unlock an iPhone with your face.", "Face ID keeps learning your face, even when you get new glasses or a new haircut."],
     ["🗣️", "You say “Hey Siri” or “OK Google” to a phone.", "It learns YOUR voice, so it answers you and not your brother."]];
   let n = 0;
   D.forEach(([e, a, l]) => { const b = document.createElement("button"); b.type = "button"; b.innerHTML = '<span class="e">' + e + '</span><span class="a"></span><span class="l">❓ Tap: what does the AI learn?</span>'; b.querySelector(".a").textContent = a;
@@ -1235,7 +1237,7 @@ drawSw();
 <script>
 (function(){
   const box = document.querySelector("#adc"); if (!box) return;
-  const ITEMS = ["🐱 A cat", "🚲 A bike", "🌳 A tree", "🎸 A guitar", "🏠 A house", "🦄 Something strange: a unicorn"];
+  const ITEMS = ["🐱 A cat", "🚲 A bike", "🌳 A tree", "🎸 A guitar", "🏠 A house", "👾 A monster you invent"];
   const res = {};
   function draw(){
     box.replaceChildren(...ITEMS.map((t, i) => { const r = document.createElement("div"); r.className = "r" + (res[i] === true ? " ok" : res[i] === false ? " no" : "");
@@ -1243,7 +1245,7 @@ drawSw();
       [["✓ It guessed", true], ["✗ It didn't", false]].map(([l, v]) => { const x = document.createElement("button"); x.type = "button"; x.className = "btn sm" + (res[i] === v ? "" : " alt"); x.textContent = l; x.onclick = () => { res[i] = v; draw(); }; r.append(x); });
       return r; }));
     const n = Object.keys(res).length, ok = Object.values(res).filter(Boolean).length;
-    document.querySelector("#adcScore").textContent = n < ITEMS.length ? (n ? "So far: " + ok + " of " + n + " guessed." : "") : "Google's AI guessed " + ok + " of " + ITEMS.length + ". Which one was the hardest? Why? (Hint: did millions of people draw it?)";
+    document.querySelector("#adcScore").textContent = n < ITEMS.length ? (n ? "So far: " + ok + " of " + n + " guessed." : "") : "Google's AI guessed " + ok + " of " + ITEMS.length + ". Which one was the hardest? Why? (Hint: did people ever draw your monster in Quick, Draw!?)";
   }
   draw();
 })();
