@@ -1,6 +1,29 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}.iop{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:12px;align-items:center;margin:16px 0 4px;position:relative;padding-bottom:58px}
+.iob{background:#EEF0F3;border:2.5px solid #C3C8D2;border-radius:22px;padding:22px 12px;text-align:center;display:grid;gap:4px}
+.iob .fic{font-size:44px}.iob b{font-size:26px;letter-spacing:.5px}.iob small{font-size:18px;color:var(--ink)}
+.ioa{font-size:34px;font-weight:700}
+.ioloop{position:absolute;left:50%;right:16.6%;bottom:8px;height:44px;border:4px solid #16A34A;border-top:none;border-radius:0 0 4px 4px}
+.ioloop::before{content:"▲";position:absolute;left:-12px;top:-22px;color:#16A34A;font-size:20px}
+.ioloop span{position:absolute;left:50%;bottom:-2px;transform:translate(-50%,50%);background:var(--paper);padding:2px 10px;font-weight:700;font-size:14px;color:#16A34A;white-space:nowrap}
+.ioloop-sm{display:none;font-weight:700;color:#16A34A;margin:6px 0 0}
+@media (max-width:760px){.iop{grid-template-columns:1fr;padding-bottom:0}.ioa{transform:rotate(90deg);justify-self:center}.ioloop{display:none}.ioloop-sm{display:block}}
+.warn1{margin-top:14px;background:var(--gold-soft);border-color:transparent}
+.robots svg{width:100%;height:auto;display:block;border-radius:14px;margin-top:10px;border:1px solid var(--line)}
+.robots .prompt{min-height:3.2em}
+.lab4{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:20px}.lab4 h3{margin:4px 0;font-size:30px}
+.topics{display:flex;flex-wrap:wrap;gap:10px}.topic{font:inherit;font-weight:700;font-size:17px;display:flex;gap:8px;align-items:center;padding:10px 16px;border-radius:999px;border:2px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+.topic span{font-size:22px}.topic.on{border-color:var(--green);background:var(--green-soft)}
+.sp{margin-top:16px}.spgrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.sppart{border:2px solid var(--line);border-left-width:8px;border-radius:16px;padding:12px 14px;background:var(--paper);display:grid;gap:6px}
+.sppart.role{border-left-color:var(--c-role)}.sppart.task{border-left-color:var(--c-task)}.sppart.ctx{border-left-color:var(--c-ctx)}.sppart.out{border-left-color:var(--c-out)}
+.sppart b{font-size:18px}.sppart textarea{resize:vertical;font:inherit;font-size:17px;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink)}
+.spres{margin-top:14px}.spout{display:grid;gap:4px;font-size:19px;margin:8px 0;font-family:var(--mono, monospace)}
+.spout .seg2{display:block;border-radius:8px;padding:4px 10px}
+.spmeter{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--gold-soft);border-radius:12px;padding:8px 12px;margin:6px 0 10px}.spmeter b{color:var(--gold);font-size:24px;letter-spacing:2px}
+.btn.off{opacity:.5}.spafter{margin-top:14px;border-top:2px dashed var(--line);padding-top:12px}.spcheck{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px;font-size:17px}
+</style>
 </head><body>
 <title>Become a Prompt Engineer</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -341,23 +364,50 @@ button.seg2{display:inline;text-align:left;line-height:1.5;-webkit-box-decoratio
 <!-- 1 -->
 <section class="seg" id="seg-1" data-min="5" data-title="What is a prompt?">
   <div class="lower"><div class="no">01</div><div class="name"><h2>What is a prompt?</h2><p>5 minutes · the words you give the AI</p></div></div>
-  <p class="big">A prompt is the instruction you give to an AI. The AI does what you <u>write</u>, not what you <u>think</u>.</p>
-  <div class="flow" aria-label="Prompt, then AI, then result">
-    <div class="fbox"><span class="fic">✍️</span><b>Your prompt</b><small>the words you type</small></div>
-    <span class="farrow" aria-hidden="true">→</span>
-    <div class="fbox"><span class="fic">🤖</span><b>The AI</b><small>reads every word</small></div>
-    <span class="farrow" aria-hidden="true">→</span>
-    <div class="fbox"><span class="fic">📄</span><b>The answer</b><small>only as good as your prompt</small></div>
+  <p class="big">A prompt is the instruction you give AI to help turn your idea into a result. The AI does what you <u>write</u>, not what you <u>think</u>.</p>
+  <div class="iop" aria-label="Input, then prompt, then output. If the output is not good, improve the prompt.">
+    <div class="iob"><span class="fic">💡</span><b>INPUT</b><small>Your idea</small></div>
+    <span class="ioa" aria-hidden="true">→</span>
+    <div class="iob"><span class="fic">💬</span><b>PROMPT</b><small>Your instructions</small></div>
+    <span class="ioa" aria-hidden="true">→</span>
+    <div class="iob"><span class="fic">✨</span><b>OUTPUT</b><small>AI's result</small></div>
+    <div class="ioloop" aria-hidden="true"><span>🔁 Not good? Improve your prompt and try again</span></div>
   </div>
+  <p class="ioloop-sm">🔁 Not good? Improve your prompt and try again.</p>
+  <div class="card warn1"><span class="tag">⚠️ Careful</span><p style="margin:4px 0 0;font-size:17px">A good prompt gives a much better result, but even with a perfect prompt, <b>AI can still make mistakes</b>. Always check what it gives you.</p></div>
   <p class="lead" style="margin-top:22px"><b>Try it:</b> tap each short prompt. What does the AI have to guess?</p>
   <div class="grid g3" id="guessCards"></div>
   <div class="def" id="l1" hidden><span class="tag">Remember</span><p>If you don't say it, the AI guesses. A prompt engineer leaves nothing to guess.</p></div>
 </section>
 
 <!-- 2 -->
-<section class="seg" id="seg-2" data-min="8" data-title="Weak vs strong" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>A weak prompt vs a strong prompt</h2><p>8 minutes · same topic, two prompts</p></div></div>
-  <p class="big">Same topic: space. Look at the two prompts, and at the two answers.</p>
+<section class="seg" id="seg-2" data-min="10" data-title="Weak vs strong" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>A weak prompt vs a strong prompt</h2><p>10 minutes · same AI, different prompts</p></div></div>
+  <p class="big">Same AI, different prompts. Look at what changes.</p>
+  <div class="grid g2 robots">
+    <div class="card"><span class="tag" style="color:var(--onair)">❌ Weak prompt</span><p class="prompt">“Draw a robot.”</p><svg viewBox="0 0 300 260" role="img" aria-label="A plain grey robot on a white background"><rect width="300" height="260" fill="#fff"/>
+<line x1="150" y1="30" x2="150" y2="52" stroke="#888" stroke-width="5"/><circle cx="150" cy="26" r="8" fill="#999"/>
+<rect x="105" y="52" width="90" height="70" rx="6" fill="#9a9a9a"/><circle cx="130" cy="82" r="11" fill="#fff" stroke="#222" stroke-width="5"/><circle cx="170" cy="82" r="11" fill="#fff" stroke="#222" stroke-width="5"/><circle cx="130" cy="82" r="4" fill="#222"/><circle cx="170" cy="82" r="4" fill="#222"/><rect x="132" y="104" width="36" height="7" fill="#222"/>
+<rect x="115" y="128" width="70" height="80" rx="4" fill="#555"/><rect x="80" y="135" width="30" height="12" rx="6" fill="#666" transform="rotate(30 95 141)"/><rect x="190" y="135" width="30" height="12" rx="6" fill="#666" transform="rotate(-30 205 141)"/>
+<rect x="125" y="208" width="16" height="38" fill="#666"/><rect x="159" y="208" width="16" height="38" fill="#666"/></svg></div>
+    <div class="card"><span class="tag" style="color:var(--green)">✅ Strong prompt</span><p class="prompt">“Create a futuristic blue robot that helps students carry their schoolbags, with wheels and a digital screen, in a modern school.”</p><svg viewBox="0 0 300 260" role="img" aria-label="A futuristic blue robot on wheels with a screen face, carrying two schoolbags in a modern school hallway">
+<defs><linearGradient id="hall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8F1FB"/><stop offset="1" stop-color="#C9DDF2"/></linearGradient><linearGradient id="bot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4FA3FF"/><stop offset="1" stop-color="#1F5FD1"/></linearGradient></defs>
+<rect width="300" height="260" fill="url(#hall)"/><rect y="205" width="300" height="55" fill="#B8C9DA"/>
+<g fill="#7FA6CF" stroke="#5E86B0" stroke-width="2"><rect x="10" y="60" width="38" height="140" rx="3"/><rect x="50" y="60" width="38" height="140" rx="3"/><rect x="212" y="60" width="38" height="140" rx="3"/><rect x="252" y="60" width="38" height="140" rx="3"/></g>
+<g fill="#5E86B0"><rect x="20" y="80" width="18" height="3"/><rect x="60" y="80" width="18" height="3"/><rect x="222" y="80" width="18" height="3"/><rect x="262" y="80" width="18" height="3"/></g>
+<rect x="110" y="18" width="80" height="14" rx="7" fill="#fff" opacity=".9"/><text x="150" y="29" text-anchor="middle" font-family="Arial" font-size="9" font-weight="700" fill="#1F5FD1">SCHOOL 2040</text>
+<ellipse cx="150" cy="232" rx="62" ry="8" fill="#000" opacity=".15"/>
+<rect x="112" y="48" width="76" height="58" rx="18" fill="url(#bot)"/><rect x="121" y="57" width="58" height="38" rx="9" fill="#0B1A33"/><circle cx="138" cy="74" r="6" fill="#5CF2FF"/><circle cx="162" cy="74" r="6" fill="#5CF2FF"/><path d="M140 86 q10 6 20 0" stroke="#5CF2FF" stroke-width="3" fill="none" stroke-linecap="round"/>
+<line x1="150" y1="48" x2="150" y2="36" stroke="#1F5FD1" stroke-width="3"/><circle cx="150" cy="34" r="4" fill="#5CF2FF"/>
+<rect x="110" y="110" width="80" height="92" rx="20" fill="url(#bot)"/><rect x="128" y="124" width="44" height="28" rx="6" fill="#0B1A33"/><text x="150" y="142" text-anchor="middle" font-family="Arial" font-size="9" font-weight="700" fill="#5CF2FF">HELLO!</text>
+<rect x="72" y="118" width="38" height="12" rx="6" fill="#1F5FD1" transform="rotate(25 91 124)"/><rect x="190" y="118" width="38" height="12" rx="6" fill="#1F5FD1" transform="rotate(-25 209 124)"/>
+<rect x="52" y="134" width="40" height="50" rx="10" fill="#E2483D"/><rect x="60" y="150" width="24" height="16" rx="4" fill="#B5322A"/><path d="M62 134 q10 -14 20 0" stroke="#B5322A" stroke-width="4" fill="none"/>
+<rect x="208" y="134" width="40" height="50" rx="10" fill="#F6C318"/><rect x="216" y="150" width="24" height="16" rx="4" fill="#C99A0C"/><path d="M218 134 q10 -14 20 0" stroke="#C99A0C" stroke-width="4" fill="none"/>
+<circle cx="128" cy="214" r="15" fill="#222"/><circle cx="128" cy="214" r="6" fill="#9BB"/><circle cx="172" cy="214" r="15" fill="#222"/><circle cx="172" cy="214" r="6" fill="#9BB"/><rect x="118" y="198" width="64" height="10" rx="5" fill="#1F5FD1"/></svg></div>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Ask the class</span><p class="lead" style="margin:6px 0 10px"><b>What changed? Did we change the AI, or did we change our instructions?</b></p>
+    <div class="row" id="robQ"></div><p class="fb" id="robA" style="font-weight:700;margin:10px 0 0"></p></div>
+  <p class="big" style="margin-top:26px">Now with words. Same topic: space. Look at the two prompts, and at the two answers.</p>
   <div class="grid g2 vs2">
     <div class="card pcard weak">
       <span class="tag">❌ Prompt 1 · weak</span>
@@ -411,26 +461,14 @@ button.seg2{display:inline;text-align:left;line-height:1.5;-webkit-box-decoratio
 </section>
 
 <!-- 4 -->
-<section class="seg" id="seg-4" data-min="15" data-title="Mission: fix the prompt" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Mission: fix the prompt</h2><p>15 minutes · from weak to pro</p></div></div>
-  <div class="fixhead">
-    <div class="card pcard weak"><span class="tag">❌ The weak prompt</span><p class="prompt">“Make me a project.”</p></div>
-    <span class="farrow" aria-hidden="true">→</span>
-    <div class="card pcard strong"><span class="tag">✅ Your job</span><p style="margin:6px 0 0;font-size:18px;font-weight:600">Turn it into a pro prompt: a <b>project about protecting the environment</b>, with <b>ideas</b>, <b>pictures</b> and a <b>presentation</b>, for <b>Grade 7</b>.</p></div>
-  </div>
-  <div class="mission fixgrid">
-    <div class="builder4" id="builder4"></div>
-    <aside class="card side fixside">
-      <span class="tag">Your prompt, live</span>
-      <div class="livep" id="liveP"></div>
-      <div class="meter" id="meter"></div>
-      <div class="checks" id="checks"></div>
-      <div class="row" id="fixActs"></div>
-      <div id="afterGem" hidden>
-        <span class="tag">Look at Gemini's answer. Did it give you…</span>
-        <div class="chk3" id="gotList"></div>
-      </div>
-    </aside>
+<section class="seg" id="seg-4" data-min="15" data-title="Mission: Super Prompt" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Mission: build your Super Prompt</h2><p>15 minutes · a topic YOU love</p></div></div>
+  <div class="lab4">
+    <span class="tag">Prompt Engineering Lab</span>
+    <h3>Build Your Super Prompt</h3>
+    <p class="lead" style="margin:4px 0 12px">First, choose a topic you love:</p>
+    <div class="topics" id="topics"></div>
+    <div class="sp" id="sp"></div>
   </div>
 </section>
 
@@ -811,51 +849,55 @@ MISS.forEach(([p, a]) => { const fb = el("p", {class:"fb"}), card = el("div", {c
     card.classList.add(ok ? "ok" : "no"); fb.textContent = (ok ? "✓ Right! " : "✗ It's " + PN[a] + ". ") + WHY_MISS[a]; $("#missScore").textContent = missOk + " of 4"; if (missDone === 4) done(1); }}, n))), fb);
   $("#miss").append(card); });
 
-/* ---------- 4 fix the prompt ---------- */
-const F = Object.assign({role:"", task:"", ctx:"", out:""}, store.get("fix") || {});
-const BOX = [
-  ["role", "🎭 Role", "Who should the AI be?", ["You are an environmental scientist.", "You are a creative teacher.", "Act as a school project coach."]],
-  ["task", "🎯 Task", "What exactly should it do?", ["Help me make a school project about protecting the environment.", "Create a project about how we can protect our planet."]],
-  ["ctx", "📚 Context", "Who is it for? Why?", ["I am in Grade 7 in Lebanon.", "It is for my Grade 7 class, next week.", "My Grade 7 class cares about plastic on our beaches."]],
-  ["out", "📋 Output", "How should the answer look?", ["Give me 5 project ideas, a picture for each idea, and a 6-slide presentation plan. Use simple English.", "Give me 3 ideas, with pictures, and a short presentation. Use simple English."]]
-];
-const CHECKS = [
-  ["🎭 A role", t => F.role.trim().length >= 8],
-  ["🌍 Topic: protecting the environment", t => /environment|planet|nature|pollution|recycl|climate|plastic|earth|green/.test(t)],
-  ["👦 For Grade 7", t => /grade ?7|grade seven|7th grade|seventh|eb7|eb 7|12[- ]year|13[- ]year/.test(t)],
-  ["💡 Ideas", t => /idea/.test(t)],
-  ["🖼️ Pictures", t => /picture|image|photo|drawing|visual|illustration/.test(t)],
-  ["📊 A presentation", t => /presentation|slide|powerpoint/.test(t)]
-];
-const WHERE = {"🎭 A role":"🎭 Role", "🌍 Topic: protecting the environment":"🎯 Task", "👦 For Grade 7":"📚 Context", "💡 Ideas":"📋 Output", "🖼️ Pictures":"📋 Output", "📊 A presentation":"📋 Output"};
-const fixText = () => ["role", "task", "ctx", "out"].map(k => F[k].trim()).filter(Boolean).join(" ");
-let gemOpened = false;
-function drawFixSide(){
-  const t = fixText().toLowerCase(), n = CHECKS.filter(([, f]) => f(t)).length;
-  $("#liveP").replaceChildren(...(fixText() ? ["role", "task", "ctx", "out"].filter(k => F[k].trim()).flatMap(k => [el("span", {class:"seg2 on " + k}, F[k].trim()), " "]) : [el("span", {class:"muted"}, "Start writing on the left. Your prompt appears here.")]));
-  const lvl = n <= 2 ? ["Weak", "bad"] : n <= 4 ? ["Better", "mid"] : n === 5 ? ["Almost!", "mid"] : ["Pro! 🏆", "pro"];
-  $("#meter").replaceChildren(el("div", {class:"mbar"}, el("i", {class:lvl[1], style:"width:" + Math.round(n / 6 * 100) + "%"})), el("b", {class:"mlbl " + lvl[1]}, lvl[0] + " · " + n + "/6"));
-  $("#checks").replaceChildren(...CHECKS.map(([lbl, f]) => el("span", {class:"ck" + (f(t) ? " on" : "")}, (f(t) ? "✓ " : "○ ") + lbl)));
-  const ready = n >= 6, miss = CHECKS.filter(([, f]) => !f(t)).map(([l]) => l);
-  $("#fixActs").replaceChildren(ready ? el("button", {class:"btn", type:"button", onclick:() => copy(fixText(), $("#liveP"), "Gemini")}, "📋 Copy my prompt") : el("p", {class:"miss1", style:"margin:0;font-size:16px;font-weight:700"}, "Still missing: " + miss.map(m => m + " → write it in " + WHERE[m]).join(" · ") + ". Then Copy and Gemini unlock."),
-    ...(ready ? [el("a", {class:"btn alt", href:GEM, target:"_blank", rel:"noopener", style:"text-decoration:none", onclick:() => { gemOpened = true; $("#afterGem").hidden = false; done(2); }}, "↗ Open Gemini")] : []));
-  if (ready && gemOpened) $("#afterGem").hidden = false;
+/* ---------- 2b same AI, different prompts ---------- */
+$("#robQ").replaceChildren(...[["We changed the AI", false], ["We changed our instructions", true]].map(([t, ok]) => el("button", {class:"btn sm alt", type:"button", onclick:() => { $("#robA").textContent = ok ? "✓ Yes! It's the same AI. Only the instructions changed: more details = a result closer to what you imagined." : "✗ No: it's the same AI. Look again at the two prompts: what is different?"; $("#robA").style.color = ok ? "var(--green)" : "var(--onair)"; }}, t)));
+
+/* ---------- 4 build your Super Prompt ---------- */
+const TOP = {
+  football:["⚽", "Football", ["a football coach", "a sports scientist", "a goalkeeper coach"], ["Create a training plan to improve my speed", "Explain the offside rule", "Give me tips to become a better defender"], ["For a beginner Grade 7 student", "I play twice a week with my school team", "I have 20 minutes after school"], ["a table with 5 exercises in simple English", "5 short bullet points", "a step-by-step plan for one week"]],
+  games:["🎮", "Video games", ["a game designer", "a coding teacher", "an esports coach"], ["Help me invent a video game about saving the ocean", "Explain how video games are made", "Give me ideas for a new level in my game"], ["For a Grade 7 student who never made a game", "I want to make it in Scratch", "It is for my school club"], ["a list of 5 ideas, one sentence each", "a step-by-step plan in simple English", "a table: idea, what I need, difficulty"]],
+  art:["🎨", "Drawing", ["an art teacher", "a cartoon artist", "a comic book creator"], ["Teach me how to draw a cartoon character", "Give me ideas for a poster about kindness", "Explain how colours can show emotions"], ["For a beginner Grade 7 student", "I only have pencils and markers", "It is for my school art fair"], ["5 simple steps", "a list of 5 ideas", "a short guide with tips in simple English"]],
+  science:["🔬", "Science", ["a science teacher", "an astronaut", "a marine biologist"], ["Explain how volcanoes work", "Give me a fun experiment to do at home", "Explain why the sea is salty"], ["For a Grade 7 student in Lebanon", "I need it for a class presentation", "Use only safe things from the kitchen"], ["5 interesting facts in simple English", "a step-by-step experiment", "a short paragraph and one drawing idea"]],
+  music:["🎵", "Music", ["a music teacher", "a songwriter", "a DJ"], ["Help me write a short song about my school", "Explain how to start learning the guitar", "Give me ideas for a playlist to study with"], ["For a beginner Grade 7 student", "I practise 15 minutes a day", "It is for a school show"], ["4 short verses that rhyme", "a plan for 7 days", "a list of 5 tips"]],
+  cooking:["🍳", "Cooking", ["a chef", "a nutrition expert", "a Lebanese grandmother who loves cooking"], ["Give me a healthy snack I can make myself", "Teach me to make a simple Lebanese dish", "Plan a healthy lunchbox for one week"], ["I am 12 and I cook with an adult", "I only have a microwave, no oven", "For a Grade 7 student who plays sport"], ["a list of ingredients and 5 steps", "a table for 5 days", "a short recipe in simple English"]],
+  animals:["🐶", "Animals", ["a vet", "a zoo keeper", "a wildlife scientist"], ["Tell me how to take care of a puppy", "Explain why some animals are in danger", "Compare cats and dogs as pets"], ["For a Grade 7 student who wants a pet", "I live in an apartment in Beirut", "It is for a class project"], ["5 short bullet points", "a table: cats vs dogs", "a short paragraph and 3 tips"]],
+  travel:["🌍", "Travel", ["a travel guide", "a history teacher", "an explorer"], ["Plan a one-day trip to Byblos", "Tell me about a country I should visit", "Give me fun facts about Lebanon's cedars"], ["For a family with kids aged 8 to 13", "We have one day and a small budget", "For a Grade 7 student who loves history"], ["a timetable for the day", "5 fun facts in simple English", "a list of 5 places, one sentence each"]]
+};
+const SPARTS = [["role", "01 — Role", "Who should AI act as?", 2], ["task", "02 — Task", "What do you want AI to do?", 3], ["ctx", "03 — Context", "What does AI need to know?", 4], ["out", "04 — Output", "How should the result look?", 5]];
+const SP = Object.assign({topic:"", role:"", task:"", ctx:"", out:""}, store.get("super") || {});
+const dot = t => { t = (t || "").trim(); return !t ? "" : /[.!?]$/.test(t) ? t : t + "."; };
+const article = t => /^(a|an|the|my)\s/i.test(t) || /^[A-Z]/.test(t) ? t : (/^[aeiou]/i.test(t) ? "an " : "a ") + t;
+const lines = () => [SP.role.trim() ? ["role", "Act as " + article(SP.role.trim().replace(/^act as\s+/i, "").replace(/[.]$/, "")) + "."] : null, SP.task.trim() ? ["task", dot(SP.task)] : null, SP.ctx.trim() ? ["ctx", dot(SP.ctx)] : null, SP.out.trim() ? ["out", "Present the result as " + SP.out.trim().replace(/^present the result as\s+/i, "").replace(/[.]$/, "") + "."] : null].filter(Boolean);
+const spText = () => lines().map(l => l[1]).join("\n");
+const okPart = k => (SP[k] || "").trim().split(/\s+/).filter(Boolean).length >= (k === "task" ? 4 : 2);
+let gem4 = false;
+function drawTopics(){ $("#topics").replaceChildren(...Object.entries(TOP).map(([k, [ic, nm]]) => el("button", {class:"topic" + (SP.topic === k ? " on" : ""), type:"button", "aria-pressed":String(SP.topic === k), onclick:() => { if (SP.topic !== k){ SP.topic = k; SP.role = SP.task = SP.ctx = SP.out = ""; store.set("super", SP); } drawTopics(); drawSP(); }}, el("span", null, ic), nm))); }
+function drawSP(){
+  const box = $("#sp"); if (!SP.topic){ box.replaceChildren(el("p", {class:"muted", style:"margin:8px 0 0"}, "👆 Choose a topic to start.")); return; }
+  const T = TOP[SP.topic];
+  const out = el("div", {class:"spout"}), meter = el("div", {class:"spmeter"}), acts = el("div", {class:"row"}), after = el("div", {class:"spafter"});
+  const paint = () => {
+    const L = lines(), n = SPARTS.filter(([k]) => okPart(k)).length;
+    out.replaceChildren(...(L.length ? L.map(([k, t]) => el("span", {class:"seg2 on " + k}, t)) : [el("span", {class:"muted"}, "Your prompt appears here, part by part.")]));
+    meter.replaceChildren(el("b", null, "★".repeat(n) + "☆".repeat(4 - n)), el("span", null, n === 4 ? "Super Prompt! Every part is there." : "Missing: " + SPARTS.filter(([k]) => !okPart(k)).map(([, l]) => l.split("— ")[1]).join(", ")));
+    acts.replaceChildren(el("button", {class:"btn", type:"button", disabled:n < 4 ? "" : null, onclick:() => copy(spText(), out, "Gemini")}, "📋 Copy my prompt"),
+      el("a", {class:"btn alt" + (n < 4 ? " off" : ""), href:GEM, target:"_blank", rel:"noopener", style:"text-decoration:none", onclick:e => { if (n < 4){ e.preventDefault(); K.toast("Fill the 4 parts first."); return; } gem4 = true; done(2); after.hidden = false; }}, "↗ Open Gemini"));
+    after.hidden = !gem4;
+  };
+  const parts = SPARTS.map(([k, label, q, idx]) => {
+    const inp = el("textarea", {rows:"2", placeholder:"e.g. " + T[idx][0], "aria-label":label}); inp.value = SP[k];
+    const chips = T[idx].map(o => el("button", {class:"chip", type:"button", onclick:() => { inp.value = o; SP[k] = o; store.set("super", SP); mark(); paint(); }}, o));
+    const mark = () => chips.forEach((c, i) => { const on = SP[k] === T[idx][i]; c.classList.toggle("on", on); c.setAttribute("aria-pressed", String(on)); });
+    inp.addEventListener("input", () => { SP[k] = inp.value; store.set("super", SP); mark(); paint(); }); mark();
+    return el("div", {class:"sppart " + k}, el("span", {class:"tag"}, label), el("b", null, q), inp, el("div", {class:"chips sm"}, el("span", {class:"muted", style:"font-size:13px"}, "Ideas (or write your own):"), ...chips));
+  });
+  after.replaceChildren(el("span", {class:"tag"}, "Look at Gemini's answer. Did it…"), el("ul", {class:"spcheck"}, ...["answer like your role? (a coach, a chef…)", "do your task?", "fit YOU (your level, your situation)?", "look the way you asked? (a table, 5 points…)"].map(t => el("li", null, "☐ " + t))),
+    el("p", {style:"margin:8px 0 0"}, "Not perfect? Don't start again: write a follow-up in the same chat, like “Make it shorter” or “Add one more exercise”. And remember: even a Super Prompt can get a wrong answer, so check it."));
+  box.replaceChildren(el("div", {class:"spgrid"}, ...parts), el("div", {class:"card spres"}, el("span", {class:"tag"}, "Your generated prompt"), out, meter, acts,
+    el("p", {class:"muted", style:"margin:8px 0 0;font-size:14px"}, "Paste your prompt into a school-approved AI tool (Gemini with your school account)."), after));
+  paint();
 }
-const GOT = store.get("got") || [];
-$("#gotList").replaceChildren(...["💡 Project ideas", "🖼️ Pictures", "📊 A presentation plan", "👦 Easy words for Grade 7"].map((t, i) => { const cb = el("input", {type:"checkbox"}); cb.checked = !!GOT[i]; cb.onchange = () => { GOT[i] = cb.checked; store.set("got", GOT); }; return el("label", {class:"ck2"}, cb, " " + t); }));
-$("#builder4").replaceChildren(...BOX.map(([k, n, q, ideas]) => {
-  const ta = el("textarea", {rows:"2", placeholder:q, "aria-label":n}); ta.value = F[k];
-  ta.addEventListener("input", () => { F[k] = ta.value; store.set("fix", F); drawFixSide(); });
-  /* Role and Task: ONE choice (it replaces). Context and Output: tap to add, tap again to remove */
-  const one = true; /* every box: ONE choice, a new choice replaces the old text */
-  const add = s => { const cur = ta.value.trim(); ta.value = one ? s : cur.includes(s) ? cur.replace(s, "").replace(/\s{2,}/g, " ").trim() : (cur ? cur + " " : "") + s; ta.dispatchEvent(new Event("input")); paintChips(); };
-  const chips = ideas.map(s => el("button", {class:"chip", type:"button", onclick:() => add(s)}, s));
-  const paintChips = () => chips.forEach((c, i) => { const on = ta.value.includes(ideas[i]); c.classList.toggle("on", on); c.setAttribute("aria-pressed", String(on)); });
-  ta.addEventListener("input", paintChips); setTimeout(paintChips);
-  return el("div", {class:"bbox " + k}, el("div", {class:"bhead"}, el("b", null, n), el("span", {class:"muted"}, q)), ta,
-    el("div", {class:"chips"}, el("span", {class:"muted", style:"font-size:13px"}, one ? "Need help? Choose ONE:" : "Need help? Tap to add (tap again to remove):"), ...chips));
-}));
-drawFixSide();
+drawTopics(); drawSP();
 
 /* ---------- 5 three prompts, one question ---------- */
 const QS = ["Why do we need to sleep?", "How do volcanoes work?", "What should I eat before a football match?", "How can I learn English faster?", "Why is the sea salty?"];
