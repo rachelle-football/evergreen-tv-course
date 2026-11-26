@@ -509,7 +509,6 @@ button.seg2{display:inline;text-align:left;line-height:1.5;-webkit-box-decoratio
         <input class="fctop" type="text" maxlength="90" placeholder="2. The second one, in my own words">
         <input class="fctop" type="text" maxlength="90" placeholder="3. The third one, in my own words"></div>
       <label class="ff"><b>What did my follow-up change?</b><input id="fcChg" type="text" maxlength="110" placeholder="e.g. The words got simpler and the plan got shorter."></label>
-      <label class="ff"><b>Your first name</b><input id="fcName" type="text" maxlength="30" placeholder="Your first name"></label>
       <p class="fb" id="fcMsg" style="font-weight:700;margin:8px 0 0"></p>
     </div>
   </div>
@@ -923,6 +922,7 @@ drawTopics(); drawSP();
 /* ---------- 5 my first AI creation ---------- */
 const FC = Object.assign({fu:["", ""], ch:{}, title:"", top:["", "", ""], chg:"", name:"", asked:false}, store.get("creation") || {});
 if (!Array.isArray(FC.top)) FC.top = ["", "", ""];
+const kidName = () => { try { const a = JSON.parse(localStorage.getItem("ai-lab-session") || "null"); const n = a && a.name ? String(a.name).trim().split(/\s+/)[0] : ""; return n || "me"; } catch(e){ return "me"; } };
 const nw = t => (t || "").trim().split(/\s+/).filter(Boolean).length;
 const saveFC = () => { store.set("creation", FC); drawFC(); };
 const FUIDEAS = ["Make it shorter.", "Add one example.", "Use simpler words.", "Make it more fun, with emojis.", "Put it in a table.", "Add one more idea."];
@@ -941,13 +941,13 @@ function drawFu(){
 }
 const CHK = [["read", "I read the whole answer, slowly."], ["fact", "I checked one fact in a trusted source (a book, my teacher, a trusted website)."], ["ok", "Nothing strange or wrong, or I fixed it."]];
 function drawChk(){ $("#fcChk").replaceChildren(...CHK.map(([k, t]) => { const cb = el("input", {type:"checkbox"}); cb.checked = !!FC.ch[k]; cb.onchange = () => { FC.ch[k] = cb.checked; store.set("creation", FC); drawMsg(); }; return el("label", {class:"cbx"}, cb, el("span", null, t)); })); }
-function ready(){ return SPARTS.every(([k]) => okPart(k)) && FC.fu[0].trim().split(/\s+/).filter(Boolean).length >= 2 && CHK.every(([k]) => FC.ch[k]) && FC.title.trim() && FC.top.every(t => nw(t) >= 3) && nw(FC.chg) >= 4 && FC.name.trim(); }
+function ready(){ return SPARTS.every(([k]) => okPart(k)) && FC.fu[0].trim().split(/\s+/).filter(Boolean).length >= 2 && CHK.every(([k]) => FC.ch[k]) && FC.title.trim() && FC.top.every(t => nw(t) >= 3) && nw(FC.chg) >= 4 ; }
 function drawMsg(){
   const miss = [];
   if (!SPARTS.every(([k]) => okPart(k))) miss.push("your Super Prompt (step 3)");
   if (FC.fu[0].trim().split(/\s+/).filter(Boolean).length < 2) miss.push("your follow-up");
   if (!CHK.every(([k]) => FC.ch[k])) miss.push("the 3 checks");
-  if (!FC.title.trim()) miss.push("a title"); if (!FC.top.every(t => nw(t) >= 3)) miss.push("your top 3 (at least 3 words each)"); if (nw(FC.chg) < 4) miss.push("what your follow-up changed"); if (!FC.name.trim()) miss.push("your first name");
+  if (!FC.title.trim()) miss.push("a title"); if (!FC.top.every(t => nw(t) >= 3)) miss.push("your top 3 (at least 3 words each)"); if (nw(FC.chg) < 4) miss.push("what your follow-up changed");
   $("#fcMsg").textContent = miss.length ? "Still to do: " + miss.join(", ") + "." : "✅ Done! Here is your first AI creation."; $("#fcMsg").style.color = miss.length ? "var(--muted)" : "var(--green)";
   $("#fcCard").hidden = !!miss.length; if (!miss.length){ drawCard(); done(3); }
 }
@@ -964,16 +964,16 @@ function drawCard(){
   label("MY TOP 3, IN MY OWN WORDS", y + 25); y += 70;
   FC.top.forEach((t, i) => { g.fillStyle = "#5B3FD1"; g.beginPath(); g.arc(70, y - 9, 20, 0, 7); g.fill(); g.fillStyle = "#fff"; g.font = "800 22px Arial, sans-serif"; g.textAlign = "center"; g.fillText(String(i + 1), 70, y - 1); g.textAlign = "left";
     wrap(t.trim(), 110, W - 160, 36, "27px Georgia, serif", "#13221C", H - 180); y += 22; });
-  g.fillStyle = "#E3F1E9"; g.fillRect(40, H - 130, W - 80, 70); g.fillStyle = "#1E7A55"; g.font = "700 22px Arial, sans-serif"; g.fillText("✅ Made with AI (Gemini) · checked and written by " + FC.name.trim(), 60, H - 87);
+  g.fillStyle = "#E3F1E9"; g.fillRect(40, H - 130, W - 80, 70); g.fillStyle = "#1E7A55"; g.font = "700 22px Arial, sans-serif"; g.fillText("✅ Made with AI (Gemini) · checked and written by " + kidName(), 60, H - 87);
   g.fillStyle = "#56665E"; g.font = "18px Arial, sans-serif"; g.fillText(new Date().toLocaleDateString("en-GB", {day:"numeric", month:"long", year:"numeric"}), 50, H - 25);
   try { $("#fcDl").href = c.toDataURL("image/png"); } catch(e){}
 }
 function drawFC(){ drawFCPrompt(); drawMsg(); }
-$("#fcTitle").value = FC.title; $("#fcChg").value = FC.chg; $("#fcName").value = FC.name;
+$("#fcTitle").value = FC.title; $("#fcChg").value = FC.chg;
 const noPaste = inp => inp.addEventListener("paste", e => { e.preventDefault(); K.toast("Write it in your own words 🙂"); });
 document.querySelectorAll(".fctop").forEach((inp, i) => { inp.value = FC.top[i]; noPaste(inp); inp.addEventListener("input", () => { FC.top[i] = inp.value; store.set("creation", FC); drawMsg(); }); });
 noPaste($("#fcChg"));
-[["fcTitle", "title"], ["fcChg", "chg"], ["fcName", "name"]].forEach(([id, k]) => $("#" + id).addEventListener("input", () => { FC[k] = $("#" + id).value; store.set("creation", FC); drawMsg(); }));
+[["fcTitle", "title"], ["fcChg", "chg"]].forEach(([id, k]) => $("#" + id).addEventListener("input", () => { FC[k] = $("#" + id).value; store.set("creation", FC); drawMsg(); }));
 drawFu(); drawChk(); drawFC();
 addEventListener("hashchange", drawFC);
 K.start();
