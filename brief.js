@@ -22,7 +22,7 @@
     12:{goal:"Think like a programmer, program a smart classroom, and build your first program with AI.", make:[], steps:[], done:"",
        missions:{5:"Your output: a smart classroom program that passes 4 of 4 tests.", 6:"Your output: My First Smart System, a working HTML program, saved in your folder."}},
     14:{goal:"Find a real problem in your school, dig to its root cause, and plan a project to solve it.", make:[], steps:[], done:"",
-       missions:{5:"Your output: 3 real observations, and the problem you choose to solve.", 8:"Your output: your School Innovation Brief, ready for prototyping in Chapter 9.", 9:"Your output: a better idea, after AI asked you good questions."}},
+       missions:{5:"Your output: 2 real observations, and the problem you choose to solve.", 8:"Your output: your School Innovation Brief, ready for prototyping in Chapter 9.", 9:"Your output: a better idea, after AI asked you good questions."}},
     8:{goal:"Build your own website with a strong prompt, and get your own link.",
        make:[["🌐", "Your website: about you, your dream job or your football team"], ["🔗", "Your own link to share"]],
        steps:["Learn what makes a website prompt strong", "Choose your topic", "Fill in your details, add your pictures, choose a style and colours: you see it change live", "Publish it and get your link", "A classmate tests it, you make it better"],

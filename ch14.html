@@ -443,7 +443,7 @@ img.fprev{background:var(--paper)}
 .zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
 .zone{border-radius:16px;padding:16px;display:grid;gap:4px;align-content:start;color:#13221C}.zone .zic{font-size:44px;line-height:1.1}.zone b{font-size:19px}.zone small{font-size:14px;line-height:1.4}
 .z-class{background:#E3EDFF}.z-cafe{background:#FDEBD7}.z-lib{background:#EFE3F7}.z-play{background:#DDF2E3}.z-other{background:#F1EFE8}
-.obs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:12px}.ob{display:grid;gap:6px;align-content:start}.ob.ok{border-color:var(--green)}
+.obs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:12px}.ob{display:grid;gap:6px;align-content:start}.ob.ok{border-color:var(--green)}
 .obl{font-size:15px;margin-top:4px}.ob textarea{font:inherit;font-size:16px;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box}
 .mywhys{display:grid;gap:8px;margin-top:8px}.why1{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center}.why1 b{font-size:16px}
 .why1 input,#root,.idea input[type=text]{font:inherit;font-size:16px;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box}
@@ -520,7 +520,7 @@ img.fprev{background:var(--paper)}
   <p class="big">Nobody gives you a problem. Walk around your school, look carefully, and find real problems yourself.</p>
   <div class="zones" id="zones"></div>
   <div class="card bad" style="margin-top:14px"><span class="tag">🔒 Detective rules</span><p class="lead" style="margin:6px 0 0">Look and write. No photos of people, no names, nothing private. Describe what happens, not who did it.</p></div>
-  <p class="ttl" style="margin-top:20px">My detective notebook: 3 observations</p>
+  <p class="ttl" style="margin-top:20px">My detective notebook: 2 observations</p>
   <div class="obs" id="obs"></div>
   <div class="card" style="margin-top:14px"><span class="tag">⭐ Choose ONE problem to solve</span><div class="row" id="pick" style="margin-top:8px"></div><p class="fb" id="pickMsg" style="font-weight:700;margin:8px 0 0"></p></div>
 </section>
@@ -994,8 +994,8 @@ X.sort($("#g2"), [
 const ZONES = [["class", "🏫", "Classroom", "Forgetting homework, wasting electricity, lost school supplies."], ["cafe", "🍽️", "Cafeteria", "Food waste, long queues, unhealthy snacks."], ["lib", "📚", "Library", "Forgotten books, hard to find the right book."], ["play", "⚽", "Playground", "Sharing equipment, organising games, lost belongings."], ["other", "🧭", "Somewhere else", "Corridors, the gate, the school bus…"]];
 const OFTEN = ["Every day", "Every week", "Sometimes"], WHO = ["Students", "Teachers", "School staff", "Parents"];
 $("#zones").replaceChildren(...ZONES.map(([k, ic, n, ex]) => el("div", {class:"zone z-" + k}, el("span", {class:"zic"}, ic), el("b", null, n), el("small", null, "Look for: " + ex))));
-const D = Object.assign({obs:[{}, {}, {}], pick:-1}, store.get("detect") || {});
-D.obs = [0, 1, 2].map(i => Object.assign({zone:"", saw:"", often:"", who:[]}, D.obs[i] || {}));
+const D = Object.assign({obs:[{}, {}], pick:-1}, store.get("detect") || {});
+D.obs = [0, 1].map(i => Object.assign({zone:"", saw:"", often:"", who:[]}, D.obs[i] || {}));
 const saveD = () => store.set("detect", D);
 const nw = t => (String(t || "").trim().match(/\S+/g) || []).length;
 const obsOk = o => o.zone && nw(o.saw) >= 5 && o.often && o.who.length;
@@ -1016,9 +1016,9 @@ function drawPick(){
   const ok = D.obs.map(obsOk);
   $("#pick").replaceChildren(...D.obs.map((o, i) => el("button", {class:"btn sm" + (D.pick === i ? "" : " alt"), type:"button", disabled:ok[i] ? null : "", onclick:() => { D.pick = i; saveD(); drawPick(); }}, (D.pick === i ? "⭐ " : "") + "Observation " + (i + 1))));
   const n = ok.filter(Boolean).length;
-  $("#pickMsg").textContent = n < 3 ? "Complete your 3 observations first (" + n + " of 3)." : D.pick < 0 || !ok[D.pick] ? "Now choose the problem you want to solve." : "⭐ Your problem: “" + D.obs[D.pick].saw.trim() + "”";
-  $("#pickMsg").style.color = n === 3 && D.pick >= 0 && ok[D.pick] ? "var(--green)" : "var(--muted)";
-  if (n === 3 && D.pick >= 0 && ok[D.pick]) done(1);
+  $("#pickMsg").textContent = n < 2 ? "Complete your 2 observations first (" + n + " of 2)." : D.pick < 0 || !ok[D.pick] ? "Now choose the problem you want to solve." : "⭐ Your problem: “" + D.obs[D.pick].saw.trim() + "”";
+  $("#pickMsg").style.color = n === 2 && D.pick >= 0 && ok[D.pick] ? "var(--green)" : "var(--muted)";
+  if (n === 2 && D.pick >= 0 && ok[D.pick]) done(1);
 }
 drawObs();
 const myProblem = () => D.pick >= 0 && obsOk(D.obs[D.pick]) ? D.obs[D.pick].saw.trim() : "";
