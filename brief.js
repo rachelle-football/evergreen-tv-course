@@ -19,7 +19,7 @@
        make:[["🦸", "Your character card"], ["📖", "Your story (about 150 words) with a title"]],
        steps:["Learn the 4 parts of a story", "Invent your character, Gemini adds details", "Click to build your story prompt, Gemini writes it", "Paste it, give it a title, change 3 sentences into your own words", "Read it to the class"],
        done:"Your story has a title and at least 40 words. You cannot go on before that.",
-       missions:{2:"Your output: your character card. Your hero appears in your story and your pictures.", 3:"Your output: your own story from the future."}},
+       missions:{2:"Your output: your character card. Your hero appears in your story and your pictures.", 3:"Your output: your story page (your hero + your story), downloaded."}},
     5:{goal:"Make 3 to 5 AI pictures of your design, and save them in your folder.",
        make:[["🖼️", "3 to 5 pictures you choose (big picture, close-up, character…)"]],
        steps:["Spot what the AI decides by itself", "Learn the 5 ingredients of a picture prompt", "Choose which pictures you will make", "For each picture: click, copy, make it in Adobe Express, download", "Save each picture with ⬆ Upload"],

@@ -4,6 +4,10 @@
 .flow3>div{background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:14px}
 .flow3 .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;margin-bottom:6px}
 .flow3 b{display:block;font-size:18px}.flow3 p{margin:4px 0 0;font-size:16px}
+.herolink{display:flex;gap:14px;align-items:center;flex-wrap:wrap;background:var(--green-soft);border:2px solid var(--green);border-radius:16px;padding:12px 16px;margin:0 0 16px;font-size:17px}
+.herolink.empty{background:var(--gold-soft);border-color:var(--gold)}
+.herolink .hn{font-size:22px;font-weight:800}
+.finalpage{margin-top:16px}.finalpage canvas{width:100%;max-width:520px;height:auto;display:block;margin:10px 0;border:1px solid var(--line);border-radius:10px}
 </style>
 </head><body>
 <title>AI Storytelling</title>
@@ -307,6 +311,7 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
 
 <section class="seg" id="seg-3" data-min="24" data-title="Mission: your story" hidden>
   <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: write your story from the future</h2><p>24 minutes · Gemini, then your own words</p></div></div>
+  <div class="herolink" id="heroLink"></div>
   <div class="grid g2" style="align-items:start">
     <div class="card">
       <span class="tag">1 · Build your story prompt: choose, and it writes itself</span>
@@ -326,8 +331,15 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
       <p class="lead" style="margin:8px 0"><span class="score" id="wc">0 words</span> · about <span class="score" id="secs">0 seconds</span> to read aloud <span class="muted" id="fit"></span></p>
       <span class="tag">4 · Story check</span>
       <ol class="checklist compact" id="hunt"></ol>
-      <p class="note">Keep this story: you read it to the class in step 4.</p>
     </div>
+  </div>
+  <div class="card finalpage">
+    <span class="tag">5 · Your output: your story page</span>
+    <p class="lead" style="margin:6px 0 10px">Your hero and your story, together on one page. Download it: you read it to the class in step 4, and it goes in your portfolio.</p>
+    <label class="ing"><span class="tag">Written by (your first name)</span><input id="byName" maxlength="30" placeholder="Your first name"></label>
+    <p class="note" id="pageNote"></p>
+    <canvas id="storyPage" width="1000" height="1400" aria-label="Your story page"></canvas>
+    <div class="row"><a class="btn" id="pageDl" download="My-story-from-the-future.png" href="#">⬇ Download my story page</a></div>
   </div>
   <ol class="checklist" id="list1" style="margin-top:16px"></ol>
 </section>
@@ -338,7 +350,7 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
   <div class="card" style="border-color:var(--green);background:var(--green-soft)"><span class="tag">🎤 The reader says</span>
     <ol class="lead" style="margin:6px 0 0;padding-left:22px;line-height:1.6">
       <li><b>Hello:</b> <span id="rdHello">"My name is … My story is called … It happens in …"</span></li>
-      <li><b>Read</b> your story slowly, loud and clear.</li>
+      <li><b>Read</b> your story page slowly, loud and clear.</li>
       <li><b>Ask the class:</b> "Who is my character? What is the problem? How does the future help? How does it end?"</li>
       <li><b>Say:</b> "The sentence I changed into my own words is: …"</li>
     </ol></div>
@@ -718,7 +730,7 @@ $("#addMore").onclick = () => { const t = $("#charPaste").value.trim(); if (!t){
   const m = parseMore(t), n = Object.keys(m).length; if (!n){ K.toast("I could not find the 5 lines. Ask Gemini again with the prompt, then paste its answer."); return; }
   C.more = Object.assign(C.more || {}, m); store.set("char", C); drawChar(); drawStory(); L1.tick(0);
   K.toast(n + " lines added to your character card!"); };
-function onChar(redraw){ store.set("char", C); if (redraw) charUI.draw(); drawChar(); drawStory(); }
+function onChar(redraw){ store.set("char", C); if (redraw) charUI.draw(); drawChar(); drawStory(); if (typeof drawHeroLink === "function"){ drawHeroLink(); drawPage(); } }
 charUI = window.B.make($("#charB"), CSPEC, C, onChar);
 $("#copyChar").onclick = () => { if (!window.B.guard(CSPEC, C, $("#charB"), K.toast)) return; copy(charText(), $("#charOut"), "a NEW Gemini chat"); L1.tick(0); };
 
@@ -750,7 +762,7 @@ function storyText(){
 }
 let storyUI;
 function drawStory(){ window.B.show($("#storyOut"), SSPEC, S, storyText()); window.B.meter($("#storyP"), SSPEC, S); window.B.lock($("#copyStory"), SSPEC, S); }
-function onStory(redraw){ store.set("story", S); if (redraw) storyUI.draw(); drawStory(); drawChar(); drawHello(); if (S.prob) L1.tick(1); }
+function onStory(redraw){ store.set("story", S); if (redraw) storyUI.draw(); drawStory(); drawChar(); drawHello(); drawPage(); if (S.prob) L1.tick(1); }
 storyUI = window.B.make($("#storyB"), SSPEC, S, onStory);
 $("#copyStory").onclick = () => { if (!window.B.guard(SSPEC, S, $("#storyB"), K.toast)) return; copy(storyText(), $("#storyOut"), "a NEW Gemini chat"); L1.tick(2); };
 const BETTER = [["Add a funny moment", "Add one funny moment to the story. Keep it under 160 words."], ["Surprise ending", "Make the ending more surprising, but still happy."], ["More talking", "Add more dialogue: the characters talk to each other more."], ["Shorter", "Make it shorter: about 120 words, so I can read it in 1 minute."]];
@@ -770,7 +782,38 @@ const L1 = checklist("list1", [
   ["Make it better (optional)", "Not happy with the story? Copy one follow-up prompt into the same chat."],
   ["Paste and make it yours", "Paste the story, give it a title, change 3 sentences into your own words."]
 ]);
-drawChar(); drawStory();
+
+/* the link with step 2, and the final story page */
+function drawHeroLink(){
+  const box = $("#heroLink"); if (!box) return;
+  if (!(C.name || "").trim() || !C.who){ box.className = "herolink empty"; box.replaceChildren(el("span", null, "⚠ Your hero is missing. Go back to step 2 and invent your character first: your story uses it."), el("a", {class:"btn sm", href:"#seg-2"}, "← Step 2: my character")); return; }
+  box.className = "herolink"; box.replaceChildren(el("span", null, "🦸 Your hero from step 2:"), el("span", {class:"hn"}, C.name), el("span", null, C.who + (C.power ? " · " + C.power : "")), el("span", {style:"font-weight:700;color:var(--green)"}, "✅ already in your story prompt below"));
+}
+function drawPage(){
+  const c = $("#storyPage"); if (!c) return; const g = c.getContext("2d"), W = c.width, H = c.height;
+  const by = ($("#byName").value || "").trim(), title = (S.title || "").trim() || "My story from the future", text = (S.text || "").trim();
+  $("#pageNote").textContent = !text ? "⚠ Paste your story in part 3 first: it appears here." : "";
+  g.fillStyle = "#FBF7EE"; g.fillRect(0, 0, W, H); g.fillStyle = "#1E7A55"; g.fillRect(0, 0, W, 170);
+  g.fillStyle = "#fff"; g.textAlign = "left"; g.font = "700 22px Arial, sans-serif"; g.fillText("AI CREATORS · EB7 · MY STORY FROM THE FUTURE", 50, 55);
+  let y; const wrap = (t, x, maxW, lh, font, color, maxY) => { g.font = font; g.fillStyle = color; const paras = String(t).split(/\n+/);
+    for (const para of paras){ let line = ""; for (const w of para.split(/\s+/)){ const test = line ? line + " " + w : w; if (g.measureText(test).width > maxW && line){ if (y > maxY){ g.fillText(line + " …", x, y); return; } g.fillText(line, x, y); y += lh; line = w; } else line = test; } if (line){ if (y > maxY){ return; } g.fillText(line, x, y); y += lh; } y += lh * .35; } };
+  y = 120; wrap(title, 50, W - 100, 52, "800 44px Georgia, serif", "#fff", 150);
+  g.textAlign = "left"; g.fillStyle = "#56665E"; g.font = "24px Arial, sans-serif"; g.fillText((by ? "Written by " + by : "Written by …") + (S.place ? "  ·  It happens in " + S.place : ""), 50, 215);
+  // hero box
+  g.fillStyle = "#E3F1E9"; g.fillRect(50, 245, W - 100, 190); g.strokeStyle = "#1E7A55"; g.lineWidth = 3; g.strokeRect(50, 245, W - 100, 190);
+  g.fillStyle = "#1E7A55"; g.font = "700 20px Arial, sans-serif"; g.fillText("THE HERO", 75, 280);
+  g.fillStyle = "#13221C"; g.font = "800 38px Georgia, serif"; g.fillText(C.name || "…", 75, 325);
+  y = 362; wrap([C.who, C.power && "power: " + C.power, C.want && "wants " + C.want, C.fear && "afraid of " + C.fear].filter(Boolean).join("  ·  ") || "Invent your hero in step 2.", 75, W - 150, 32, "24px Arial, sans-serif", "#13221C", 420);
+  // story
+  y = 490; wrap(text || "Your story appears here.", 50, W - 100, 40, "27px Georgia, serif", text ? "#13221C" : "#9AA59F", H - 130);
+  g.fillStyle = "#56665E"; g.font = "italic 20px Arial, sans-serif"; g.fillText("Written with help from AI (Gemini). I changed it into my own words.", 50, H - 60);
+  try { $("#pageDl").href = c.toDataURL("image/png"); } catch(e){}
+}
+$("#byName").value = store.get("by") || "";
+$("#byName").addEventListener("input", () => { store.set("by", $("#byName").value); drawPage(); });
+$("#story").addEventListener("input", drawPage); $("#sTitle").addEventListener("input", drawPage);
+addEventListener("hashchange", () => { drawHeroLink(); drawPage(); });
+drawChar(); drawStory(); drawHeroLink(); drawPage();
 K.start();
 })();
 </script>
