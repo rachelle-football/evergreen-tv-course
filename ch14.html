@@ -445,7 +445,7 @@ img.fprev{background:var(--paper)}
 .z-class{background:#E3EDFF}.z-cafe{background:#FDEBD7}.z-lib{background:#EFE3F7}.z-play{background:#DDF2E3}.z-other{background:#F1EFE8}
 .obs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:12px}.ob{display:grid;gap:6px;align-content:start}.ob.ok{border-color:var(--green)}
 .obl{font-size:15px;margin-top:4px}.ob textarea{font:inherit;font-size:16px;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box}
-.mywhys{display:grid;gap:8px;margin-top:8px}.why1{display:grid;grid-template-columns:80px 1fr 64px;gap:10px;align-items:center}.why1 b{font-size:16px}.why1 .opt{color:var(--muted);font-size:13px}
+.mywhys{display:grid;gap:8px;margin-top:8px}.why1{display:grid;grid-template-columns:80px 1fr;gap:10px;align-items:center}.why1 b{font-size:16px}.why1 .opt{color:var(--muted);font-size:13px}
 .probin{font:inherit;font-size:20px;font-weight:700;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box;margin-top:8px}
 .why1 input,#root,.idea input[type=text]{font:inherit;font-size:16px;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box}
 @media (max-width:600px){.why1{grid-template-columns:1fr}}
@@ -530,7 +530,7 @@ img.fprev{background:var(--paper)}
 <section class="seg" id="seg-6" data-min="8" data-title="My 5 Whys" data-period="2" hidden>
   <div class="lower"><div class="no">06</div><div class="name"><h2>Dig deeper: my 5 Whys</h2><p>Period 2 · 8 minutes · find the root cause</p></div></div>
   <div class="card"><span class="tag">My problem</span><input id="probIn" class="probin" type="text" maxlength="160" placeholder="Write the problem you want to solve, e.g. Lots of food is thrown away after lunch."><p class="muted" id="probFrom" style="margin:6px 0 0;font-size:15px"></p></div>
-  <div class="card" style="margin-top:14px"><span class="tag">Ask “Why?” at least 3 times</span><div class="mywhys" id="myWhys"></div></div>
+  <div class="card" style="margin-top:14px"><span class="tag">Ask “Why?” at least 3 times</span><p style="margin:6px 0 4px;font-size:17px">Ask “Why?” about your problem. Then ask “Why?” about your answer. Each answer becomes the next question.</p><div class="mywhys" id="myWhys"></div></div>
   <div class="card" style="margin-top:14px">
     <label class="ff"><b>🎯 My possible root cause</b><input id="root" type="text" maxlength="160" placeholder="e.g. Homework instructions are not easy to find after class."></label>
     <b style="display:block;margin-top:12px">How will I check it is really true?</b>
@@ -1032,10 +1032,11 @@ const CHECKS = ["Ask 3 classmates", "Ask a teacher", "Observe again for a week",
 function drawMyWhys(){
   const pi = $("#probIn"); if (document.activeElement !== pi) pi.value = myProblem();
   $("#probFrom").textContent = !W.prob.trim() && detPick() ? "From your detective notebook (Section 5). You can change it." : "";
-  const ph = i => { const prev = (i ? W.w[i - 1] : myProblem()).trim().replace(/[.!?]+$/, ""); return prev ? "Why “" + (prev.length > 60 ? prev.slice(0, 57) + "…" : prev) + "”?" : (i ? "Answer the why above first" : "Why does this happen?"); };
+  const EXW = ["They forget what the teacher assigned.", "They don't always write it down.", "They are in a hurry at the end of class.", "They are getting ready for the next lesson.", "There is no time to check the homework before leaving."];
+  const ph = i => { const prev = (i ? W.w[i - 1] : myProblem()).trim().replace(/[.!?]+$/, ""); return (prev ? "Why “" + (prev.length > 55 ? prev.slice(0, 52) + "…" : prev) + "”?" : !myProblem().trim() ? "e.g. " + EXW[i] : "Why? (about your answer " + i + ")") + (i > 2 ? "  (optional)" : ""); };
   $("#myWhys").replaceChildren(...W.w.map((v, i) => { const x = el("input", {type:"text", maxlength:"160", placeholder:ph(i)}); x.value = v;
     x.oninput = () => { W.w[i] = x.value; saveW(); const nx = $("#myWhys").querySelectorAll("input")[i + 1]; if (nx) nx.placeholder = ph(i + 1); };
-    return el("label", {class:"why1"}, el("b", null, "Why? " + (i + 1)), x, i > 2 ? el("small", {class:"opt"}, "optional") : null); }));
+    return el("label", {class:"why1"}, el("b", null, "Why? " + (i + 1)), x); }));
   $("#root").value = W.root;
   $("#checkHow").replaceChildren(...CHECKS.map(c => el("button", {class:"chip", type:"button", "aria-pressed":String(W.check.includes(c)), onclick:() => { W.check = W.check.includes(c) ? W.check.filter(x => x !== c) : W.check.concat(c); saveW(); drawMyWhys(); }}, c)));
   whyMsg();
@@ -1044,7 +1045,7 @@ const whysOk = () => nw(myProblem()) >= 3 && W.w.slice(0, 3).every(x => nw(x) >=
 function whyMsg(){ const m = []; if (nw(myProblem()) < 3) m.push("your problem"); W.w.slice(0, 3).forEach((x, i) => { if (nw(x) < 3) m.push("why " + (i + 1)); }); if (nw(W.root) < 4) m.push("your root cause"); if (!W.check.length) m.push("how you will check it");
   $("#whyMsg").textContent = m.length ? "Still to do: " + m.join(", ") + "." : "✓ You found a possible root cause. Remember to check it!"; $("#whyMsg").style.color = m.length ? "var(--muted)" : "var(--green)"; }
 $("#root").addEventListener("input", () => { W.root = $("#root").value; saveW(); });
-$("#probIn").addEventListener("input", () => { W.prob = $("#probIn").value; saveW(); $("#probFrom").textContent = ""; const f = $("#myWhys").querySelector("input"); if (f && !W.w[0]) f.placeholder = "Why “" + W.prob.trim().replace(/[.!?]+$/, "") + "”?"; });
+$("#probIn").addEventListener("input", () => { W.prob = $("#probIn").value; saveW(); $("#probFrom").textContent = ""; drawMyWhys(); });
 drawMyWhys();
 
 /* 7 innovation lab: impact and effort */
