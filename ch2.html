@@ -52,6 +52,21 @@
 .howg{display:grid;gap:10px;margin-top:8px}.howg>div{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:start}.howg span{font-size:30px;line-height:1}.howg p{margin:0;font-size:17px}
 .certlist{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:6px;font-size:18px}.certlist li.ok{color:var(--green);font-weight:700}
 .admap{width:100%;height:auto;display:block;margin:4px 0 10px;border-radius:12px}
+.labsafe{background:var(--gold-soft);border-color:var(--gold)}
+.tmex{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr));gap:10px;margin-top:8px}
+.tmex>div{background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:2px;text-align:center;font-size:18px}
+.tmex span{font-size:34px}.tmex small{color:var(--muted);font-size:14px}.tmex .tot{background:var(--green-soft);border-color:var(--green);font-size:28px;font-weight:800}.tmex .tot b{font-size:14px}
+.tmout{margin-top:14px;background:#111;color:#fff;border-radius:14px;padding:14px}.tmout .tag{color:#bbb}
+.tmout .bar{display:grid;grid-template-columns:90px 1fr 50px;gap:10px;align-items:center;margin-top:8px}.tmout .bar i{height:16px;border-radius:8px;background:#333;position:relative;overflow:hidden}
+.tmout .bar i::after{content:"";position:absolute;inset:0;width:var(--w);background:#F4A13A;border-radius:8px}
+.labsteps{display:grid;gap:14px;margin-top:14px}
+.labf{display:grid;gap:8px}.labrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.labrow input,.labrow select,.labf input{font:inherit;font-size:17px;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink)}
+.labrow input[type=number]{width:90px}.labrow input[type=text]{flex:1;min-width:150px}.labrow b{min-width:90px}
+.labtot{margin:4px 0 0;font-weight:700}
+.tricks{display:grid;gap:8px}.trick{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--paper);font-size:17px}
+.trick.fooled{border-color:var(--onair)}.trick.right{border-color:var(--green)}
+#labLearn{width:100%;font:inherit;font-size:17px;padding:10px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink)}
 </style>
 </head><body>
 <title>How AI Learns</title>
@@ -326,7 +341,7 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
     <li><span class="ic">✏️</span><b>Mission</b><span>Train an AI with your drawings, then give it an exam</span></li>
     <li><span class="ic">📱</span><b>Every day</b><span>Find the AIs you train without knowing it</span></li>
     <li><span class="ic">🧠</span><b>Inside the brain</b><span>See how an AI decides</span></li>
-    <li><span class="ic">🌍</span><b>The real thing</b><span>Play with an AI trained by millions</span></li>
+    <li><span class="ic">🧪</span><b>Creation Lab</b><span>Train a real AI with a camera</span></li>
     <li><span class="ic">🏅</span><b>Certificate</b><span>Your AI Trainer certificate</span></li>
   </ol>
 </section>
@@ -407,8 +422,8 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 </section>
 
 <!-- PERIOD 2 -->
-<section class="seg" id="seg-5" data-min="15" data-title="Inside the brain" data-period="2" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Inside the AI's brain</h2><p>Period 2 · 15 minutes · the brain is a team</p></div></div>
+<section class="seg" id="seg-5" data-min="10" data-title="Inside the brain" data-period="2" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Inside the AI's brain</h2><p>Period 2 · 10 minutes · the brain is a team</p></div></div>
   <p class="big">How does an AI decide if an animal is a 🐱 cat or a 🐶 dog? Inside its brain, little helpers <b>vote</b>.</p>
   <div class="how3">
     <div><span class="n">1</span><b>Each helper looks at ONE thing</b><p>👂 the ears, 📏 the size, or 🔊 the sound. Then it votes: 🐱 or 🐶.</p></div>
@@ -440,63 +455,42 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
   </div>
 </section>
 
-<section class="seg" id="seg-6" data-min="15" data-title="The real thing" data-period="2" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>The real thing: AutoDraw</h2><p>Period 2 · 15 minutes · an AI trained by millions</p></div></div>
-  <p class="big">Your AI learned from you and a friend. Google's AI learned the same way, from millions of people.</p>
-  <div class="grid g2">
-    <div class="card">
-      <span class="tag">How to use it (free, no account)</span>
-      <p class="muted" style="margin:6px 0 6px;font-size:15px">AutoDraw opens <b>empty</b>. That's normal: it waits for you to draw. Here is what you will see:</p>
-      <svg class="admap" viewBox="0 0 560 260" role="img" aria-label="AutoDraw screen: the magic pen on the left, the white page in the middle, the AI's guesses at the top">
-        <rect x="0" y="0" width="560" height="260" rx="12" fill="#EDEDED"/>
-        <rect x="0" y="0" width="560" height="44" rx="12" fill="#E2E2E2"/>
-        <text x="14" y="28" font-family="monospace" font-size="15" fill="#555">AutoDraw</text>
-        <rect x="104" y="7" width="446" height="30" rx="15" fill="#FFF4D6" stroke="#C9932B" stroke-width="2.5"/>
-        <text x="116" y="27" font-family="monospace" font-size="13" fill="#333">Do you mean:</text>
-        <circle cx="240" cy="22" r="9" fill="none" stroke="#333" stroke-width="1.5"/><rect x="262" y="13" width="18" height="18" fill="none" stroke="#333" stroke-width="1.5"/><path d="M300 30 l9 -17 l9 17z" fill="none" stroke="#333" stroke-width="1.5"/>
-        <text x="335" y="27" font-family="Arial" font-size="13" font-weight="700" fill="#8A5A00">③ the AI's guesses appear here</text>
-        <rect x="10" y="56" width="44" height="194" rx="22" fill="#D5D5D5"/>
-        <circle cx="32" cy="80" r="15" fill="#fff"/><circle cx="32" cy="118" r="17" fill="#111" stroke="#C9932B" stroke-width="3"/><text x="32" y="124" text-anchor="middle" font-size="15" fill="#fff">✨</text>
-        <circle cx="32" cy="156" r="15" fill="#fff"/><circle cx="32" cy="192" r="15" fill="#fff"/><circle cx="32" cy="228" r="15" fill="#fff"/>
-        <text x="62" y="122" font-family="Arial" font-size="13" font-weight="700" fill="#8A5A00">① magic pen</text>
-        <rect x="150" y="60" width="400" height="190" fill="#fff" stroke="#bbb"/>
-        <path d="M290 110 q40 -30 80 0 q25 40 -10 80 q-50 30 -80 -10 q-20 -40 10 -70" fill="none" stroke="#3B82F6" stroke-width="4" stroke-linecap="round"/>
-        <text x="350" y="236" text-anchor="middle" font-family="Arial" font-size="13" font-weight="700" fill="#8A5A00">② draw here</text>
-      </svg>
-      <ol class="lead ad-steps" style="margin:8px 0 12px;padding-left:22px">
-        <li><a class="btn sm" href="https://www.autodraw.com/" target="autodraw" rel="noopener">✏️ Open AutoDraw</a> It opens in a new tab.</li>
-        <li>On the left, the black pen with stars ✨ is already chosen. <b>Draw</b> in the big white space with your mouse (or your finger on a tablet).</li>
-        <li>Look at the <b>top of the page</b>: a row of clean pictures appears (“Do you mean…”). That's the AI guessing!</li>
-        <li>Click a picture: your scribble becomes a clean drawing. Then come back to this tab.</li>
-      </ol>
-    </div>
-    <div class="card">
-      <span class="tag">How did Google's AI learn to guess?</span>
-      <div class="howg">
-        <div><span>🎮</span><p>Google made a free game: <b>Quick, Draw!</b> You get a word, and 20 seconds to draw it.</p></div>
-        <div><span>🌍</span><p>People all over the world played it. Together they made <b>50 million drawings</b> of <b>345 different things</b>.</p></div>
-        <div><span>🧠</span><p>An AI learned from all those drawings, like your AI learned from yours. AutoDraw uses this kind of AI to guess what you draw.</p></div>
-      </div>
-      <p class="lead" style="margin:12px 0 0"><b>Your mission and Google's AI work the same way:</b> examples → learning → guessing. Google just had millions more examples.</p>
-    </div>
+<section class="seg" id="seg-6" data-min="25" data-title="Creation Lab" data-period="2" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>Creation Lab: train a REAL AI</h2><p>Period 2 · 25 minutes · Google Teachable Machine · no code</p></div></div>
+  <p class="big">Now leave the app. With a camera and 3 objects from your bag, you train a real AI, the same way engineers do.</p>
+  <div class="card labsafe"><span class="tag">🛡️ Lab rules</span>
+    <ul class="lead" style="margin:6px 0 0;padding-left:22px"><li>The camera films <b>only objects</b> on the table. Never faces, never people.</li><li>Your teacher is with you during the lab.</li><li>Don't press “Save project to Drive”: it saves your photos online.</li></ul></div>
+  <div class="card" style="margin-top:14px"><span class="tag">Example · Teach AI to recognise school objects</span>
+    <div class="tmex"><div><span>✏️</span><b>Class 1</b>Pencil<small>30 images</small></div><div><span>📓</span><b>Class 2</b>Notebook<small>30 images</small></div><div><span>🧽</span><b>Class 3</b>Eraser<small>30 images</small></div><div class="tot"><b>Total</b>90<small>training images</small></div></div>
+    <div class="tmout"><span class="tag">AI model output · example with a NEW pencil</span>
+      <div class="bar"><b>Pencil</b><i style="--w:96%"></i><span>96%</span></div><div class="bar"><b>Notebook</b><i style="--w:3%"></i><span>3%</span></div><div class="bar"><b>Eraser</b><i style="--w:1%"></i><span>1%</span></div>
+      <p style="margin:8px 0 0;font-weight:700">Prediction: Pencil ✏️</p></div>
   </div>
-  <div class="card" style="margin-top:16px">
-    <span class="tag">Challenge · Can Google's AI guess your drawings?</span>
-    <p class="lead" style="margin:6px 0 10px">Draw each thing in AutoDraw (to clean the page between drawings: ☰ menu at the top left → “Start over”, or the 🗑️ trash button at the bottom of the left toolbar). Did the AI show the right picture at the top?</p>
-    <div class="adc" id="adc"></div>
-    <p class="lead" id="adcScore" style="margin:12px 0 0;font-weight:700"></p>
+  <div class="labsteps">
+    <div class="card"><span class="tag">Step 1 · Collect data</span>
+      <ol class="lead" style="margin:6px 0 10px;padding-left:22px"><li><a class="btn sm" href="https://teachablemachine.withgoogle.com/train/image" target="tm" rel="noopener">🧪 Open Teachable Machine</a> Choose <b>Standard image model</b>.</li>
+        <li>Rename <b>Class 1</b>, <b>Class 2</b>, and press <b>Add a class</b> for the 3rd. Write the names of your 3 objects.</li>
+        <li>For each class: press <b>Webcam</b>, then <b>Hold to Record</b>. Turn the object slowly: different sides, close and far. About 30 images each.</li></ol>
+      <div class="labf" id="lab1"></div></div>
+    <div class="card"><span class="tag">Step 2 · Train the AI</span><p class="lead" style="margin:6px 0">Press <b>Train Model</b> and wait. Don't change tab while it learns! The AI is looking for the patterns in your photos.</p></div>
+    <div class="card"><span class="tag">Step 3 · Test the AI</span><p class="lead" style="margin:6px 0 10px">Show the camera a <b>new</b> object it never saw (another pencil from a friend). Look at the bars in <b>Preview</b>.</p><div class="labf" id="lab3"></div></div>
+    <div class="card"><span class="tag">Step 4 · Try to trick your AI! 😈</span><p class="lead" style="margin:6px 0 10px">Can you fool it? Try each trick, then say what happened.</p><div class="tricks" id="tricks"></div><p class="fb" id="trickMsg" style="font-weight:700;margin:10px 0 0"></p></div>
+    <div class="card"><span class="tag">Step 5 · Save your first AI model</span>
+      <ol class="lead" style="margin:6px 0 10px;padding-left:22px"><li>Take a screenshot of your best test (the bars in Preview).</li><li>Optional: <b>Export Model</b> → <b>Download</b> to keep your model.</li></ol>
+      <label class="ff"><b>What did you discover about AI today?</b><textarea id="labLearn" rows="2" placeholder="e.g. My AI was fooled by a broken pencil, because I never showed it one. More different photos make it smarter."></textarea></label>
+      <p class="fb" id="labDone" style="font-weight:700;margin:10px 0 0"></p></div>
   </div>
 </section>
 
-<section class="seg" id="seg-7" data-min="15" data-title="Your certificate" data-period="2" hidden>
-  <div class="lower"><div class="no">07</div><div class="name"><h2>Your AI Trainer certificate</h2><p>Period 2 · 15 minutes · show it at home</p></div></div>
+<section class="seg" id="seg-7" data-min="10" data-title="Your certificate" data-period="2" hidden>
+  <div class="lower"><div class="no">07</div><div class="name"><h2>Your AI Trainer certificate</h2><p>Period 2 · 10 minutes · show it at home</p></div></div>
     <p class="lead" style="margin:0 0 6px"><b>Key words.</b> Tap each one.</p>
   <div class="kw3" id="kw3"></div>
   <div class="card" style="margin:16px 0"><span class="tag">Check yourself · 4 questions</span><div id="q3" class="q3"></div><p id="q3s" class="q3s"></p></div>
-  <p class="big">Your certificate shows YOUR results from the mission (step 3): the 3 things your AI learned, its exam score, and the friend test before and after.</p>
+  <p class="big">Your certificate shows YOUR results: the mission (step 3), and the real AI you trained in the Creation Lab (step 6).</p>
   <div class="card certlock" id="certLock" hidden>
     <span class="tag">🔒 Your certificate is locked</span>
-    <p class="lead" style="margin:6px 0 10px">Finish the mission in step 3 to unlock it:</p>
+    <p class="lead" style="margin:6px 0 10px">Finish the mission (step 3) and the Creation Lab (step 6) to unlock it:</p>
     <ul class="certlist" id="certList"></ul>
     <button class="btn" type="button" id="goMission">✏️ Go to the mission (step 3)</button>
   </div>
@@ -506,7 +500,7 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
     <canvas id="cert" width="1200" height="850" aria-label="Your AI Trainer certificate"></canvas>
     <div class="row"><a class="btn" id="certDl" download="AI-Trainer-certificate.png" href="#">⬇ Download my certificate</a></div>
   </div>
-  <div class="home3"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Open AutoDraw with your family. Everyone draws the same thing (a cat, a car…). Does the AI guess everyone's drawing? Whose drawing was the hardest for it, and why?</p></div>
+  <div class="home3"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Open <a href="https://www.autodraw.com/" target="autodraw" rel="noopener">AutoDraw</a> with your family: draw, and Google's AI guesses (look at the top of the page). It learned from 50 million drawings in the game Quick, Draw!. Everyone draws the same thing: whose drawing is the hardest for it, and why?</p></div>
   <p class="note" style="margin-top:16px">Next week: Prompt Engineering. You learn to talk to AI so it does exactly what you want.</p>
 </section>
 
@@ -1074,7 +1068,8 @@ stageLab($("#lab1"), {
   $("#certName").value = store.get("certName") || who;
   function draw(){
     d = store.get("cert") || {};
-    const steps = [["Teach your AI 3 things", !!(d.words && d.words.length >= 3)], ["The exam: 10 drawings", !!d.exam], ["Friend test", !!d.f1], ["Friend test again", !!d.f2]];
+    const lab = store.get("lab") || {};
+    const steps = [["Teach your AI 3 things", !!(d.words && d.words.length >= 3)], ["The exam: 10 drawings", !!d.exam], ["Friend test", !!d.f1], ["Friend test again", !!d.f2], ["Creation Lab: your real AI (step 6)", !!lab.done]];
     const ready = steps.every(x => x[1]);
     $("#certLock").hidden = ready; $("#certBox").hidden = !ready;
     $("#certList").replaceChildren(...steps.map(([t, ok]) => { const li = document.createElement("li"); li.textContent = (ok ? "✅ " : "⬜ ") + t; if (ok) li.className = "ok"; return li; }));
@@ -1094,9 +1089,10 @@ stageLab($("#lab1"), {
     const boxes = [["🤖 Exam score", sc(d.exam), "right answers with your drawings"], ["👫 Friend test", d.f1 ? sc(d.f1) + "  →  " + sc(d.f2) : "…", "before → after your friend taught it"]];
     boxes.forEach(([t, v, cap], i) => { const x = 220 + i * 420, y = 490; g.fillStyle = "#E3F1E9"; g.fillRect(x, y, 340, 170); g.strokeStyle = "#1E7A55"; g.lineWidth = 3; g.strokeRect(x, y, 340, 170);
       g.fillStyle = "#56665E"; g.font = "24px Arial, sans-serif"; g.fillText(t, x + 170, y + 45); g.fillStyle = "#13221C"; g.font = "700 46px Arial, sans-serif"; g.fillText(v, x + 170, y + 108); g.fillStyle = "#56665E"; g.font = "19px Arial, sans-serif"; g.fillText(cap, x + 170, y + 145); });
+    if (lab.done){ const t = "🧪 Creation Lab: trained Google Teachable Machine on " + lab.names.map(x => x.trim()).join(", ") + " (" + lab.total + " photos) · test: " + lab.pred + " " + lab.pct + "%"; let fs = 24; do { g.font = "700 " + fs + "px Arial, sans-serif"; fs--; } while (g.measureText(t).width > W - 180 && fs > 14); g.fillStyle = "#1E7A55"; g.fillText(t, W / 2, 705); }
     g.font = "24px Arial, sans-serif"; g.fillStyle = "#56665E";
-    g.fillText("Evergreen School  ·  " + new Date().toLocaleDateString("en-GB", {day:"numeric", month:"long", year:"numeric"}), W / 2, 722);
-    g.font = "italic 22px Georgia, serif"; g.fillText("“An AI is only as good as the examples you give it.”", W / 2, 765);
+    g.fillText("Evergreen School  ·  " + new Date().toLocaleDateString("en-GB", {day:"numeric", month:"long", year:"numeric"}), W / 2, 748);
+    g.font = "italic 22px Georgia, serif"; g.fillText("“An AI is only as good as the examples you give it.”", W / 2, 788);
     try { $("#certDl").href = c.toDataURL("image/png"); } catch(e) {}
   }
   $("#certName").addEventListener("input", () => { store.set("certName", $("#certName").value); draw(); });
@@ -1278,6 +1274,48 @@ drawSw();
     document.querySelector("#adcScore").textContent = n < ITEMS.length ? (n ? "So far: " + ok + " of " + n + " guessed." : "") : "Google's AI guessed " + ok + " of " + ITEMS.length + ". Which one was the hardest? Why? (Hint: did people ever draw your monster in Quick, Draw!?)";
   }
   draw();
+})();
+</script>
+<script>
+(function(){
+  const $ = q => document.querySelector(q); if (!$("#lab1")) return;
+  const KEY = (window.K && K.store) ? null : null;
+  const get = () => { try { return JSON.parse(localStorage.getItem("ch2-lab")) || {}; } catch(e){ return {}; } };
+  const L = Object.assign({names:["", "", ""], n:["", "", ""], testObj:"", pred:"", pct:"", tr:{}, learn:"", done:false}, get());
+  const save = () => { try { localStorage.setItem("ch2-lab", JSON.stringify(L)); } catch(e){} check(); if (window.EVG_CERT) window.EVG_CERT(); };
+  const mk = (t, a, ...k) => { const e = document.createElement(t); for (const x in (a || {})){ if (x.startsWith("on")) e.addEventListener(x.slice(2), a[x]); else if (a[x] != null) e.setAttribute(x, a[x]); } k.flat().forEach(c => { if (c != null) e.append(c); }); return e; };
+  const PH = ["pencil", "notebook", "eraser"], EM = ["✏️", "📓", "🧽"];
+  const tot = mk("p", {class:"labtot"});
+  $("#lab1").replaceChildren(...[0, 1, 2].map(i => { const nm = mk("input", {type:"text", maxlength:"24", placeholder:"e.g. " + PH[i], "aria-label":"Class " + (i + 1) + " name"}), nn = mk("input", {type:"number", min:"0", max:"500", placeholder:"30", "aria-label":"Number of images"});
+    nm.value = L.names[i]; nn.value = L.n[i]; nm.oninput = () => { L.names[i] = nm.value; save(); drawPred(); }; nn.oninput = () => { L.n[i] = nn.value; save(); };
+    return mk("div", {class:"labrow"}, mk("b", null, EM[i] + " Class " + (i + 1)), nm, mk("span", null, "images:"), nn); }), tot);
+  const pred = mk("select", {"aria-label":"Prediction"}), pct = mk("input", {type:"number", min:"0", max:"100", placeholder:"96", "aria-label":"Percent"}), obj = mk("input", {type:"text", maxlength:"40", placeholder:"e.g. my friend's green pencil"});
+  function drawPred(){ const cur = L.pred; pred.replaceChildren(mk("option", {value:""}, "— choose —"), ...L.names.map(x => x.trim()).filter(Boolean).map(x => { const o = mk("option", {value:x}, x); if (x === cur) o.selected = true; return o; })); }
+  drawPred(); obj.value = L.testObj; pct.value = L.pct;
+  obj.oninput = () => { L.testObj = obj.value; save(); }; pred.onchange = () => { L.pred = pred.value; save(); }; pct.oninput = () => { L.pct = pct.value; save(); };
+  $("#lab3").replaceChildren(mk("label", {class:"ff"}, mk("b", null, "The new object I showed"), obj), mk("div", {class:"labrow"}, mk("b", null, "AI prediction"), pred, mk("b", null, "with"), pct, mk("span", null, "%")));
+  const TR = ["Show a pencil of a different colour", "Show a broken pencil", "Show a book instead of the notebook", "Show an object you never trained it on", "Add more photos to one class and train again"];
+  function drawTricks(){
+    $("#tricks").replaceChildren(...TR.map((t, i) => mk("div", {class:"trick" + (L.tr[i] ? " " + L.tr[i] : "")}, mk("span", null, (i + 1) + ". " + t),
+      mk("div", {class:"row"}, ...[["fooled", "😈 I fooled it"], ["right", "🤖 It was right"]].map(([k, l]) => mk("button", {class:"btn sm" + (L.tr[i] === k ? "" : " alt"), type:"button", onclick:() => { L.tr[i] = k; save(); drawTricks(); }}, l))))));
+    const n = Object.keys(L.tr).length, f = Object.values(L.tr).filter(x => x === "fooled").length;
+    $("#trickMsg").textContent = n < 3 ? "Try at least 3 tricks." : f ? "You fooled it " + f + " time" + (f > 1 ? "s" : "") + "! The AI only knows what it saw in your photos. New or strange objects confuse it." : "Your AI was strong! Did you show it many different photos? That's the secret.";
+  }
+  drawTricks();
+  $("#labLearn").value = L.learn; $("#labLearn").oninput = () => { L.learn = $("#labLearn").value; save(); };
+  function check(){
+    const nums = L.n.map(x => +x || 0), total = nums.reduce((a, b) => a + b, 0), names = L.names.map(x => x.trim());
+    tot.textContent = "Total training images: " + total + (total && nums.some(x => x < 10) ? " · each class needs at least 10" : "");
+    const miss = [];
+    if (names.some(x => !x)) miss.push("the names of your 3 classes"); if (nums.some(x => x < 10)) miss.push("the number of images (10+ each)");
+    if (!L.testObj.trim() || !L.pred || !(+L.pct >= 0 && L.pct !== "")) miss.push("your test (step 3)"); if (Object.keys(L.tr).length < 3) miss.push("3 tricks (step 4)");
+    if ((L.learn.trim().match(/\S+/g) || []).length < 6) miss.push("what you discovered (6+ words)");
+    L.done = !miss.length; L.total = total; L.names = L.names; 
+    try { localStorage.setItem("ch2-lab", JSON.stringify(L)); } catch(e){}
+    $("#labDone").textContent = L.done ? "✅ Creation Lab done! Your real AI is on your certificate (step 7)." : "Still to do: " + miss.join(", ") + ".";
+    $("#labDone").style.color = L.done ? "var(--green)" : "var(--muted)";
+  }
+  check();
 })();
 </script>
 <script src="config.js"></script>
