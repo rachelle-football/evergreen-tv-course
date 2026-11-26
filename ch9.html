@@ -256,6 +256,12 @@ img.fprev{background:var(--paper)}
 @media (max-width:700px){.bug small{display:none}.step .t{display:none}.clock .lbl{display:none}body{font-size:17px}.lead{font-size:18px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
+.stations{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}.station{border-radius:16px;padding:14px;display:grid;gap:6px;align-content:start;color:#13221C}.station small{font:700 11px var(--mono);letter-spacing:.12em;color:#56665E}.station>b{font-size:19px}.station span{font-size:15px}.station p{margin:0;font-size:14px}.station .muted{color:#56665E}
+.station.s0{background:#E3EDFF}.station.s1{background:#FDEBD7}.station.s2{background:#EFE3F7}.station.s3{background:#DDF2E3}.station.s4{background:#E6F4F1}
+.signs{display:none}
+@media print{body.printsigns *{visibility:hidden}body.printsigns .signs,body.printsigns .signs *{visibility:visible}body.printsigns .signs{display:block;position:absolute;left:0;top:0;width:100%}
+  .sign{height:96vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;page-break-after:always;break-after:page;font-family:Arial,sans-serif;color:#13221C;border:6px solid #1E7A55;box-sizing:border-box;padding:40px}
+  .sign small{font-size:16px;letter-spacing:.14em}.sign .sic{font-size:140px}.sign b{font-size:64px}.sign p{font-size:28px;margin:12px 0}.sign .stry{font-size:30px;font-weight:700}}
 /* ---- Chapter 11 · final showcase ---- */
 .awards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}.aw{border:2px solid var(--gold);background:var(--gold-soft);border-radius:14px;padding:12px;display:grid;gap:3px}.aw span{font-size:30px}.aw b{font-size:17px}.aw small{font-size:14px;color:var(--muted)}
 .pf{border:2px solid var(--line);border-radius:18px;background:var(--panel);overflow:hidden}
@@ -297,6 +303,7 @@ img.fprev{background:var(--paper)}
     <div class="card"><span class="tag">🎤 The 3-minute pitch</span><p class="lead" style="margin:6px 0 0">The problem, your solution, a live demo, how you used AI, and the impact.</p></div>
     <div class="card"><span class="tag">🏆 The awards</span><p class="lead" style="margin:6px 0 0">Not only “the best project”: there are 5 awards. Everyone has a chance.</p></div>
   </div>
+  <div class="card" style="margin-top:14px"><span class="tag">🧭 5 exhibition stations</span><p class="lead" style="margin:6px 0 0">Parents don't only sit and listen: they walk from station to station and <b>try</b> what you made, with their own hands.</p></div>
   <div class="awards" id="awardList" style="margin-top:14px"></div>
 </section>
 
@@ -335,6 +342,11 @@ img.fprev{background:var(--paper)}
 <section class="seg" id="seg-5" data-min="15" data-title="Showcase day" data-period="2" hidden>
   <div class="lower"><div class="no">05</div><div class="name"><h2>Showcase day</h2><p>Period 2 · 15 minutes · the plan and your job</p></div></div>
   <div class="runsheet" id="run"></div>
+  <p class="ttl" style="margin-top:18px">The 5 AI Exhibition Stations</p>
+  <div class="stations" id="stations"></div>
+  <div class="card" style="margin-top:12px"><span class="tag">Which station will you host?</span><p style="margin:6px 0 8px;font-size:16px">You stand at your station for one round, help visitors try the projects, and answer their questions.</p><div class="row" id="stPick"></div><p class="fb" id="stMsg" style="font-weight:700;margin:8px 0 0"></p>
+    <div class="row" style="margin-top:12px"><button class="btn sm alt" id="signs" type="button">🖨 Print the 5 station signs (teacher)</button></div></div>
+  <div class="signs" id="signSheets"></div>
   <p class="ttl" style="margin-top:18px">Pick your Showcase job (everyone also gives their pitch)</p>
   <div class="pick" id="jobs"></div>
   <p class="lead" id="jobMsg" style="margin-top:14px"></p>
@@ -680,7 +692,7 @@ function items(){
   const fc = raw("ch3-creation") || {};
   const inv = raw("ch11-inv") || {}, poster = file("big"), video = file("video");
   const sc = raw("ch12-sc") || {}, smart = file("smart");
-  const br = raw("ch14-brief") || {}, app = file("page"), app1 = file("app1"), ap = raw("ch15-app") || {};
+  const br = raw("ch14-brief") || {}, app = file("page"), app1 = file("app1"), ap = raw("ch15-app") || {}, su = raw("ch15-succ") || {};
   const pl = raw("ch16-pl") || {}, rep = raw("ch16-rep") || {};
   const plOk = pl.m && Array.isArray(pl.d) && pl.d.every(x => isFinite(parseFloat(x)));
   const plTot = plOk ? pl.d.reduce((a, x) => a + parseFloat(x), 0) : 0, PU = {water:"L", energy:"kWh", food:"kg", air:"cars"}[pl.m] || "";
@@ -690,8 +702,8 @@ function items(){
     ["plan", "💬", "My AI-Generated Plan", 3, !!(fc.title && (fc.top || []).some(x => (x || "").trim())), fc.title ? "“" + fc.title + "”" + ((fc.top || []).filter(Boolean).length ? ": " + (fc.top || []).filter(Boolean).join(" · ") : "") : "", null],
     ["ad", "🎬", "My AI Commercial", 11, !!video || !!poster, (inv.name ? inv.name + (inv.slogan ? ": “" + inv.slogan + "”" : "") + ". " : "") + (video ? "Video saved." : poster ? "Poster saved, video missing." : ""), video || poster],
     ["smart", "🏫", "My Smart System", 12, !!smart, smart ? "My smart classroom program, built with Gemini." : "", smart],
-    ["app", "🚀", "My School Application", 15, !!app, (br.problem ? "Problem: " + strip(br.problem) + ". " : "") + (app ? "Version 2 saved" + (app1 ? ", Version 1 too." : ".") : ap.v1 ? "Version 1 only." : ""), app],
-    ["planet", "🌍", "My Planet Impact Report", 16, !!(plOk && nw(rep.sol) >= 4), plOk ? "Weekly total: " + Math.round(plTot * 10) / 10 + " " + PU + ", target −" + (pl.pct || 30) + "%" + (rep.sol ? ". Solution: " + strip(rep.sol) : "") + "." : "", null]
+    ["app", "🚀", "My School Application", 15, !!app, (br.problem ? "Problem: " + strip(br.problem) + ". " : "") + (app ? "Version 2 saved" + (app1 ? ", Version 1 too." : ".") : ap.v1 ? "Version 1 only." : "") + (su.status ? " Status: " + (su.status === "demo" ? "working demo." : "prototype.") : ""), app],
+    ["planet", "🌍", "My Planet Dashboard and Report", 16, !!(plOk && nw(rep.sol) >= 4), plOk ? "Weekly total: " + Math.round(plTot * 10) / 10 + " " + PU + ", target −" + (pl.pct || 30) + "%" + (rep.sol ? ". Solution: " + strip(rep.sol) : "") + "." : "", null]
   ];
 }
 function preview(f){ if (!f) return null; const u = F.url(f.path);
@@ -750,9 +762,21 @@ stDraw(0, PARTS[0][2]);
 checklist("rehearse", [["About 3 minutes", "The timer shows it: not much shorter, not much longer."], ["The live demo works", "The app opens and the buttons work on the screen."], ["Says who did what", "Clearly says what AI did, and what YOU did and decided."], ["Loud, clear, looks at the audience", "Not reading the notes word by word."]]);
 
 /* 5 showcase day */
-const RUN = [["0:00", "Welcome", "The hosts read the opening script."], ["0:05", "The pitches", "Each student: a 3-minute pitch with a live demo of their app on the big screen, then 1 or 2 questions."], ["", "Portfolio gallery", "Between pitches, guests walk around and look at the printed portfolios."], ["End −15", "Awards ceremony", "5 awards: Best Innovation, Best AI Media Creator, Best Problem Solver, Best Environmental Solution, Best Presentation."], ["End −5", "Thank you", "Hosts thank the guests. Photos only of the projects, never of students without permission."]];
+const RUN = [["0:00", "Welcome", "The hosts read the opening script."], ["0:05", "Exhibition stations", "Visitors walk through the 5 stations and try the projects. Station hosts help them. About 5 minutes per station."], ["0:30", "The pitches", "Each student: a 3-minute pitch with a live demo of their app on the big screen, then 1 or 2 questions."], ["", "Portfolio gallery", "Between pitches, guests look at the printed portfolios."], ["End −15", "Awards ceremony", "5 awards: Best Innovation, Best AI Media Creator, Best Problem Solver, Best Environmental Solution, Best Presentation."], ["End −5", "Thank you", "Hosts thank the guests. Photos only of the projects, never of students without permission."]];
 $("#run").replaceChildren(...RUN.map(([t, n, d]) => el("div", {class:"runrow"}, el("time", null, t), el("div", null, el("b", null, n), el("span", null, d)))));
 const JOBS = [["Host", "Opens the Showcase with the host script and introduces each student."], ["Tech crew", "Opens each student's app on the big screen before their pitch."], ["Timekeeper", "Shows a sign at 30 seconds left, so every pitch stays at 3 minutes."], ["Greeter", "Welcomes the guests at the door and shows them the portfolio gallery."], ["Award presenter", "Reads the award names and gives the certificates."]];
+const STATIONS = [["🧠", "AI Training Lab", "Students demonstrate their trained AI models.", "Show an object to the camera. Can you trick the AI?", "Teachable Machine model open, 3 objects to test (no faces)"],
+  ["🎬", "Media Studio", "Students display their posters and commercials.", "Watch a 30-second commercial. Guess which parts AI made.", "Posters printed or on screen, videos ready to play"],
+  ["💻", "Coding Lab", "Visitors test the smart classroom systems.", "Change the temperature or empty the room: does the program decide right?", "My First Smart System open, a short test list"],
+  ["🏫", "School Innovation", "Students demonstrate their school applications.", "Use the app to solve the problem in under 2 minutes.", "Version 2 open, Version 1 to compare, the success task"],
+  ["🌍", "Green Future", "Students present their environmental dashboards.", "Read the dashboard: which day was the worst? What is the target?", "Dashboard and impact report on screen or printed"]];
+$("#stations").replaceChildren(...STATIONS.map(([ic, n, d, tr, br2], i) => el("div", {class:"station s" + i}, el("small", null, "STATION " + (i + 1)), el("b", null, ic + " " + n), el("span", null, d), el("p", null, el("b", null, "Visitors try: "), tr), el("p", {class:"muted"}, el("b", null, "Bring: "), br2))));
+let myStation = store.get("station");
+function drawStations(){ $("#stPick").replaceChildren(...STATIONS.map(([ic, n], i) => el("button", {class:"btn sm" + (myStation === i ? "" : " alt"), type:"button", onclick:() => { myStation = i; store.set("station", i); drawStations(); }}, ic + " " + n)));
+  $("#stMsg").textContent = myStation != null && STATIONS[myStation] ? "✓ You host Station " + (myStation + 1) + ": " + STATIONS[myStation][1] + ". Bring: " + STATIONS[myStation][4] + "." : "Choose one station."; $("#stMsg").style.color = myStation != null ? "var(--green)" : "var(--muted)"; }
+drawStations();
+$("#signSheets").replaceChildren(...STATIONS.map(([ic, n, d, tr], i) => el("div", {class:"sign"}, el("small", null, "AI CREATORS · EXHIBITION · STATION " + (i + 1)), el("span", {class:"sic"}, ic), el("b", null, n), el("p", null, d), el("p", {class:"stry"}, "👉 " + tr))));
+$("#signs").onclick = () => { document.body.classList.add("printsigns"); window.print(); setTimeout(() => document.body.classList.remove("printsigns"), 500); };
 let job = store.get("job");
 function drawJobs(){ $("#jobs").replaceChildren(...JOBS.map(([n, d]) => el("button", {class:"segcard", type:"button", "aria-pressed":String(job === n), onclick:() => { job = n; store.set("job", n); drawJobs(); }}, el("strong", null, n), el("span", null, d))));
   $("#jobMsg").textContent = job ? "Your job: " + job + ". You also give your own 3-minute pitch." : "Choose one job."; }

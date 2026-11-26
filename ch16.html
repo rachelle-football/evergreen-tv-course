@@ -449,6 +449,7 @@ img.fprev{background:var(--paper)}
 .fit{font-size:13px;font-weight:700}.fit.ok{color:var(--green)}.fit.no{color:var(--onair)}
 .chkai{display:grid;gap:8px}.aiq{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--panel);font-size:16px}
 .aiwarn{margin:4px 0 0;padding:10px 12px;border-radius:10px;background:var(--onair-soft);color:var(--onair);font-weight:700}
+#dash{width:100%;height:auto;border-radius:12px;border:1.5px solid var(--line);display:block}
 #cause{font:inherit;font-size:16px;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box}
 .simrow{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1.5px solid var(--line);font-size:16px}.simrow b{font-size:18px;min-width:60px;text-align:right}
 .simrow input[type=number]{font:inherit;font-size:16px;padding:4px 8px;border:1.5px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink)}
@@ -488,6 +489,7 @@ img.fprev{background:var(--paper)}
     </div>
     <div class="card"><span class="tag">Your data as a chart</span><div id="chart1"></div></div>
   </div>
+  <div class="card" style="margin-top:14px;background:var(--gold-soft);border-color:transparent"><span class="tag">💡 Best: real school data</span><p class="lead" style="margin:6px 0 0">With the school's permission, your group can measure the real numbers during the week before this lesson. Then your dashboard tells the principal something true about OUR school.</p></div>
   <div class="card bad" style="margin-top:14px"><span class="tag">🔒 Data rules</span><p class="lead" style="margin:6px 0 0">Count things, not people. No names, no photos. Write down the real numbers, even if they look bad.</p></div>
 </section>
 
@@ -530,8 +532,8 @@ img.fprev{background:var(--paper)}
 </section>
 
 <!-- 5 consultant -->
-<section class="seg" id="seg-5" data-min="15" data-title="AI consultant" data-period="2" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>AI environmental consultant</h2><p>Period 2 · 15 minutes · compare solutions, then decide</p></div></div>
+<section class="seg" id="seg-5" data-min="12" data-title="AI consultant" data-period="2" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>AI environmental consultant</h2><p>Period 2 · 12 minutes · compare solutions, then decide</p></div></div>
   <div class="card"><span class="tag">Step 1 · Ask Gemini for solutions</span>
     <p class="prompt sm" id="cPrompt" style="margin-top:8px"></p>
     <div class="row"><button class="btn" id="cCopy" type="button">📋 Copy the prompt</button><a class="btn alt" href="https://gemini.google.com/app" target="gemini" rel="noopener">↗ Open Gemini</a></div>
@@ -544,8 +546,14 @@ img.fprev{background:var(--paper)}
 </section>
 
 <!-- 6 report -->
-<section class="seg" id="seg-6" data-min="12" data-title="Impact report" data-period="2" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>My Planet Impact Report</h2><p>Period 2 · 12 minutes · final deliverable</p></div></div>
+<section class="seg" id="seg-6" data-min="15" data-title="Dashboard and report" data-period="2" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>My Decision Dashboard and Impact Report</h2><p>Period 2 · 15 minutes · final deliverable: show it to the principal</p></div></div>
+  <div class="card"><span class="tag">My Environmental Decision Dashboard</span>
+    <p class="muted" style="margin:6px 0 10px;font-size:15px">Made automatically from your data and your simulator. One screen that shows the principal the problem, the target and the impact.</p>
+    <canvas id="dash" width="1200" height="800" aria-label="Your environmental decision dashboard"></canvas>
+    <div class="row" style="margin-top:10px"><a class="btn" id="dashDl" download="Decision-Dashboard.png" href="#">⬇ Download my dashboard</a></div>
+  </div>
+  <p class="ttl" style="margin-top:18px">My Planet Impact Report</p>
   <div class="mission">
     <div class="forms" id="rep"></div>
     <aside class="card side posterwrap"><span class="tag">Your report</span><canvas id="rp" width="1000" height="1120" aria-label="Your Planet Impact Report"></canvas><a class="btn" id="rpDl" download="Planet-Impact-Report.png" href="#">⬇ Download my report</a></aside>
@@ -1094,9 +1102,32 @@ function drawRep(){
   if (done2){ X.badge($("#rBadge"), "🌍", "Planet Data Analyst", "You collected data, checked the AI, and planned a real impact."); done(3); } else $("#rBadge").replaceChildren();
 }
 
-function drawAll(){ drawMissions(); drawData(); drawAnalysis(); drawSim(); drawCPrompt(); drawSols(); repForm(); drawRep(); }
+/* the decision dashboard: same data as the simulator, nothing to type again */
+function drawDash(){
+  const c = $("#dash"); if (!c) return; const g = c.getContext("2d"), W = c.width, H = c.height, m = M(), ok = !!m && dataOk();
+  g.fillStyle = "#FFFFFF"; g.fillRect(0, 0, W, H); g.textAlign = "left";
+  g.fillStyle = "#56665E"; g.font = "700 20px Arial, sans-serif"; g.fillText("EVERGREEN GREEN INITIATIVE · " + (PL.src === "sample" ? "SAMPLE DATA" : PL.src === "own" ? "OUR SCHOOL'S DATA" : "NO DATA YET"), 40, 52);
+  g.fillStyle = "#13221C"; g.font = "800 44px Arial, sans-serif"; g.fillText((m ? m.t : "Planet") + " Dashboard", 40, 106);
+  const wk = ok ? total() : 0, yr = wk * PL.weeks, sv = yr * PL.pct / 100, u = m ? " " + m.u : "";
+  const tiles = [["This week", ok ? fmt(wk) + u : "…", "#13221C"], ["Reduction target", PL.pct + "%", "#13221C"], ["Projected per school year", ok ? fmt(yr) + u : "…", "#13221C"], ["Potential savings per year", ok ? fmt(sv) + u : "…", "#1E7A55"]];
+  tiles.forEach(([l, v2, col], i) => { const x = 40 + i * 285; g.fillStyle = i === 3 ? "#E3F1E9" : "#F4F6F2"; g.fillRect(x, 130, 265, 120); g.fillStyle = "#56665E"; g.font = "18px Arial, sans-serif"; g.fillText(l.length > 26 ? l.slice(0, 25) + "…" : l, x + 18, 166); g.fillStyle = col; g.font = "800 38px Arial, sans-serif"; g.fillText(v2, x + 18, 222); });
+  if (!ok){ g.fillStyle = "#56665E"; g.font = "24px Arial, sans-serif"; g.fillText("Fill in your data in Section 2: the dashboard builds itself.", 40, 400); try { $("#dashDl").href = c.toDataURL("image/png"); } catch(e){} return; }
+  const v = vals(), tg = v.map(x => x * (1 - PL.pct / 100)), top = Math.ceil(Math.max(...v) / 4) * 4 || 4, X0 = 110, Y0 = 690, CH = 330, gw = (W - X0 - 40) / 5;
+  g.strokeStyle = "#E5E9E6"; g.lineWidth = 1; g.font = "16px Arial, sans-serif"; g.fillStyle = "#56665E"; g.textAlign = "right";
+  for (let i = 0; i <= 4; i++){ const y = Y0 - i * CH / 4; g.beginPath(); g.moveTo(X0, y); g.lineTo(W - 40, y); g.stroke(); g.fillText(fmt(top / 4 * i), X0 - 12, y + 5); }
+  g.textAlign = "center";
+  v.forEach((x, i) => { const cx = X0 + gw * i + gw / 2, bw = Math.min(70, gw / 3);
+    [[x, "#4F8EF7", -1], [tg[i], "#5BBE7A", 1]].forEach(([val, col, sd]) => { const h = val / top * CH, bx = cx + (sd < 0 ? -bw - 4 : 4); g.fillStyle = col; g.fillRect(bx, Y0 - h, bw, h); g.fillStyle = "#13221C"; g.font = "700 15px Arial, sans-serif"; g.fillText(fmt(val), bx + bw / 2, Y0 - h - 8); });
+    g.fillStyle = "#56665E"; g.font = "17px Arial, sans-serif"; g.fillText(DAYS[i].slice(0, 3), cx, Y0 + 26); });
+  g.textAlign = "left"; [["#4F8EF7", "Now"], ["#5BBE7A", "With the " + PL.pct + "% target"]].forEach(([col, l], i) => { const x = 40 + i * 200; g.fillStyle = col; g.fillRect(x, 300, 22, 22); g.fillStyle = "#13221C"; g.font = "18px Arial, sans-serif"; g.fillText(l, x + 32, 318); });
+  const sol = PL.pick >= 0 && PL.sols[PL.pick] && PL.sols[PL.pick].t.trim() ? PL.sols[PL.pick].t.trim() : ((store.get("rep") || {}).sol || "").trim();
+  g.fillStyle = "#13221C"; g.font = "700 20px Arial, sans-serif"; g.fillText("Decision: " + (sol ? (sol.length > 80 ? sol.slice(0, 78) + "…" : sol) : "choose a solution in Section 5"), 40, 770);
+  try { $("#dashDl").href = c.toDataURL("image/png"); $("#dashDl").download = (m ? m.t.replace(/\s+/g, "-") : "Planet") + "-Dashboard.png"; } catch(e){}
+}
+
+function drawAll(){ drawMissions(); drawData(); drawAnalysis(); drawSim(); drawCPrompt(); drawSols(); repForm(); drawRep(); drawDash(); }
 drawAll();
-const ON_SHOW = {"seg-2":drawData, "seg-3":drawAnalysis, "seg-4":drawSim, "seg-5":() => { drawCPrompt(); drawSols(); }, "seg-6":() => { repForm(); drawRep(); }};
+const ON_SHOW = {"seg-2":drawData, "seg-3":drawAnalysis, "seg-4":drawSim, "seg-5":() => { drawCPrompt(); drawSols(); }, "seg-6":() => { drawDash(); repForm(); drawRep(); }};
 const mo = new MutationObserver(ms => ms.forEach(m => { if (!m.target.hidden && ON_SHOW[m.target.id]) ON_SHOW[m.target.id](); }));
 document.querySelectorAll("section.seg").forEach(sec => mo.observe(sec, {attributes:true, attributeFilter:["hidden"]}));
 

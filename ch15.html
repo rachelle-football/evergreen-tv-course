@@ -438,6 +438,9 @@ img.fprev{background:var(--paper)}
 @media (max-width:700px){.bug small{display:none}.step .t{display:none}.clock .lbl{display:none}body{font-size:17px}.lead{font-size:18px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
+.flimit{margin:4px 0 6px;padding:10px 12px;border-radius:10px;background:var(--gold-soft);font-weight:700;font-size:15px}
+.stat2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}.st2{border:2px solid var(--line);border-radius:12px;background:var(--panel);padding:10px 12px;text-align:left;font:inherit;color:var(--ink);display:grid;gap:2px;cursor:pointer}.st2 b{font-size:17px}.st2 span{font-size:14px;color:var(--muted)}.st2[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+@media (max-width:600px){.stat2{grid-template-columns:1fr}}
 /* ---- Chapter 9 · build your solution ---- */
 .def.sm p{font-size:19px;line-height:1.45;font-weight:600}
 ol.how{margin:8px 0 4px;padding-left:24px;display:grid;gap:6px;font-size:17px;line-height:1.45}
@@ -523,7 +526,16 @@ ol.how{margin:8px 0 4px;padding-left:24px;display:grid;gap:6px;font-size:17px;li
   <div class="card" style="margin-top:14px"><span class="tag">Step 2 · Run your app</span>
     <textarea id="codeIn" class="codein" rows="8" spellcheck="false" placeholder="Paste Gemini's code here (Ctrl+V). It starts with &lt;!DOCTYPE html&gt; or &lt;html&gt;."></textarea>
     <div class="row" style="margin-top:10px"><button class="btn" id="runCode" type="button">▶ Run my app</button><span class="muted" id="codeInfo" style="font-size:15px"></span></div>
-    <iframe id="runBox" class="runbox" title="Your app" sandbox="allow-scripts allow-forms allow-modals" hidden></iframe>
+    <iframe id="runBox" class="runbox" title="Your app" sandbox="allow-scripts allow-forms allow-modals" referrerpolicy="no-referrer" hidden></iframe>
+    <p class="muted" style="margin:8px 0 0;font-size:14px">🔒 Your app runs in a safe, closed box: it can't see your account, your saved work or other pages.</p>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 3 · Did it work?</span>
+    <div class="row" id="worksQ" style="margin-top:8px"></div>
+    <div id="bugBox" hidden style="margin-top:12px"><b>🐞 Bug report</b>
+      <label class="ff"><b>What did you expect to happen?</b><input id="bugExp" type="text" maxlength="160" placeholder="e.g. When I click “I lost something”, a form should open."></label>
+      <label class="ff"><b>What happened instead?</b><input id="bugGot" type="text" maxlength="160" placeholder="e.g. Nothing happens. The page stays the same."></label>
+      <div class="row" style="margin-top:8px"><button class="btn sm" id="bugCopy" type="button">📋 Copy my bug report for Gemini</button></div>
+      <p class="muted" style="margin:6px 0 0;font-size:15px">Paste it in the same Gemini chat, copy the new code, paste it in Step 2 and run it again.</p></div>
   </div>
 </section>
 
@@ -551,7 +563,7 @@ ol.how{margin:8px 0 4px;padding-left:24px;display:grid;gap:6px;font-size:17px;li
   <div class="lower"><div class="no">05</div><div class="name"><h2>Quality Assurance Lab: test the app</h2><p>Period 2 · 30 minutes · swap computers with a classmate</p></div></div>
   <p class="big">Swap computers. You test your classmate's app, on THEIR computer. Be honest and kind.</p>
   <div class="grid g2" style="align-items:start">
-    <div class="card"><span class="tag">The app to test</span><p id="qaFor" style="margin:6px 0 8px;font-size:17px"></p><iframe id="qaBox" class="runbox sm" title="The app to test" sandbox="allow-scripts allow-forms allow-modals"></iframe><p class="muted" id="qaNone" style="font-size:15px" hidden>No Version 1 saved on this computer yet (Section 4).</p></div>
+    <div class="card"><span class="tag">The app to test</span><p id="qaFor" style="margin:6px 0 8px;font-size:17px"></p><iframe id="qaBox" class="runbox sm" title="The app to test" sandbox="allow-scripts allow-forms allow-modals" referrerpolicy="no-referrer"></iframe><p class="muted" id="qaNone" style="font-size:15px" hidden>No Version 1 saved on this computer yet (Section 4).</p></div>
     <div>
       <div class="card"><span class="tag">Test my application</span><ul class="chk" id="qa" style="margin-top:8px"></ul><div class="qascore">Test score <b id="qaScore">0/5</b></div></div>
       <div class="card" style="margin-top:12px"><span class="tag">⏱ Success test</span><p id="succT" style="margin:6px 0 8px;font-size:17px"></p>
@@ -573,7 +585,7 @@ ol.how{margin:8px 0 4px;padding-left:24px;display:grid;gap:6px;font-size:17px;li
   <div class="card" style="margin-top:14px"><span class="tag">Step 2 · Run Version 2</span>
     <textarea id="code2" class="codein" rows="7" spellcheck="false" placeholder="Paste Gemini's new code here (Ctrl+V)."></textarea>
     <div class="row" style="margin-top:10px"><button class="btn" id="run2" type="button">▶ Run Version 2</button><button class="btn sm alt" id="seeV1" type="button">👀 Compare with Version 1</button></div>
-    <iframe id="box2" class="runbox" title="Version 2" sandbox="allow-scripts allow-forms allow-modals" hidden></iframe>
+    <iframe id="box2" class="runbox" title="Version 2" sandbox="allow-scripts allow-forms allow-modals" referrerpolicy="no-referrer" hidden></iframe>
   </div>
   <div class="card" style="margin-top:14px"><span class="tag">Step 3 · Check it and save it</span>
     <label class="ff"><b>What is better in Version 2?</b><input id="better" type="text" maxlength="160" placeholder="e.g. The buttons are bigger and a message says “Saved!”."></label>
@@ -987,11 +999,12 @@ const kidName = () => { const a = raw("ai-lab-session"); return a && a.name ? St
 
 /* 1 the project: from the Chapter 8 brief (editable here if it's missing) */
 const PF = [["name", "Project name", "e.g. Evergreen Lost & Found"], ["problem", "The problem", "e.g. Students lose their belongings."], ["root", "The root cause", "e.g. There is no organised lost-and-found system."], ["user", "My users", "e.g. Grade 7 students"],
-  ["solution", "My solution", "e.g. A digital lost-and-found app."], ["f1", "Feature 1", "e.g. Report a found item"], ["f2", "Feature 2", "e.g. Search by colour or place"], ["f3", "Feature 3", "e.g. Mark an item as returned"], ["success", "Success criteria", "e.g. A student finds a lost item in under 2 minutes."]];
+  ["solution", "My solution", "e.g. A digital lost-and-found app."], ["f1", "Feature 1 of 3", "e.g. Report a found item"], ["f2", "Feature 2 of 3", "e.g. Search by colour or place"], ["f3", "Feature 3 of 3 (the last one!)", "e.g. Mark an item as returned"], ["success", "Success criteria", "e.g. A student finds a lost item in under 2 minutes."]];
 const br = raw("ch14-brief") || {};
 if (!store.get("proj")){ const p = {}; PF.forEach(([k]) => p[k] = (br[k] || (k === "problem" ? br.stmt : "") || "").trim()); store.set("proj", p); }
 const PJ = X.form($("#proj"), "proj", PF, () => { drawPrompt(); drawSucc(); });
 $("#proj").prepend(el("span", {class:"tag"}, "Your project"), el("p", {class:"muted", style:"margin:4px 0 10px;font-size:15px"}, br.problem || br.stmt ? "From your School Innovation Brief (Chapter 8). You can improve it here." : "No brief from Chapter 8 on this computer: write your project here."));
+{ const fl = $("#proj").querySelectorAll("label.ff")[5]; if (fl) fl.before(el("p", {class:"flimit"}, "✋ Maximum 3 features. A small app that works is better than a big app that doesn't. More ideas? Keep them for Version 3.")); }
 
 /* 2 UI and UX */
 const MOCK = {view:"home"};
@@ -1021,7 +1034,7 @@ function buildPrompt(){ const P = store.get("proj") || {};
   return "Act as a coding teacher for a Grade 7 student. Help me build a simple web app as ONE HTML file, with the HTML, CSS and JavaScript together. " +
     "My project: " + v("name") + ". The problem: " + v("problem") + ". The root cause: " + v("root") + ". My users: " + v("user") + ". My solution: " + v("solution") + ". " +
     "The main screen shows the title “" + (u("title") || v("name")) + "”" + (u("tag") ? ", the line “" + u("tag") + "”" : "") + (u("b1") ? ", and big buttons: “" + u("b1") + "”" + (u("b2") ? " and “" + u("b2") + "”" : "") : "") + (u("list") ? ". It also shows " + u("list").replace(/^[A-Z]/, c => c.toLowerCase()) : "") + ". " +
-    "Features: 1) " + v("f1") + ". 2) " + v("f2") + ". 3) " + v("f3") + ". " +
+    "Features: 1) " + v("f1") + ". 2) " + v("f2") + ". 3) " + v("f3") + ". Build ONLY these 3 features, nothing more. " +
     "Use " + (STYLES.find(x => x[0] === US.style) || STYLES[0])[1].toLowerCase() + " colours, big clear buttons and simple English. Show a message when the user clicks. Use made-up example data only, no real names. Keep the data in the page: no login and no database. " +
     "Then explain in simple English which parts are HTML, CSS and JavaScript."; }
 function drawPrompt(){ if (!READY) return; $("#bPrompt").textContent = "“" + buildPrompt() + "”"; drawIPrompt(); }
@@ -1032,8 +1045,19 @@ $("#codeIn").value = AP.code;
 function codeInfo(){ const c = clean(AP.code); $("#codeInfo").textContent = !c ? "" : isHtml(c) ? (n => n + (n === 1 ? " line" : " lines") + " of code")(c.split("\n").length) : "⚠️ This doesn't look like HTML code. In Gemini, click Copy code."; }
 codeInfo();
 $("#codeIn").addEventListener("input", () => { AP.code = $("#codeIn").value; saveAP(); codeInfo(); chMsg(); });
-$("#runCode").onclick = () => { const c = clean(AP.code); if (!c){ K.toast("Paste Gemini's code first."); return; } if (!isHtml(c)){ K.toast("This is not HTML code. In Gemini, click Copy code."); return; }
+$("#runCode").onclick = () => { if (AP.works){ AP.works = ""; saveAP(); drawWorks(); } const c = clean(AP.code); if (!c){ K.toast("Paste Gemini's code first."); return; } if (!isHtml(c)){ K.toast("This is not HTML code. In Gemini, click Copy code."); return; }
   const f = $("#runBox"); f.hidden = false; f.srcdoc = c; AP.ran = true; saveAP(); };
+
+/* did it work? a bug report when it didn't */
+function drawWorks(){ $("#worksQ").replaceChildren(...[["ok", "✓ It works"], ["bug", "🐞 Something is wrong"]].map(([k, l]) => el("button", {class:"btn sm" + (AP.works === k ? "" : " alt"), type:"button", onclick:() => { if (!AP.ran){ K.toast("First run your app (Step 2)."); return; } AP.works = k; saveAP(); drawWorks(); chMsg(); }}, l)));
+  $("#bugBox").hidden = AP.works !== "bug"; }
+AP.bug = AP.bug || {exp:"", got:""};
+$("#bugExp").value = AP.bug.exp; $("#bugGot").value = AP.bug.got;
+$("#bugExp").addEventListener("input", () => { AP.bug.exp = $("#bugExp").value; saveAP(); });
+$("#bugGot").addEventListener("input", () => { AP.bug.got = $("#bugGot").value; saveAP(); });
+$("#bugCopy").onclick = () => { if (nw(AP.bug.exp) < 4 || nw(AP.bug.got) < 2){ K.toast("Write what you expected and what happened first."); return; }
+  copy("My app has a bug. I expected: " + strip(AP.bug.exp) + ". What happened instead: " + strip(AP.bug.got) + ". Please find the bug, explain it in simple English for a Grade 7 student, and give me the full code again as ONE HTML file.", null, "Gemini"); };
+drawWorks();
 
 /* 4 understand, change, save version 1 */
 const LNAME = {html:"HTML", css:"CSS", js:"JavaScript"};
@@ -1043,7 +1067,7 @@ $("#finds").replaceChildren(...FINDS.map(([k, l, ph, ok]) => { const i = el("inp
   i.oninput = () => { AP.finds[k] = i.value; saveAP(); chk(); chMsg(); }; chk(); return el("label", {class:"ff"}, el("b", null, l), i, m); }));
 $("#myChange").value = AP.change; $("#myChange").addEventListener("input", () => { AP.change = $("#myChange").value; saveAP(); chMsg(); });
 const findsOk = () => FINDS.every(([k, , , ok]) => ok((AP.finds[k] || "").trim()));
-function chMsg(){ const m = []; if (!AP.ran) m.push("run your app (Section 3)"); if (!findsOk()) m.push("find the 3 languages"); if (nw(AP.change) < 4) m.push("say what you changed");
+function chMsg(){ const m = []; if (!AP.ran) m.push("run your app (Section 3)"); else if (AP.works !== "ok") m.push("make your app work (Section 3, Step 3)"); if (!findsOk()) m.push("find the 3 languages"); if (nw(AP.change) < 4) m.push("say what you changed");
   $("#chMsg").textContent = m.length ? "Still to do: " + m.join(", ") + "." : "✓ You understand your code, and you changed it yourself."; $("#chMsg").style.color = m.length ? "var(--muted)" : "var(--green)"; }
 chMsg();
 const fileOf = (code, name) => new File([code], name, {type:"text/html"});
@@ -1053,6 +1077,7 @@ async function saveTo(slot, label, code, msgEl){
   try { await F.upload(fileOf(code, slot + ".html"), slot, label); msgEl.textContent = "✓ Saved in your folder!"; msgEl.className = "fmsg ok"; document.dispatchEvent(new CustomEvent("evg-files")); }
   catch(e){ msgEl.textContent = F.MSG[e.code] || ("Problem: " + (e.code || "unknown")); msgEl.className = "fmsg no"; } }
 $("#saveV1").onclick = () => { const c = clean(AP.code); if (!isHtml(c) || !AP.ran){ $("#v1Msg").textContent = "First paste your code and run it (Section 3)."; $("#v1Msg").className = "fmsg no"; return; }
+  if (AP.works !== "ok"){ $("#v1Msg").textContent = "First make sure your app works (Section 3, Step 3)."; $("#v1Msg").className = "fmsg no"; return; }
   if (!findsOk() || nw(AP.change) < 4){ $("#v1Msg").textContent = "First finish Steps 1 and 2."; $("#v1Msg").className = "fmsg no"; return; }
   AP.v1 = c; AP.v1at = new Date().toISOString(); saveAP(); saveTo("app1", "My app · Version 1", c, $("#v1Msg")); done(1); drawQA(); drawIPrompt(); };
 
@@ -1098,17 +1123,20 @@ $("#saveV2").onclick = () => { const c = clean(AP.code2), m = $("#v2Msg");
 $("#dlV2").onclick = () => { const c = clean(AP.code2); if (!isHtml(c)){ K.toast("Paste Version 2 first."); return; } const a = el("a", {href:URL.createObjectURL(fileOf(c, "app.html")), download:"my-school-app.html"}); document.body.append(a); a.click(); a.remove(); };
 
 /* 7 does it solve the problem? */
-const SU = Object.assign({met:"", why:""}, store.get("succ") || {});
+const SU = Object.assign({met:"", why:"", status:""}, store.get("succ") || {});
 function drawSucc(){
   if (!READY) return;
   const card = $("#succCard");
   card.replaceChildren(el("span", {class:"tag"}, "Your success criteria (Chapter 8)"), el("p", {class:"big2", style:"font-size:22px;margin:6px 0 4px"}, "“" + v("success") + "”"),
     el("p", {class:"muted", style:"margin:0 0 10px;font-size:16px"}, QA.t != null ? "Your tester's time in the success test: " + QA.t + " seconds. Tester's score: " + QAC.filter((t, i) => QA.c[i]).length + "/5." : "Do the success test in Section 5 first."),
     el("b", null, "Did your app meet it?"), el("div", {class:"row", style:"margin-top:6px"}, ...[["yes", "✅ Yes"], ["partly", "🟡 Partly"], ["no", "❌ Not yet"]].map(([k, l]) => el("button", {class:"btn sm" + (SU.met === k ? "" : " alt"), type:"button", onclick:() => { SU.met = k; store.set("succ", SU); drawSucc(); }}, l))),
+    el("b", {style:"display:block;margin-top:14px"}, "What is my project now?"),
+    el("div", {class:"stat2"}, ...[["proto", "🧪 Prototype", "It shows the idea. Some parts are not real yet."], ["demo", "✅ Working demo", "The 3 features really work, with example data."]].map(([k, t, d]) => el("button", {class:"st2", type:"button", "aria-pressed":String(SU.status === k), onclick:() => { SU.status = k; store.set("succ", SU); drawSucc(); }}, el("b", null, t), el("span", null, d)))),
+    el("p", {class:"muted", style:"margin:8px 0 0;font-size:15px"}, "⚠️ Neither one is ready for real use at school. That needs the teacher's and the school's approval: real data, privacy and safety checks."),
     (() => { const i = el("input", {type:"text", maxlength:"160", placeholder:SU.met === "yes" ? "e.g. My tester found the bag in 40 seconds." : "e.g. It took 3 minutes: next I will add a search box."}); i.value = SU.why; i.oninput = () => { SU.why = i.value; store.set("succ", SU); badge(); }; return el("label", {class:"ff", style:"margin-top:10px"}, el("b", null, "How do you know? (your evidence)"), i); })());
   badge();
 }
-function badge(){ const ok = !!AP.v1 && !!AP.v2 && SU.met && nw(SU.why) >= 4;
+function badge(){ const ok = !!AP.v1 && !!AP.v2 && SU.met && SU.status && nw(SU.why) >= 4;
   if (ok){ X.badge($("#appBadge"), "🚀", "App Builder", "A working app that attacks a real school problem: Version 1, a real test, and a better Version 2."); done(4); } else $("#appBadge").replaceChildren(); }
 F.slotBox($("#slotV1"), {slot:"app1", label:"My app · Version 1", accept:".html,text/html"});
 F.slotBox($("#slotV2"), {slot:"page", label:"My school app (Version 2)", accept:".html,text/html"});
