@@ -36,6 +36,15 @@
 .daily button{font:inherit;text-align:left;cursor:pointer;background:var(--panel);color:var(--ink);border:2px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:6px;min-height:150px;align-content:start}
 .daily .e{font-size:32px}.daily .a{font-weight:700;font-size:18px}.daily .l{font-size:15px;color:var(--muted)}
 .daily button.open{border-color:var(--green);background:var(--green-soft)}.daily button.open .l{color:var(--ink);font-size:16px}
+.how3{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));margin:0 0 16px}
+.how3>div{background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:14px;position:relative}
+.how3 .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;margin-bottom:6px}
+.how3 b{display:block;font-size:18px}.how3 p{margin:4px 0 0;font-size:16px}
+.ex3{margin-bottom:16px;background:var(--gold-soft);border-color:transparent}
+.ex3 .exrow{display:grid;grid-template-columns:1fr auto 70px;gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line);font-size:17px}
+.ex3 .exrow b{text-align:right}.extot{margin:10px 0 0;font-size:18px}
+.helper .trust{display:block;margin-top:6px;font-weight:700;color:var(--green);font-size:14px}
+@media (max-width:520px){.ex3 .exrow{grid-template-columns:1fr auto;}.ex3 .exrow b{grid-column:1/-1;text-align:left}}
 </style>
 </head><body>
 <title>How AI Learns</title>
@@ -393,10 +402,22 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 <!-- PERIOD 2 -->
 <section class="seg" id="seg-5" data-min="15" data-title="Inside the brain" data-period="2" hidden>
   <div class="lower"><div class="no">05</div><div class="name"><h2>Inside the AI's brain</h2><p>Period 2 · 15 minutes · the brain is a team</p></div></div>
-  <p class="big">An AI's brain is a team of little helpers. Each one gives its opinion. The AI decides who to listen to more.</p>
+  <p class="big">How does an AI decide if an animal is a 🐱 cat or a 🐶 dog? Inside its brain, little helpers <b>vote</b>.</p>
+  <div class="how3">
+    <div><span class="n">1</span><b>Each helper looks at ONE thing</b><p>👂 the ears, 📏 the size, or 🔊 the sound. Then it votes: 🐱 or 🐶.</p></div>
+    <div><span class="n">2</span><b>Stars = how much the AI trusts it</b><p>⭐⭐⭐ = its vote counts 3 points. 0 = the AI ignores it.</p></div>
+    <div><span class="n">3</span><b>The AI adds the points</b><p>More 🐱 points → “Cat!”  More 🐶 points → “Dog!”</p></div>
+  </div>
+  <div class="card ex3">
+    <span class="tag">Example · a Chihuahua 🐶 (pointy ears, small, says woof)</span>
+    <div class="exrow"><span>👂 Ears: pointy → votes 🐱</span><span>⭐⭐⭐</span><b>🐱 +3</b></div>
+    <div class="exrow"><span>📏 Size: small → votes 🐱</span><span>⭐⭐⭐</span><b>🐱 +3</b></div>
+    <div class="exrow"><span>🔊 Sound: woof → votes 🐶</span><span>0 (ignored)</span><b>🐶 +0</b></div>
+    <p class="extot">Total: 🐱 6 points, 🐶 0 points → the AI says <b>“Cat!”</b> ✗ Wrong! The sound helper was right, but the AI didn't listen to it.</p>
+  </div>
   <div class="card">
-    <span class="tag">The job: is it a 🐱 cat or a 🐶 dog?</span>
-    <p class="lead" style="margin:6px 0 12px">Your AI has 3 helpers. Choose how much it trusts each one (0 to 3 stars). At first, it only listens to how the animal looks.</p>
+    <span class="tag">Your job: fix the AI's brain</span>
+    <p class="lead" style="margin:6px 0 12px"><b>1.</b> Press “Test the AI”. <b>2.</b> Look at its ✗ mistakes. <b>3.</b> Change the stars, and test again, until the AI gets <b>8 of 8</b>.</p>
     <div class="helpers" id="helpers"></div>
     <div class="row" style="margin-top:14px"><button class="btn" id="bTest" type="button">🤖 Test the AI on 8 animals</button></div>
   </div>
@@ -1068,6 +1089,7 @@ go(start >= 0 ? start : 0);
   const T = {ears:3, size:3, sound:0}; let tests = 0, best = 0;
   const $$ = s => document.querySelector(s);
   const mk = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+  const TRUST = ["ignores it", "listens a little", "listens", "listens a lot"];
   function drawHelpers(){
     $$("#helpers").replaceChildren(...H.map(h => {
       const d = mk("div", "helper"), st = mk("div", "stars"), w = mk("div", "wire"), wi = mk("i");
@@ -1075,7 +1097,7 @@ go(start >= 0 ? start : 0);
       const z = mk("button", "zero" + (T[h.k] === 0 ? " on" : ""), "0"); z.type = "button"; z.setAttribute("aria-label", "Don't listen"); z.onclick = () => { T[h.k] = 0; drawHelpers(); };
       st.append(z);
       for (let n = 1; n <= 3; n++){ const b = mk("button", n <= T[h.k] ? "on" : "", "⭐"); b.type = "button"; b.setAttribute("aria-label", n + " stars"); b.onclick = () => { T[h.k] = n; drawHelpers(); }; st.append(b); }
-      d.append(mk("span", "hic", h.ic), mk("b", null, h.name), mk("p", null, "“" + h.says + "”"), st, w);
+      d.append(mk("span", "hic", h.ic), mk("b", null, h.name), mk("p", null, "“" + h.says + "”"), st, w, mk("small", "trust", "The AI " + TRUST[T[h.k]] + " (" + T[h.k] + " point" + (T[h.k] === 1 ? "" : "s") + ")"));
       return d; }));
   }
   $$("#bTest").onclick = () => {
@@ -1083,14 +1105,15 @@ go(start >= 0 ? start : 0);
     $$("#animals").replaceChildren(...A.map(([ic, name, desc, v, truth]) => {
       const score = H.reduce((s, h) => s + T[h.k] * v[h.k], 0), ans = score > 0 ? "cat" : score < 0 ? "dog" : null, good = ans === truth; if (good) ok++;
       const d = mk("div", "animal " + (good ? "ok" : "no"));
-      const votes = H.map(h => h.ic + (v[h.k] > 0 ? "🐱" : "🐶")).join("  ");
+      const cp = H.reduce((s, h) => s + (v[h.k] > 0 ? T[h.k] : 0), 0), dp = H.reduce((s, h) => s + (v[h.k] < 0 ? T[h.k] : 0), 0);
+      const votes = H.map(h => h.ic + (v[h.k] > 0 ? "🐱" : "🐶")).join("  ") + "   →   🐱 " + cp + " · 🐶 " + dp;
       d.append(mk("span", "aic", ic), mk("b", null, name), mk("small", null, desc), mk("span", "votes", "Votes: " + votes),
         mk("span", "says", "🤖 " + (ans ? (ans === "cat" ? "Cat!" : "Dog!") : "I can't decide 🤷") + (good ? "  ✓" : "  ✗")));
       return d; }));
     tests++; best = Math.max(best, ok);
     $$("#bScore").textContent = ok + " of 8 right"; $$("#bRes").hidden = false;
     $$("#bHint").textContent = ok === 8 ? "🎉 8 of 8! You found which helper to trust. That is exactly what an AI does when it learns."
-      : tests === 1 ? "Look at the mistakes. Which helper is often wrong? Which one is always right? Change the stars and test again."
+      : tests === 1 ? "Look at the ✗ mistakes. Which helper votes wrong? Which helper is ALWAYS right? Give more stars to the one that is always right, fewer to the others, and test again."
       : "Better? Keep changing the stars. Hint: small dogs exist, and some cats have floppy ears… but which animal says meow?";
     if (ok === 8 || tests >= 4) $$("#bLesson").hidden = false;
   };
