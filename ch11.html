@@ -514,16 +514,16 @@ ol.how{margin:8px 0 12px;padding-left:24px;display:grid;gap:6px;font-size:17px;l
   <div class="card">
     <span class="tag">Our prompt</span>
     <p class="quote" style="font-size:19px">"Bright cartoon TV news studio for a school sports show, a big screen showing a football, a desk with a microphone, colorful, fun, for kids"</p>
-    <img src="adobe-test.jpg" alt="Four AI-made cartoon TV studios, each with an oval American football on the screen and a boy presenter at the desk" class="shot">
+    <img src="adobe-test.jpg" alt="Four AI-made cartoon TV studios, each with an oval American football on the screen; three of them have a boy presenter at the desk, one has an empty chair" class="shot">
     <p class="muted" style="font-size:14px;margin:8px 0 0">Made with Adobe Express by our teacher, 10 November 2026.</p>
   </div>
   <div class="row" style="margin-top:14px"><button class="btn" id="spotBtn" type="button">Show what it decided</button></div>
   <div id="spot" hidden>
     <div class="grid g2" style="margin-top:14px">
       <div class="card bad"><span class="tag">Choice 1 · the ball</span><p class="lead" style="margin:6px 0 0">We wrote “football”. In Lebanon that means soccer, but in America it means a game with an <b>oval</b> ball. Our word was unclear, so the AI picked one meaning.</p></div>
-      <div class="card bad"><span class="tag">Choice 2 · the presenter</span><p class="lead" style="margin:6px 0 0">We never asked for a person. The AI added one anyway, and chose <b>a boy, four times out of four</b>.</p></div>
+      <div class="card bad"><span class="tag">Choice 2 · the presenter</span><p class="lead" style="margin:6px 0 0">We never asked for a person. The AI added a presenter in <b>3 of the 4 pictures</b>, and <b>every time it chose a boy</b>. Never a girl.</p></div>
     </div>
-    <div class="def sm" style="margin-top:14px"><span class="tag">Remember</span><p>AI sometimes makes <b>assumptions</b> when our instructions are unclear. The word “football” can have different meanings. AI may also add details that we never asked for. When it makes the same choice every time (a boy, 4 out of 4), that can be unfair: we call it <b>bias</b>. Always check what the AI decided.</p></div>
+    <div class="def sm" style="margin-top:14px"><span class="tag">Remember</span><p>AI sometimes makes <b>assumptions</b> when our instructions are unclear. The word “football” can have different meanings. AI may also add details that we never asked for. When it makes the same choice every time (a boy, every time), that can be unfair: we call it <b>bias</b>. Always check what the AI decided.</p></div>
   </div>
 </section>
 
@@ -1463,7 +1463,7 @@ const mo = new MutationObserver(ms => ms.forEach(m => { if (!m.target.hidden && 
 document.querySelectorAll("section.seg").forEach(sec => mo.observe(sec, {attributes:true, attributeFilter:["hidden"]}));
 
 /* 9 quiz and reflect */
-X.vocab($("#vocab"), [["Assumption", "When the AI guesses something you did not say, like the oval ball."], ["Bias", "When the AI makes the same unfair choice again and again, like always a boy."], ["Art director", "The person who decides style, light and camera. Today: you."], ["Text-to-speech", "The computer turns written text into a voice."], ["Storyboard", "The plan of a video, scene by scene."], ["Narration", "What the voice says in the video."], ["Timeline", "When each scene starts and how long it lasts."], ["Transition", "How one scene changes into the next: cut, fade or slide."], ["Consent", "Saying yes. Always ask before using someone's face or voice."]]);
+X.vocab($("#vocab"), [["Assumption", "When the AI guesses something you did not say, like the oval ball."], ["Bias", "When the AI makes the same unfair choice again and again, like choosing a boy every time."], ["Art director", "The person who decides style, light and camera. Today: you."], ["Text-to-speech", "The computer turns written text into a voice."], ["Storyboard", "The plan of a video, scene by scene."], ["Narration", "What the voice says in the video."], ["Timeline", "When each scene starts and how long it lasts."], ["Transition", "How one scene changes into the next: cut, fade or slide."], ["Consent", "Saying yes. Always ask before using someone's face or voice."]]);
 X.quiz($("#quiz"), [
   ["We asked for a “football” and the AI drew an oval ball. Why?", ["Our word was unclear, so it picked one meaning", "It knows we love American football", "It made a spelling mistake"], 0, "“Football” has different meanings. Unclear words make the AI guess."],
   ["In the experiment, you changed only the style. What happened?", ["The whole look of the picture changed", "Nothing changed", "The AI refused"], 0, "One word can change the whole picture: that's the art director's power."],
