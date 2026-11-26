@@ -437,6 +437,27 @@ img.fprev{background:var(--paper)}
 .step[aria-current="step"]{border-top-color:var(--onair);color:var(--ink);font-weight:700}
 @media (max-width:700px){.bug small{display:none}.step .t{display:none}.clock .lbl{display:none}body{font-size:17px}.lead{font-size:18px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---- Chapter 8 · detective, 5 whys, innovation lab ---- */
+.whys{display:grid;gap:8px}.st5.root{border-color:var(--green);background:var(--green-soft)}
+.zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.zone{border-radius:16px;padding:16px;display:grid;gap:4px;align-content:start;color:#13221C}.zone .zic{font-size:44px;line-height:1.1}.zone b{font-size:19px}.zone small{font-size:14px;line-height:1.4}
+.z-class{background:#E3EDFF}.z-cafe{background:#FDEBD7}.z-lib{background:#EFE3F7}.z-play{background:#DDF2E3}.z-other{background:#F1EFE8}
+.obs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:12px}.ob{display:grid;gap:6px;align-content:start}.ob.ok{border-color:var(--green)}
+.obl{font-size:15px;margin-top:4px}.ob textarea{font:inherit;font-size:16px;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box}
+.mywhys{display:grid;gap:8px;margin-top:8px}.why1{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center}.why1 b{font-size:16px}
+.why1 input,#root,.idea input[type=text]{font:inherit;font-size:16px;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box}
+@media (max-width:600px){.why1{grid-template-columns:1fr}}
+.ideas{display:grid;gap:12px}.idea{display:grid;gap:8px}.idea.i0{border-left:6px solid #2563EB}.idea.i1{border-left:6px solid #EA7A12}
+.sl{display:grid;grid-template-columns:1fr 120px 52px;gap:8px;align-items:center;font-size:15px}
+.mx{display:grid;grid-template-columns:28px 1fr;grid-template-rows:1fr auto;gap:6px;margin-top:8px}
+.mxy{writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;font-weight:700;font-size:14px;color:var(--muted)}.mxx{grid-column:2;text-align:center;font-weight:700;font-size:14px;color:var(--muted)}
+.mxg{position:relative;aspect-ratio:1/0.8;border:2px solid #999;border-radius:6px;overflow:hidden}
+.mxg .q{position:absolute;width:50%;height:50%;box-sizing:border-box;display:flex;align-items:flex-start;justify-content:center;padding:8px;font-weight:700;font-size:15px;color:#13221C}
+.mxg .big{left:0;top:0;background:#FAF2DE;border-right:1px solid #999;border-bottom:1px solid #999}.mxg .win{left:50%;top:0;background:#DCEFE2;border-left:1px solid #999;border-bottom:1px solid #999}
+.mxg .low{left:0;top:50%;background:#FBE9E9;align-items:flex-end;border-right:1px solid #999;border-top:1px solid #999}.mxg .small{left:50%;top:50%;background:#E6EDFA;align-items:flex-end;border-left:1px solid #999;border-top:1px solid #999}
+.dots{position:absolute;inset:0}.dot{position:absolute;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;border:3px solid #fff;display:grid;place-items:center;color:#fff;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.25);transition:left .3s,top .3s}
+.dot.d0{background:#2563EB}.dot.d1{background:#EA7A12}
 </style>
 <header class="top">
   <div class="wrap">
@@ -449,8 +470,8 @@ img.fprev{background:var(--paper)}
 </header>
 <main class="wrap" id="stage">
 <!-- 1 discover -->
-<section class="seg" id="seg-1" data-min="6" data-title="Problem first">
-  <div class="lower"><div class="no">01</div><div class="name"><h2>Problem first, tool second</h2><p>6 minutes · discover</p></div></div>
+<section class="seg" id="seg-1" data-min="5" data-title="Problem first" data-period="1">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>Problem first, tool second</h2><p>Period 1 · 5 minutes · discover</p></div></div>
   <p class="big">Two students want to improve the school. Who will make something useful?</p>
   <div class="grid g2">
     <div class="card pcard weak"><span class="tag">Student A · tool first</span><p class="prompt sm">“Let's make an AI robot! …For what? I don't know yet.”</p></div>
@@ -460,52 +481,106 @@ img.fprev{background:var(--paper)}
   <div class="def" id="l1" hidden><span class="tag">Remember</span><p>Innovation starts with a real problem and real people, not with a flashy tool.</p></div>
 </section>
 
-<!-- 2 learn -->
-<section class="seg" id="seg-2" data-min="10" data-title="Think like an innovator" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>Think like an innovator</h2><p>10 minutes · learn</p></div></div>
+<section class="seg" id="seg-2" data-min="10" data-title="Think like an innovator" data-period="1" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>Think like an innovator</h2><p>Period 1 · 10 minutes · learn</p></div></div>
   <div class="lesson">
     <div class="card"><span class="tag">1 · The user</span><p class="big2" style="font-size:24px">Who has the problem?</p><p style="margin:0">Grade 7 students? Teachers? The cleaning staff?</p></div>
     <div class="card"><span class="tag">2 · The need</span><p class="big2" style="font-size:24px">What do they need?</p><p style="margin:0">Not “an app”: what do they need to DO? e.g. find the homework fast.</p></div>
     <div class="card"><span class="tag">3 · How might we…?</span><p class="big2" style="font-size:24px">Turn it into a question</p><p style="margin:0">“How might we help students find their homework instructions?”</p></div>
     <div class="card"><span class="tag">4 · Success</span><p class="big2" style="font-size:24px">How will we know it works?</p><p style="margin:0">Something you can see or count: “students find it in under 1 minute”.</p></div>
   </div>
+  <div class="card" style="margin-top:16px"><span class="tag">5 · Find the real cause: the 5 Whys</span>
+    <p style="margin:6px 0 10px;font-size:18px">Don't stop at the first answer. Ask <b>“Why?”</b> again and again, until you reach the <b>root cause</b>: the real reason behind the problem.</p>
+    <div class="whys" id="whyEx"></div>
+    <div class="row" style="margin-top:10px"><button class="btn" id="whyNext" type="button">Why? →</button></div>
+    <p class="muted" id="whyNote" hidden style="margin:10px 0 0;font-size:16px">⚠️ This is only an example. In YOUR school the cause may be different: check it (ask, observe), don't guess.</p>
+  </div>
   <p class="lead" style="margin:20px 0 0"><b>Key words.</b> Tap each one.</p>
   <div class="vocab" id="vocab"></div>
 </section>
 
 <!-- 3 watch -->
-<section class="seg" id="seg-3" data-min="8" data-title="An example, step by step" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>An example, step by step</h2><p>8 minutes · the forgotten library books</p></div></div>
+<section class="seg" id="seg-3" data-min="7" data-title="An example, step by step" data-period="1" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>An example, step by step</h2><p>Period 1 · 7 minutes · the forgotten library books</p></div></div>
   <p class="big">Watch how an innovator thinks. Tap “Next step”.</p>
   <div class="steps5" id="ex"></div>
   <div class="row" style="margin-top:12px"><button class="btn" id="exNext" type="button">Next step →</button></div>
 </section>
 
 <!-- 4 brain -->
-<section class="seg" id="seg-4" data-min="10" data-title="Brain challenge" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Brain challenge</h2><p>10 minutes · 2 games</p></div></div>
+<section class="seg" id="seg-4" data-min="8" data-title="Brain challenge" data-period="1" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Brain challenge</h2><p>Period 1 · 8 minutes · 2 games</p></div></div>
   <div class="card"><span class="tag">Game 1 · Problem or tool?</span><div class="sortg" id="g1" style="margin-top:10px"></div></div>
   <div class="card" style="margin-top:14px"><span class="tag">Game 2 · Can you measure it?</span><p class="muted" style="margin:4px 0 10px">A good success sign is something you can see or count.</p><div class="sortg" id="g2"></div></div>
 </section>
 
-<!-- 5 create -->
-<section class="seg" id="seg-5" data-min="22" data-title="Mission: innovation brief" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: your School Innovation Brief</h2><p>22 minutes · the plan for your prototype next week</p></div></div>
-  <div class="card"><span class="tag">Step 1 · Choose a problem (or write your own)</span><div class="chips" id="probs" style="margin-top:8px"></div></div>
-  <div class="mission" style="margin-top:14px">
-    <div class="forms" id="brief"></div>
-    <aside class="card side posterwrap"><span class="tag">Your brief</span><canvas id="bp" width="1000" height="1400" aria-label="Your School Innovation Brief"></canvas><a class="btn" id="bpDl" download="School-Innovation-Brief.png" href="#">⬇ Download my brief</a></aside>
+<!-- 5 detective -->
+<section class="seg" id="seg-5" data-min="15" data-title="School Detective" data-period="1" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Become a School Detective</h2><p>Period 1 · 15 minutes · a field trip in your school</p></div></div>
+  <p class="big">Nobody gives you a problem. Walk around your school, look carefully, and find real problems yourself.</p>
+  <div class="zones" id="zones"></div>
+  <div class="card bad" style="margin-top:14px"><span class="tag">🔒 Detective rules</span><p class="lead" style="margin:6px 0 0">Look and write. No photos of people, no names, nothing private. Describe what happens, not who did it.</p></div>
+  <p class="ttl" style="margin-top:20px">My detective notebook: 3 observations</p>
+  <div class="obs" id="obs"></div>
+  <div class="card" style="margin-top:14px"><span class="tag">⭐ Choose ONE problem to solve</span><div class="row" id="pick" style="margin-top:8px"></div><p class="fb" id="pickMsg" style="font-weight:700;margin:8px 0 0"></p></div>
+</section>
+
+<!-- 6 my 5 whys -->
+<section class="seg" id="seg-6" data-min="8" data-title="My 5 Whys" data-period="2" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>Dig deeper: my 5 Whys</h2><p>Period 2 · 8 minutes · find the root cause</p></div></div>
+  <div class="card"><span class="tag">My problem</span><p class="big2" id="myProb" style="font-size:22px;margin:6px 0 0"></p></div>
+  <div class="card" style="margin-top:14px"><span class="tag">Ask “Why?” at least 3 times</span><div class="mywhys" id="myWhys"></div></div>
+  <div class="card" style="margin-top:14px">
+    <label class="ff"><b>🎯 My possible root cause</b><input id="root" type="text" maxlength="160" placeholder="e.g. Homework instructions are not easy to find after class."></label>
+    <b style="display:block;margin-top:12px">How will I check it is really true?</b>
+    <div class="chips" id="checkHow" style="margin-top:6px"></div>
+    <p class="fb" id="whyMsg" style="font-weight:700;margin:10px 0 0"></p>
   </div>
-  <p class="muted" style="margin-top:10px">🔒 No real names, photos or private data: observe and describe, don't collect.</p>
+</section>
+
+<!-- 7 innovation lab -->
+<section class="seg" id="seg-7" data-min="8" data-title="Innovation Lab" data-period="2" hidden>
+  <div class="lower"><div class="no">07</div><div class="name"><h2>Innovation Lab: is your idea worth building?</h2><p>Period 2 · 8 minutes · evaluate before you build</p></div></div>
+  <p class="big">Think of 2 ideas that could solve your problem. Score them, then choose the best one.</p>
+  <div class="grid g2" style="align-items:start">
+    <div class="ideas" id="ideas"></div>
+    <div class="card"><span class="tag">Impact and effort</span>
+      <div class="mx" id="mx"><div class="mxy">Impact →</div><div class="mxg"><span class="q big">Big project</span><span class="q win">Quick win</span><span class="q low">Low priority</span><span class="q small">Small improvement</span><div class="dots" id="dots"></div></div><div class="mxx">Easy to build →</div></div>
+      <p class="fb" id="mxMsg" style="font-weight:700;margin:10px 0 0"></p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Which idea will you build?</span><div class="row" id="choose" style="margin-top:8px"></div></div>
+</section>
+
+<!-- 8 the brief -->
+<section class="seg" id="seg-8" data-min="14" data-title="Innovation Brief" data-period="2" hidden>
+  <div class="lower"><div class="no">08</div><div class="name"><h2>My School Innovation Brief</h2><p>Period 2 · 14 minutes · the plan for your prototype next week</p></div></div>
+  <p class="big">Real teams write a plan before they build. Yours fits on one page.</p>
+  <div class="mission">
+    <div class="forms" id="brief"></div>
+    <aside class="card side posterwrap"><span class="tag">Your brief</span><canvas id="bp" width="1000" height="1250" aria-label="Your School Innovation Brief"></canvas><a class="btn" id="bpDl" download="School-Innovation-Brief.png" href="#">⬇ Download my brief</a></aside>
+  </div>
   <div id="iBadge"></div>
 </section>
 
-<!-- 6 reflect -->
-<section class="seg" id="seg-6" data-min="5" data-title="Reflect" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>Quiz and reflect</h2><p>5 minutes</p></div></div>
+<!-- 9 AI consultant -->
+<section class="seg" id="seg-9" data-min="8" data-title="AI consultant" data-period="2" hidden>
+  <div class="lower"><div class="no">09</div><div class="name"><h2>AI as your innovation consultant</h2><p>Period 2 · 8 minutes · AI helps you think, it doesn't think for you</p></div></div>
+  <div class="card"><span class="tag">Step 1 · Ask Gemini</span>
+    <p class="prompt sm" id="conPrompt" style="margin-top:8px"></p>
+    <div class="row"><button class="btn" id="conCopy" type="button">📋 Copy the prompt</button><a class="btn alt" href="https://gemini.google.com/app" target="gemini" rel="noopener">↗ Open Gemini</a></div>
+    <p class="muted" style="margin:10px 0 0;font-size:16px">Look at the last sentence: <b>“Do not build the project for me yet.”</b> You are the innovator. Gemini only helps you think better.</p>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 2 · Think about its answer</span><div class="forms" id="con" style="margin-top:8px"></div></div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 3 · Your decision</span><p style="margin:6px 0 10px;font-size:17px">Will you change your brief?</p><div class="row" id="conDec"></div><p class="fb" id="conMsg" style="font-weight:700;margin:10px 0 0"></p></div>
+</section>
+
+<!-- 10 reflect -->
+<section class="seg" id="seg-10" data-min="7" data-title="Reflect" data-period="2" hidden>
+  <div class="lower"><div class="no">10</div><div class="name"><h2>Quiz and reflect</h2><p>Period 2 · 7 minutes</p></div></div>
   <div class="qz" id="quiz"></div>
   <div class="card reflect" style="margin-top:14px"><span class="tag">Exit ticket</span><label class="ttl" for="exit" style="display:block">Why must you define the problem before choosing a tool?</label><textarea id="exit" placeholder="Because…"></textarea></div>
-  <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Ask a family member or a teacher about one small school improvement they would like. Write the idea, not their private details.</p></div>
+  <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Check your root cause: ask 3 classmates (or a teacher) if it is really the reason. Write what they say, not their names.</p></div>
   <p class="note">Next week: build and test a prototype of your idea.</p>
 </section>
 
@@ -761,7 +836,7 @@ return {make, power, meter, join, missing, guard, show, lock};
 
 window.K = (function(){
 const $ = s => document.querySelector(s);
-const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => { if (c != null && c !== false) e.append(c); }); return e; };
 let PFX = "k";
 const store = { get(k){ try { return JSON.parse(localStorage.getItem(PFX + "-" + k)); } catch(e){ return null; } }, set(k, v){ try { localStorage.setItem(PFX + "-" + k, JSON.stringify(v)); } catch(e){} }, raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
 let segs = [], cur = 0, stepBtns = [], left = 0, tick = null, tt;
@@ -779,7 +854,7 @@ function go(i){
 function init(prefix, p2){
   PFX = prefix; segs = [...document.querySelectorAll(".seg")];
   const box = $("#steps");
-  segs.forEach((s, i) => { if (p2 && i === p2) box.append(el("span", {class:"pdiv", "aria-hidden":"true"}, "P2")); box.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))); });
+  segs.forEach((s, i) => { if (i && s.dataset.period !== segs[i - 1].dataset.period) box.append(el("span", {class:"pdiv", "aria-hidden":"true"}, "P" + s.dataset.period)); box.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))); });
   stepBtns = [...box.querySelectorAll(".step")];
   $("#prev").onclick = () => go(cur - 1); $("#next").onclick = () => go(cur + 1);
   addEventListener("keydown", e => { if (e.target.matches("textarea,input,select")) return; if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); });
@@ -880,15 +955,20 @@ window.X = (function(){
 </script>
 <script>
 (function(){
-const {$, el, store} = K;
+const {$, el, store, copy} = K;
 K.init("ch14"); X.setup();
-const done = X.prog(4);
+const done = X.prog(6);
 
 /* 1 */
 $("#ab").replaceChildren(...[["Student A", false], ["Student B", true]].map(([t, ok]) => el("button", {class:"btn sm alt", type:"button", onclick:() => { $("#abA").textContent = ok ? "✓ Yes! Student B starts with real people and a real problem. The tool comes later." : "✗ Student A has a tool, but no problem to solve. Nobody may need it."; $("#l1").hidden = false; }}, t)));
 
-/* 2 */
-X.vocab($("#vocab"), [["Innovation", "A new idea that makes something better."], ["User", "The person who has the problem, and will use the solution."], ["Need", "What the user needs to do or have."], ["Problem statement", "One sentence: who needs what, and why."], ["Solution", "The idea that solves the problem."], ["Success criteria", "Signs you can see or count that show the solution works."]]);
+/* 2 learn + the 5 Whys example */
+X.vocab($("#vocab"), [["Innovation", "A new idea that makes something better."], ["User", "The person who has the problem, and will use the solution."], ["Need", "What the user needs to do or have."], ["Root cause", "The real reason behind a problem. You find it by asking “Why?” again and again."], ["Solution", "The idea that solves the problem."], ["Success criteria", "Signs you can see or count that show your solution works."], ["Quick win", "An idea with a big impact that is easy to build."], ["Risk", "Something that could go wrong. A good plan says how to reduce it."]]);
+const WHY = [["😕 The problem", "Students forget their homework."], ["Why? 1", "They forget what the teacher assigned."], ["Why? 2", "They don't always write it down."], ["Why? 3", "They are sometimes distracted at the end of class."], ["Why? 4", "They are getting ready for the next lesson."], ["Why? 5", "There is no regular way to check the homework before leaving."], ["🎯 Possible root cause", "Homework instructions are not always easy to find."]];
+let wi = 0;
+function drawWhy(){ $("#whyEx").replaceChildren(...WHY.slice(0, wi + 1).map(([h, t], i) => el("div", {class:"st5" + (i === wi ? " now" : "") + (i === WHY.length - 1 ? " root" : "")}, el("b", null, h), el("p", null, t))));
+  $("#whyNext").hidden = wi >= WHY.length - 1; $("#whyNote").hidden = wi < WHY.length - 1; $("#whyNext").textContent = wi === WHY.length - 2 ? "Show the root cause →" : "Why? →"; }
+$("#whyNext").onclick = () => { wi++; drawWhy(); }; drawWhy();
 
 /* 3 example */
 const EX = [["😕 The problem", "Many students forget the date to return their library books."], ["👦 The user", "Grade 7 students who borrow books."], ["🎯 The need", "They need to remember the date, without extra work."], ["❓ How might we…", "How might we help students remember to return their books on time?"], ["📝 Problem statement", "Grade 7 students need a way to remember return dates because they forget them and pay late fees."], ["📏 Success criteria", "1) Fewer late books after one month. 2) Students can say their return date in a quick test."], ["🔒 Careful!", "We don't collect real student names or what they borrowed. We use fictional examples."]];
@@ -908,26 +988,152 @@ X.sort($("#g2"), [
   ["“The school is nicer.”", "no", "How would you measure “nicer”?"],
   ["“Half as much paper in the bins after 2 weeks.”", "yes", "You can count it."],
   ["“People like it.”", "no", "Better: “8 of 10 testers say it's easy to use.”"]
-], [["yes", "📏 Measurable"], ["no", "🌫️ Too vague"]], null, () => done(1));
+], [["yes", "📏 Measurable"], ["no", "🌫️ Too vague"]], null, () => done(5));
 
-/* 5 brief */
-const PROBS = ["Students lose the homework instructions", "Too much paper is wasted", "Noisy, slow class changes", "Students forget their tasks", "The recycling bins are confusing"];
-const F = [["problem", "1 · The problem", "What is wrong? Be specific.", 2], ["user", "2 · The user", "Who has the problem?"], ["stmt", "3 · Problem statement", "[User] needs a way to [need] because [reason].", 2, "Complete the sentence."], ["evidence", "4 · What I observed", "What did you see? (no names, no photos)", 2], ["req", "5 · 3 design requirements", "1) … 2) … 3) …", 3, "What MUST your solution do?"], ["success", "6 · 2 success measures", "1) … 2) …", 2, "Signs you can see or count."]];
-let B = {};
-function drawBrief(){
-  X.poster($("#bp"), $("#bpDl"), {kicker:"Reinvent the School · AI Explorers", title:"School Innovation Brief", color:"#7A3E9D", sections:F.map(([k, l]) => [l.replace(/^\d · /, ""), B[k]])});
-  const ok = F.every(([k]) => (B[k] || "").trim()); if (ok){ X.badge($("#iBadge"), "🏫", "School Innovator", "Your brief is saved. Next week you build a prototype for it!"); done(2); } else $("#iBadge").replaceChildren();
+/* 5 school detective */
+const ZONES = [["class", "🏫", "Classroom", "Forgetting homework, wasting electricity, lost school supplies."], ["cafe", "🍽️", "Cafeteria", "Food waste, long queues, unhealthy snacks."], ["lib", "📚", "Library", "Forgotten books, hard to find the right book."], ["play", "⚽", "Playground", "Sharing equipment, organising games, lost belongings."], ["other", "🧭", "Somewhere else", "Corridors, the gate, the school bus…"]];
+const OFTEN = ["Every day", "Every week", "Sometimes"], WHO = ["Students", "Teachers", "School staff", "Parents"];
+$("#zones").replaceChildren(...ZONES.map(([k, ic, n, ex]) => el("div", {class:"zone z-" + k}, el("span", {class:"zic"}, ic), el("b", null, n), el("small", null, "Look for: " + ex))));
+const D = Object.assign({obs:[{}, {}, {}], pick:-1}, store.get("detect") || {});
+D.obs = [0, 1, 2].map(i => Object.assign({zone:"", saw:"", often:"", who:[]}, D.obs[i] || {}));
+const saveD = () => store.set("detect", D);
+const nw = t => (String(t || "").trim().match(/\S+/g) || []).length;
+const obsOk = o => o.zone && nw(o.saw) >= 5 && o.often && o.who.length;
+const zoneOf = k => ZONES.find(z => z[0] === k);
+function drawObs(){
+  $("#obs").replaceChildren(...D.obs.map((o, i) => {
+    const chips = (list, k, multi) => el("div", {class:"chips"}, ...list.map(v => el("button", {class:"chip", type:"button", "aria-pressed":String(multi ? o[k].includes(v) : o[k] === v),
+      onclick:() => { if (multi) o[k] = o[k].includes(v) ? o[k].filter(x => x !== v) : o[k].concat(v); else o[k] = o[k] === v ? "" : v; saveD(); drawObs(); }}, v)));
+    const z = zoneOf(o.zone), saw = el("textarea", {rows:"2", maxlength:"200", placeholder:z ? "e.g. " + z[3].split(",")[0] + ": what exactly did you see?" : "First choose where you looked."}); saw.value = o.saw;
+    saw.oninput = () => { o.saw = saw.value; saveD(); drawPick(); };
+    return el("div", {class:"card ob" + (obsOk(o) ? " ok" : "")}, el("span", {class:"tag"}, "Observation " + (i + 1) + (obsOk(o) ? " ✓" : "")),
+      el("b", {class:"obl"}, "Where?"), el("div", {class:"chips"}, ...ZONES.map(([k, ic, n]) => el("button", {class:"chip", type:"button", "aria-pressed":String(o.zone === k), onclick:() => { o.zone = o.zone === k ? "" : k; saveD(); drawObs(); }}, ic + " " + n))),
+      el("label", {class:"ff"}, el("b", null, "What did you see? (5+ words)"), saw),
+      el("b", {class:"obl"}, "How often?"), chips(OFTEN, "often"), el("b", {class:"obl"}, "Who has the problem?"), chips(WHO, "who", true)); }));
+  drawPick();
 }
-B = X.form($("#brief"), "brief", F, S => { B = S; drawBrief(); });
-$("#probs").replaceChildren(...PROBS.map(t => el("button", {class:"chip", type:"button", onclick:() => { const x = $("#brief").querySelector("textarea"); x.value = t; x.dispatchEvent(new Event("input")); }}, t)));
-drawBrief();
+function drawPick(){
+  const ok = D.obs.map(obsOk);
+  $("#pick").replaceChildren(...D.obs.map((o, i) => el("button", {class:"btn sm" + (D.pick === i ? "" : " alt"), type:"button", disabled:ok[i] ? null : "", onclick:() => { D.pick = i; saveD(); drawPick(); }}, (D.pick === i ? "⭐ " : "") + "Observation " + (i + 1))));
+  const n = ok.filter(Boolean).length;
+  $("#pickMsg").textContent = n < 3 ? "Complete your 3 observations first (" + n + " of 3)." : D.pick < 0 || !ok[D.pick] ? "Now choose the problem you want to solve." : "⭐ Your problem: “" + D.obs[D.pick].saw.trim() + "”";
+  $("#pickMsg").style.color = n === 3 && D.pick >= 0 && ok[D.pick] ? "var(--green)" : "var(--muted)";
+  if (n === 3 && D.pick >= 0 && ok[D.pick]) done(1);
+}
+drawObs();
+const myProblem = () => D.pick >= 0 && obsOk(D.obs[D.pick]) ? D.obs[D.pick].saw.trim() : "";
 
-/* 6 */
+/* 6 my 5 whys */
+const W = Object.assign({w:["", "", "", "", ""], root:"", check:[]}, store.get("whys") || {});
+const saveW = () => { store.set("whys", W); whyMsg(); };
+const CHECKS = ["Ask 3 classmates", "Ask a teacher", "Observe again for a week", "Count how often it happens"];
+function drawMyWhys(){
+  const p = myProblem(); $("#myProb").textContent = p ? "“" + p + "”" : "👆 First choose your problem in Section 5.";
+  $("#myWhys").replaceChildren(...W.w.map((v, i) => { const x = el("input", {type:"text", maxlength:"160", placeholder:i === 0 ? "Why does this happen?" : "Why? (about your answer above)"}); x.value = v;
+    x.oninput = () => { W.w[i] = x.value; saveW(); }; return el("label", {class:"why1"}, el("b", null, "Why? " + (i + 1) + (i > 2 ? " (optional)" : "")), x); }));
+  $("#root").value = W.root;
+  $("#checkHow").replaceChildren(...CHECKS.map(c => el("button", {class:"chip", type:"button", "aria-pressed":String(W.check.includes(c)), onclick:() => { W.check = W.check.includes(c) ? W.check.filter(x => x !== c) : W.check.concat(c); saveW(); drawMyWhys(); }}, c)));
+  whyMsg();
+}
+const whysOk = () => !!myProblem() && W.w.slice(0, 3).every(x => nw(x) >= 3) && nw(W.root) >= 4 && W.check.length > 0;
+function whyMsg(){ const m = []; if (!myProblem()) m.push("choose your problem (Section 5)"); W.w.slice(0, 3).forEach((x, i) => { if (nw(x) < 3) m.push("why " + (i + 1)); }); if (nw(W.root) < 4) m.push("your root cause"); if (!W.check.length) m.push("how you will check it");
+  $("#whyMsg").textContent = m.length ? "Still to do: " + m.join(", ") + "." : "✓ You found a possible root cause. Remember to check it!"; $("#whyMsg").style.color = m.length ? "var(--muted)" : "var(--green)"; }
+$("#root").addEventListener("input", () => { W.root = $("#root").value; saveW(); });
+drawMyWhys();
+
+/* 7 innovation lab: impact and effort */
+const IL = Object.assign({ideas:[{t:"", u:3, e:3, f:3}, {t:"", u:3, e:3, f:3}], choice:-1}, store.get("lab") || {});
+const saveIL = () => store.set("lab", IL);
+const impact = d => (d.u + d.f) / 2;
+const quad = d => impact(d) >= 3 ? (d.e >= 3 ? "Quick win" : "Big project") : (d.e >= 3 ? "Small improvement" : "Low priority");
+const QWHY = {"Quick win":"big impact, easy to build: a great choice!", "Big project":"big impact, but hard to build in a few weeks.", "Small improvement":"easy, but it won't change much.", "Low priority":"hard to build and small impact: maybe not this one."};
+const SL = [["u", "How useful is your idea?"], ["e", "How easy is it to build?"], ["f", "How often does the problem happen?"]];
+function drawIdeas(){
+  $("#ideas").replaceChildren(...IL.ideas.map((d, i) => { const t = el("input", {type:"text", maxlength:"120", placeholder:i === 0 ? "Idea A: e.g. a homework board on the class tablet" : "Idea B: a different way to solve it"}); t.value = d.t;
+    t.oninput = () => { d.t = t.value; saveIL(); drawMx(); };
+    return el("div", {class:"card idea i" + i}, el("span", {class:"tag"}, (i ? "🟠 Idea B" : "🔵 Idea A")), t, ...SL.map(([k, l]) => { const r = el("input", {type:"range", min:"1", max:"5", step:"1"}); r.value = d[k]; const v = el("b", {class:"pill"}, d[k] + "/5");
+      r.oninput = () => { d[k] = +r.value; v.textContent = d[k] + "/5"; saveIL(); drawMx(); }; return el("label", {class:"sl"}, el("span", null, l), r, v); })); }));
+  drawMx();
+}
+const ideaOk = d => nw(d.t) >= 3;
+function drawMx(){
+  $("#dots").replaceChildren(...IL.ideas.map((d, i) => ideaOk(d) ? el("span", {class:"dot d" + i, style:"left:" + ((d.e - 1) / 4 * 84 + 8) + "%;top:" + ((1 - (impact(d) - 1) / 4) * 84 + 8) + "%", title:d.t}, i ? "B" : "A") : null));
+  const ok = IL.ideas.map(ideaOk);
+  $("#mxMsg").replaceChildren(...IL.ideas.map((d, i) => ok[i] ? el("span", {style:"display:block"}, (i ? "🟠 B" : "🔵 A") + " · " + quad(d) + ": " + QWHY[quad(d)]) : null));
+  if (!ok.some(Boolean)) $("#mxMsg").textContent = "Write your ideas and score them: they appear on the chart.";
+  $("#choose").replaceChildren(...IL.ideas.map((d, i) => el("button", {class:"btn sm" + (IL.choice === i ? "" : " alt"), type:"button", disabled:ok[i] ? null : "", onclick:() => { IL.choice = i; saveIL(); drawMx(); }}, (IL.choice === i ? "✓ " : "") + "Build idea " + (i ? "B" : "A"))));
+  if (IL.choice >= 0 && ok[IL.choice] && ok[0] && ok[1]) done(2);
+}
+drawIdeas();
+
+/* 8 the innovation brief: a mini project charter */
+const BF = [["name", "Project name", "e.g. Evergreen Smart Homework"], ["problem", "The problem", "e.g. Students sometimes forget their homework instructions.", 2], ["user", "My users", "e.g. Grade 7 students and teachers"], ["solution", "My solution", "e.g. A simple digital homework dashboard", 2],
+  ["f1", "Main feature 1", "e.g. Daily homework schedule"], ["f2", "Main feature 2", "e.g. Filter by subject"], ["f3", "Main feature 3", "e.g. Mark homework as done"],
+  ["success", "Success criteria", "e.g. A student finds today's homework in less than 30 seconds.", 2, "Something you can count or time."], ["risk", "A possible risk", "e.g. The homework might not be up to date.", 2], ["fix", "How to reduce the risk", "e.g. Show the date of the last update.", 2]];
+let B = {};
+function prefill(){ const s = Object.assign({}, store.get("brief") || {}); let ch = false;
+  if (!(s.problem || "").trim() && myProblem()){ s.problem = myProblem(); ch = true; }
+  if (!(s.user || "").trim() && D.pick >= 0 && D.obs[D.pick].who.length){ s.user = D.obs[D.pick].who.join(" and "); ch = true; }
+  const c = IL.ideas[IL.choice]; if (!(s.solution || "").trim() && c && ideaOk(c)){ s.solution = c.t.trim(); ch = true; }
+  if (ch) store.set("brief", s); }
+function drawBriefForm(){ prefill(); B = X.form($("#brief"), "brief", BF, S => { B = S; drawBrief(); }); }
+const briefOk = () => BF.every(([k]) => nw(B[k]) >= (k === "name" || k === "user" ? 1 : 2));
+function drawBrief(){
+  const c = $("#bp"), g = c.getContext("2d"), W2 = c.width, H = c.height, P = "#7A3E9D", INK = "#13221C";
+  g.fillStyle = "#FBF7EE"; g.fillRect(0, 0, W2, H); g.fillStyle = P; g.fillRect(0, 0, W2, 190);
+  g.textAlign = "left"; g.fillStyle = "#E9D8F5"; g.font = "700 22px Arial, sans-serif"; g.fillText("REINVENT THE SCHOOL · PROJECT 01", 50, 60);
+  let y = 0;
+  const wrap = (t, x, maxW, lh, font, color, maxY) => { g.font = font; g.fillStyle = color; const words = String(t || "").trim().split(/\s+/); let line = "";
+    for (const w of words){ const test = line ? line + " " + w : w; if (g.measureText(test).width > maxW && line){ if (y + lh > maxY){ g.fillText(line + " …", x, y); y += lh; return; } g.fillText(line, x, y); y += lh; line = w; } else line = test; }
+    if (line){ g.fillText(line, x, y); y += lh; } };
+  y = 130; wrap((B.name || "").trim() || "My project", 50, W2 - 100, 52, "800 46px Georgia, serif", "#fff", 175);
+  const lab = (t, x, yy) => { g.fillStyle = P; g.font = "700 19px Arial, sans-serif"; g.fillText(t, x, yy); };
+  const block = (t, v, x, w, maxY) => { lab(t, x, y); y += 36; wrap((v || "").trim() || "…", x, w, 34, "26px Arial, sans-serif", INK, maxY); y += 22; };
+  y = 250; block("THE PROBLEM", B.problem, 50, W2 - 100, 400);
+  const two = (a, va, b, vb, maxY) => { const y0 = y; block(a, va, 50, 420, maxY); const y1 = y; y = y0; block(b, vb, 530, 420, maxY); y = Math.max(y1, y); };
+  two("MY USERS", B.user, "MY SOLUTION", B.solution, y + 160);
+  lab("MAIN FEATURES", 50, y); y += 38; ["f1", "f2", "f3"].forEach(k => { g.fillStyle = "#1E7A55"; g.font = "700 26px Arial, sans-serif"; g.fillText("✓", 50, y); const yy = y; wrap((B[k] || "").trim() || "…", 88, W2 - 140, 34, "26px Arial, sans-serif", INK, yy + 34); if (y === yy) y += 34; y += 6; }); y += 16;
+  block("SUCCESS CRITERIA", B.success, 50, W2 - 100, y + 110);
+  two("POTENTIAL RISK", B.risk, "HOW TO REDUCE THE RISK", B.fix, y + 150);
+  g.fillStyle = briefOk() ? "#E3F1E9" : "#EEE7F3"; g.fillRect(40, H - 130, W2 - 80, 74); g.fillStyle = briefOk() ? "#1E7A55" : "#7A3E9D"; g.font = "700 26px Arial, sans-serif";
+  g.fillText(briefOk() ? "✓ Ready for prototyping: Chapter 9" : "Plan in progress…", 64, H - 84);
+  g.fillStyle = "#56665E"; g.font = "18px Arial, sans-serif"; g.fillText("AI Creators · EB7 · " + new Date().toLocaleDateString("en-GB", {day:"numeric", month:"long", year:"numeric"}), 50, H - 22);
+  try { $("#bpDl").href = c.toDataURL("image/png"); } catch(e){}
+  if (briefOk()){ X.badge($("#iBadge"), "🏫", "School Innovator", "Your brief is ready. Next week you build a prototype for it!"); done(3); } else $("#iBadge").replaceChildren();
+  conPrompt();
+}
+drawBriefForm();
+
+/* 9 AI consultant */
+function strip(t){ return String(t || "").trim().replace(/[.!]+$/, ""); }
+function lc1(t){ t = strip(t); return /^[A-Z](?:[a-z]|\s)/.test(t) ? t[0].toLowerCase() + t.slice(1) : t; }
+function CONP(){ return "Act as a school innovation consultant. I am a Grade 7 student working on a project to improve my school. My problem is: " + (lc1(B.problem) || "[problem]") + ". My proposed solution is: " + (lc1(B.solution) || "[solution]") + ". Ask me three questions to improve my idea. Suggest three simple features and identify two possible risks. Do not build the project for me yet."; }
+function conPrompt(){ $("#conPrompt").textContent = "“" + CONP() + "”"; }
+$("#conCopy").onclick = () => { if (!nw(B.problem) || !nw(B.solution)){ K.toast("First write your problem and your solution in your brief (Section 8)."); return; } copy(CONP(), $("#conPrompt"), "Gemini"); };
+const CD = Object.assign({d:""}, store.get("condec") || {});
+let CS = {};
+CS = X.form($("#con"), "consult", [["q", "One question Gemini asked me", "e.g. How will teachers add the homework?"], ["a", "My answer", "e.g. The teacher writes it on the class tablet after each lesson.", 2], ["risk", "One risk Gemini found", "e.g. Students without a tablet at home can't see it."]], S => conMsg(S));
+function conMsg(S){ S = S || CS || {};
+  $("#conDec").replaceChildren(...[["yes", "✏️ Yes, I will improve my brief"], ["no", "👍 No, my brief is already strong"]].map(([k, l]) => el("button", {class:"btn sm" + (CD.d === k ? "" : " alt"), type:"button", onclick:() => { CD.d = k; store.set("condec", CD); conMsg(); }}, l)),
+    CD.d === "yes" ? el("a", {class:"btn sm", href:"#seg-8"}, "→ Go to my brief") : null);
+  const ok = nw(S.q) >= 3 && nw(S.a) >= 3 && nw(S.risk) >= 3 && CD.d;
+  $("#conMsg").textContent = ok ? "✓ Great thinking. The AI asked, YOU decided." : "Answer the 3 boxes, then decide."; $("#conMsg").style.color = ok ? "var(--green)" : "var(--muted)";
+}
+conMsg(CS);
+
+/* when a section opens, show the newest work from the other sections */
+const ON_SHOW = {"seg-6":drawMyWhys, "seg-7":drawMx, "seg-8":drawBriefForm, "seg-9":() => { conPrompt(); conMsg(); }};
+const mo = new MutationObserver(ms => ms.forEach(m => { if (!m.target.hidden && ON_SHOW[m.target.id]) ON_SHOW[m.target.id](); }));
+document.querySelectorAll("section.seg").forEach(sec => mo.observe(sec, {attributes:true, attributeFilter:["hidden"]}));
+
+/* 10 reflect */
 X.quiz($("#quiz"), [
   ["Where does innovation start?", ["With a flashy tool", "With a real problem and real users", "With a big budget"], 1, "Problem first, tool second."],
-  ["Which is a good success measure?", ["“It looks cool.”", "“Students find their homework in under 1 minute.”", "“It uses AI.”"], 1, "You can time it: it's measurable."],
+  ["Why do we ask “Why?” 5 times?", ["To find the real cause of the problem", "To annoy the teacher", "To make the brief longer"], 0, "The first answer is often not the real cause."],
+  ["An idea with a big impact that is easy to build is…", ["A big project", "A quick win", "Low priority"], 1, "Big impact + easy = quick win."],
+  ["Which is a good success measure?", ["“It looks cool.”", "“Students find their homework in under 30 seconds.”", "“It uses AI.”"], 1, "You can time it: it's measurable."],
   ["Can you collect classmates' names and photos for your research?", ["Yes, always", "No: observe and describe, use fictional examples", "Only on Fridays"], 1, "Protect privacy: no private data."]
-], () => done(3));
+], () => done(4));
 X.keep($("#exit"), "exit");
 K.start();
 })();

@@ -21,6 +21,8 @@
        missions:{3:"Your output: the same idea in different styles and camera angles, made in Adobe Express.", 4:"Your output: Deliverable 1, your advertisement poster, saved in your folder.", 5:"Your output: Deliverable 2, your advertising voice-over script and voice style.", 6:"Your output: your 4-scene storyboard, exactly 30 seconds.", 7:"Your output: your real 30-second video (MP4), saved in your folder.", 8:"Your output: My First AI Commercial, 100% produced."}},
     12:{goal:"Think like a programmer, program a smart classroom, and build your first program with AI.", make:[], steps:[], done:"",
        missions:{5:"Your output: a smart classroom program that passes 4 of 4 tests.", 6:"Your output: My First Smart System, a working HTML program, saved in your folder."}},
+    14:{goal:"Find a real problem in your school, dig to its root cause, and plan a project to solve it.", make:[], steps:[], done:"",
+       missions:{5:"Your output: 3 real observations, and the problem you choose to solve.", 8:"Your output: your School Innovation Brief, ready for prototyping in Chapter 9.", 9:"Your output: a better idea, after AI asked you good questions."}},
     8:{goal:"Build your own website with a strong prompt, and get your own link.",
        make:[["🌐", "Your website: about you, your dream job or your football team"], ["🔗", "Your own link to share"]],
        steps:["Learn what makes a website prompt strong", "Choose your topic", "Fill in your details, add your pictures, choose a style and colours: you see it change live", "Publish it and get your link", "A classmate tests it, you make it better"],
