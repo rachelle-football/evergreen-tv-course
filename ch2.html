@@ -1212,9 +1212,9 @@ drawSw();
   const D = [["▶️", "You watch a video to the end.", "YouTube learns what you like, and shows you more of it."],
     ["⌨️", "You type messages on your phone.", "Your keyboard learns your words, and guesses the next one."],
     ["🎵", "You skip a song after 5 seconds.", "The music app learns you don't like it, and plays it less."],
-    ["🚫", "You mark an email as spam.", "The email AI learns what spam looks like, for everyone."],
+    ["🔍", "You type “how to” in Google.", "It guesses the rest (“how to draw a cat”…), because it learned from what millions of people searched."],
     ["🙂", "You unlock your phone with your face.", "Face unlock keeps learning your face, even with new glasses or hair."],
-    ["🚌", "You tap “all the pictures with a bus” to prove you're not a robot.", "You may be helping an AI learn what a bus looks like."]];
+    ["🗣️", "You say “Hey Siri” or “OK Google” to a phone.", "It learns YOUR voice, so it answers you and not your brother."]];
   let n = 0;
   D.forEach(([e, a, l]) => { const b = document.createElement("button"); b.type = "button"; b.innerHTML = '<span class="e">' + e + '</span><span class="a"></span><span class="l">❓ Tap: what does the AI learn?</span>'; b.querySelector(".a").textContent = a;
     b.onclick = () => { if (b.classList.contains("open")) return; b.classList.add("open"); b.querySelector(".l").textContent = "🤖 " + l; if (++n === D.length) document.querySelector("#dailyEnd").hidden = false; }; box.append(b); });
