@@ -242,7 +242,7 @@ const CH = [
   {n:8, t:"Reinvent the School: the Problem", s:"8", f:"ch14.html", learn:"Be a school detective, find the root cause, and plan your project: your innovation brief", lists:[["ch14-prog",6]]},
   {n:9, t:"Reinvent the School: Build Your Solution", s:"9", f:"ch15.html", learn:"Design, build and test a real app for your school problem, then make Version 2", lists:[["ch15-prog",6]]},
   {n:10, t:"Save Our Planet with Data", s:"10", f:"ch16.html", learn:"Collect data, analyse it with AI, and plan your impact", lists:[["ch16-prog",5]]},
-  {n:11, t:"Final Showcase", s:"11", f:"ch9.html", learn:"Present your project and explain how you used AI", lists:[["ch9-rehearse",4]], extra: d => (pj(d["ch9-pitch"]) && Object.values(pj(d["ch9-pitch"])).filter(v => (v || "").trim()).length >= 3 ? 1 : 0) + (d["ch9-job"] ? 1 : 0), of:2}
+  {n:11, t:"Final Showcase", s:"11", f:"ch9.html", learn:"Your AI Portfolio, a live 3-minute pitch of your app, and the awards", lists:[["ch9-rehearse",4]], extra: d => (pj(d["ch9-pitch"]) && Object.values(pj(d["ch9-pitch"])).filter(v => (v || "").trim()).length >= 3 ? 1 : 0) + (d["ch9-job"] ? 1 : 0), of:2}
 ];
 function pj(v){ if (v == null) return null; if (typeof v !== "string") return v; try { return JSON.parse(v); } catch(e){ return v; } }
 function progress(d){ return CH.map(c => { let done = 0, total = c.of || 0; c.lists.forEach(([k, n]) => { total += n; const a = pj(d[k]); if (Array.isArray(a)) done += a.filter(Boolean).length; }); if (c.extra) done += c.extra(d); return total ? Math.min(100, Math.round(done / total * 100)) : 0; }); }

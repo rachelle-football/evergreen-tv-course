@@ -27,11 +27,8 @@
        missions:{3:"Your output: your app, built with Gemini, running in the page.", 4:"Your output: Version 1, saved, after you changed one thing yourself.", 5:"Your output: a real test by a classmate, with a score and feedback.", 6:"Your output: Version 2, your final app, saved in your folder.", 7:"Your output: proof that your app meets your success criteria."}},
     16:{goal:"Use data and AI to understand an environmental problem at school, and plan a real impact.", make:[], steps:[], done:"",
        missions:{3:"Your output: your own analysis, and a check of the AI's numbers.", 4:"Your output: a realistic target and its impact over one school year.", 5:"Your output: 3 solutions compared, and your decision.", 6:"Your output: your Planet Impact Report."}},
-    9:{goal:"Present your work to parents and guests, and launch the two team websites.",
-       make:[["🎤", "Your 30-second pitch"], ["🚀", "Both team websites, live"]],
-       steps:["Write your pitch line by line", "Rehearse it with a partner", "Pick your Expo job", "Launch day: present your page"],
-       done:"You can say your pitch in 30 seconds, with your page open.",
-       missions:{2:"Your output: your 30-second pitch. Practise it with the timer."}}
+    9:{goal:"Show everything you created this year: your AI Portfolio and a live 3-minute pitch of your school app.", make:[], steps:[], done:"",
+       missions:{2:"Your output: your AI Portfolio, with your 7 creations.", 3:"Your output: your 3-minute pitch notes, in 5 parts.", 4:"Your output: a rehearsed pitch, checked by a partner."}}
   }[CH];
   if (!B) return;
   const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };

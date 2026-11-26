@@ -255,6 +255,28 @@ img.fprev{background:var(--paper)}
 .step[aria-current="step"]{border-top-color:var(--onair);color:var(--ink);font-weight:700}
 @media (max-width:700px){.bug small{display:none}.step .t{display:none}.clock .lbl{display:none}body{font-size:17px}.lead{font-size:18px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---- Chapter 11 · final showcase ---- */
+.awards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}.aw{border:2px solid var(--gold);background:var(--gold-soft);border-radius:14px;padding:12px;display:grid;gap:3px}.aw span{font-size:30px}.aw b{font-size:17px}.aw small{font-size:14px;color:var(--muted)}
+.pf{border:2px solid var(--line);border-radius:18px;background:var(--panel);overflow:hidden}
+.pfh{background:#1E7A55;color:#fff;padding:20px 22px;display:grid;gap:2px}.pfh small{font:700 12px var(--mono);letter-spacing:.14em;color:#CFEBDD}.pfh b{font-family:var(--display);font-size:34px}.pfh span{font-size:18px}.pfh em{font-style:normal;color:#CFEBDD}
+.pfg{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;padding:16px}
+.pfc{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;align-content:start;background:var(--paper)}.pfc.ok{border-color:var(--green)}.pfc.star{box-shadow:0 0 0 3px var(--gold)}
+.pft{display:grid;grid-template-columns:36px 1fr auto;gap:8px;align-items:center}.pft span{font-size:28px}.pft b{display:block;font-size:16px}.pft small{color:var(--muted);font-size:13px}.pft i{font-style:normal;font-weight:800;color:var(--green)}
+.pfc p{margin:0;font-size:15px}.pfc img,.pfc video{width:100%;border-radius:10px;max-height:170px;object-fit:cover;background:#000}
+.proudtag{font-style:normal;font-weight:700;color:var(--gold);font-size:14px}
+.pff{padding:12px 22px;border-top:1.5px solid var(--line);font-weight:700}
+.parts{display:grid;gap:12px}.part{border:2px solid var(--line);border-radius:16px;background:var(--panel);padding:14px;display:grid;gap:8px}
+.ph{display:grid;grid-template-columns:62px 1fr;gap:12px;align-items:center}.psec{display:grid;place-items:center;height:52px;border-radius:12px;background:var(--ink);color:var(--paper);font:800 18px var(--mono)}.ph b{display:block;font-size:19px}.ph small{color:var(--muted);font-size:15px}
+.part textarea{font:inherit;font-size:16px;padding:9px 11px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box}
+.fit{font-size:13px;font-weight:700}.fit.ok{color:var(--green)}.fit.no{color:var(--onair)}
+.ptot{display:flex;justify-content:space-between;align-items:baseline;font-weight:700;font-size:18px}.ptot b{font:800 24px var(--mono)}
+.stagecard{padding:22px}.sthead{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.sthead b{font-family:var(--display);font-size:28px}.stclock{font:800 44px var(--mono)}
+.stcue{font-size:22px;line-height:1.4;margin:10px 0 14px;min-height:62px}.stbar{display:flex;gap:4px;height:16px}.stbar span{background:var(--paper);border:1.5px solid var(--line);border-radius:6px;overflow:hidden}.stbar span.done{background:var(--green)}.stbar span.now i{display:block;height:100%;background:var(--gold)}
+.awin{display:grid;gap:8px}.awr{display:grid;grid-template-columns:260px 1fr;gap:10px;align-items:center;font-weight:700}.awr input{font:inherit;font-size:16px;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink)}
+@media (max-width:600px){.awr{grid-template-columns:1fr}}
+#awC{width:100%;height:auto;border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+@media print{body.printpf *{visibility:hidden}body.printpf #pf,body.printpf #pf *{visibility:visible}body.printpf #pf{position:absolute;left:0;top:0;width:100%}body.printpf .pfc a.btn{display:none}}
 </style>
 <header class="top">
   <div class="wrap">
@@ -266,84 +288,76 @@ img.fprev{background:var(--paper)}
   </div>
 </header>
 <main class="wrap" id="stage">
-<section class="seg" id="seg-1" data-min="3" data-title="Launch week">
-  <div class="lower"><div class="no">01</div><div class="name"><h2>Launch week</h2><p>Period 1 · 3 minutes</p></div></div>
-  <p class="big">Your pages are ready. Next week both team websites go live for parents and the school: 🏫 School 2040 and 🌍 Planet 2050.</p>
+<section class="seg" id="seg-1" data-min="5" data-title="The Final Showcase" data-period="1">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>The Final Showcase</h2><p>Period 1 · 5 minutes · the biggest day of the course</p></div></div>
+  <p class="big">The principal and your parents are coming. You show them everything you created this year, and you present your school app live.</p>
   <div class="card" id="promise" style="border:2px solid var(--gold);background:var(--gold-soft);margin-bottom:16px" hidden><span class="tag">🔒 Your goal from Chapter 1</span><p class="big" style="margin:8px 0 10px" id="promiseT"></p><p style="margin:0 0 8px;font-weight:700">Did you do it?</p><div class="row" id="promiseA"></div><p class="muted" id="promiseR" style="margin:10px 0 0;font-size:15px"></p></div>
   <div class="grid g3">
-    <div class="card"><span class="tag">Two websites</span><p class="lead" style="margin:6px 0 0">Each team has a home page with a tile for every part. Click a tile, and you see that student's page.</p></div>
-    <div class="card"><span class="tag">Live on the big screen</span><p class="lead" style="margin:6px 0 0">On launch day, both team websites open on the big screens, live, for parents and guests.</p></div>
-    <div class="card"><span class="tag">You</span><p class="lead" style="margin:6px 0 0">Stand by your page and explain your part in 30 seconds.</p></div>
+    <div class="card"><span class="tag">📁 My AI Portfolio</span><p class="lead" style="margin:6px 0 0">All your creations, from Chapter 2 to Chapter 10, on one page.</p></div>
+    <div class="card"><span class="tag">🎤 The 3-minute pitch</span><p class="lead" style="margin:6px 0 0">The problem, your solution, a live demo, how you used AI, and the impact.</p></div>
+    <div class="card"><span class="tag">🏆 The awards</span><p class="lead" style="margin:6px 0 0">Not only “the best project”: there are 5 awards. Everyone has a chance.</p></div>
+  </div>
+  <div class="awards" id="awardList" style="margin-top:14px"></div>
+</section>
+
+<section class="seg" id="seg-2" data-min="20" data-title="My AI Portfolio" data-period="1" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>My AI Portfolio</h2><p>Period 1 · 20 minutes · it collects itself</p></div></div>
+  <p class="lead" style="margin:0 0 12px">The app collected your creations from every chapter. ⬜ means it's missing: open that chapter and finish it before the Showcase.</p>
+  <div class="pf" id="pf">
+    <div class="pfh"><small>EVERGREEN SCHOOL · AI CREATORS</small><b>My AI Journey</b><span id="pfWho"></span><em>From AI Beginner to AI Creator</em></div>
+    <div class="pfg" id="pfg"></div>
+    <div class="pff" id="pff"></div>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Make it yours</span>
+    <label class="ff" id="nameBox"><b>Your first name</b><input id="pfName" type="text" maxlength="30" placeholder="Your first name"></label>
+    <b style="display:block;margin-top:10px">The creation I'm most proud of</b><div class="chips" id="proud" style="margin-top:6px"></div>
+    <label class="ff" style="margin-top:10px"><b>In one sentence: what did you learn about AI this year?</b><input id="learned" type="text" maxlength="160" placeholder="e.g. AI is a powerful tool, but I decide, I check, and I am responsible."></label>
+    <div class="row" style="margin-top:12px"><button class="btn" id="pfPrint" type="button">🖨 Print or save as PDF</button></div>
   </div>
 </section>
 
-<section class="seg" id="seg-2" data-min="17" data-title="Mission: your pitch" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>Mission: write your 30-second pitch</h2><p>Period 1 · 17 minutes · on this page</p></div></div>
-  <div class="card" style="margin-bottom:16px"><span class="tag">1 · Build your pitch: choose, and it writes itself</span><div class="builder" id="pbB" style="margin-top:10px"></div><div class="power" id="pbP" style="margin-top:14px"></div><div class="row" style="margin-top:12px"><button class="btn" id="writePitch" type="button">Write my pitch</button></div></div>
-  <span class="tag">2 · Your pitch, line by line (change any words)</span>
-  <div class="mission">
-    <div class="pitchform">
-      <label class="ing"><span class="tag">1 · My part</span><input id="p1" placeholder="e.g. I designed the library of School 2040: the Story Cave."></label>
-      <label class="ing"><span class="tag">2 · What the AI did</span><input id="p2" placeholder="e.g. Gemini helped me with ideas and wrote the code, Adobe drew my pictures."></label>
-      <label class="ing"><span class="tag">3 · What I did</span><input id="p3" placeholder="e.g. I chose the ideas, made my pictures, built my page and fixed the AI's mistakes."></label>
-      <label class="ing"><span class="tag">4 · What surprised me</span><input id="p4" placeholder="e.g. The AI drew only boys in my library until I changed my prompt."></label>
-      <label class="ing"><span class="tag">5 · Try it!</span><input id="p5" placeholder="e.g. Take my quiz, or find my own idea on my page."></label>
-    </div>
-    <aside class="card side">
-      <span class="tag">Your pitch</span>
-      <p class="pitch" id="pitch"></p>
-      <p class="lead" style="margin:0"><span class="score" id="pWords">0 words</span> · about <span class="score" id="pSecs">0 s</span></p>
-      <div class="row"><button class="btn sm" id="pTimer" type="button">Practise: 30-second timer</button><b class="score" id="pClock">30</b></div>
-    </aside>
-  </div>
+<section class="seg" id="seg-3" data-min="20" data-title="My 3-minute pitch" data-period="1" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>My 3-minute pitch</h2><p>Period 1 · 20 minutes · about your school app</p></div></div>
+  <p class="big">You stand in front of the principal and the parents. 5 parts, 3 minutes. Write short notes, not a speech to read.</p>
+  <div class="parts" id="parts"></div>
+  <div class="card" style="margin-top:14px"><div class="ptot"><span>Total</span><b id="pTot"></b></div><p class="fb" id="pMsg" style="font-weight:700;margin:8px 0 0"></p></div>
 </section>
 
-<section class="seg" id="seg-3" data-min="15" data-title="Rehearse" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Rehearse in pairs</h2><p>Period 1 · 15 minutes</p></div></div>
-  <p class="big">Say your pitch to a partner with your page open on the screen. Then swap. Your partner checks these 4 things.</p>
+<section class="seg" id="seg-4" data-min="20" data-title="Rehearse" data-period="2" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Rehearse in pairs</h2><p>Period 2 · 20 minutes · with the timer</p></div></div>
+  <p class="big">Open your app, press Start, and pitch to a partner. The timer shows each part. Then swap.</p>
+  <div class="card stagecard"><div class="sthead"><b id="stPart">Ready?</b><span class="stclock" id="stClock">3:00</span></div><p class="stcue" id="stCue">Press Start. Each part has its own time.</p><div class="stbar" id="stBar"></div>
+    <div class="row" style="margin-top:12px"><button class="btn" id="stGo" type="button">▶ Start</button><button class="btn alt" id="stNext" type="button">Next part →</button></div></div>
+  <p class="ttl" style="margin-top:18px">Your partner checks</p>
   <ol class="checklist" id="rehearse"></ol>
 </section>
 
-<section class="seg" id="seg-4" data-min="10" data-title="Expo jobs" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Pick your Expo job</h2><p>Period 1 · 10 minutes · everyone also presents their own page</p></div></div>
+<section class="seg" id="seg-5" data-min="15" data-title="Showcase day" data-period="2" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Showcase day</h2><p>Period 2 · 15 minutes · the plan and your job</p></div></div>
+  <div class="runsheet" id="run"></div>
+  <p class="ttl" style="margin-top:18px">Pick your Showcase job (everyone also gives their pitch)</p>
   <div class="pick" id="jobs"></div>
   <p class="lead" id="jobMsg" style="margin-top:14px"></p>
-</section>
-
-<section class="seg" id="seg-5" data-min="45" data-title="Launch day" data-p="2" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Launch day: the run sheet</h2><p>Period 2 · 45 minutes · parents and guests</p></div></div>
-  <div class="runsheet" id="run"></div>
   <div class="card" style="margin-top:16px">
     <span class="tag">Host script (opening)</span>
-    <pre class="prompt" id="hostScript">Good morning everyone, and welcome to the AI Creators Exhibition!
-We are EB7, and this year we learned how AI really works.
-We trained AIs, caught them making mistakes, and used them as a tool to imagine a better future.
-Team 1 reinvented our school: welcome to School 2040.
-Team 2 designed the future of our planet: welcome to Planet 2050.
-Every idea was chosen by us, everything AI-made is labelled, and every fact was checked by us.
-Please put your phones on silent. Lights down: 3, 2, 1… our two websites are live!</pre>
+    <pre class="prompt" id="hostScript">Good morning everyone, and welcome to the AI Creators Final Showcase!
+We are EB7. This year we learned how AI works, when it can be wrong, and how to use it responsibly.
+We trained an AI, made an AI commercial, programmed a smart classroom, and analysed real data about our planet.
+And each of us found a real problem in our school, and built an app to solve it.
+Today you will see our portfolios, and each student will show you their app, live.
+Everything made with AI is labelled, and every fact was checked by us.
+Please put your phones on silent. Let's begin!</pre>
     <div class="row"><button class="btn sm copy" data-copy="hostScript" type="button">Copy host script</button></div>
   </div>
 </section>
 
-<section class="seg" id="seg-6" data-min="20" data-title="Teacher: build the platform" data-p="2" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>Teacher tool: build the two websites</h2><p>Before launch day · about 20 minutes</p></div></div>
-  <p class="lead">Add one line per student. This makes 3 pages: <b>index.html</b> (the entrance, with both teams), <b>school.html</b> and <b>planet.html</b> (a tile for every part).</p>
-  <div class="grid g2" style="align-items:start">
-    <div class="card">
-      <div class="crow head"><span>First name</span><span>Team and part</span><span>Folder / page file</span><span></span></div>
-      <div id="rows"></div>
-      <div class="row" style="margin-top:10px"><button class="btn sm alt" id="addRow" type="button">+ Add a student</button></div>
-      <div class="row" style="margin-top:12px"><button class="btn sm" id="copyIndex" type="button">Copy index.html</button><button class="btn sm" id="copySchool" type="button">Copy school.html</button><button class="btn sm" id="copyPlanet" type="button">Copy planet.html</button></div>
-    </div>
-    <div class="card">
-      <span class="tag">Preview</span>
-      <div class="hp" id="preview"></div>
-    </div>
-  </div>
-  <ol class="checklist" id="gh" style="margin-top:16px"></ol>
-  <pre id="homeCode" hidden></pre>
+<section class="seg" id="seg-6" data-min="10" data-title="Awards" data-period="2" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>The awards ceremony</h2><p>Period 2 · 10 minutes · for the teacher</p></div></div>
+  <p class="lead" style="margin:0 0 12px">Write the winner's first name for each award. A certificate appears: download it or print it.</p>
+  <div class="awin" id="awIn"></div>
+  <div class="card" style="margin-top:14px"><span class="tag">Certificate</span><div class="row" id="awPick" style="margin:8px 0 10px"></div><canvas id="awC" width="1200" height="850" aria-label="Award certificate"></canvas><div class="row" style="margin-top:10px"><a class="btn" id="awDl" download="AI-Creators-Award.png" href="#">⬇ Download certificate</a></div></div>
 </section>
+
 </main>
 <nav class="rail" aria-label="Lesson segments">
   <div class="wrap">
@@ -596,7 +610,7 @@ return {make, power, meter, join, missing, guard, show, lock};
 
 window.K = (function(){
 const $ = s => document.querySelector(s);
-const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => { if (c != null && c !== false) e.append(c); }); return e; };
 let PFX = "k";
 const store = { get(k){ try { return JSON.parse(localStorage.getItem(PFX + "-" + k)); } catch(e){ return null; } }, set(k, v){ try { localStorage.setItem(PFX + "-" + k, JSON.stringify(v)); } catch(e){} }, raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
 let segs = [], cur = 0, stepBtns = [], left = 0, tick = null, tt;
@@ -614,7 +628,7 @@ function go(i){
 function init(prefix, p2){
   PFX = prefix; segs = [...document.querySelectorAll(".seg")];
   const box = $("#steps");
-  segs.forEach((s, i) => { if (p2 && i === p2) box.append(el("span", {class:"pdiv", "aria-hidden":"true"}, "P2")); box.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))); });
+  segs.forEach((s, i) => { if (i && s.dataset.period !== segs[i - 1].dataset.period) box.append(el("span", {class:"pdiv", "aria-hidden":"true"}, "P" + s.dataset.period)); box.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))); });
   stepBtns = [...box.querySelectorAll(".step")];
   $("#prev").onclick = () => go(cur - 1); $("#next").onclick = () => go(cur + 1);
   addEventListener("keydown", e => { if (e.target.matches("textarea,input,select")) return; if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); });
@@ -644,121 +658,130 @@ return {$, el, store, init, start, toast, copy, checklist, TEAMS, me, picker, fi
 <script>
 (function(){
 const {$, el, store, copy, checklist} = K;
-K.init("ch9", 4);
-/* pitch */
-const P = store.get("pitch") || {};
-function drawPitch(){ const t = ["p1","p2","p3","p4","p5"].map(k => (P[k] || "").trim()).filter(Boolean).join(" ");
-  $("#pitch").textContent = t || "Fill in the 5 lines and your pitch appears here.";
-  const n = (t.match(/\S+/g) || []).length, s = Math.round(n / 2.5); $("#pWords").textContent = n + " words"; $("#pSecs").textContent = s + " s" + (s > 35 ? " (too long)" : ""); }
-["p1","p2","p3","p4","p5"].forEach(k => { $("#" + k).value = P[k] || ""; $("#" + k).addEventListener("input", () => { P[k] = $("#" + k).value; store.set("pitch", P); drawPitch(); }); });
-drawPitch();
-/* pitch builder: choose, and your pitch writes itself */
-const J = window.B.join, card = K.store.raw("ch3-card") || {}, ME = K.me(), TS = ME.T || K.TEAMS.school;
-const PSPEC = [
-  {id:"open", icon:"👋", title:"How do you start?", one:true, opts:["a question to the visitor","a surprising fact","\"Imagine…\"","a clap and a big welcome"]},
-  {id:"ai", icon:"🤖", title:"What did the AI do?", max:3, opts:["gave me ideas","drew my pictures","helped with my video script","wrote my quiz questions","wrote the code of my page"]},
-  {id:"me", icon:"🧑", title:"What did YOU do?", max:3, opts:["chose the best ideas","added my own crazy idea","built my web page step by step","fixed the AI's mistakes","checked the facts","made it fair for boys and girls"]},
-  {id:"wow", icon:"😮", title:"What surprised you?", one:true, opts:["the AI drew only boys at first","the AI invented a fact","the AI made strange hands","the AI did not know my idea until I explained it","the AI was fast, but my ideas were better"]},
-  {id:"try", icon:"👉", title:"What should visitors try?", one:true, opts:["explore my page","take my quiz","see my video plan","guess which picture is made by AI"]}
-];
-const PB = Object.assign({open:"", ai:[], me:[], wow:"", try:""}, store.get("pitchB") || {});
-let pbUI;
-function onPB(redraw){ store.set("pitchB", PB); if (redraw) pbUI.draw(); window.B.meter($("#pbP"), PSPEC, PB); window.B.lock($("#writePitch"), PSPEC, PB); }
-pbUI = window.B.make($("#pbB"), PSPEC, PB, onPB); window.B.meter($("#pbP"), PSPEC, PB); window.B.lock($("#writePitch"), PSPEC, PB);
-$("#writePitch").onclick = () => {
-  if (!window.B.guard(PSPEC, PB, $("#pbB"), K.toast)) return;
-  const what = card.name || "my design", place = TS.key === "planet" ? "a planet" : "a school";
-  const start = {"a question to the visitor":"Have you ever imagined " + place + " like this?", "a surprising fact":"Here is something surprising: " + (card.i1 ? card.i1.charAt(0).toLowerCase() + card.i1.slice(1) : "the future is closer than you think") + ".", "\"Imagine…\"":"Imagine " + what + ".", "a clap and a big welcome":"(clap) Welcome to the future!"}[PB.open];
-  const lines = {p1:start + " I designed " + what + " for " + TS.site + ".", p2:PB.ai.length ? "The AI " + J(PB.ai) + "." : "", p3:PB.me.length ? "But I " + J(PB.me) + "." : "", p4:PB.wow ? "What surprised me: " + PB.wow + "." : "", p5:PB.try ? "Now you try: " + PB.try + "!" : ""};
-  Object.entries(lines).forEach(([k, v]) => { P[k] = v; $("#" + k).value = v; });
-  store.set("pitch", P); drawPitch(); K.toast("Your pitch is ready. Change any words to make it sound like you.");
-};
+K.init("ch9");
+const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 11:6, 12:7, 14:8, 15:9, 16:10, 9:11})[n] || n;
+const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
+const nw = t => (String(t || "").trim().match(/\S+/g) || []).length;
+const strip = t => String(t || "").trim().replace(/[.!]+$/, "");
 
-let pt = null;
-$("#pTimer").onclick = () => { if (pt){ clearInterval(pt); pt = null; $("#pTimer").textContent = "Practise: 30-second timer"; $("#pClock").textContent = "30"; return; }
-  let s = 30; $("#pTimer").textContent = "Stop"; pt = setInterval(() => { s--; $("#pClock").textContent = s; if (s <= 0){ clearInterval(pt); pt = null; $("#pClock").textContent = "Time!"; $("#pTimer").textContent = "Practise again"; } }, 1000); };
-checklist("rehearse", [
-  ["Under 30 seconds", "Your partner times you."],
-  ["Loud and clear", "Could your partner hear every word?"],
-  ["Shows the screen", "You point at your page while you talk."],
-  ["Says who did what", "You say clearly what the AI did and what you did."]
-]);
-/* jobs */
-const JOBS = [["Host","Opens the exhibition with the host script and launches the two websites."],["Tech crew","Opens both team websites on the big screens and keeps them running."],["Guide","Walks visitors through the School 2040 zone and the Planet 2050 zone."],["Live demo","Builds a page live from a visitor's idea with Gemini Canvas."],["AI challenge booth","Parents teach a drawing AI (Chapter 3) and play Fake or Real."],["Greeter","Welcomes guests at the door and gives them the website link."]];
-let job = store.get("job");
-function drawJobs(){ $("#jobs").replaceChildren(...JOBS.map(([n, d]) => el("button", {class:"segcard", type:"button", "aria-pressed": String(job === n), onclick:() => { job = n; store.set("job", n); drawJobs(); }}, el("strong", null, n), el("span", null, d)))); $("#jobMsg").textContent = job ? "Your job: " + job + ". Tell your teacher." : "Two or three students per job. Everyone also stands by their own page."; }
-drawJobs();
-/* run sheet */
-const RUN = [["0:00","Welcome","Hosts read the opening script."],["0:04","Launch!","Countdown 3-2-1: tech crew opens the School 2040 website, then the Planet 2050 website, on the big screens."],["0:10","Gallery walk","Visitors walk through both zones while both websites stay open on the big screens. Each student gives their 30-second pitch with their page open."],["0:28","Live demo","A visitor suggests an idea; the demo team designs it live with one prompt."],["0:36","AI challenge","Visitors try to fool the recycling robot and vote in Fake or Real. The class explains bias and the 4 S check."],["0:43","Thank you","Hosts thank guests and give everyone the website link."]];
+/* 1 the awards */
+const AWARDS = [["💡", "Best Innovation", "The most original idea for the school."], ["🎬", "Best AI Media Creator", "The best AI commercial: poster, voice and video."], ["🧩", "Best Problem Solver", "Found the real root cause, and an app that really solves it."], ["🌍", "Best Environmental Solution", "The best data and impact plan for our planet."], ["🎤", "Best Presentation", "The clearest, most confident 3-minute pitch."]];
+$("#awardList").replaceChildren(...AWARDS.map(([i, n, d]) => el("div", {class:"aw"}, el("span", null, i), el("b", null, n), el("small", null, d))));
+
+/* 2 the portfolio: collected from every chapter */
+const ME = Object.assign({name:"", proud:"", learned:""}, store.get("pf") || {});
+const saveMe = () => store.set("pf", ME);
+const sessName = () => { const a = raw("ai-lab-session"); return a && a.name ? String(a.name).trim().split(/\s+/)[0] : ""; };
+let FILES = [];
+const file = s => FILES.find(f => f.slot === s);
+function items(){
+  const lic = file("license"), con = raw("ch13-contract") || {};
+  const lab = raw("ch2-lab") || {}, nm = (lab.names || []).filter(x => (x || "").trim());
+  const fc = raw("ch3-creation") || {};
+  const inv = raw("ch11-inv") || {}, poster = file("big"), video = file("video");
+  const sc = raw("ch12-sc") || {}, smart = file("smart");
+  const br = raw("ch14-brief") || {}, app = file("page"), app1 = file("app1"), ap = raw("ch15-app") || {};
+  const pl = raw("ch16-pl") || {}, rep = raw("ch16-rep") || {};
+  const plOk = pl.m && Array.isArray(pl.d) && pl.d.every(x => isFinite(parseFloat(x)));
+  const plTot = plOk ? pl.d.reduce((a, x) => a + parseFloat(x), 0) : 0, PU = {water:"L", energy:"kWh", food:"kg", air:"cars"}[pl.m] || "";
+  return [
+    ["license", "🪪", "AI Driving License", 13, !!lic || !!con.signed, lic ? "Saved in my folder." : con.signed ? "Charter signed. Save the license in Chapter 2." : "", lic],
+    ["model", "🧠", "My Trained AI Model", 2, !!lab.done, lab.done ? "It recognises: " + nm.join(", ") + (lab.pct !== undefined && lab.pct !== "" ? " · test: " + lab.pct + "%" : "") + "." : "", null],
+    ["plan", "💬", "My AI-Generated Plan", 3, !!(fc.title && (fc.top || []).some(x => (x || "").trim())), fc.title ? "“" + fc.title + "”" + ((fc.top || []).filter(Boolean).length ? ": " + (fc.top || []).filter(Boolean).join(" · ") : "") : "", null],
+    ["ad", "🎬", "My AI Commercial", 11, !!video || !!poster, (inv.name ? inv.name + (inv.slogan ? ": “" + inv.slogan + "”" : "") + ". " : "") + (video ? "Video saved." : poster ? "Poster saved, video missing." : ""), video || poster],
+    ["smart", "🏫", "My Smart System", 12, !!smart, smart ? "My smart classroom program, built with Gemini." : "", smart],
+    ["app", "🚀", "My School Application", 15, !!app, (br.problem ? "Problem: " + strip(br.problem) + ". " : "") + (app ? "Version 2 saved" + (app1 ? ", Version 1 too." : ".") : ap.v1 ? "Version 1 only." : ""), app],
+    ["planet", "🌍", "My Planet Impact Report", 16, !!(plOk && nw(rep.sol) >= 4), plOk ? "Weekly total: " + Math.round(plTot * 10) / 10 + " " + PU + ", target −" + (pl.pct || 30) + "%" + (rep.sol ? ". Solution: " + strip(rep.sol) : "") + "." : "", null]
+  ];
+}
+function preview(f){ if (!f) return null; const u = F.url(f.path);
+  if (/^image\//.test(f.mime)) return el("img", {src:u, alt:f.label, loading:"lazy"});
+  if (/^video\//.test(f.mime)) return el("video", {src:u, controls:"", preload:"metadata"});
+  return el("a", {class:"btn sm alt", href:F.link(f), target:"_blank", rel:"noopener"}, "▶ Open it"); }
+function drawPF(){
+  const nm = sessName() || ME.name.trim();
+  $("#nameBox").hidden = !!sessName(); $("#pfWho").textContent = (nm || "Your name") + " · Grade 7";
+  const L = items(), n = L.filter(x => x[4]).length;
+  $("#pfg").replaceChildren(...L.map(([k, ic, t, ch, ok, sum, f]) => el("div", {class:"pfc" + (ok ? " ok" : "") + (ME.proud === k ? " star" : "")},
+    el("div", {class:"pft"}, el("span", null, ic), el("div", null, el("b", null, t), el("small", null, k === "app" ? "Chapters 8–9" : "Chapter " + DN(ch))), el("i", null, ok ? "✓" : "⬜")),
+    sum ? el("p", null, sum) : el("p", {class:"muted"}, "Not found yet."), ok ? preview(f) : el("a", {class:"btn sm alt", href:"ch" + ch + ".html"}, "Open Chapter " + DN(ch) + " →"), ME.proud === k ? el("em", {class:"proudtag"}, "⭐ Most proud") : null)));
+  $("#pff").textContent = (n + " of 7 creations") + (ME.learned.trim() ? " · “" + ME.learned.trim() + "”" : "");
+  $("#proud").replaceChildren(...L.map(([k, ic, t]) => el("button", {class:"chip", type:"button", "aria-pressed":String(ME.proud === k), onclick:() => { ME.proud = k; saveMe(); drawPF(); }}, ic + " " + t)));
+}
+$("#pfName").value = ME.name; $("#pfName").addEventListener("input", () => { ME.name = $("#pfName").value; saveMe(); drawPF(); });
+$("#learned").value = ME.learned; $("#learned").addEventListener("input", () => { ME.learned = $("#learned").value; saveMe(); drawPF(); });
+$("#pfPrint").onclick = () => { document.body.classList.add("printpf"); window.print(); setTimeout(() => document.body.classList.remove("printpf"), 500); };
+async function loadFiles(){ try { FILES = F.on() && sessName() ? await F.list(true) : []; } catch(e){ FILES = []; } drawPF(); }
+drawPF(); F.ready().then(loadFiles);
+
+/* 3 the 3-minute pitch */
+const br = raw("ch14-brief") || {}, pj = raw("ch15-proj") || {};
+const B2 = k => strip(pj[k] || br[k]);
+const PARTS = [["p1", "The problem", 30, "What problem did I discover?", "e.g. In our school, " + (B2("problem") ? B2("problem").replace(/^[A-Z]/, c => c.toLowerCase()) : "students lose their belongings") + ". I found out why: " + (B2("root") ? B2("root").replace(/^[A-Z]/, c => c.toLowerCase()) : "…") + "."],
+  ["p2", "My solution", 30, "What did I decide to create?", "e.g. I built " + (B2("solution") ? B2("solution").replace(/^[A-Z]/, c => c.toLowerCase()) : "an app") + ", for " + (B2("user") || "students").toLowerCase() + "."],
+  ["p3", "Live demonstration", 60, "Let me show you how it works.", "e.g. 1) I open the app. 2) I click “" + (B2("f1") || "the first button") + "”. 3) I show " + (B2("f2") || "the second feature").replace(/^[A-Z]/, c => c.toLowerCase()) + "."],
+  ["p4", "How I used AI", 30, "What did AI help me do? What did I do myself?", "e.g. Gemini wrote the code and asked me good questions. I chose the problem, tested it with a classmate and made Version 2."],
+  ["p5", "Impact and future", 30, "How can my project help others?", "e.g. If the school uses it, students will find their things in under 2 minutes. Next, I want to add…"]];
+const P = store.get("pitch") || {};
+const PW = 2.2;   /* words per second, speaking calmly */
+function drawParts(){
+  $("#parts").replaceChildren(...PARTS.map(([k, t, s, q, ph], i) => { const ta = el("textarea", {rows:"3", placeholder:ph}); ta.value = P[k] || ""; const f = el("small", {class:"fit"});
+    const fit = () => { const w = nw(ta.value), mx = Math.round(s * PW * (k === "p3" ? .6 : 1)); f.textContent = !w ? "Max about " + mx + " words" : w + " words · " + (w <= mx ? "fits " + s + " s ✓" : "too long for " + s + " s"); f.className = "fit " + (!w ? "" : w <= mx ? "ok" : "no"); };
+    ta.oninput = () => { P[k] = ta.value; store.set("pitch", P); fit(); tot(); }; fit();
+    return el("div", {class:"part"}, el("div", {class:"ph"}, el("span", {class:"psec"}, s + "s"), el("div", null, el("b", null, (i + 1) + " · " + t), el("small", null, q))), ta, f); }));
+  tot();
+}
+function tot(){ const all = PARTS.filter(([k]) => nw(P[k]) >= 6).length; $("#pTot").textContent = "3:00 · " + all + " of 5 parts";
+  $("#pMsg").textContent = all < 5 ? "Write notes for every part (6+ words each)." : "✓ Your pitch is ready. Now rehearse it with the timer."; $("#pMsg").style.color = all < 5 ? "var(--muted)" : "var(--green)"; }
+drawParts();
+
+/* 4 rehearse with a timer that walks through the 5 parts */
+let st = null;
+function stDraw(i, left){ const p = PARTS[i]; $("#stPart").textContent = p ? (i + 1) + " · " + p[1] : "🎉 Time! Well done.";
+  $("#stCue").textContent = p ? (strip(P[p[0]]) || p[3]) : "Now your partner checks the list below.";
+  const total = PARTS.reduce((a, x) => a + x[2], 0), done2 = PARTS.slice(0, i).reduce((a, x) => a + x[2], 0) + (p ? p[2] - left : 0), r = total - done2;
+  $("#stClock").textContent = Math.floor(r / 60) + ":" + String(r % 60).padStart(2, "0");
+  $("#stBar").replaceChildren(...PARTS.map((x, j) => el("span", {style:"flex:" + x[2] + " 1 0", class:j < i ? "done" : j === i ? "now" : ""}, el("i", {style:j === i && p ? "width:" + ((p[2] - left) / p[2] * 100) + "%" : ""})))); }
+function stStop(){ clearInterval(st && st.t); st = null; $("#stGo").textContent = "▶ Start"; }
+$("#stGo").onclick = () => { if (st){ stStop(); stDraw(0, PARTS[0][2]); return; } st = {i:0, left:PARTS[0][2]}; $("#stGo").textContent = "⏹ Stop"; stDraw(0, st.left);
+  st.t = setInterval(() => { st.left--; if (st.left <= 0){ st.i++; if (st.i >= PARTS.length){ stDraw(PARTS.length, 0); stStop(); return; } st.left = PARTS[st.i][2]; } stDraw(st.i, st.left); }, 1000); };
+$("#stNext").onclick = () => { if (!st) return; st.i++; if (st.i >= PARTS.length){ stDraw(PARTS.length, 0); stStop(); return; } st.left = PARTS[st.i][2]; stDraw(st.i, st.left); };
+stDraw(0, PARTS[0][2]);
+checklist("rehearse", [["About 3 minutes", "The timer shows it: not much shorter, not much longer."], ["The live demo works", "The app opens and the buttons work on the screen."], ["Says who did what", "Clearly says what AI did, and what YOU did and decided."], ["Loud, clear, looks at the audience", "Not reading the notes word by word."]]);
+
+/* 5 showcase day */
+const RUN = [["0:00", "Welcome", "The hosts read the opening script."], ["0:05", "The pitches", "Each student: a 3-minute pitch with a live demo of their app on the big screen, then 1 or 2 questions."], ["", "Portfolio gallery", "Between pitches, guests walk around and look at the printed portfolios."], ["End −15", "Awards ceremony", "5 awards: Best Innovation, Best AI Media Creator, Best Problem Solver, Best Environmental Solution, Best Presentation."], ["End −5", "Thank you", "Hosts thank the guests. Photos only of the projects, never of students without permission."]];
 $("#run").replaceChildren(...RUN.map(([t, n, d]) => el("div", {class:"runrow"}, el("time", null, t), el("div", null, el("b", null, n), el("span", null, d)))));
+const JOBS = [["Host", "Opens the Showcase with the host script and introduces each student."], ["Tech crew", "Opens each student's app on the big screen before their pitch."], ["Timekeeper", "Shows a sign at 30 seconds left, so every pitch stays at 3 minutes."], ["Greeter", "Welcomes the guests at the door and shows them the portfolio gallery."], ["Award presenter", "Reads the award names and gives the certificates."]];
+let job = store.get("job");
+function drawJobs(){ $("#jobs").replaceChildren(...JOBS.map(([n, d]) => el("button", {class:"segcard", type:"button", "aria-pressed":String(job === n), onclick:() => { job = n; store.set("job", n); drawJobs(); }}, el("strong", null, n), el("span", null, d))));
+  $("#jobMsg").textContent = job ? "Your job: " + job + ". You also give your own 3-minute pitch." : "Choose one job."; }
+drawJobs();
 document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => { const s = document.getElementById(b.dataset.copy); copy(s.textContent, s, "your notes"); }));
-/* two websites builder */
-const TEAMS = K.TEAMS;
-const rows = store.get("rows3") || [{n:"Sara", t:"school", p:"The library", f:"sara42/page.html"},{n:"Karim", t:"planet", p:"Water", f:"karim17/page.html"},{n:"Lea", t:"planet", p:"Clean energy", f:"lea08/page.html"}];
-const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const CSS = `body{margin:0;font-family:system-ui,sans-serif;background:#F4F6F2;color:#13221C}
-header{padding:22px 16px;color:#fff}header a{color:#fff}
-h1{margin:0;font-size:32px}header p{margin:4px 0 0;opacity:.9}
-main{max-width:1100px;margin:0 auto;padding:20px 16px 40px}
-video{width:100%;border-radius:14px;background:#000;display:block}
-.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));margin-top:16px}
-.tile{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid #D7DFD9;border-radius:14px;padding:16px;color:inherit;text-decoration:none}
-.tile:hover{border-color:#1E7A55}.tile b{font-size:20px}.tile span{color:#56665E}.tile em{margin-top:8px;color:#1E7A55;font-style:normal;font-weight:700}
-.big{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-.door{display:block;border-radius:18px;padding:28px;color:#fff;text-decoration:none}.door b{font-size:30px;display:block}.door span{font-size:18px}
-footer{text-align:center;color:#56665E;font-size:14px;padding:20px}`;
-const COL = {school:"#1E7A55", planet:"#1F5FA8"};
-function page(title, body){ return `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${title}</title>
-<style>
-${CSS}
-</style></head><body>
-${body}
-<footer>Made by EB7 with AI · everything AI-made is labelled · every fact checked by us</footer>
-</body></html>`; }
-function teamHTML(t){
-  const T = TEAMS[t];
-  const tiles = rows.filter(r => r.t === t && r.n && r.f).map(r => `    <a class="tile" href="${esc(r.f)}"><b>${esc(r.p)}</b><span>by ${esc(r.n)}</span><em>Open →</em></a>`).join("\n");
-  return page(T.site, `<header style="background:${COL[t]}"><a href="index.html">← AI Creators</a><h1>${T.emoji} ${T.site}</h1><p>${T.name}: ${T.goal}</p></header>
-<main>
-  <h2>Our parts</h2>
-  <div class="grid">
-${tiles}
-  </div>
-</main>`);
+
+/* 6 award certificates (the teacher types the winners) */
+const AW = store.get("awards") || {};
+let awI = 0;
+$("#awIn").replaceChildren(...AWARDS.map(([ic, n], i) => { const x = el("input", {type:"text", maxlength:"30", placeholder:"Winner's first name", value:AW[i] || ""}); x.oninput = () => { AW[i] = x.value; store.set("awards", AW); awI = i; drawCert(); drawAwPick(); };
+  return el("label", {class:"awr"}, el("span", null, ic + " " + n), x); }));
+function drawAwPick(){ $("#awPick").replaceChildren(...AWARDS.map(([ic, n], i) => el("button", {class:"btn sm" + (awI === i ? "" : " alt"), type:"button", onclick:() => { awI = i; drawAwPick(); drawCert(); }}, ic + " " + n))); }
+function drawCert(){
+  const c = $("#awC"), g = c.getContext("2d"), W = c.width, H = c.height, [ic, n, d] = AWARDS[awI], who = (AW[awI] || "").trim() || "…";
+  g.fillStyle = "#FBF7EE"; g.fillRect(0, 0, W, H); g.strokeStyle = "#B7791F"; g.lineWidth = 14; g.strokeRect(30, 30, W - 60, H - 60); g.lineWidth = 3; g.strokeRect(54, 54, W - 108, H - 108);
+  g.textAlign = "center"; g.fillStyle = "#1E7A55"; g.font = "700 26px Arial, sans-serif"; g.fillText("EVERGREEN SCHOOL · AI CREATORS · EB7", W / 2, 130);
+  g.font = "90px 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif"; g.fillText(ic, W / 2, 250);
+  g.fillStyle = "#13221C"; g.font = "800 64px Georgia, serif"; g.fillText(n, W / 2, 350);
+  g.fillStyle = "#56665E"; g.font = "28px Arial, sans-serif"; g.fillText("is presented to", W / 2, 420);
+  g.fillStyle = "#B7791F"; g.font = "800 76px Georgia, serif"; g.fillText(who, W / 2, 520);
+  g.fillStyle = "#13221C"; g.font = "28px Arial, sans-serif"; g.fillText(d, W / 2, 590);
+  g.fillStyle = "#56665E"; g.font = "24px Arial, sans-serif"; g.fillText("Final Showcase · " + new Date().toLocaleDateString("en-GB", {day:"numeric", month:"long", year:"numeric"}), W / 2, 700);
+  try { $("#awDl").href = c.toDataURL("image/png"); $("#awDl").download = "Award-" + n.replace(/\s+/g, "-") + ".png"; } catch(e){}
 }
-function indexHTML(){
-  return page("AI Creators · EB7", `<header style="background:#13221C"><h1>AI Creators · EB7</h1><p>Two teams imagined a better future with AI.</p></header>
-<main>
-  <div class="big">
-    <a class="door" style="background:${COL.school}" href="school.html"><b>🏫 School 2040</b><span>Reinvent the School</span></a>
-    <a class="door" style="background:${COL.planet}" href="planet.html"><b>🌍 Planet 2050</b><span>The Future of Our Planet</span></a>
-  </div>
-</main>`);
-}
-function drawRows(){
-  $("#rows").replaceChildren(...rows.map((r, i) => { const inp = (k, ph) => { const x = el("input", {placeholder:ph, "aria-label":ph + " " + (i + 1)}); x.value = r[k] || ""; x.addEventListener("input", () => { r[k] = x.value; save(); }); return x; };
-    const s = el("select", {"aria-label":"Team and part " + (i + 1)}, ...Object.values(TEAMS).map(T => el("optgroup", {label:T.site}, ...T.parts.map(([p]) => el("option", {value:T.key + "|" + p, selected: r.t === T.key && r.p === p ? "" : null}, T.emoji + " " + p)))));
-    s.addEventListener("change", () => { const [t, p] = s.value.split("|"); r.t = t; r.p = p; save(); });
-    return el("div", {class:"crow"}, inp("n", "First name"), s, inp("f", "username/page.html"), el("button", {class:"ghost", type:"button", "aria-label":"Remove student " + (i + 1), onclick:() => { rows.splice(i, 1); drawRows(); save(); }}, "✕")); }));
-}
-function save(){ store.set("rows3", rows);
-  $("#preview").replaceChildren(...["school","planet"].map(t => el("div", {style:"margin-bottom:10px"}, el("div", {class:"hp-top", style:"background:" + COL[t]}, el("span", null, TEAMS[t].emoji + " " + TEAMS[t].site)),
-    el("div", {class:"hp-grid"}, ...rows.filter(r => r.t === t && r.n).map(r => el("div", {class:"hp-tile"}, el("b", null, r.p), el("span", null, "by " + r.n))))))); }
-$("#addRow").onclick = () => { rows.push({n:"", t:"school", p:TEAMS.school.parts[0][0], f:""}); drawRows(); save(); };
-$("#copyIndex").onclick = () => copy(indexHTML(), null, "a file called index.html");
-$("#copySchool").onclick = () => copy(teamHTML("school"), null, "a file called school.html");
-$("#copyPlanet").onclick = () => copy(teamHTML("planet"), null, "a file called planet.html");
-drawRows(); save();
-checklist("gh", [
-  ["Collect the folders", "On the teacher page (#teacher), open Student folders and press Download all folders. Unzip it: you get one folder per student, named with their username, with page.html and their pictures inside."],
-  ["Create the repo", "On github.com, create a public repository called ai-creators."],
-  ["Upload everything", "Add file, then Upload files: drag in all student folders. Commit."],
-  ["Add the 3 home pages", "Press Copy index.html above. On GitHub: Add file, Create new file, name it index.html, paste, Commit. Do the same for school.html and planet.html."],
-  ["Switch it on", "Settings, then Pages: deploy from the main branch, root folder. After 1 to 2 minutes the websites are live at yourname.github.io/ai-creators."],
-  ["Test on a phone", "Open the link on a phone. Do both doors work? Does every tile open its page? Do the pictures show?"]
-]);
+drawAwPick(); drawCert();
+
+/* when a section opens, show the newest work */
+const mo = new MutationObserver(ms => ms.forEach(m => { if (!m.target.hidden && m.target.id === "seg-2") loadFiles(); }));
+document.querySelectorAll("section.seg").forEach(sec => mo.observe(sec, {attributes:true, attributeFilter:["hidden"]}));
 /* the goal the student wrote in Chapter 1 comes back */
 (function(){ let t = ""; try { t = localStorage.getItem("meet-ai-idea") || ""; t = JSON.parse(t); } catch(e) {} if (typeof t !== "string" || !t.trim()) return;
   $("#promise").hidden = false; $("#promiseT").textContent = "“" + t.trim() + "”";
