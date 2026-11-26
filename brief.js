@@ -2,7 +2,7 @@
    a reminder at the top of every mission, and the project strip (what you have, what you make today). */
 (function(){
   const CH = +((location.pathname.match(/ch(\d+)\.html/) || [])[1] || 0);
-  const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 5:6, 11:7, 12:8, 14:9, 15:10, 16:11, 8:12, 9:13})[n] || n; /* file number → chapter number (AI Explorers, 13 chapters) */
+  const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 11:6, 12:7, 14:8, 15:9, 16:10, 8:11, 9:12})[n] || n; /* file number → chapter number (AI Explorers, 12 chapters) */
   const B = {
     1:{goal:"Discover what AI really is, and choose your part of the project.",
        make:[["🧭", "Your team and your part"], ["💡", "Your first idea for it"]],
@@ -15,11 +15,8 @@
        missions:{3:"Train your AI, give it the exam, then let a friend test it. Your output: its scores.", 7:"Your output: your AI Trainer certificate 🏅"}},
     3:{goal:"Become a prompt engineer: give AI clear, smart instructions.", make:[], steps:[], done:"",
        missions:{4:"Your output: a pro prompt (6 of 6), tested in Gemini.", 5:"Your output: 3 prompts, 3 answers, and your stars for each."}},
-    5:{goal:"Make 3 to 5 AI pictures of your design, and save them in your folder.",
-       make:[["🖼️", "3 to 5 pictures you choose (big picture, close-up, character…)"]],
-       steps:["Spot what the AI decides by itself", "Learn the 5 ingredients of a picture prompt", "Choose which pictures you will make", "For each picture: click, copy, make it in Adobe Express, download", "Save each picture with ⬆ Upload"],
-       done:"Every picture you chose is saved in your folder (green ✓). You cannot go on before that.",
-       missions:{3:"Your output: your pictures, saved in your folder."}},
+    11:{goal:"Make AI pictures with strong prompts, then your own 30-second AI video.", make:[], steps:[], done:"",
+       missions:{3:"Your output: your best AI picture, saved in your folder.", 7:"Your output: your 30-second video: your storyboard and script, made by the AI."}},
     8:{goal:"Build your own website with a strong prompt, and get your own link.",
        make:[["🌐", "Your website: about you, your dream job or your football team"], ["🔗", "Your own link to share"]],
        steps:["Learn what makes a website prompt strong", "Choose your topic", "Fill in your details, add your pictures, choose a style and colours: you see it change live", "Publish it and get your link", "A classmate tests it, you make it better"],
@@ -48,12 +45,12 @@
   document.head.append(css);
   const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.textContent = h; return e; };
   /* the 7 pieces of every student's project */
-  const PIECES = [["card", "📝", "Design card", 3], ["pics", "🖼️", "Pictures", 5], ["page", "🌐", "Website", 8], ["pitch", "🎤", "Pitch", 9]];
+  const PIECES = [["card", "📝", "Design card", 3], ["pics", "🖼️", "Pictures", 11], ["page", "🌐", "Website", 8], ["pitch", "🎤", "Pitch", 9]];
   async function have(){
     const c = raw("ch3-card") || {}, s = raw("ch4-story") || {}, p = raw("ch9-pitch") || {};
     const h = {card:!!(c.name && c.i1 && c.i2 && c.i3), story:!!((s.title || "").trim() && words(s.text) >= 40), pitch:["p1", "p2", "p3", "p4", "p5"].filter(k => (p[k] || "").trim()).length >= 4};
     if (window.F && window.F.on && window.F.on() && raw("ai-lab-session")){
-      try { const fs = await window.F.list(true), k = raw("ch5-pics"), want = Array.isArray(k) && k.length ? k : ["big", "close", "char"], ok = x => fs.some(f => f.slot === x);
+      try { const fs = await window.F.list(true), k = null, want = ["big"], ok = x => fs.some(f => f.slot === x);
         h.pics = want.every(ok); h.page = ok("page"); } catch(e){}
     }
     return h;

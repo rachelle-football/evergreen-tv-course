@@ -1,8 +1,13 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}.ingr{display:grid;gap:12px;margin-top:8px}
+.ing2{display:grid;gap:4px;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:10px 12px}
+.ing2 b{font-size:18px}.ing2 .q{font-size:15px;color:var(--muted)}
+.ing2 input{font:inherit;font-size:17px;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink)}
+.chips.sm .chip{padding:5px 12px;font-size:14px}
+</style>
 </head><body>
-<title>Voice, Audio and Video</title>
+<title>AI Media Studio</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -440,7 +445,7 @@ img.fprev{background:var(--paper)}
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 7: Voice, Audio and Video</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 6: AI Media Studio</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -449,8 +454,100 @@ img.fprev{background:var(--paper)}
 </header>
 <main class="wrap" id="stage">
 <!-- 1 discover -->
-<section class="seg" id="seg-1" data-min="5" data-title="Who is speaking?">
-  <div class="lower"><div class="no">01</div><div class="name"><h2>Who is speaking?</h2><p>5 minutes · discover</p></div></div>
+<section class="seg" id="seg-1" data-min="5" data-title="Spot the AI's choices" data-period="1">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>Spot the AI's choices</h2><p>Period 1 · 5 minutes · warm-up</p></div></div>
+  <p class="big">We asked an AI for a picture. It gave us four in ten seconds. Look closely: what did it decide by itself?</p>
+  <div class="card">
+    <span class="tag">Our prompt</span>
+    <p class="quote" style="font-size:19px">"Bright cartoon TV news studio for a school sports show, a big screen showing a football, a desk with a microphone, colorful, fun, for kids"</p>
+    <img src="adobe-test.jpg" alt="Four AI-made cartoon TV studios, each with an oval American football on the screen and a boy presenter at the desk" class="shot">
+    <p class="muted" style="font-size:14px;margin:8px 0 0">Made with Adobe Express by our teacher, 10 November 2026.</p>
+  </div>
+  <div class="row" style="margin-top:14px"><button class="btn" id="spotBtn" type="button">Show what it decided</button></div>
+  <div class="grid g2" id="spot" hidden style="margin-top:14px">
+    <div class="card bad"><span class="tag">Choice 1 · the ball</span><p class="lead" style="margin:6px 0 0">The ball is oval: an <b>American</b> football. Most of the pictures it learned from come from America, where "football" means that game.</p></div>
+    <div class="card bad"><span class="tag">Choice 2 · the presenter</span><p class="lead" style="margin:6px 0 0">We never asked for a person. It added one anyway, and chose <b>a boy, four times out of four</b>.</p></div>
+  </div>
+</section>
+
+<section class="seg" id="seg-2" data-min="8" data-title="How image AI works" data-period="1" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>How an AI makes a picture</h2><p>Period 1 · 8 minutes · the lesson</p></div></div>
+  <div class="grid g2" style="align-items:start">
+    <div class="card">
+      <span class="tag">Watch: from noise to picture</span>
+      <canvas id="noise" width="360" height="240" aria-label="Random dots slowly turning into a picture of a sun over a hill"></canvas>
+      <div class="row" style="margin-top:10px"><button class="btn sm" id="denoise" type="button">Start</button><span class="muted" id="stepTxt" style="font-size:15px">Step 0 of 30</span></div>
+    </div>
+    <div>
+      <ol class="how-list">
+        <li><b>It studied millions of pictures with captions</b>, like "a red apple on a table".</li>
+        <li><b>It starts every new picture as random dots</b>, like TV snow.</li>
+        <li><b>Step by step, it cleans the dots</b> into something that matches your words.</li>
+        <li><b>Where your words are vague, it guesses</b> from what it saw most often. That is why it drew an American football and a boy.</li>
+      </ol>
+    </div>
+  </div>
+  <p class="lead" style="margin-top:16px">So your prompt must leave less to guess. A strong picture prompt has 5 ingredients:</p>
+  <div class="grid g5">
+    <div class="card part"><b>Subject</b><span>What is in it: "a round black and white soccer ball"</span></div>
+    <div class="card part"><b>Setting</b><span>Where: "a classroom full of plants"</span></div>
+    <div class="card part"><b>Style</b><span>Cartoon, 3D, watercolour, pixel art</span></div>
+    <div class="card part"><b>Light</b><span>Bright, sunset, neon, night</span></div>
+    <div class="card part"><b>Camera</b><span>Close-up, wide shot, from above</span></div>
+  </div>
+</section>
+
+<section class="seg" id="seg-3" data-min="25" data-title="Picture challenge" data-period="1" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Picture challenge: vague or precise?</h2><p>Period 1 · 25 minutes · you write the prompt</p></div></div>
+  <p class="big">Same idea, two prompts. Which picture will be closer to what YOU imagine?</p>
+  <div class="card">
+    <span class="tag">1 · The vague prompt</span>
+    <p class="quote" style="font-size:22px">"a robot at school"</p>
+    <p style="margin:0;font-size:17px">Close your eyes 5 seconds: what does YOUR robot look like? Where is it? With this prompt, the AI has to guess all of that.</p>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <span class="tag">2 · Your precise prompt: write the 5 ingredients yourself</span>
+    <div class="ingr" id="ingr"></div>
+    <div class="power" id="pcPower" style="margin-top:12px"></div>
+    <span class="tag" style="display:block;margin-top:12px">Your prompt</span>
+    <pre class="prompt small" id="pcOut"></pre>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <span class="tag">3 · Make both pictures</span>
+    <ol class="lead" style="margin:6px 0 10px;padding-left:22px">
+      <li><a class="btn sm" href="https://new.express.adobe.com/" target="adobe" rel="noopener">🎨 Open Adobe Express</a> and sign in with your school account.</li>
+      <li>Choose <b>Generate image</b> (text to image). Paste the vague prompt, then your prompt.</li>
+    </ol>
+    <div class="row"><button class="btn sm alt" id="copyVague" type="button">📋 Copy the vague prompt</button><button class="btn sm" id="copyMine" type="button">📋 Copy my prompt</button></div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <span class="tag">4 · Compare</span>
+    <p class="lead" style="margin:6px 0">Which picture is closer to what you imagined?</p>
+    <div class="row" id="cmp1"></div>
+    <p class="lead" style="margin:14px 0 6px">In the VAGUE picture, what did the AI decide by itself? Choose all you see.</p>
+    <div class="chips" id="cmp2"></div>
+    <p class="fb" id="cmpA" style="font-weight:700;margin:10px 0 0"></p>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <span class="tag">5 · Save your best picture</span>
+    <p style="margin:6px 0 10px;font-size:17px">Download your best picture from Adobe Express, then save it here, in your folder.</p>
+    <div id="slotBox"></div>
+  </div>
+</section>
+
+<section class="seg" id="seg-4" data-min="7" data-title="Bias check" data-period="1" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Bias check and share</h2><p>Period 1 · 7 minutes · the whole class</p></div></div>
+  <p class="big">Did the AI add people you did not ask for? Count them as a class.</p>
+  <div class="grid g3" id="countBox"></div>
+  <p class="lead" id="countMsg" style="margin-top:14px"></p>
+  <div class="card" style="margin-top:14px;background:var(--gold-soft);border-color:transparent">
+    <span class="tag">Remember</span>
+    <p class="lead" style="margin:6px 0 0">The AI fills every gap in your words with what it saw most often. Be precise, check what it decided, and fix it with your prompt. Next period: AI voices, and your own 30-second video.</p>
+  </div>
+</section>
+
+<section class="seg" id="seg-5" data-min="10" data-title="AI voices" data-period="2" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Who is speaking?</h2><p>Period 2 · 10 minutes · AI voices</p></div></div>
   <p class="big">Press play. Listen carefully. Who is talking?</p>
   <div class="card">
     <p class="prompt">“Hello Grade 7! Today you will plan your own 30-second video.”</p>
@@ -459,11 +556,6 @@ img.fprev{background:var(--paper)}
     <p class="fb" id="hookA" style="font-weight:700;font-size:18px;margin:10px 0 0"></p>
   </div>
   <div class="def" id="l1" hidden><span class="tag">Remember</span><p>A computer can turn written words into a voice. That voice is synthetic: made by a machine.</p></div>
-</section>
-
-<!-- 2 learn -->
-<section class="seg" id="seg-2" data-min="10" data-title="Voice, audio, video" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>AI for voice, audio and video</h2><p>10 minutes · learn</p></div></div>
   <div class="lesson">
     <div class="card"><span class="tag">🔊 Text-to-speech</span><p class="big2" style="font-size:26px">Text → voice</p><p style="margin:0">You type words, the computer reads them aloud. Used in GPS, audiobooks, and to help people who can't read a screen.</p></div>
     <div class="card"><span class="tag">📝 Speech-to-text</span><p class="big2" style="font-size:26px">Voice → text</p><p style="margin:0">You speak, the computer writes. Used for subtitles, voice messages and dictation on your phone.</p></div>
@@ -479,13 +571,11 @@ img.fprev{background:var(--paper)}
     </div>
     <p class="muted" style="margin:8px 0 0;font-size:15px">Change the speed and tone. Same words, different feeling. Nothing is recorded: the voice comes from your computer.</p>
   </div>
-  <p class="lead" style="margin:20px 0 0"><b>Key words.</b> Tap each one.</p>
-  <div class="vocab" id="vocab"></div>
+  <div class="card bad" style="margin-top:16px"><span class="tag">⚠️ Voices can be copied</span><p class="lead" style="margin:6px 0 0">AI can copy a real person's voice from a short recording, and make it "say" anything. Never copy or use someone's voice without their permission. Remember the fake voice message from “Mum” in Chapter 2?</p></div>
 </section>
 
-<!-- 3 watch -->
-<section class="seg" id="seg-3" data-min="8" data-title="Watch a storyboard" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Watch a storyboard come alive</h2><p>8 minutes · “One Small Way to Save Water”</p></div></div>
+<section class="seg" id="seg-6" data-min="7" data-title="Watch a storyboard" data-period="2" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>Watch a storyboard come alive</h2><p>Period 2 · 7 minutes · “One Small Way to Save Water”</p></div></div>
   <p class="big">A video = pictures + voice + subtitles, in the right order. First you plan it (storyboard). Then each part is made, often by AI, and put together.</p>
   <p class="ttl">1 · The plan (storyboard)</p>
   <div class="sboard" id="demoBoard"></div>
@@ -499,23 +589,14 @@ img.fprev{background:var(--paper)}
   <div class="card" style="margin-top:14px"><span class="tag">The idea</span><p style="margin:6px 0 0;font-size:18px">Before making a video, you <b>plan</b> it on paper: a storyboard. For each scene you write 2 things: <b>👁 what we see</b> and <b>🎙 what the narrator says</b>. 4 short scenes, about 70 words: that's 30 seconds. In your mission, you plan your own.</p></div>
 </section>
 
-<!-- 4 brain -->
-<section class="seg" id="seg-4" data-min="10" data-title="Brain challenge" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Brain challenge</h2><p>10 minutes · 3 games</p></div></div>
-  <div class="card"><span class="tag">Game 1 · Order the scenes</span><p style="margin:6px 0 10px;font-size:18px">A student made a 30-second video about saving water, but the 4 scenes got mixed up! Put them back in the right order.</p><div id="g1"></div></div>
-  <div class="card" style="margin-top:14px"><span class="tag">Game 2 · Choose the right tool</span><div class="sortg" id="g2" style="margin-top:10px"></div></div>
-  <div class="card" style="margin-top:14px"><span class="tag">Game 3 · Safety check</span><div class="sortg" id="g3" style="margin-top:10px"></div></div>
-</section>
-
-<!-- 5 create -->
-<section class="seg" id="seg-5" data-min="20" data-title="Mission: 30-second explainer" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: your 30-second explainer</h2><p>20 minutes · storyboard + script</p></div></div>
+<section class="seg" id="seg-7" data-min="23" data-title="Mission: your 30-second video" data-period="2" hidden>
+  <div class="lower"><div class="no">07</div><div class="name"><h2>Mission: your 30-second video</h2><p>Period 2 · 23 minutes · storyboard + script, then the AI makes it</p></div></div>
   <div class="card">
     <span class="tag">Step 1 · Your message</span>
     <div class="chips" id="vTopics" style="margin-top:8px"></div>
   </div>
   <p class="ttl" style="margin-top:18px">Step 2 · Plan your 4 scenes</p>
-  <p class="muted" id="myHow" style="margin:0 0 10px">For each scene: <b>1)</b> choose a picture, <b>2)</b> write what we see, <b>3)</b> write what the narrator says. The grey text is an example to help you: write your own words.</p>
+  <p class="muted" id="myHow" style="margin:0 0 10px">For each scene: <b>1)</b> choose a picture, <b>2)</b> write what we see, <b>3)</b> write what the narrator says. The grey text is an example to help you: write your own words. Tip: “what we see” is like a picture prompt, so be precise!</p>
   <p class="card" id="myWait" style="font-weight:700">👆 Choose your message in Step 1 first.</p>
   <div class="sboard edit" id="myBoard"></div>
   <div class="card" style="margin-top:14px">
@@ -527,12 +608,13 @@ img.fprev{background:var(--paper)}
   <div id="vBadge"></div>
 </section>
 
-<!-- 6 reflect -->
-<section class="seg" id="seg-6" data-min="5" data-title="Reflect" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>Quiz and reflect</h2><p>5 minutes</p></div></div>
-  <div class="qz" id="quiz"></div>
+<section class="seg" id="seg-8" data-min="5" data-title="Quiz and reflect" data-period="2" hidden>
+  <div class="lower"><div class="no">08</div><div class="name"><h2>Quiz and reflect</h2><p>Period 2 · 5 minutes</p></div></div>
+  <p class="lead" style="margin:0 0 6px"><b>Key words.</b> Tap each one.</p>
+  <div class="vocab" id="vocab"></div>
+  <div class="qz" id="quiz" style="margin-top:16px"></div>
   <div class="card reflect" style="margin-top:14px"><span class="tag">Exit ticket</span><label class="ttl" for="exit" style="display:block">Why must you ask before using someone's voice or face?</label><textarea id="exit" placeholder="Because…"></textarea></div>
-  <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Write a 4-scene storyboard for a school or environmental message. Use made-up characters, or ask permission before showing real people.</p></div>
+  <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Make one AI picture at home with a vague prompt, then with your 5 ingredients. Show both to your family: can they guess which prompt made which picture?</p></div>
   <p class="note">Next week: Algorithms and Coding.</p>
 </section>
 
@@ -617,7 +699,7 @@ window.PICKINDS = {
   inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
 };
 window.F = (function(){
-const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 5:6, 11:7, 12:8, 14:9, 15:10, 16:11, 8:12, 9:13})[n] || n; /* file number → chapter number (AI Explorers, 13 chapters) */
+const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 11:6, 12:7, 14:8, 15:9, 16:10, 8:11, 9:12})[n] || n; /* file number → chapter number (AI Explorers, 12 chapters) */
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
@@ -690,8 +772,8 @@ function slotBox(box, s, onDone){
 }
 /* the kid's whole folder: what should be in it, and what is saved */
 function plan(){
-  const kinds = raw("ch5-pics") || ["big","close","char"], K = window.PICKINDS || {};
-  return kinds.map(k => ({slot:k, label:(K[k] && K[k].label) || k, ch:5, accept:"image/*"})).concat([
+  const kinds = ["big"], K = window.PICKINDS || {};
+  return kinds.map(k => ({slot:k, label:k === "big" ? "My AI picture" : (K[k] && K[k].label) || k, ch:11, accept:"image/*"})).concat([
     {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
 }
 function folder(box, now){
@@ -912,14 +994,77 @@ K.init("ch11"); X.setup();
 const done = X.prog(4);
 const say = (t, o) => { if (!X.speak(t, o)) K.toast("Your browser can't read aloud here. Ask your teacher to show it on the board."); };
 
-/* 1 hook */
+
+/* ---------- PERIOD 1: pictures ---------- */
+/* 1 spot the AI's choices */
+$("#spotBtn").onclick = () => { $("#spot").hidden = false; };
+/* 2 noise to picture */
+(function(){
+  const cv = $("#noise"), cx = cv.getContext("2d"), W = cv.width, H = cv.height;
+  const target = document.createElement("canvas"); target.width = W; target.height = H;
+  const t = target.getContext("2d"), gr = t.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, "#8FD3FF"); gr.addColorStop(1, "#E9F7FF"); t.fillStyle = gr; t.fillRect(0, 0, W, H);
+  t.fillStyle = "#FFC93C"; t.beginPath(); t.arc(270, 70, 38, 0, 7); t.fill(); t.fillStyle = "#3E9B5C"; t.beginPath(); t.ellipse(120, 250, 220, 90, 0, 0, 7); t.fill(); t.fillStyle = "#2F7A47"; t.beginPath(); t.ellipse(330, 260, 160, 70, 0, 0, 7); t.fill();
+  t.fillStyle = "#C8352B"; t.fillRect(70, 150, 46, 36); t.fillStyle = "#7A3B1E"; t.beginPath(); t.moveTo(64, 152); t.lineTo(93, 128); t.lineTo(122, 152); t.fill();
+  const tgt = t.getImageData(0, 0, W, H).data; let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const noise = new Uint8ClampedArray(W * H * 4); for (let i = 0; i < noise.length; i += 4){ noise[i] = rnd() * 255; noise[i + 1] = rnd() * 255; noise[i + 2] = rnd() * 255; noise[i + 3] = 255; }
+  function frame(k){ const img = cx.createImageData(W, H), a = k / 30; for (let i = 0; i < noise.length; i++) img.data[i] = i % 4 === 3 ? 255 : noise[i] * (1 - a) + tgt[i] * a; cx.putImageData(img, 0, 0); $("#stepTxt").textContent = "Step " + k + " of 30"; }
+  frame(0); let running = false;
+  $("#denoise").onclick = () => { if (running) return; running = true; let k = 0; const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const go2 = () => { k++; frame(k); if (k < 30) setTimeout(go2, reduce ? 0 : 120); else { running = false; $("#denoise").textContent = "Again"; } }; go2(); };
+})();
+/* 3 picture challenge: the kid writes the 5 ingredients; the page only puts them together and checks them */
+const ING = [
+  ["subject", "🤖 Subject", "WHAT is in the picture? Describe your robot.", "e.g. a small round robot with blue lights and a red backpack", null],
+  ["setting", "📍 Setting", "WHERE is it, and what is it doing?", "e.g. helping kids plant seeds in a sunny classroom full of plants", null],
+  ["style", "🎨 Style", "What kind of picture?", "e.g. colourful 3D cartoon", ["colourful 3D cartoon", "watercolour painting", "pixel art", "realistic photo", "anime drawing", "clay animation"]],
+  ["light", "💡 Light", "What light?", "e.g. bright morning light", ["bright morning light", "golden sunset", "night with neon lights", "soft light after the rain"]],
+  ["camera", "🎥 Camera", "From where do we look?", "e.g. wide view", ["wide view", "close-up", "seen from above", "from a student's eyes"]]
+];
+const PC = Object.assign({subject:"", setting:"", style:"", light:"", camera:""}, store.get("pc") || {});
+const words2 = t => (String(t || "").trim().match(/\S+/g) || []).length;
+const okIng = k => words2(PC[k]) >= (k === "subject" || k === "setting" ? 4 : 1);
+const myPrompt = () => [PC.subject, PC.setting].map(x => x.trim()).filter(Boolean).join(", ") + (PC.style.trim() ? ", " + PC.style.trim() : "") + (PC.light.trim() ? ", " + PC.light.trim() : "") + (PC.camera.trim() ? ", " + PC.camera.trim() : "");
+function drawPC(){
+  const n = ING.filter(([k]) => okIng(k)).length, miss = ING.filter(([k]) => !okIng(k)).map(([, l]) => l.replace(/^\S+ /, ""));
+  $("#pcPower").replaceChildren(el("span", {class:"tag"}, "Prompt power"), el("b", null, "★".repeat(n) + "☆".repeat(5 - n)),
+    el("span", {class:"muted"}, n === 5 ? "5 of 5! Your prompt leaves the AI almost nothing to guess." : "Missing or too short: " + miss.join(", ") + ". Subject and setting need at least 4 words."));
+  $("#pcOut").textContent = myPrompt() || "Write your ingredients above: your prompt appears here.";
+  $("#copyMine").disabled = n < 5; $("#copyMine").title = n < 5 ? "Write all 5 ingredients first" : "";
+}
+$("#ingr").replaceChildren(...ING.map(([k, label, q, ph, chips]) => {
+  const inp = el("input", {type:"text", placeholder:ph, "aria-label":label, maxlength:"140"}); inp.value = PC[k];
+  inp.addEventListener("input", () => { PC[k] = inp.value; store.set("pc", PC); drawPC(); });
+  return el("label", {class:"ing2"}, el("b", null, label), el("span", {class:"q"}, q), inp,
+    ...(chips ? [el("div", {class:"chips sm"}, ...chips.map(c => el("button", {class:"chip", type:"button", onclick:() => { inp.value = c; PC[k] = c; store.set("pc", PC); drawPC(); }}, c)))] : []));
+}));
+drawPC();
+$("#copyVague").onclick = () => copy("a robot at school", null, "Adobe Express");
+$("#copyMine").onclick = () => { if (ING.some(([k]) => !okIng(k))){ K.toast("Write all 5 ingredients first."); return; } copy(myPrompt(), $("#pcOut"), "Adobe Express"); done(0); };
+const CMP = store.get("cmp") || {pick:"", seen:[]};
+function drawCmp(){
+  $("#cmp1").replaceChildren(...[["vague", "The vague one"], ["mine", "My precise one"]].map(([k, l]) => el("button", {class:"btn sm" + (CMP.pick === k ? "" : " alt"), type:"button", onclick:() => { CMP.pick = k; store.set("cmp", CMP); drawCmp(); }}, l)));
+  $("#cmp2").replaceChildren(...["the robot's colour", "the robot's shape", "the kind of school", "people I didn't ask for", "the style", "the light"].map(t => el("button", {class:"chip", type:"button", "aria-pressed":String(CMP.seen.includes(t)), onclick:() => { CMP.seen = CMP.seen.includes(t) ? CMP.seen.filter(x => x !== t) : CMP.seen.concat(t); store.set("cmp", CMP); drawCmp(); }}, t)));
+  $("#cmpA").textContent = !CMP.pick ? "" : (CMP.pick === "mine" ? "✓ Your 5 ingredients won. " : "Interesting! Look again: was it really what you imagined? ") + (CMP.seen.length ? "In the vague picture, the AI decided " + CMP.seen.length + " thing" + (CMP.seen.length > 1 ? "s" : "") + " by itself. Your ingredients take those decisions back." : "Now choose what the AI decided by itself in the vague picture.");
+}
+drawCmp();
+F.slotBox($("#slotBox"), {slot:"big", label:"My AI picture", accept:"image/*"}, () => done(0));
+/* 4 class count */
+const CNT = store.get("count") || {boys:0, girls:0, none:0};
+function drawCount(){ const total = CNT.boys + CNT.girls;
+  $("#countBox").replaceChildren(...[["boys", "Pictures with a boy or man"], ["girls", "Pictures with a girl or woman"], ["none", "Pictures with no people"]].map(([k, l]) =>
+    el("div", {class:"card stat"}, el("span", {class:"tag"}, l), el("b", null, String(CNT[k])), el("div", {class:"row"}, el("button", {class:"btn sm", type:"button", onclick:() => { CNT[k]++; store.set("count", CNT); drawCount(); done(1); }}, "+1"), el("button", {class:"btn sm alt", type:"button", onclick:() => { CNT[k] = Math.max(0, CNT[k] - 1); store.set("count", CNT); drawCount(); }}, "−1")))));
+  $("#countMsg").textContent = total < 3 ? "Ask each student: in your VAGUE picture, did the AI add a person? Press +1 for each picture." : CNT.boys > CNT.girls * 2 ? "The AI drew far more boys than girls. Nobody asked for that: it came from the pictures it learned from. That is bias." : CNT.girls > CNT.boys * 2 ? "The AI drew far more girls than boys. Nobody asked for that: it came from its examples. That is bias too." : "Fairly balanced this time. Did the AI add people that nobody asked for?"; }
+drawCount();
+
+/* ---------- PERIOD 2: voice and video ---------- */
+/* 5 hook */
 $("#hookPlay").onclick = () => { say("Hello Grade 7! Today you will plan your own 30-second video."); $("#hookQ").hidden = false; };
 $("#hookQ").replaceChildren(...[["A real teacher, recorded", false], ["A computer voice, made from text", true], ["A famous actor", false]].map(([t, ok]) => el("button", {class:"btn sm alt", type:"button", onclick:() => { $("#hookA").textContent = ok ? "✓ Yes! The computer read the text. No person recorded it." : "✗ No: nobody recorded it. The computer made the voice from the written text."; $("#l1").hidden = false; }}, t)));
 
 /* 2 learn */
 $("#ttsGo").onclick = () => say($("#ttsText").value, {rate:+$("#ttsRate").value, pitch:+$("#ttsPitch").value});
 $("#ttsStop").onclick = () => { try { speechSynthesis.cancel(); } catch(e){} };
-X.vocab($("#vocab"), [["Text-to-speech", "The computer reads written text aloud."], ["Speech-to-text", "The computer writes down what someone says."], ["Narration", "The voice that tells the story in a video."], ["Storyboard", "A plan of the video, scene by scene, with pictures and words."], ["Synthetic media", "Voices, pictures or videos made by a computer."], ["Consent", "Asking for permission, and getting a clear yes."]]);
+X.vocab($("#vocab"), [["Prompt ingredients", "Subject, setting, style, light, camera: the 5 parts of a strong picture prompt."], ["Bias", "When the AI fills the gaps with what it saw most often, and is unfair."], ["Text-to-speech", "The computer reads written text aloud."], ["Speech-to-text", "The computer writes down what someone says."], ["Narration", "The voice that tells the story in a video."], ["Storyboard", "A plan of the video, scene by scene, with pictures and words."], ["Synthetic media", "Voices, pictures or videos made by a computer."], ["Consent", "Asking for permission, and getting a clear yes."]]);
 
 /* 3 demo storyboard */
 const DEMO = [["🚿", "The problem", "A tap left running. Water pours away.", "Every day, we waste clean water without even noticing. Water is precious, and it can run out."], ["🪥", "Idea 1", "A student turns off the tap while brushing.", "Idea one: turn off the tap while you brush your teeth. It is easy, and it saves a lot of water."], ["🪣", "Idea 2", "A bucket under the shower collects cold water.", "Idea two: catch the cold water before your shower in a bucket, and use it to water the plants."], ["🌍", "Call to action", "Smiling class in front of a blue globe.", "One small action, every day, by every student. Together, we can save our water. Start today!"]];
@@ -1011,18 +1156,7 @@ $("#sendAI").onclick = () => { vStop(); $("#sendAI").disabled = true; $("#demoPl
   factory($("#factory"), DEMOV, 1100).then(() => { $("#sendAI").disabled = false; $("#sendAI").textContent = "🤖 Send it again"; $("#demoPlay").disabled = false; videoPlay($("#demoStage"), DEMOV, $("#demoPlay")); done(0); }); };
 $("#demoPlay").onclick = () => videoPlay($("#demoStage"), DEMOV, $("#demoPlay"));
 
-/* 4 brain */
-X.order($("#g1"), ["🎯 The problem: “We waste water every day.”", "❗ Why it matters: “Water can run out.”", "💡 Two solutions: “Turn off the tap. Catch the shower water.”", "📣 Call to action: “Start today!”"], null, ["A video starts by showing the PROBLEM. Which card shows the problem?", "After the problem, say WHY it is important.", "Now give the SOLUTIONS.", ""]);
-X.sort($("#g2"), [
-  ["You recorded an interview and need the words written down.", "stt", "Speech-to-text writes down what people said."],
-  ["A blind classmate needs to hear your poster's text.", "tts", "Text-to-speech reads it aloud."],
-  ["You want to plan your video before filming.", "sb", "A storyboard plans every scene."]
-], [["tts", "🔊 Text-to-speech"], ["stt", "📝 Speech-to-text"], ["sb", "🎬 Storyboard"]]);
-X.sort($("#g3"), [
-  ["Can you clone a classmate's voice as a joke, without asking?", "no", "Never use someone's voice or face without their clear permission. A joke can hurt and spread fast."],
-  ["Can you use a computer voice for your own narration?", "yes", "Yes. It's your own script, and nobody is being copied."],
-  ["Can you put a friend's face in your video if they said yes, and their parents agree?", "yes", "Yes: that's consent. Ask first, every time."]
-], [["yes", "✅ OK"], ["no", "⛔ Not OK"]], null, () => done(1));
+
 
 /* 5 create */
 const TOP = ["Save water", "Say no to plastic", "Be kind at school", "Sleep well", "Walk more, drive less"];
@@ -1104,6 +1238,8 @@ $("#myCopy").onclick = () => copy("30-second explainer: " + V.topic + "\n\n" + V
 
 /* 6 reflect */
 X.quiz($("#quiz"), [
+  ["Why did the AI draw an American football and a boy?", ["It guessed from the pictures it saw most often", "It knows we like American football", "It chose at random"], 0, "Where your words are vague, the AI fills the gaps with what it saw most."],
+  ["Which prompt leaves the AI LESS to guess?", ["a robot at school", "a small round robot with blue lights, helping kids in a sunny classroom, 3D cartoon, bright light, wide view"], 1, "5 ingredients: subject, setting, style, light, camera."],
   ["What does speech-to-text do?", ["Turns spoken words into written text", "Turns text into a picture", "Makes a video"], 0, "Speech → text: like subtitles or dictation."],
   ["What comes first in a good video?", ["Filming everything", "A clear message and a storyboard", "Music"], 1, "Plan first: message, then scenes."],
   ["Your friend says no to being in your video. What do you do?", ["Use their face anyway", "Respect it and use someone or something else", "Blur them a little"], 1, "No means no. Consent matters."]

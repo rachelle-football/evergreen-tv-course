@@ -594,7 +594,7 @@ window.PICKINDS = {
   inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
 };
 window.F = (function(){
-const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 5:6, 11:7, 12:8, 14:9, 15:10, 16:11, 8:12, 9:13})[n] || n; /* file number → chapter number (AI Explorers, 13 chapters) */
+const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 11:6, 12:7, 14:8, 15:9, 16:10, 8:11, 9:12})[n] || n; /* file number → chapter number (AI Explorers, 12 chapters) */
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
@@ -667,8 +667,8 @@ function slotBox(box, s, onDone){
 }
 /* the kid's whole folder: what should be in it, and what is saved */
 function plan(){
-  const kinds = raw("ch5-pics") || ["big","close","char"], K = window.PICKINDS || {};
-  return kinds.map(k => ({slot:k, label:(K[k] && K[k].label) || k, ch:5, accept:"image/*"})).concat([
+  const kinds = ["big"], K = window.PICKINDS || {};
+  return kinds.map(k => ({slot:k, label:k === "big" ? "My AI picture" : (K[k] && K[k].label) || k, ch:11, accept:"image/*"})).concat([
     {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
 }
 function folder(box, now){
