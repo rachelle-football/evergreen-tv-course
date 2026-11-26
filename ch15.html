@@ -930,7 +930,8 @@ X.quiz($("#g2"), [
 /* 5 create */
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const br = raw("ch14-brief") || {};
-$("#myBrief").replaceChildren(el("span", {class:"tag"}, "Your problem (from Chapter 8)"), el("p", {style:"margin:6px 0 0;font-size:18px"}, br.stmt || br.problem ? (br.stmt || br.problem) : "You don't have a brief yet. Write your problem in one sentence in screen 1, or finish Chapter 8 first."));
+$("#myBrief").replaceChildren(el("span", {class:"tag"}, "Your problem (from Chapter 8)"), el("p", {style:"margin:6px 0 0;font-size:18px"}, br.stmt || br.problem ? (br.stmt || br.problem) : "You don't have a brief yet. Write your problem in one sentence in screen 1, or finish Chapter 8 first."),
+  (br.root || "").trim() ? el("p", {style:"margin:4px 0 0;font-size:16px"}, "🎯 Root cause: " + br.root.trim() + ". Your prototype must attack it.") : "");
 const P = Object.assign({s:[{title:"Home", text:"", b1:"", b2:""}, {title:"", text:"", b1:"← Back", b2:""}, {title:"", text:"", b1:"← Back", b2:""}], t:{}}, store.get("proto") || {});
 const saveP = () => { store.set("proto", P); drawProto(); };
 $("#screens").replaceChildren(...P.s.map((s, i) => { const f = (k, ph, rows) => { const x = el(rows ? "textarea" : "input", Object.assign({placeholder:ph}, rows ? {rows:"2"} : {type:"text"})); x.value = s[k] || ""; x.oninput = () => { s[k] = x.value; saveP(); }; return x; };
