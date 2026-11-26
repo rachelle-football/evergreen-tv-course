@@ -49,6 +49,7 @@
 .adc{display:grid;gap:8px}.adc .r{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:8px 12px;border:2px solid var(--line);border-radius:12px;background:var(--panel)}
 .adc .r b{font-size:18px}.adc .r.ok{border-color:var(--green);background:var(--green-soft)}.adc .r.no{border-color:var(--onair);background:var(--onair-soft)}
 @media (max-width:520px){.adc .r{grid-template-columns:1fr 1fr}.adc .r b{grid-column:1/-1}}
+.howg{display:grid;gap:10px;margin-top:8px}.howg>div{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:start}.howg span{font-size:30px;line-height:1}.howg p{margin:0;font-size:17px}
 </style>
 </head><body>
 <title>How AI Learns</title>
@@ -449,17 +450,15 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
         <li>Look at the <b>top of the page</b>: a row of clean pictures appears (“Do you mean…”). That's the AI guessing!</li>
         <li>Click a picture: your scribble becomes a clean drawing. Then come back to this tab.</li>
       </ol>
-      <p class="muted" style="margin:0;font-size:15px">It learned from the drawings of people who played Quick, Draw!. Millions of people drew for it.</p>
     </div>
     <div class="card">
-      <span class="tag">Your AI vs. Google's</span>
-      <table class="vs">
-        <tr><th></th><th>🤖 Your AI</th><th>🌍 Google's</th></tr>
-        <tr><td>Things it knows</td><td>3</td><td>345</td></tr>
-        <tr><td>Example drawings</td><td>about 20</td><td>50 million</td></tr>
-        <tr><td>Drawn by</td><td>you and a friend</td><td>people all over the world</td></tr>
-      </table>
-      <p class="lead" style="margin:12px 0 0">Same idea, more examples, from more people. That's the secret of a strong AI.</p>
+      <span class="tag">How did Google's AI learn to guess?</span>
+      <div class="howg">
+        <div><span>🎮</span><p>Google made a free game: <b>Quick, Draw!</b> You get a word, and 20 seconds to draw it.</p></div>
+        <div><span>🌍</span><p>People all over the world played it. Together they made <b>50 million drawings</b> of <b>345 different things</b>.</p></div>
+        <div><span>🧠</span><p>An AI learned from all those drawings, like your AI learned from yours. AutoDraw uses this kind of AI to guess what you draw.</p></div>
+      </div>
+      <p class="lead" style="margin:12px 0 0"><b>Your mission and Google's AI work the same way:</b> examples → learning → guessing. Google just had millions more examples.</p>
     </div>
   </div>
   <div class="card" style="margin-top:16px">
