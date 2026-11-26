@@ -56,7 +56,7 @@
 .tmex{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr));gap:10px;margin-top:8px}
 .tmex>div{background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:2px;text-align:center;font-size:18px}
 .tmex span{font-size:34px}.tmex small{color:var(--muted);font-size:14px}.tmex .tot{background:var(--green-soft);border-color:var(--green);font-size:28px;font-weight:800}.tmex .tot b{font-size:14px}
-.tmout{margin-top:14px;background:#111;color:#fff;border-radius:14px;padding:14px}.tmout .tag{color:#bbb}
+.tmhow{background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:12px;margin:0 0 12px}.tmout{margin-top:6px;background:#111;color:#fff;border-radius:14px;padding:14px}.tmout .tag{color:#bbb}
 .tmout .bar{display:grid;grid-template-columns:90px 1fr 50px;gap:10px;align-items:center;margin-top:8px}.tmout .bar i{height:16px;border-radius:8px;background:#333;position:relative;overflow:hidden}
 .tmout .bar i::after{content:"";position:absolute;inset:0;width:var(--w);background:#F4A13A;border-radius:8px}
 .labsteps{display:grid;gap:14px;margin-top:14px}
@@ -473,9 +473,6 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
     <ul class="lead" style="margin:6px 0 0;padding-left:22px"><li>The camera films <b>only objects</b> on the table. Never faces, never people.</li><li>Your teacher is with you during the lab.</li><li>Don't press “Save project to Drive”: it saves your photos online.</li></ul></div>
   <div class="card" style="margin-top:14px"><span class="tag">Example · Teach AI to recognise school objects</span>
     <div class="tmex"><div><span>✏️</span><b>Class 1</b>Pencil<small>30 images</small></div><div><span>📓</span><b>Class 2</b>Notebook<small>30 images</small></div><div><span>🧽</span><b>Class 3</b>Eraser<small>30 images</small></div><div class="tot"><b>Total</b>90<small>training images</small></div></div>
-    <div class="tmout"><span class="tag">AI model output · example with a NEW pencil</span>
-      <div class="bar"><b>Pencil</b><i style="--w:96%"></i><span>96%</span></div><div class="bar"><b>Notebook</b><i style="--w:3%"></i><span>3%</span></div><div class="bar"><b>Eraser</b><i style="--w:1%"></i><span>1%</span></div>
-      <p style="margin:8px 0 0;font-weight:700">Prediction: Pencil ✏️</p></div>
   </div>
   <div class="labsteps">
     <div class="card"><span class="tag">Step 1 · Collect data</span>
@@ -485,7 +482,15 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
         <li><b>📁 Without a camera:</b> in each class press <b>Upload</b>, then <b>Choose images from your files</b>, open the right folder (pencil, notebook or eraser) and select all its photos (Ctrl + A).</li></ol>
       <div class="labf" id="tmLab1"></div></div>
     <div class="card"><span class="tag">Step 2 · Train the AI</span><p class="lead" style="margin:6px 0">Press <b>Train Model</b> and wait. Don't change tab while it learns! The AI is looking for the patterns in your photos.</p></div>
-    <div class="card"><span class="tag">Step 3 · Test the AI</span><p class="lead" style="margin:6px 0 10px">Give it something <b>new</b> it never saw. <b>📷</b> Show the camera a friend's pencil. <b>📁</b> In <b>Preview</b>, change <b>Webcam</b> to <b>File</b> and drop a test photo (test-1, test-2 or test-3). Look at the bars.</p><div class="labf" id="tmLab3"></div></div>
+    <div class="card"><span class="tag">Step 3 · Test the AI</span><p class="lead" style="margin:6px 0 10px">Give it something <b>new</b> it never saw. <b>📷</b> Show the camera a friend's pencil. <b>📁</b> In <b>Preview</b>, change <b>Webcam</b> to <b>File</b> and drop a test photo (test-1, test-2 or test-3). Look at the bars.</p><div class="tmhow"><span class="tag">How to read the result</span>
+        <p style="margin:6px 0 8px">In Teachable Machine, under <b>Preview</b>, look at <b>Output</b>: one bar for each class. The longest bar is the AI's answer, and the % is how sure it is.</p>
+        <div class="tmout"><span class="tag">✅ A new pencil: the AI is right</span>
+          <div class="bar"><b>Pencil</b><i style="--w:96%"></i><span>96%</span></div><div class="bar"><b>Notebook</b><i style="--w:3%"></i><span>3%</span></div><div class="bar"><b>Eraser</b><i style="--w:1%"></i><span>1%</span></div></div>
+        <div class="tmout" style="margin-top:10px"><span class="tag">😈 An apple: the AI is sure… and wrong!</span>
+          <div class="bar"><b>Pencil</b><i style="--w:6%"></i><span>6%</span></div><div class="bar"><b>Notebook</b><i style="--w:2%"></i><span>2%</span></div><div class="bar"><b>Eraser</b><i style="--w:92%"></i><span>92%</span></div>
+          <p style="margin:8px 0 0">The AI only knows pencil, notebook and eraser. It has never seen an apple, so it <b>must</b> choose one of the 3, and it says “eraser, 92%”. <b>AI doesn't know what it doesn't know.</b></p></div>
+      </div>
+      <div class="labf" id="tmLab3"></div></div>
     <div class="card"><span class="tag">Step 4 · Try to trick your AI! 😈</span><p class="lead" style="margin:6px 0 10px">Can you fool it? Try each trick, then say what happened.</p><div class="tricks" id="tricks"></div><p class="fb" id="trickMsg" style="font-weight:700;margin:10px 0 0"></p></div>
     <div class="card"><span class="tag">Step 5 · Save your first AI model</span>
       <ol class="lead" style="margin:6px 0 10px;padding-left:22px"><li>Take a screenshot of your best test (the bars in Preview).</li><li>Optional: <b>Export Model</b> → <b>Download</b> to keep your model.</li></ol>
