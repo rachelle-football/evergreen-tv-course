@@ -19,7 +19,7 @@ iframe{display:block;width:100%;height:100%;border:0;background:#fff}
   const app = document.getElementById("app");
   const say = t => { app.innerHTML = ""; const m = document.createElement("p"); m.className = "msg"; m.textContent = t; app.append(m); };
   /* only a student's saved page: <ticket>/page.html */
-  if (!/^[0-9a-f-]{36}\/page\.html?$/i.test(p) || !window.EVG_CLOUD || !EVG_CLOUD.url){ say("This link is not complete. Ask your teacher for the right link."); return; }
+  if (!/^[0-9a-f-]{36}\/(page|smart)\.html?$/i.test(p) || !window.EVG_CLOUD || !EVG_CLOUD.url){ say("This link is not complete. Ask your teacher for the right link."); return; }
   const url = EVG_CLOUD.url.replace(/\/+$/, "") + "/storage/v1/object/public/creations/" + p;
   fetch(url, {cache:"no-cache"}).then(r => { if (!r.ok) throw 0; return r.text(); }).then(html => {
     const f = document.createElement("iframe");

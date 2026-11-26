@@ -437,6 +437,33 @@ img.fprev{background:var(--paper)}
 .step[aria-current="step"]{border-top-color:var(--onair);color:var(--ink);font-weight:700}
 @media (max-width:700px){.bug small{display:none}.step .t{display:none}.clock .lbl{display:none}body{font-size:17px}.lead{font-size:18px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---- Chapter 7 · smart classroom ---- */
+.def.sm p{font-size:19px;line-height:1.45;font-weight:600}
+ol.how{margin:8px 0 4px;padding-left:24px;display:grid;gap:6px;font-size:17px;line-height:1.45}
+.idea{display:grid;gap:8px;align-content:start}.idea .ih{font-size:18px}
+.flow{width:100%;max-width:260px;height:auto;justify-self:center}
+.flow .fb1{fill:#E3EDFF;stroke:#3B82F6;stroke-width:3}.flow .fb2{fill:#FBEBDD;stroke:#D97706;stroke-width:3}.flow .fb3{fill:#E0F3E7;stroke:#16A34A;stroke-width:3}
+.flow .ft{font:600 19px Arial,sans-serif;fill:#13221C;text-anchor:middle}.flow .ft.s{font-size:16px}.flow .fy{font:700 15px Arial,sans-serif;fill:#13221C;text-anchor:middle}
+.flow .fl{stroke:#13221C;stroke-width:3;fill:none}.flow .fa{fill:none;stroke:#13221C;stroke-width:3;stroke-linejoin:round}
+.scgrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;align-items:start}@media (max-width:900px){.scgrid{grid-template-columns:1fr}}
+.room{width:100%;height:auto;display:block}
+#scFan{transform-origin:0px 0px}#scFan.spin{animation:fanspin .6s linear infinite}@keyframes fanspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){#scFan.spin{animation-duration:2.4s}}
+#scKids{transition:opacity .4s}
+.outs{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.out{border:2px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:800;font-size:17px;background:var(--paper)}
+.out.on{border-color:var(--green);background:var(--green-soft);color:var(--green)}.out.pw{margin-left:auto;border-style:dashed}
+.pedit{display:grid;gap:8px;margin-top:8px;font-size:16px}.pedit label{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.pedit input[type=number],.pedit select{font:inherit;font-size:16px;padding:4px 8px;border:1.5px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink)}
+.pedit input[type=checkbox]{width:18px;height:18px}
+.codebox .run{background:rgba(233,176,79,.22);border-radius:4px;box-shadow:-6px 0 0 rgba(233,176,79,.22),6px 0 0 rgba(233,176,79,.22)}
+.tests{display:grid;gap:8px}.test{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;border:2px solid var(--line);border-radius:14px;padding:10px 14px;background:var(--panel)}
+.test b{display:block;font-size:17px}.test small{color:var(--muted);font-size:14px}.test.ok{border-color:var(--green);background:var(--green-soft)}.test.no{border-color:var(--onair)}
+.tmsg{grid-column:1/-1;margin:0;color:var(--onair);font-weight:700;font-size:15px}
+.codein{width:100%;box-sizing:border-box;font:14px/1.5 var(--mono);padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);margin-top:8px}
+.runbox{width:100%;height:520px;border:2px solid var(--line);border-radius:14px;background:#fff;margin-top:12px}
+.ltests{display:grid;gap:8px}.ltest{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;font-size:16px;background:var(--panel)}
+.pdone{font-weight:700;display:flex;gap:6px;align-items:center}.pdone input{width:20px;height:20px}
 </style>
 <header class="top">
   <div class="wrap">
@@ -449,8 +476,8 @@ img.fprev{background:var(--paper)}
 </header>
 <main class="wrap" id="stage">
 <!-- 1 discover -->
-<section class="seg" id="seg-1" data-min="7" data-title="Program a robot">
-  <div class="lower"><div class="no">01</div><div class="name"><h2>Program a robot</h2><p>7 minutes · discover</p></div></div>
+<section class="seg" id="seg-1" data-min="7" data-title="Program a robot" data-period="1">
+  <div class="lower"><div class="no">01</div><div class="name"><h2>Program a robot</h2><p>Period 1 · 7 minutes · discover</p></div></div>
   <p class="big">This robot waters plants. It does exactly what you tell it, in the order you tell it. Give it the right steps.</p>
   <div class="grid g2">
     <div class="card"><span class="tag">1 · Your instructions</span><div id="robotOrder" style="margin-top:8px"></div></div>
@@ -465,18 +492,42 @@ img.fprev{background:var(--paper)}
 </section>
 
 <!-- 2 learn -->
-<section class="seg" id="seg-2" data-min="10" data-title="Algorithms and code" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>Algorithms and code</h2><p>10 minutes · learn</p></div></div>
+<section class="seg" id="seg-2" data-min="10" data-title="Think like a programmer" data-period="1" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>Think like a programmer</h2><p>Period 1 · 10 minutes · learn</p></div></div>
+  <p class="big">Every program, from a robot to a game, is built from 3 ideas.</p>
   <div class="lesson">
-    <div class="card"><span class="tag">1 · Sequence</span><p style="margin:6px 0 8px">Steps happen one after another, in order.</p><div class="codebox">put on socks
-put on shoes
-tie the laces</div></div>
-    <div class="card"><span class="tag">2 · Condition (if / else)</span><p style="margin:6px 0 8px">The computer chooses a path.</p><div class="codebox"><span class="k">IF</span> it is raining:
+    <div class="card idea"><span class="tag">1 · Sequence</span><b class="ih">Do things in order.</b>
+      <svg class="flow" viewBox="0 0 240 230" role="img" aria-label="Sequence: wake up, then get dressed, then go to school">
+        <rect x="40" y="8" width="160" height="50" rx="12" class="fb1"/><text x="120" y="39" class="ft">Wake up</text>
+        <line x1="120" y1="58" x2="120" y2="88" class="fl"/><path d="M114 82 L120 90 L126 82" class="fa"/>
+        <rect x="40" y="90" width="160" height="50" rx="12" class="fb1"/><text x="120" y="121" class="ft">Get dressed</text>
+        <line x1="120" y1="140" x2="120" y2="170" class="fl"/><path d="M114 164 L120 172 L126 164" class="fa"/>
+        <rect x="40" y="172" width="160" height="50" rx="12" class="fb1"/><text x="120" y="203" class="ft">Go to school</text>
+      </svg>
+      <div class="codebox">wake up
+get dressed
+go to school</div></div>
+    <div class="card idea"><span class="tag">2 · Condition (if / else)</span><b class="ih">Make a decision.</b>
+      <svg class="flow" viewBox="0 0 240 230" role="img" aria-label="Condition: is it raining? Yes: take an umbrella. No: take sunglasses">
+        <path d="M120 8 L210 70 L120 132 L30 70 Z" class="fb2"/><text x="120" y="76" class="ft">Raining?</text>
+        <path d="M60 91 L45 172" class="fl"/><path d="M180 91 L195 172" class="fl"/>
+        <text x="38" y="128" class="fy">Yes</text><text x="202" y="128" class="fy">No</text>
+        <rect x="2" y="172" width="104" height="50" rx="12" class="fb2"/><text x="54" y="203" class="ft s">Umbrella</text>
+        <rect x="134" y="172" width="104" height="50" rx="12" class="fb2"/><text x="186" y="203" class="ft s">Sunglasses</text>
+      </svg>
+      <div class="codebox"><span class="k">IF</span> it is raining:
    take an umbrella
 <span class="k">ELSE</span>:
    take sunglasses</div></div>
-    <div class="card"><span class="tag">3 · Loop</span><p style="margin:6px 0 8px">Repeat steps many times.</p><div class="codebox"><span class="k">REPEAT</span> <span class="n">10</span> times:
-   do one push-up</div></div>
+    <div class="card idea"><span class="tag">3 · Loop</span><b class="ih">Repeat an action.</b>
+      <svg class="flow" viewBox="0 0 240 230" role="img" aria-label="Loop: repeat 10 times: jump">
+        <rect x="50" y="30" width="160" height="50" rx="12" class="fb3"/><text x="130" y="61" class="ft">Repeat 10×</text>
+        <line x1="130" y1="80" x2="130" y2="140" class="fl"/><path d="M124 134 L130 142 L136 134" class="fa"/>
+        <rect x="50" y="142" width="160" height="50" rx="12" class="fb3"/><text x="130" y="173" class="ft">Jump</text>
+        <path d="M50 167 L22 167 L22 55 L44 55" class="fl"/><path d="M38 49 L46 55 L38 61" class="fa"/>
+      </svg>
+      <div class="codebox"><span class="k">REPEAT</span> <span class="n">10</span> times:
+   jump</div></div>
   </div>
   <div class="card" style="margin-top:14px"><span class="tag">🤖 AI and coding</span><p style="margin:6px 0 0;font-size:18px">AI can help write code, and explain errors. But AI code can have bugs too. <b>A coder always tests the code and understands it.</b> Copying code you don't understand is not coding.</p></div>
   <p class="lead" style="margin:20px 0 0"><b>Key words.</b> Tap each one.</p>
@@ -484,8 +535,8 @@ tie the laces</div></div>
 </section>
 
 <!-- 3 watch -->
-<section class="seg" id="seg-3" data-min="8" data-title="Predict, then run" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Predict, then run</h2><p>8 minutes · if / else in action</p></div></div>
+<section class="seg" id="seg-3" data-min="8" data-title="Predict, then run" data-period="1" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Predict, then run</h2><p>Period 1 · 8 minutes · if / else in action</p></div></div>
   <div class="grid g2">
     <div class="card">
       <span class="tag">The program</span>
@@ -505,49 +556,126 @@ tie the laces</div></div>
 </section>
 
 <!-- 4 brain -->
-<section class="seg" id="seg-4" data-min="10" data-title="Brain challenge" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Brain challenge</h2><p>10 minutes · predict and debug</p></div></div>
-  <div class="qz" id="pq"></div>
+<section class="seg" id="seg-4" data-min="10" data-title="Debug like a pro" data-period="1" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>Debug like a pro</h2><p>Period 1 · 10 minutes · spot, predict, fix</p></div></div>
+  <div class="card"><span class="tag">1 · Sequence, condition or loop?</span><p style="margin:6px 0 10px;font-size:17px">These are the steps of a smart classroom. Which idea is each one?</p><div id="sortBox"></div><p class="fb" id="sortScore" style="font-weight:700;margin:8px 0 0"></p></div>
+  <div class="card" style="margin-top:14px"><span class="tag">2 · Predict</span><div class="qz" id="pq" style="margin-top:8px"></div></div>
   <div class="card" style="margin-top:14px">
-    <span class="tag">Debug: this quiz always says “Correct!”, even for wrong answers</span>
-    <div class="codebox" style="margin-top:8px">1  answer = <span class="k">ASK</span> <span class="s">"What is the capital of Lebanon?"</span>
-2  <span class="k">IF</span> answer is not empty:
-3     <span class="k">SAY</span> <span class="s">"Correct!"</span>
-4  <span class="k">ELSE</span>:
-5     <span class="k">SAY</span> <span class="s">"Try again"</span></div>
-    <div class="qz" id="dq" style="margin-top:12px"></div>
+    <span class="tag">3 · Bug report: “The fan stays ON after everyone goes home.”</span>
+    <div class="codebox" style="margin-top:8px">1  <span class="k">IF</span> temperature &gt; <span class="n">28</span>:
+2     fan = <span class="s">ON</span>
+3  <span class="k">ELSE</span>:
+4     fan = <span class="s">OFF</span></div>
+    <div class="qz" id="dq1" style="margin-top:12px"></div>
   </div>
+  <div class="card" style="margin-top:14px">
+    <span class="tag">4 · Bug report: “The light turns ON in the middle of a sunny day.”</span>
+    <div class="codebox" style="margin-top:8px">1  <span class="k">IF</span> room_dark <span class="k">OR</span> room_occupied:
+2     light = <span class="s">ON</span>
+3  <span class="k">ELSE</span>:
+4     light = <span class="s">OFF</span></div>
+    <div class="qz" id="dq2" style="margin-top:12px"></div>
+  </div>
+  <div class="def sm" style="margin-top:14px"><span class="tag">Remember</span><p><b>AND</b>: both must be true. <b>OR</b>: one is enough. One small word can make a whole program wrong.</p></div>
 </section>
 
-<!-- 5 create -->
-<section class="seg" id="seg-5" data-min="22" data-title="Mission: code a quiz" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: code your own quiz</h2><p>22 minutes · 3 questions, a score, a final message</p></div></div>
-  <div class="mission">
-    <div class="forms" id="qb"></div>
-    <aside class="card side" style="display:grid;gap:10px">
-      <span class="tag">Your code (it writes itself)</span>
-      <div class="codebox" id="myCode"></div>
-      <div class="row"><button class="btn" id="runQuiz" type="button">▶ Run my quiz</button></div>
-      <div class="screen big" id="qScreen" hidden></div>
-    </aside>
+<!-- 5 smart classroom -->
+<section class="seg" id="seg-5" data-min="11" data-title="Smart Classroom" data-period="1" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: Build a Smart Classroom</h2><p>Period 1 · 11 minutes · program, test, fix</p></div></div>
+  <p class="big">You are the programmer of a smart classroom. Your program controls the fan and the light, and saves energy.</p>
+  <div class="def sm warn" style="margin-top:0"><p>⚠️ This program has <b>2 bugs</b>. Run the 4 tests, find the bugs, and fix your program.</p></div>
+  <div class="scgrid" style="margin-top:14px">
+    <div class="card sclass">
+      <svg class="room" id="room" viewBox="0 0 600 340" role="img" aria-label="The classroom: board with the temperature, a light, a fan, a window and students">
+        <rect width="600" height="340" rx="18" fill="#FCEFC6"/>
+        <rect id="scDark" width="600" height="340" rx="18" fill="#0E1433" opacity="0"/>
+        <polygon id="scBeam" points="270,62 330,62 380,200 220,200" fill="#FFE680" opacity="0"/>
+        <rect x="40" y="40" width="200" height="120" rx="8" fill="#17503E"/>
+        <text x="140" y="80" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="17">SMART CLASSROOM</text>
+        <text id="scTemp" x="140" y="132" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="40">32°C</text>
+        <line x1="300" y1="0" x2="300" y2="34" stroke="#555" stroke-width="3"/>
+        <circle id="scBulb" cx="300" cy="48" r="16" fill="#C9C2A8"/>
+        <g transform="translate(410 80)"><g id="scFan"><ellipse cx="0" cy="-30" rx="13" ry="30" fill="#0EA5E9"/><ellipse cx="26" cy="15" rx="13" ry="30" fill="#0EA5E9" transform="rotate(120 26 15)"/><ellipse cx="-26" cy="15" rx="13" ry="30" fill="#0EA5E9" transform="rotate(240 -26 15)"/><circle r="10" fill="#475569"/></g></g>
+        <rect x="480" y="30" width="100" height="130" fill="#64748B"/>
+        <rect id="scSky1" x="488" y="38" width="38" height="54" fill="#1B2557"/><rect id="scSky2" x="534" y="38" width="38" height="54" fill="#1B2557"/><rect id="scSky3" x="488" y="98" width="38" height="54" fill="#1B2557"/><rect id="scSky4" x="534" y="98" width="38" height="54" fill="#1B2557"/>
+        <g id="scKids">
+          <circle cx="110" cy="232" r="22" fill="#EAB08A"/><rect x="82" y="254" width="56" height="32" rx="9" fill="#2563EB"/>
+          <circle cx="300" cy="232" r="22" fill="#C98B62"/><rect x="272" y="254" width="56" height="32" rx="9" fill="#16A34A"/>
+          <circle cx="490" cy="232" r="22" fill="#EAB08A"/><rect x="462" y="254" width="56" height="32" rx="9" fill="#9333EA"/>
+        </g>
+        <g fill="#B98A5F"><rect x="50" y="276" width="120" height="34" rx="6"/><rect x="240" y="276" width="120" height="34" rx="6"/><rect x="430" y="276" width="120" height="34" rx="6"/></g>
+        <g fill="#64748B"><rect x="58" y="310" width="8" height="26"/><rect x="154" y="310" width="8" height="26"/><rect x="248" y="310" width="8" height="26"/><rect x="344" y="310" width="8" height="26"/><rect x="438" y="310" width="8" height="26"/><rect x="534" y="310" width="8" height="26"/></g>
+        <text id="scWarn" x="300" y="210" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#B91C1C" opacity="0"></text>
+      </svg>
+      <div class="outs" id="outs"></div>
+    </div>
+    <div class="card">
+      <span class="tag">Sensors (the inputs)</span>
+      <label class="kv" style="margin-top:10px;font-weight:700">Temperature <b id="tIn" class="pill">32°C</b><input type="range" id="tRange" min="15" max="40" value="32" style="flex:1;min-width:140px"></label>
+      <div class="row" style="margin-top:10px"><button class="btn sm" id="occBtn" type="button"></button><button class="btn sm" id="darkBtn" type="button"></button></div>
+      <span class="tag" style="display:block;margin-top:16px">Edit your program</span>
+      <div class="pedit">
+        <label>Turn the fan on above <input type="number" id="thIn" min="15" max="40" step="1" style="width:64px"> °C</label>
+        <label><input type="checkbox" id="occIn"> …only when students are inside (<code>AND room_occupied</code>)</label>
+        <label>Light: <code>IF room_dark</code> <select id="opIn"><option>AND</option><option>OR</option></select> <code>room_occupied</code></label>
+      </div>
+      <div class="codebox" id="scCode" style="margin-top:10px"></div>
+    </div>
   </div>
-  <div class="card" style="margin-top:16px">
-    <span class="tag">Step 3 · Add one feature suggested by AI</span>
-    <p style="margin:6px 0 8px">Ask Gemini for an idea, or pick one. Then explain it in your own words: a coder understands the code.</p>
-    <div class="row"><button class="btn sm alt" id="askGem" type="button">📋 Copy the question for Gemini</button><a class="btn sm alt" href="https://gemini.google.com/app" target="_blank" rel="noopener" style="text-decoration:none">↗ Open Gemini</a></div>
-    <div class="chips" id="feat" style="margin-top:10px"></div>
-    <label class="ff" style="margin-top:10px"><b>Explain your feature: how does it work?</b><textarea id="featWhy" rows="2" placeholder="IF the answer is wrong, the quiz…"></textarea></label>
-  </div>
-  <div id="cBadge"></div>
-  <p class="muted" style="margin-top:10px">Want more? Build the same quiz in <a href="https://scratch.mit.edu/" target="_blank" rel="noopener">Scratch</a> with blocks.</p>
+  <div class="card" style="margin-top:14px"><span class="tag">Test your program</span><p style="margin:6px 0 10px;font-size:17px">A programmer tests every situation. Run each test: if it fails, fix your program and run it again.</p><div class="tests" id="tests"></div></div>
+  <div id="scBadge" style="margin-top:14px"></div>
 </section>
 
-<!-- 6 reflect -->
-<section class="seg" id="seg-6" data-min="5" data-title="Reflect" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>Quiz and reflect</h2><p>5 minutes</p></div></div>
+<!-- 6 creation lab -->
+<section class="seg" id="seg-6" data-min="35" data-title="Creation Lab" data-period="2" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>Creation Lab: build your first program with AI</h2><p>Period 2 · 35 minutes · final deliverable: My First Smart System</p></div></div>
+  <p class="big">Now you know the logic. Ask Gemini to help you turn it into a real program that runs in a browser.</p>
+  <div class="card"><span class="tag">Step 1 · Ask Gemini</span>
+    <p class="prompt" id="labPrompt" style="margin-top:8px"></p>
+    <div class="row"><button class="btn" id="labCopy" type="button">📋 Copy the prompt</button><a class="btn alt" href="https://gemini.google.com/app" target="gemini" rel="noopener">↗ Open Gemini</a></div>
+    <ol class="how">
+      <li>In Gemini, paste the prompt (<b>Ctrl+V</b>) and press <b>Enter</b>.</li>
+      <li>Gemini writes HTML code. Click <b>Copy code</b> at the top of the code box.</li>
+      <li>Come back here and paste it in Step 2.</li>
+    </ol>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 2 · Run your program</span>
+    <textarea id="codeIn" class="codein" rows="8" spellcheck="false" placeholder="Paste Gemini's code here (Ctrl+V). It starts with &lt;!DOCTYPE html&gt; or &lt;html&gt;."></textarea>
+    <div class="row" style="margin-top:10px"><button class="btn" id="runCode" type="button">▶ Run my program</button><span class="muted" id="codeInfo" style="font-size:15px"></span></div>
+    <iframe id="runBox" class="runbox" title="Your program" sandbox="allow-scripts allow-forms allow-modals" hidden></iframe>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 3 · Test it like a programmer</span>
+    <p style="margin:6px 0 10px;font-size:17px">Try each situation in YOUR program. Does it work, or did you find a bug?</p>
+    <div class="ltests" id="ltests"></div>
+    <div id="bugBox" hidden style="margin-top:12px"><label class="ff"><b>Describe the bug in one sentence</b><input id="bugIn" type="text" maxlength="140" placeholder="e.g. The fan stays on when nobody is in the room."></label>
+      <div class="row" style="margin-top:8px"><button class="btn sm" id="bugCopy" type="button">📋 Copy “fix my bug” for Gemini</button></div>
+      <p class="muted" style="font-size:15px;margin:6px 0 0">Paste it in the same Gemini chat, copy the new code, paste it in Step 2 and run it again.</p></div>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 4 · Add a new feature</span>
+    <p style="margin:6px 0 10px;font-size:17px">Pick a feature, ask Gemini to add it, then paste the new code in Step 2 and run it.</p>
+    <div class="chips" id="featChips"></div>
+    <label class="ff" style="margin-top:10px"><b>Or write your own feature</b><input id="featOwn" type="text" maxlength="140" placeholder="e.g. Show a smiley face when the room uses no energy."></label>
+    <div class="row" style="margin-top:8px"><button class="btn sm" id="featCopy" type="button">📋 Copy “add my feature” for Gemini</button><label class="pdone"><input type="checkbox" id="featOk"> My new feature works</label></div>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 5 · Understand your code</span>
+    <label class="ff" style="margin-top:8px"><b>Find one <code>if</code> line in your code and copy it here</b><input id="ifLine" type="text" maxlength="200" placeholder="e.g. if (temp > 28 &amp;&amp; occupied) {"></label>
+    <label class="ff"><b>What does it do? Say it in your own words</b><input id="ifWhy" type="text" maxlength="200" placeholder="If it is hotter than 28 and students are inside, the fan…"></label>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 6 · Save My First Smart System</span>
+    <p style="margin:6px 0 10px;font-size:17px">Save the code from Step 2 in your folder. You can open it as a real page and show your family.</p>
+    <div class="row"><button class="btn" id="saveCode" type="button">💾 Save it in my folder</button><button class="btn alt" id="dlCode" type="button">⬇ Download my program (.html)</button></div>
+    <p class="fmsg" id="saveMsg"></p>
+    <div id="smartSlot" style="margin-top:10px"></div>
+  </div>
+  <div id="labBadge" style="margin-top:14px"></div>
+</section>
+
+<!-- 7 reflect -->
+<section class="seg" id="seg-7" data-min="10" data-title="Reflect" data-period="2" hidden>
+  <div class="lower"><div class="no">07</div><div class="name"><h2>Quiz and reflect</h2><p>Period 2 · 10 minutes</p></div></div>
   <div class="qz" id="quiz"></div>
   <div class="card reflect" style="margin-top:14px"><span class="tag">Exit ticket</span><label class="ttl" for="exit" style="display:block">Why must you test code that an AI wrote for you?</label><textarea id="exit" placeholder="Because…"></textarea></div>
-  <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Write the steps (pseudocode) for a smart classroom light that turns on only when the room is dark AND someone is inside.</p></div>
+  <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Open My First Smart System at home. Ask someone in your family to test it: can they find a bug? Then think: which other room could be smart, and what would its IF rules be?</p></div>
   <p class="note">Next week: Reinvent the School. You find a real problem to solve.</p>
 </section>
 
@@ -707,7 +835,7 @@ function slotBox(box, s, onDone){
 function plan(){
   const kinds = ["big"], K = window.PICKINDS || {};
   return kinds.map(k => ({slot:k, label:k === "big" ? "My Advertisement Poster" : (K[k] && K[k].label) || k, ch:11, accept:"image/*"})).concat([
-    {slot:"license", label:"My AI Driving License", ch:13, accept:"image/png"}, {slot:"video", label:"My AI Commercial", ch:11, accept:"video/*"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
+    {slot:"license", label:"My AI Driving License", ch:13, accept:"image/png"}, {slot:"video", label:"My AI Commercial", ch:11, accept:"video/*"}, {slot:"smart", label:"My First Smart System", ch:12, accept:".html,text/html"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
 }
 function folder(box, now){
   async function draw(){
@@ -803,7 +931,7 @@ return {make, power, meter, join, missing, guard, show, lock};
 
 window.K = (function(){
 const $ = s => document.querySelector(s);
-const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => { if (c != null && c !== false) e.append(c); }); return e; };
 let PFX = "k";
 const store = { get(k){ try { return JSON.parse(localStorage.getItem(PFX + "-" + k)); } catch(e){ return null; } }, set(k, v){ try { localStorage.setItem(PFX + "-" + k, JSON.stringify(v)); } catch(e){} }, raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
 let segs = [], cur = 0, stepBtns = [], left = 0, tick = null, tt;
@@ -821,7 +949,7 @@ function go(i){
 function init(prefix, p2){
   PFX = prefix; segs = [...document.querySelectorAll(".seg")];
   const box = $("#steps");
-  segs.forEach((s, i) => { if (p2 && i === p2) box.append(el("span", {class:"pdiv", "aria-hidden":"true"}, "P2")); box.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))); });
+  segs.forEach((s, i) => { if (i && s.dataset.period !== segs[i - 1].dataset.period) box.append(el("span", {class:"pdiv", "aria-hidden":"true"}, "P" + s.dataset.period)); box.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))); });
   stepBtns = [...box.querySelectorAll(".step")];
   $("#prev").onclick = () => go(cur - 1); $("#next").onclick = () => go(cur + 1);
   addEventListener("keydown", e => { if (e.target.matches("textarea,input,select")) return; if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); });
@@ -924,7 +1052,7 @@ window.X = (function(){
 (function(){
 const {$, el, store, copy} = K;
 K.init("ch12"); X.setup();
-const done = X.prog(4);
+const done = X.prog(5);
 
 /* 1 robot */
 let dry = true, ordered = false;
@@ -950,62 +1078,133 @@ function drawPred(){ $("#pred").replaceChildren(...["Hot day", "Cool day"].map(o
 drawPred();
 $("#runIf").onclick = () => { if (!guess){ K.toast("Predict first!"); return; } const t = +$("#temp").value, out = t > 30 ? "Hot day" : "Cool day"; $("#ifOut").textContent = out; $("#ifFb").textContent = guess === out ? "✓ You predicted right!" : "✗ Not this time: " + t + (t > 30 ? " is greater than 30." : " is NOT greater than 30."); $("#ifFb").style.color = guess === out ? "var(--green)" : "var(--onair)"; if (guess === out) done(1); };
 
-/* 4 */
+/* 4 debug like a pro */
+X.sort($("#sortBox"), [
+  ["Read the temperature, then decide, then switch the fan.", "seq", "First, then, then: steps in order."],
+  ["IF the room is dark: turn the light ON.", "cond", "IF: a decision."],
+  ["Every 10 seconds, check the sensors again.", "loop", "Again and again: a loop."],
+  ["IF nobody is inside: switch everything OFF.", "cond", "IF: a decision."],
+  ["All day long: repeat the checks.", "loop", "Repeat: a loop."]
+], [["seq", "Sequence"], ["cond", "Condition"], ["loop", "Loop"]], $("#sortScore"));
 X.quiz($("#pq"), [
-  ["score = 7.  IF score >= 5: SAY “Pass”  ELSE: SAY “Try again”.  What appears?", ["Pass", "Try again", "Nothing"], 0, "7 is greater than or equal to 5, so: Pass."],
-  ["temperature = 30.  IF temperature > 30: SAY “Hot day”  ELSE: SAY “Cool day”.  What appears?", ["Hot day", "Cool day"], 1, "30 is not GREATER than 30. So the ELSE path runs: Cool day."],
+  ["temperature = 32.  IF temperature > 28: fan = ON  ELSE: fan = OFF.  What is the fan?", ["ON", "OFF"], 0, "32 is greater than 28, so the IF path runs: ON."],
+  ["temperature = 28.  IF temperature > 28: fan = ON  ELSE: fan = OFF.  What is the fan?", ["ON", "OFF"], 1, "28 is not GREATER than 28. So the ELSE path runs: OFF."],
   ["REPEAT 3 times: SAY “Hip hip hooray!”.  How many times do you hear it?", ["1", "3", "Forever"], 1, "The loop repeats exactly 3 times."]
 ]);
-X.quiz($("#dq"), [
-  ["Which line has the bug?", ["Line 1", "Line 2", "Line 3"], 1, "Line 2 only checks that the answer is not empty. It should check: IF answer is “Beirut”."],
-  ["How do you fix it?", ["IF answer is “Beirut”:", "SAY “Wrong!” on line 3", "Delete the ELSE"], 0, "Compare the answer with the right answer. That's the fix."]
+X.quiz($("#dq1"), [
+  ["Why does the fan stay ON after everyone goes home?", ["Line 1 never checks if students are inside", "Line 2 should say OFF", "28 is too low"], 0, "The program only looks at the temperature. It forgot the people!"],
+  ["How do you fix line 1?", ["IF temperature > 28 AND room_occupied:", "IF temperature > 50:", "Delete the ELSE"], 0, "Now BOTH must be true: hot AND students inside."]
+]);
+X.quiz($("#dq2"), [
+  ["Which word is the bug?", ["IF", "OR", "ON"], 1, "With OR, one is enough: students inside → light ON, even in the sun."],
+  ["What should it be?", ["IF room_dark AND room_occupied:", "IF room_dark OR room_occupied OR sunny:", "IF room_occupied:"], 0, "AND: the light turns on only when it is dark AND students are inside."]
 ]);
 
-/* 5 quiz builder */
-const Q = Object.assign({q1:"What is the capital of Lebanon?", a1:"Beirut", q2:"How many legs does a spider have?", a2:"8", q3:"", a3:"", pass:"🎉 Great job, quiz master!", fail:"💪 Good try! Play again.", feat:"", why:""}, store.get("quiz") || {});
-const FEAT = {hint:["💡 A hint after a wrong answer", "IF the answer is wrong: SAY the first letter of the right answer"], caps:["🔠 Accept capital or small letters", "Compare the answers in small letters: “BEIRUT” = “beirut”"], party:["🎉 Party at 3 out of 3", "IF score = 3: show 🎉🎉🎉"]};
-const esc = t => String(t || "").replace(/[&<>]/g, c => ({"&":"&amp;", "<":"&lt;", ">":"&gt;"})[c]);
-let ready = false;
-const saveQ = () => { store.set("quiz", Q); if (ready){ drawCode(); badge(); } };
-X.form($("#qb"), "quizform", [["q1", "Question 1", "e.g. What is the capital of Lebanon?"], ["a1", "Answer 1", "Beirut"], ["q2", "Question 2", ""], ["a2", "Answer 2", ""], ["q3", "Question 3", "Write your own question"], ["a3", "Answer 3", ""], ["pass", "Message if the score is 2 or 3", ""], ["fail", "Message if the score is 0 or 1", ""]], S => { Object.keys(S).forEach(k => Q[k] = S[k]); saveQ(); });
-/* pre-fill the form the first time */
-if (!store.get("quizform")){ const ins = $("#qb").querySelectorAll("input"); ["q1", "a1", "q2", "a2", "q3", "a3", "pass", "fail"].forEach((k, i) => { ins[i].value = Q[k]; }); store.set("quizform", Object.fromEntries(["q1", "a1", "q2", "a2", "q3", "a3", "pass", "fail"].map(k => [k, Q[k]]))); }
-function drawCode(){
-  const L = ['score = <span class="n">0</span>'];
-  [1, 2, 3].forEach(i => { if (!Q["q" + i]) return; L.push('answer = <span class="k">ASK</span> <span class="s">"' + esc(Q["q" + i]) + '"</span>', '<span class="k">IF</span> answer is <span class="s">"' + esc(Q["a" + i]) + '"</span>' + (Q.feat === "caps" ? ' <span class="k">(any letters)</span>' : '') + ':', '   score = score + <span class="n">1</span>', '<span class="k">ELSE</span>:', '   <span class="k">SAY</span> <span class="s">"Not quite!"</span>' + (Q.feat === "hint" ? '\n   <span class="k">SAY</span> <span class="s">"Hint: it starts with ' + esc((Q["a" + i] || "?")[0]) + '"</span>' : '')); });
-  L.push('<span class="k">IF</span> score &gt;= <span class="n">2</span>:', '   <span class="k">SAY</span> <span class="s">"' + esc(Q.pass) + '"</span>', '<span class="k">ELSE</span>:', '   <span class="k">SAY</span> <span class="s">"' + esc(Q.fail) + '"</span>');
-  if (Q.feat === "party") L.push('<span class="k">IF</span> score = <span class="n">3</span>:', '   <span class="k">SHOW</span> 🎉🎉🎉');
-  $("#myCode").innerHTML = L.join("\n");
-  $("#feat").replaceChildren(...Object.entries(FEAT).map(([k, [l]]) => el("button", {class:"chip" + (Q.feat === k ? " on" : ""), type:"button", "aria-pressed":String(Q.feat === k), onclick:() => { Q.feat = Q.feat === k ? "" : k; saveQ(); }}, l)));
+/* 5 the smart classroom simulator */
+const SCD = {t:32, occ:true, dark:true, th:28, need:false, op:"OR", ran:{}};
+const SC = Object.assign({}, SCD, store.get("sc") || {}); SC.ran = SC.ran || {};
+const saveSC = () => store.set("sc", SC);
+const fanOn = (s, i) => i.t > s.th && (!s.need || i.occ);
+const lightOn = (s, i) => s.op === "AND" ? (i.dark && i.occ) : (i.dark || i.occ);
+const TESTS = [
+  ["🌙 Hot class, at night", {t:32, occ:true, dark:true}, true, true, "It is 32°C and students are inside: the fan must be ON. It is dark: the light must be ON."],
+  ["🏠 Everyone goes home", {t:32, occ:false, dark:true}, false, false, "Nobody is inside: the fan AND the light must be OFF, to save energy."],
+  ["☀️ Cool sunny morning", {t:22, occ:true, dark:false}, false, false, "It is cool and sunny: no fan, no light."],
+  ["🌡️ Exactly 28°C, daytime", {t:28, occ:true, dark:false}, false, false, "28 is not MORE than 28: the fan stays OFF. Sunny: the light stays OFF."]
+];
+const testOk = k => { const [, i, f, l] = TESTS[k]; return fanOn(SC, i) === f && lightOn(SC, i) === l; };
+function drawSC(){
+  const i = SC, f = fanOn(SC, i), l = lightOn(SC, i);
+  $("#tIn").textContent = i.t + "°C"; $("#tRange").value = i.t; $("#scTemp").textContent = i.t + "°C";
+  $("#occBtn").textContent = i.occ ? "🧑‍🎓 Students are inside" : "🚪 The classroom is empty"; $("#occBtn").className = "btn sm" + (i.occ ? "" : " alt");
+  $("#darkBtn").textContent = i.dark ? "🌙 The classroom is dark" : "☀️ It is sunny"; $("#darkBtn").className = "btn sm" + (i.dark ? "" : " alt");
+  $("#thIn").value = SC.th; $("#occIn").checked = SC.need; $("#opIn").value = SC.op;
+  $("#scKids").style.opacity = i.occ ? 1 : 0;
+  ["#scSky1", "#scSky2", "#scSky3", "#scSky4"].forEach(s => $(s).setAttribute("fill", i.dark ? "#1B2557" : "#9ED8FF"));
+  $("#scDark").setAttribute("opacity", i.dark ? (l ? .12 : .55) : 0);
+  $("#scBeam").setAttribute("opacity", l ? .55 : 0); $("#scBulb").setAttribute("fill", l ? "#FFD43B" : "#C9C2A8");
+  $("#scFan").classList.toggle("spin", f);
+  const w = (f ? 60 : 0) + (l ? 40 : 0);
+  $("#outs").replaceChildren(el("span", {class:"out" + (f ? " on" : "")}, "🌀 Fan: " + (f ? "ON" : "OFF")), el("span", {class:"out" + (l ? " on" : "")}, "💡 Light: " + (l ? "ON" : "OFF")), el("span", {class:"out pw"}, "⚡ Power: " + w + " W"));
+  const k = t => '<span class="k">' + t + '</span>', on = (b, x) => '<span class="' + (b ? "run" : "") + '">' + x + '</span>';
+  $("#scCode").innerHTML = [(k("IF") + " temperature &gt; " + '<span class="n">' + SC.th + '</span>' + (SC.need ? " " + k("AND") + " room_occupied" : "") + ":"),
+    on(f, "   fan = " + '<span class="s">ON</span>'), k("ELSE") + ":", on(!f, "   fan = " + '<span class="s">OFF</span>'), "",
+    (k("IF") + " room_dark " + k(SC.op) + " room_occupied:"), on(l, "   light = " + '<span class="s">ON</span>'), k("ELSE") + ":", on(!l, "   light = " + '<span class="s">OFF</span>')].join("\n");
+  drawTests();
 }
-$("#featWhy").value = Q.why; $("#featWhy").oninput = () => { Q.why = $("#featWhy").value; saveQ(); };
-$("#askGem").onclick = () => copy("I made a 3-question quiz in a coding lesson. It asks a question, checks the answer, counts the score and shows a final message. Suggest ONE simple feature to make it better, and explain how it works step by step, for a Grade 7 student.", null, "Gemini");
-/* run the quiz */
-function runQuiz(){
-  const qs = [1, 2, 3].filter(i => (Q["q" + i] || "").trim() && (Q["a" + i] || "").trim()); if (qs.length < 3){ K.toast("Write 3 questions and 3 answers first."); return; }
-  let k = 0, score = 0; const scr = $("#qScreen"); scr.hidden = false;
-  const norm = t => Q.feat === "caps" ? String(t).trim().toLowerCase() : String(t).trim();
-  function ask(){
-    if (k >= qs.length){ scr.replaceChildren(el("p", {class:"big2"}, score + " / 3"), el("p", {style:"font-size:20px;font-weight:700;margin:0"}, (score >= 2 ? Q.pass : Q.fail) + (Q.feat === "party" && score === 3 ? " 🎉🎉🎉" : "")), el("button", {class:"btn sm alt", type:"button", onclick:runQuiz, style:"margin-top:10px"}, "↺ Play again")); done(2); return; }
-    const i = qs[k], inp = el("input", {type:"text", placeholder:"Your answer", style:"font:inherit;font-size:18px;padding:8px 12px;border-radius:10px;border:1.5px solid var(--line);width:100%"}), msg = el("p", {style:"margin:8px 0 0;font-weight:700"});
-    const check = () => { if (norm(inp.value) === norm(Q["a" + i])){ score++; k++; ask(); } else { msg.textContent = "Not quite!" + (Q.feat === "hint" ? " Hint: it starts with “" + Q["a" + i][0] + "”." : ""); if (Q.feat !== "hint" || msg.dataset.t){ k++; setTimeout(ask, 900); } msg.dataset.t = "1"; } };
-    inp.addEventListener("keydown", e => { if (e.key === "Enter") check(); });
-    scr.replaceChildren(el("span", {class:"tag"}, "Question " + (k + 1) + " of 3 · score " + score), el("p", {style:"font-size:20px;font-weight:700;margin:6px 0 10px"}, Q["q" + i]), inp, el("button", {class:"btn sm", type:"button", onclick:check, style:"margin-top:8px"}, "Check"), msg);
-    inp.focus();
-  }
-  ask();
+function drawTests(){
+  $("#tests").replaceChildren(...TESTS.map(([n, inp, fe, le, why], k) => { const ran = !!SC.ran[k], ok = ran && testOk(k);
+    let msg = ""; if (ran && !ok){ const f = fanOn(SC, inp), l = lightOn(SC, inp); msg = "✗ Failed. " + (f !== fe ? "The fan is " + (f ? "ON" : "OFF") + ", it should be " + (fe ? "ON" : "OFF") + ". " : "") + (l !== le ? "The light is " + (l ? "ON" : "OFF") + ", it should be " + (le ? "ON" : "OFF") + ". " : ""); }
+    return el("div", {class:"test" + (ran ? (ok ? " ok" : " no") : "")}, el("div", null, el("b", null, n), el("small", null, why)),
+      el("button", {class:"btn sm" + (ran && ok ? " alt" : ""), type:"button", onclick:() => { Object.assign(SC, inp); SC.ran[k] = true; saveSC(); drawSC(); }}, ran ? (ok ? "✓ Passed" : "↻ Run again") : "▶ Run test"),
+      msg ? el("p", {class:"tmsg"}, msg) : null); }));
+  const all = TESTS.every((x, k) => SC.ran[k] && testOk(k));
+  if (all){ X.badge($("#scBadge"), "🏫", "Smart Classroom Programmer", "4 of 4 tests passed. Your classroom saves energy!"); done(2); } else $("#scBadge").replaceChildren();
 }
-$("#runQuiz").onclick = runQuiz;
-function badge(){ const ok = [1, 2, 3].every(i => (Q["q" + i] || "").trim() && (Q["a" + i] || "").trim()) && Q.feat && X.words(Q.why) >= 6;
-  if (ok){ X.badge($("#cBadge"), "💻", "Code Explorer", "Your quiz works, and you explained your feature. Saved in your portfolio."); done(3); } else $("#cBadge").replaceChildren(); }
-ready = true; drawCode(); badge();
+$("#tRange").oninput = () => { SC.t = +$("#tRange").value; saveSC(); drawSC(); };
+$("#occBtn").onclick = () => { SC.occ = !SC.occ; saveSC(); drawSC(); };
+$("#darkBtn").onclick = () => { SC.dark = !SC.dark; saveSC(); drawSC(); };
+$("#thIn").oninput = () => { const v = Math.round(+$("#thIn").value); if (v >= 15 && v <= 40){ SC.th = v; saveSC(); drawSC(); } };
+$("#occIn").onchange = () => { SC.need = $("#occIn").checked; saveSC(); drawSC(); };
+$("#opIn").onchange = () => { SC.op = $("#opIn").value; saveSC(); drawSC(); };
+drawSC();
 
-/* 6 */
+/* 6 creation lab: Gemini writes the program, the kid runs it, tests it, improves it and keeps it */
+const LAB_PROMPT = "Act as a coding teacher for a Grade 7 student. Help me create a simple HTML smart classroom simulator. Include temperature, room occupancy and lighting controls. Use if/else conditions to control a fan and a light. Explain the code in simple English.";
+$("#labPrompt").textContent = "“" + LAB_PROMPT + "”";
+$("#labCopy").onclick = () => copy(LAB_PROMPT, $("#labPrompt"), "Gemini");
+const LB = Object.assign({code:"", tests:{}, bug:"", feat:"", own:"", featOk:false, ifLine:"", ifWhy:""}, store.get("lab") || {}); LB.tests = LB.tests || {};
+const saveLB = () => { store.set("lab", LB); labDone(); };
+const clean = t => { t = String(t || "").trim(); const m = t.match(/```(?:html)?\s*([\s\S]*?)```/i); return m ? m[1].trim() : t; };
+const isHtml = t => /<(!doctype|html|body|button|input|script|div)/i.test(t);
+$("#codeIn").value = LB.code;
+$("#codeIn").addEventListener("input", () => { LB.code = $("#codeIn").value; saveLB(); info(); });
+function info(){ const c = clean(LB.code); $("#codeInfo").textContent = !c ? "" : isHtml(c) ? (n => n + (n === 1 ? " line" : " lines") + " of code")(c.split("\n").length) : "⚠️ This doesn't look like HTML code. Copy the code box from Gemini."; }
+info();
+$("#runCode").onclick = () => { const c = clean(LB.code); if (!c){ K.toast("Paste Gemini's code first."); return; } if (!isHtml(c)){ K.toast("This is not HTML code. In Gemini, click Copy code."); return; }
+  const f = $("#runBox"); f.hidden = false; f.srcdoc = c; LB.ran = true; saveLB(); };
+const LT = ["It is hot and students are inside → the fan turns ON", "Everyone leaves → the fan and the light turn OFF", "It is daytime → the light stays OFF"];
+function drawLT(){
+  $("#ltests").replaceChildren(...LT.map((t, k) => el("div", {class:"ltest"}, el("span", null, t),
+    el("div", {class:"row"}, ...[["ok", "✓ Works"], ["bug", "🐞 Bug"]].map(([v, l]) => el("button", {class:"btn sm" + (LB.tests[k] === v ? "" : " alt"), type:"button", onclick:() => { LB.tests[k] = v; saveLB(); drawLT(); }}, l))))));
+  $("#bugBox").hidden = !Object.values(LB.tests).includes("bug");
+}
+drawLT();
+$("#bugIn").value = LB.bug; $("#bugIn").addEventListener("input", () => { LB.bug = $("#bugIn").value; saveLB(); });
+$("#bugCopy").onclick = () => { if (X.words(LB.bug) < 4){ K.toast("Describe the bug first (4+ words)."); return; } copy("My smart classroom program has a bug: " + LB.bug.trim() + " Please fix it, explain the fix in simple English for a Grade 7 student, and give me the full code again.", null, "Gemini"); };
+const FEATS = [["warn", "⚠️ Warning above 35°C", "If the temperature is above 35°C, show a red warning message: “Too hot! Open the windows.”"], ["energy", "⚡ Energy meter", "Show how much power the room uses: the fan uses 60 watts and the light uses 40 watts."], ["night", "🌙 Night mode button", "Add a Night mode button that turns everything OFF, whatever the sensors say."], ["window", "🪟 Window sensor", "Add a window sensor: if the window is open, the fan stays OFF."]];
+function drawFeat(){ $("#featChips").replaceChildren(...FEATS.map(([k, l]) => el("button", {class:"chip", type:"button", "aria-pressed":String(LB.feat === k), onclick:() => { LB.feat = LB.feat === k ? "" : k; saveLB(); drawFeat(); }}, l))); }
+drawFeat();
+$("#featOwn").value = LB.own; $("#featOwn").addEventListener("input", () => { LB.own = $("#featOwn").value; saveLB(); });
+$("#featCopy").onclick = () => { const f = X.words(LB.own) >= 4 ? LB.own.trim() : (FEATS.find(x => x[0] === LB.feat) || [])[2]; if (!f){ K.toast("Pick a feature or write your own first."); return; }
+  copy("Add a new feature to my smart classroom program: " + f + " Explain what you changed in simple English, and give me the full code again.", null, "Gemini"); };
+$("#featOk").checked = LB.featOk; $("#featOk").onchange = () => { LB.featOk = $("#featOk").checked; saveLB(); };
+$("#ifLine").value = LB.ifLine; $("#ifLine").addEventListener("input", () => { LB.ifLine = $("#ifLine").value; saveLB(); });
+$("#ifWhy").value = LB.ifWhy; $("#ifWhy").addEventListener("input", () => { LB.ifWhy = $("#ifWhy").value; saveLB(); });
+/* save: the pasted code becomes smart.html in the kid's folder */
+const codeFile = () => new File([clean(LB.code)], "smart.html", {type:"text/html"});
+F.slotBox($("#smartSlot"), {slot:"smart", label:"My First Smart System", accept:".html,text/html"}, () => { LB.saved = true; saveLB(); });
+$("#saveCode").onclick = async () => { const c = clean(LB.code), m = $("#saveMsg");
+  if (!isHtml(c)){ m.textContent = "Paste your program's code in Step 2 first."; m.className = "fmsg no"; return; }
+  m.textContent = "Saving…"; m.className = "fmsg";
+  try { await F.upload(codeFile(), "smart", "My First Smart System"); LB.saved = true; saveLB(); m.textContent = "✓ Saved in your folder!"; m.className = "fmsg ok"; document.dispatchEvent(new CustomEvent("evg-files")); }
+  catch(e){ m.textContent = F.MSG[e.code] || ("Problem: " + (e.code || "unknown")); m.className = "fmsg no"; } };
+$("#dlCode").onclick = () => { const c = clean(LB.code); if (!isHtml(c)){ K.toast("Paste your program's code in Step 2 first."); return; }
+  const a = el("a", {href:URL.createObjectURL(codeFile()), download:"my-smart-system.html"}); document.body.append(a); a.click(); a.remove(); LB.dl = true; saveLB(); };
+function labDone(){
+  const ok = isHtml(clean(LB.code)) && LB.ran && LT.every((t, k) => LB.tests[k] === "ok") && LB.featOk && /\bif\b/i.test(LB.ifLine) && X.words(LB.ifWhy) >= 6 && (LB.saved || LB.dl);
+  if (ok){ X.badge($("#labBadge"), "💻", "Smart System Creator", "Your first program works: you tested it, improved it and understood it."); done(3); } else $("#labBadge").replaceChildren();
+}
+labDone();
+
+/* 7 reflect */
 X.quiz($("#quiz"), [
   ["What is an algorithm?", ["A sequence of steps to solve a problem", "A picture made by AI", "A computer virus"], 0, "Steps, in order."],
-  ["What does ELSE mean in IF / ELSE?", ["Do it again", "What to do when the IF is NOT true", "Stop the program"], 1, "IF yes → this. ELSE → that."],
-  ["An AI gives you code. What do you do?", ["Copy it without reading", "Test it and make sure you understand it", "Delete it"], 1, "AI code can have bugs. Test it, understand it."]
-]);
+  ["“Every 10 seconds, check the temperature.” Which idea is it?", ["Sequence", "Condition", "Loop"], 2, "It repeats: a loop."],
+  ["IF room_dark AND room_occupied: light = ON. The room is dark but empty. The light is…", ["ON", "OFF"], 1, "AND: both must be true. Empty → OFF."],
+  ["Gemini gives you code. What do you do?", ["Copy it without reading", "Run it, test it and make sure you understand it", "Delete it"], 1, "AI code can have bugs. Test it, understand it."],
+  ["Your program has a bug. What is the best next step?", ["Give up", "Describe the bug clearly and fix it", "Hide it"], 1, "Debugging: find it, describe it, fix it, test again."]
+], () => done(4));
 X.keep($("#exit"), "exit");
 K.start();
 })();
