@@ -23,6 +23,10 @@
 .spout .seg2{display:block;border-radius:8px;padding:4px 10px}
 .spmeter{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--gold-soft);border-radius:12px;padding:8px 12px;margin:6px 0 10px}.spmeter b{color:var(--gold);font-size:24px;letter-spacing:2px}
 .btn.off{opacity:.5}.spafter{margin-top:14px;border-top:2px dashed var(--line);padding-top:12px}.spcheck{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px;font-size:17px}
+.fcsteps{display:grid;gap:14px;margin-top:14px}.fcfu{display:grid;gap:12px}.fu1{display:grid;gap:6px;border:2px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--paper)}
+.fu1 textarea,.fcsteps input[type=text],.fcsteps textarea{width:100%;font:inherit;font-size:17px;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink)}
+.fcchk{display:grid;gap:8px}.cbx{display:flex;gap:10px;align-items:flex-start;font-size:17px}.cbx input{width:22px;height:22px;margin-top:2px}
+.fccard{margin-top:14px}.fccard canvas{width:100%;max-width:520px;height:auto;display:block;margin:10px 0;border-radius:12px;border:1px solid var(--line)}
 </style>
 </head><body>
 <title>Become a Prompt Engineer</title>
@@ -441,28 +445,9 @@ button.seg2{display:inline;text-align:left;line-height:1.5;-webkit-box-decoratio
   <div class="def" id="l2" hidden><span class="tag">Remember</span><p>Prompt 2 says WHO the AI is, WHAT to explain, FOR WHO, and HOW to answer.</p></div>
 </section>
 
-<!-- 3 -->
-<section class="seg" id="seg-3" data-min="7" data-title="The 4 parts" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>The 4 parts of a strong prompt</h2><p>7 minutes · the prompt engineer's recipe</p></div></div>
-  <p class="big">Every strong prompt has 4 parts. Learn them, and the AI works for you.</p>
-  <div class="parts4">
-    <div class="part4 role"><span class="pi">🎭</span><div><b>1 · Role</b><p>Who should the AI be?</p><q>You are a football coach.</q></div></div>
-    <div class="part4 task"><span class="pi">🎯</span><div><b>2 · Task</b><p>What should it do? Be clear: one exact job.</p><q>Give me training exercises to improve my speed.</q></div></div>
-    <div class="part4 ctx"><span class="pi">📚</span><div><b>3 · Context</b><p>Who is it for? Why? What should it know?</p><q>I am 12, I play left wing, and I train twice a week.</q></div></div>
-    <div class="part4 out"><span class="pi">📋</span><div><b>4 · Output</b><p>How should the answer look? A list, a table, how long?</p><q>Give me 5 exercises, in a short list, in simple English.</q></div></div>
-  </div>
-  <div class="card tip5"><span class="pi">🔁</span><div><b>And the secret 5th step: improve!</b><p style="margin:4px 0 0">Not happy with the answer? Don't start again. Ask for a change: <q>Make it shorter.</q> <q>Add an example.</q> <q>Explain it like I'm 10.</q></p></div></div>
-  <div class="card" style="margin-top:16px">
-    <span class="tag">Game: which part is missing?</span>
-    <p class="lead" style="margin:6px 0 12px">Each prompt forgot one part. Find it.</p>
-    <div class="miss" id="miss"></div>
-    <p class="lead" style="margin:12px 0 0"><b id="missScore">0 of 4</b> right</p>
-  </div>
-</section>
-
 <!-- 4 -->
-<section class="seg" id="seg-4" data-min="15" data-title="Mission: Super Prompt" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Mission: build your Super Prompt</h2><p>15 minutes · a topic YOU love</p></div></div>
+<section class="seg" id="seg-3" data-min="15" data-title="Mission: Super Prompt" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Mission: build your Super Prompt</h2><p>15 minutes · a topic YOU love</p></div></div>
   <div class="lab4">
     <span class="tag">Prompt Engineering Lab</span>
     <h3>Build Your Super Prompt</h3>
@@ -473,25 +458,37 @@ button.seg2{display:inline;text-align:left;line-height:1.5;-webkit-box-decoratio
 </section>
 
 <!-- 5 -->
-<section class="seg" id="seg-5" data-min="12" data-title="Challenge: 3 prompts" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Challenge: 3 prompts, 1 question</h2><p>12 minutes · compare the answers</p></div></div>
-  <p class="big">Ask Gemini the same question 3 times: simple, better, pro. Which answer wins?</p>
-  <div class="card">
-    <span class="tag">1 · Choose your question</span>
-    <div class="chips" id="qChips" style="margin-top:8px"></div>
+<section class="seg" id="seg-4" data-min="15" data-title="My First AI Creation" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>My First AI Creation</h2><p>15 minutes · use it, improve it, check it, keep it</p></div></div>
+  <p class="big">Now use your Super Prompt for real. Make something with AI, make it better, check it, and keep it.</p>
+  <div class="card" id="fcPrompt"></div>
+  <div class="fcsteps">
+    <div class="card"><span class="tag">Step 1 · Ask Gemini</span>
+      <p class="lead" style="margin:6px 0 10px">Copy your Super Prompt, paste it in Gemini, and read the answer.</p>
+      <div class="row" id="fcAct1"></div></div>
+    <div class="card"><span class="tag">Step 2 · Improve it twice 🔁</span>
+      <p class="lead" style="margin:6px 0 10px">Not perfect? Don't start again: write a follow-up in the <b>same chat</b>. Do it 2 times.</p>
+      <div class="fcfu" id="fcFu"></div></div>
+    <div class="card"><span class="tag">Step 3 · Check it ⚠️</span>
+      <p class="lead" style="margin:6px 0 10px">AI can make mistakes, even with a Super Prompt. Before you keep it:</p>
+      <div class="fcchk" id="fcChk"></div></div>
+    <div class="card"><span class="tag">Step 4 · Keep it</span>
+      <label class="ff"><b>Give your creation a title</b><input id="fcTitle" type="text" maxlength="60" placeholder="e.g. My 1-week speed training plan"></label>
+      <label class="ff"><b>Paste the final answer from Gemini</b><textarea id="fcFinal" rows="6" placeholder="Paste Gemini's last answer here (you can shorten it)."></textarea></label>
+      <label class="ff"><b>Your first name</b><input id="fcName" type="text" maxlength="30" placeholder="Your first name"></label>
+      <p class="fb" id="fcMsg" style="font-weight:700;margin:8px 0 0"></p>
+    </div>
   </div>
-  <div class="tri" id="tri"></div>
-  <div class="card" id="cmp" hidden style="margin-top:16px">
-    <span class="tag">The results</span>
-    <div class="cmpbars" id="cmpBars"></div>
-    <label class="labname" style="margin-top:12px">Which answer was best, and why? One sentence.<textarea id="cmpWhy" placeholder="Answer C was best because…"></textarea></label>
+  <div class="card fccard" id="fcCard" hidden>
+    <span class="tag">🏆 Your output</span>
+    <canvas id="fcCanvas" width="1000" height="1400" aria-label="My First AI Creation card"></canvas>
+    <div class="row"><a class="btn" id="fcDl" download="My-First-AI-Creation.png" href="#">⬇ Download my AI creation</a></div>
   </div>
-  <div class="def" id="l5" hidden><span class="tag">Remember</span><p>Same question, same AI, different answers. The difference is the prompt, and the prompt is YOU.</p></div>
 </section>
 
 <!-- 6 -->
-<section class="seg" id="seg-6" data-min="3" data-title="Your checklist" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>Your prompt checklist</h2><p>3 minutes · keep it for the whole year</p></div></div>
+<section class="seg" id="seg-5" data-min="3" data-title="Your checklist" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Your prompt checklist</h2><p>3 minutes · keep it for the whole year</p></div></div>
   <p class="big">Before you press Enter, check your prompt:</p>
   <div class="final">
     <div class="part4 role"><span class="pi">🎭</span><div><b>Role</b><p>Did I tell the AI who to be?</p></div></div>
@@ -834,21 +831,6 @@ function drawP2(){
 }
 drawP2();
 
-/* ---------- 3 which part is missing ---------- */
-const MISS = [
-  ["Write a story about a brave cat for 8-year-olds, in 150 words.", "role"],
-  ["You are a football coach. Give me training tips, as 5 short bullet points.", "ctx"],
-  ["You are a history teacher. Explain the Phoenicians to a Grade 7 student in Lebanon.", "out"],
-  ["You are a travel guide. It's for my family trip to Byblos this weekend. Answer in a short list.", "task"]
-];
-const PN = {role:"🎭 Role", task:"🎯 Task", ctx:"📚 Context", out:"📋 Output"};
-const WHY_MISS = {role:"Nobody told the AI who to be.", task:"It never says what the AI should DO! Plan the day? Find restaurants?", ctx:"Tips for who? A beginner? A 12-year-old? A pro?", out:"How long? A list? A paragraph? A table?"};
-let missOk = 0, missDone = 0;
-MISS.forEach(([p, a]) => { const fb = el("p", {class:"fb"}), card = el("div", {class:"mcard"}); let d = false;
-  card.append(el("p", {class:"prompt sm"}, "“" + p + "”"), el("div", {class:"row"}, ...Object.entries(PN).map(([k, n]) => el("button", {class:"btn sm alt", type:"button", onclick:() => { if (d) return; d = true; const ok = k === a; if (ok) missOk++; missDone++;
-    card.classList.add(ok ? "ok" : "no"); fb.textContent = (ok ? "✓ Right! " : "✗ It's " + PN[a] + ". ") + WHY_MISS[a]; $("#missScore").textContent = missOk + " of 4"; if (missDone === 4) done(1); }}, n))), fb);
-  $("#miss").append(card); });
-
 /* ---------- 2b same AI, different prompts ---------- */
 $("#robQ").replaceChildren(...[["We changed the AI", false], ["We changed our instructions", true]].map(([t, ok]) => el("button", {class:"btn sm alt", type:"button", onclick:() => { $("#robA").textContent = ok ? "✓ Yes! It's the same AI. Only the instructions changed: more details = a result closer to what you imagined." : "✗ No: it's the same AI. Look again at the two prompts: what is different?"; $("#robA").style.color = ok ? "var(--green)" : "var(--onair)"; }}, t)));
 
@@ -879,6 +861,7 @@ function drawSP(){
   const paint = () => {
     const L = lines(), n = SPARTS.filter(([k]) => okPart(k)).length;
     out.replaceChildren(...(L.length ? L.map(([k, t]) => el("span", {class:"seg2 on " + k}, t)) : [el("span", {class:"muted"}, "Your prompt appears here, part by part.")]));
+    if (n === 4) done(1);
     meter.replaceChildren(el("b", null, "★".repeat(n) + "☆".repeat(4 - n)), el("span", null, n === 4 ? "Super Prompt! Every part is there." : "Missing: " + SPARTS.filter(([k]) => !okPart(k)).map(([, l]) => l.split("— ")[1]).join(", ")));
     acts.replaceChildren(el("button", {class:"btn", type:"button", disabled:n < 4 ? "" : null, onclick:() => copy(spText(), out, "Gemini")}, "📋 Copy my prompt"),
       el("a", {class:"btn alt" + (n < 4 ? " off" : ""), href:GEM, target:"_blank", rel:"noopener", style:"text-decoration:none", onclick:e => { if (n < 4){ e.preventDefault(); K.toast("Fill the 4 parts first."); return; } gem4 = true; done(2); after.hidden = false; }}, "↗ Open Gemini"));
@@ -899,35 +882,54 @@ function drawSP(){
 }
 drawTopics(); drawSP();
 
-/* ---------- 5 three prompts, one question ---------- */
-const QS = ["Why do we need to sleep?", "How do volcanoes work?", "What should I eat before a football match?", "How can I learn English faster?", "Why is the sea salty?"];
-const C = Object.assign({q:"", a:"", b:"", c:"", sa:0, sb:0, sc:0, why:""}, store.get("tri") || {});
-const saveC = () => store.set("tri", C);
-const TRI = [
-  ["a", "A · Simple", "Just the question.", "tA"],
-  ["b", "B · Better", "Add a role: “You are a …”, then the question.", "tB"],
-  ["c", "C · Pro", "Role + task + context + output. Use the 4 parts!", "tC"]
-];
-function proN(t){ t = t.toLowerCase(); return [/you are|act as|imagine you/.test(t), /i am|i'm|for my|grade|my class|years old|for a /.test(t), /\d|list|bullet|table|steps|words|short|simple|sentences|paragraph/.test(t)].filter(Boolean).length; }
-function drawTri(){
-  $("#qChips").replaceChildren(...QS.map(q => el("button", {class:"chip big2" + (C.q === q ? " on" : ""), type:"button", "aria-pressed":String(C.q === q), onclick:() => { C.q = q; if (!C.a || QS.includes(C.a)) C.a = q; saveC(); drawTri(); }}, q)));
-  if (!C.q){ $("#tri").replaceChildren(el("p", {class:"muted", style:"margin:14px 0 0"}, "Choose a question to start.")); $("#cmp").hidden = true; return; }
-  $("#tri").replaceChildren(...TRI.map(([k, n, hint, cls]) => {
-    const ta = el("textarea", {rows:k === "c" ? "4" : "3", placeholder:k === "b" ? "You are a … " + C.q : k === "c" ? "You are a … Explain … I am … Give me …" : C.q}); ta.value = C[k];
-    const meter = k === "c" ? el("p", {class:"muted pm", style:"margin:0;font-size:14px"}) : null;
-    const upd = () => { if (meter){ const m = proN(ta.value); meter.textContent = "Pro parts: " + ["🎭 role", "📚 context", "📋 output"].map((x, i) => [/you are|act as|imagine you/, /i am|i'm|for my|grade|my class|years old|for a /, /\d|list|bullet|table|steps|words|short|simple|sentences|paragraph/][i].test(ta.value.toLowerCase()) ? "✓ " + x : "○ " + x).join("   "); } };
-    ta.addEventListener("input", () => { C[k] = ta.value; saveC(); upd(); }); upd();
-    const stars = el("div", {class:"stars"}, el("span", {class:"muted", style:"font-size:14px"}, "Gemini's answer:"), ...[1, 2, 3, 4, 5].map(v => el("button", {class:"star" + (C["s" + k] >= v ? " on" : ""), type:"button", "aria-label":v + " stars", onclick:() => { C["s" + k] = v; saveC(); drawTri(); }}, "★")));
-    return el("div", {class:"card tcard " + cls}, el("span", {class:"tag"}, n), el("p", {class:"muted", style:"margin:4px 0 8px;font-size:15px"}, hint), ta, ...(meter ? [meter] : []),
-      el("div", {class:"row", style:"margin:8px 0"}, el("button", {class:"btn sm", type:"button", onclick:() => C[k].trim() ? copy(C[k].trim(), ta, "a NEW Gemini chat") : K.toast("Write your prompt first.")}, "📋 Copy"), el("a", {class:"btn sm alt", href:GEM, target:"_blank", rel:"noopener", style:"text-decoration:none"}, "↗ Open Gemini")), stars);
-  }));
-  const all = C.sa && C.sb && C.sc; $("#cmp").hidden = !all;
-  if (all){ $("#cmpBars").replaceChildren(...TRI.map(([k, n, , cls]) => el("div", {class:"cbar"}, el("span", null, n), el("i", null, el("b", {class:{tA:"bad", tB:"mid", tC:"pro"}[cls], style:"width:" + C["s" + k] * 20 + "%"})), el("em", null, "★".repeat(C["s" + k])))));
-    $("#l5").hidden = false; done(3); }
+/* ---------- 5 my first AI creation ---------- */
+const FC = Object.assign({fu:["", ""], ch:{}, title:"", final:"", name:"", asked:false}, store.get("creation") || {});
+const saveFC = () => { store.set("creation", FC); drawFC(); };
+const FUIDEAS = ["Make it shorter.", "Add one example.", "Use simpler words.", "Make it more fun, with emojis.", "Put it in a table.", "Add one more idea."];
+function drawFCPrompt(){
+  const t = spText(), full = SPARTS.every(([k]) => okPart(k)), T = SP.topic ? TOP[SP.topic] : null;
+  $("#fcPrompt").replaceChildren(el("span", {class:"tag"}, "Your Super Prompt (from step 3)" + (T ? " · " + T[0] + " " + T[1] : "")),
+    full ? el("pre", {class:"prompt small", style:"white-space:pre-wrap;margin:8px 0 0"}, t) : el("p", {style:"margin:8px 0 0;font-weight:700"}, "⚠ Your Super Prompt isn't finished. ", el("a", {href:"#seg-3"}, "← Go back to step 3"), " and fill the 4 parts."));
+  $("#fcAct1").replaceChildren(el("button", {class:"btn", type:"button", disabled:full ? null : "", onclick:() => copy(t, null, "Gemini")}, "📋 Copy my Super Prompt"),
+    el("a", {class:"btn alt" + (full ? "" : " off"), href:GEM, target:"_blank", rel:"noopener", style:"text-decoration:none", onclick:e => { if (!full){ e.preventDefault(); return; } FC.asked = true; saveFC(); }}, "↗ Open Gemini"));
 }
-$("#cmpWhy").value = C.why; $("#cmpWhy").addEventListener("input", () => { C.why = $("#cmpWhy").value; saveC(); });
-drawTri();
-
+function drawFu(){
+  $("#fcFu").replaceChildren(...[0, 1].map(i => { const ta = el("textarea", {rows:"2", placeholder:"Follow-up " + (i + 1) + ": e.g. " + FUIDEAS[i * 2]}); ta.value = FC.fu[i];
+    ta.addEventListener("input", () => { FC.fu[i] = ta.value; store.set("creation", FC); drawMsg(); });
+    return el("div", {class:"fu1"}, el("b", null, "Follow-up " + (i + 1)), ta, el("div", {class:"chips sm"}, ...FUIDEAS.map(x => el("button", {class:"chip", type:"button", onclick:() => { ta.value = x; FC.fu[i] = x; store.set("creation", FC); drawMsg(); }}, x))),
+      el("button", {class:"btn sm alt", type:"button", onclick:() => { if (!FC.fu[i].trim()){ K.toast("Write your follow-up first."); return; } copy(FC.fu[i].trim(), null, "the SAME Gemini chat"); }}, "📋 Copy follow-up " + (i + 1))); }));
+}
+const CHK = [["read", "I read the whole answer, slowly."], ["fact", "I checked one fact in a trusted source (a book, my teacher, a trusted website)."], ["ok", "Nothing strange or wrong, or I fixed it."]];
+function drawChk(){ $("#fcChk").replaceChildren(...CHK.map(([k, t]) => { const cb = el("input", {type:"checkbox"}); cb.checked = !!FC.ch[k]; cb.onchange = () => { FC.ch[k] = cb.checked; store.set("creation", FC); drawMsg(); }; return el("label", {class:"cbx"}, cb, el("span", null, t)); })); }
+function ready(){ return SPARTS.every(([k]) => okPart(k)) && FC.fu.every(x => x.trim().split(/\s+/).filter(Boolean).length >= 2) && CHK.every(([k]) => FC.ch[k]) && FC.title.trim() && FC.final.trim().split(/\s+/).length >= 10 && FC.name.trim(); }
+function drawMsg(){
+  const miss = [];
+  if (!SPARTS.every(([k]) => okPart(k))) miss.push("your Super Prompt (step 3)");
+  if (!FC.fu.every(x => x.trim().split(/\s+/).filter(Boolean).length >= 2)) miss.push("2 follow-ups");
+  if (!CHK.every(([k]) => FC.ch[k])) miss.push("the 3 checks");
+  if (!FC.title.trim()) miss.push("a title"); if (FC.final.trim().split(/\s+/).filter(Boolean).length < 10) miss.push("the final answer"); if (!FC.name.trim()) miss.push("your first name");
+  $("#fcMsg").textContent = miss.length ? "Still to do: " + miss.join(", ") + "." : "✅ Done! Here is your first AI creation."; $("#fcMsg").style.color = miss.length ? "var(--muted)" : "var(--green)";
+  $("#fcCard").hidden = !!miss.length; if (!miss.length){ drawCard(); done(3); }
+}
+function drawCard(){
+  const c = $("#fcCanvas"), g = c.getContext("2d"), W = c.width, H = c.height, T = SP.topic ? TOP[SP.topic] : ["✨", ""];
+  g.fillStyle = "#FBF7EE"; g.fillRect(0, 0, W, H); g.fillStyle = "#5B3FD1"; g.fillRect(0, 0, W, 170);
+  g.textAlign = "left"; g.fillStyle = "#E4DEFF"; g.font = "700 22px Arial, sans-serif"; g.fillText("AI CREATORS · EB7 · MY FIRST AI CREATION", 50, 55);
+  let y; const wrap = (t, x, maxW, lh, font, color, maxY) => { g.font = font; g.fillStyle = color; for (const para of String(t).split(/\n+/)){ let line = ""; for (const w of para.split(/\s+/)){ const test = line ? line + " " + w : w; if (g.measureText(test).width > maxW && line){ if (y > maxY){ g.fillText(line + " …", x, y); return; } g.fillText(line, x, y); y += lh; line = w; } else line = test; } if (line){ if (y > maxY) return; g.fillText(line, x, y); y += lh; } } };
+  y = 125; wrap(T[0] + " " + FC.title.trim(), 50, W - 100, 50, "800 42px Georgia, serif", "#fff", 150);
+  const label = (t, yy) => { g.fillStyle = "#5B3FD1"; g.font = "700 20px Arial, sans-serif"; g.fillText(t, 50, yy); };
+  label("MY SUPER PROMPT", 220); y = 255; wrap(spText(), 50, W - 100, 32, "24px 'Courier New', monospace", "#13221C", 400);
+  label("I IMPROVED IT TWICE", y + 25); y += 60; wrap("1. " + FC.fu[0].trim() + "   2. " + FC.fu[1].trim(), 50, W - 100, 32, "24px Arial, sans-serif", "#13221C", y + 70);
+  label("THE RESULT", y + 25); y += 60; wrap(FC.final.trim(), 50, W - 100, 34, "25px Georgia, serif", "#13221C", H - 170);
+  g.fillStyle = "#E3F1E9"; g.fillRect(40, H - 130, W - 80, 70); g.fillStyle = "#1E7A55"; g.font = "700 22px Arial, sans-serif"; g.fillText("✅ Made with AI (Gemini) · improved and checked by " + FC.name.trim(), 60, H - 87);
+  g.fillStyle = "#56665E"; g.font = "18px Arial, sans-serif"; g.fillText(new Date().toLocaleDateString("en-GB", {day:"numeric", month:"long", year:"numeric"}), 50, H - 25);
+  try { $("#fcDl").href = c.toDataURL("image/png"); } catch(e){}
+}
+function drawFC(){ drawFCPrompt(); drawMsg(); }
+$("#fcTitle").value = FC.title; $("#fcFinal").value = FC.final; $("#fcName").value = FC.name;
+[["fcTitle", "title"], ["fcFinal", "final"], ["fcName", "name"]].forEach(([id, k]) => $("#" + id).addEventListener("input", () => { FC[k] = $("#" + id).value; store.set("creation", FC); drawMsg(); }));
+drawFu(); drawChk(); drawFC();
+addEventListener("hashchange", drawFC);
 K.start();
 })();
 </script>

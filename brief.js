@@ -16,7 +16,7 @@
     13:{goal:"Stay safe with AI, sign your AI Charter, and earn your AI Driving License.", make:[], steps:[], done:"",
        missions:{5:"Your output: your signed AI Safety Charter.", 6:"Your output: your AI Driving License 🪪"}},
     3:{goal:"Become a prompt engineer: give AI clear, smart instructions.", make:[], steps:[], done:"",
-       missions:{4:"Your output: your Super Prompt (4 of 4 parts), tested in Gemini.", 5:"Your output: 3 prompts, 3 answers, and your stars for each."}},
+       missions:{3:"Your output: your Super Prompt (4 of 4 parts), tested in Gemini.", 4:"Your output: your first AI creation, improved and checked."}},
     11:{goal:"Make AI pictures with strong prompts, then your own 30-second AI video.", make:[], steps:[], done:"",
        missions:{3:"Your output: your best AI picture, saved in your folder.", 7:"Your output: your 30-second video: your storyboard and script, made by the AI."}},
     8:{goal:"Build your own website with a strong prompt, and get your own link.",
