@@ -1,6 +1,10 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}.flow3{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));margin:0 0 16px}
+.flow3>div{background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:14px}
+.flow3 .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;margin-bottom:6px}
+.flow3 b{display:block;font-size:18px}.flow3 p{margin:4px 0 0;font-size:16px}
+</style>
 </head><body>
 <title>AI Storytelling</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -272,6 +276,12 @@ select{font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--
 
 <section class="seg" id="seg-2" data-min="10" data-title="Your character" hidden>
   <div class="lower"><div class="no">02</div><div class="name"><h2>Invent your character</h2><p>10 minutes · then ask Gemini for help</p></div></div>
+  <p class="big">Every story needs a hero. Before AI writes anything, YOU decide who your hero is. AI only adds ideas.</p>
+  <div class="flow3">
+    <div><span class="n">1</span><b>You choose</b><p>Who they are, how they look, their power, what they want, what they fear.</p></div>
+    <div><span class="n">2</span><b>Gemini adds details</b><p>Copy the prompt. Gemini adds things you didn't think of: how they talk, a habit, a secret…</p></div>
+    <div><span class="n">3</span><b>Your hero goes into your story</b><p>In step 3, your story prompt already knows your hero. You don't write it again.</p></div>
+  </div>
   <div class="mission">
     <div class="card">
       <span class="tag">Your character</span>
@@ -692,8 +702,9 @@ function drawChar(){
   $("#charCard").replaceChildren(el("h3", {style:"font-size:26px;margin:4px 0"}, C.name || "Name?"), el("p", {style:"margin:0"}, C.who || "Who?"),
     C.look.length ? el("p", {style:"margin:4px 0 0"}, "👀 ", C.look.join(", ")) : "", C.pers.length ? el("p", {style:"margin:4px 0 0"}, "💬 ", C.pers.join(", ")) : "",
     C.power ? el("p", {style:"margin:4px 0 0"}, "⚡ ", C.power) : "", C.want ? el("p", {style:"margin:4px 0 0"}, "🎯 wants ", C.want) : "", C.fear ? el("p", {style:"margin:4px 0 0"}, "😨 afraid of ", C.fear) : "",
+    ...(C.more && MORE.some(([k]) => C.more[k]) ? [el("p", {style:"margin:12px 0 0;font-weight:700"}, "✨ Details from Gemini (you can change them):")] : []),
     ...MORE.filter(([k]) => C.more && C.more[k]).map(([k, icon, label]) => { const t = el("textarea", {rows:"2", "aria-label":label, class:"moreBox"}); t.value = C.more[k]; t.addEventListener("input", () => { C.more[k] = t.value; store.set("char", C); drawStory(); });
-      return el("label", {class:"more"}, el("span", {class:"tag"}, icon + " " + label + " (from Gemini, change it if you want)"), t); }));
+      return el("label", {class:"more"}, el("span", {class:"tag"}, icon + " " + label), t); }));
 }
 const MORE = [["look","👀","Look"],["talk","🗣️","How they talk"],["habit","🔁","Habit"],["secret","🤫","Secret"],["funny","😂","Funny thing"]];
 function parseMore(t){ const out = {};
