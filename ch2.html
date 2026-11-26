@@ -886,7 +886,9 @@ function stageLab(box, cfg){
     if (rev === taughtRev){ say("think", "I already learned this drawing.", "Draw a new one: the board clears by itself."); return; }
     mem.push({l:label, raw, f:F(raw)}); taughtRev = rev;
     const n = count(label), st = S[si], left = st.type === "teach" && got(st, label) < goal(st);
-    say("good", "Got it! This is " + an(label) + ".", "Now I remember " + n + " drawing" + (n > 1 ? "s" : "") + " of " + an(label) + "." + (left ? " Draw another one, a bit different." : ""));
+    const k = got(st, label), need = st.type === "teach" ? goal(st) : 0;
+    clear();
+    say("good", "Got it! This is " + an(label) + ".", left ? "✏️ Next: the board is clean. Draw " + label + " number " + (k + 1) + " of " + need + ", a bit different (bigger, smaller, or turned). Then press Teach again." : "I remember " + n + " drawing" + (n > 1 ? "s" : "") + " of " + an(label) + ". ✅ Done! Test me: draw one more and press “Ask the AI”. Then press the black “Next” button below.");
     render();
   }
 
