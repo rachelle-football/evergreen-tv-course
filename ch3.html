@@ -26,6 +26,12 @@
 .fcsteps{display:grid;gap:14px;margin-top:14px}.fcfu{display:grid;gap:12px}.fu1{display:grid;gap:6px;border:2px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--paper)}
 .fu1 textarea,.fcsteps input[type=text],.fcsteps textarea{width:100%;font:inherit;font-size:17px;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink)}
 .fcchk{display:grid;gap:8px}.cbx{display:flex;gap:10px;align-items:flex-start;font-size:17px}.cbx input{width:22px;height:22px;margin-top:2px}
+.fcwhat{margin:10px 0 0;font-size:18px;line-height:1.5;border-left:6px solid var(--green)}
+ol.how{margin:8px 0 12px;padding-left:24px;display:grid;gap:6px;font-size:17px;line-height:1.45}
+.gsk{display:block;width:100%;max-width:640px;height:auto;margin:14px 0 2px}.gsk .gw{fill:var(--panel);stroke:var(--line);stroke-width:2}.gsk .gt{fill:var(--paper)}
+.gsk .gu{fill:var(--paper);stroke:var(--line)}.gsk .gl{fill:var(--line)}.gsk .gi rect{fill:none;stroke:var(--muted);stroke-width:1.5}
+.gsk .gc{fill:#FFE9A8;stroke:#E0A100;stroke-width:2}.gsk .gcp{fill:#fff;stroke:#7a5a00;stroke-width:1.5}.gsk .gin{fill:var(--paper);stroke:#E0A100;stroke-width:3}
+.gsk .gx{font-family:Arial,sans-serif;fill:var(--ink)}.gsk .b{font-weight:700;font-size:17px}.gsk .s{font-size:14px}.gsk .m{font-size:16px;fill:var(--muted)}.gsk .n{font-size:16px;font-weight:700;fill:#B26B00}
 .fccard{margin-top:14px}.fccard canvas{width:100%;max-width:520px;height:auto;display:block;margin:10px 0;border-radius:12px;border:1px solid var(--line)}
 </style>
 </head><body>
@@ -461,20 +467,49 @@ button.seg2{display:inline;text-align:left;line-height:1.5;-webkit-box-decoratio
 <section class="seg" id="seg-4" data-min="15" data-title="My First AI Creation" hidden>
   <div class="lower"><div class="no">04</div><div class="name"><h2>My First AI Creation</h2><p>15 minutes · use it, improve it, check it, keep it</p></div></div>
   <p class="big">Now use your Super Prompt for real. Make something with AI, make it better, check it, and keep it.</p>
+  <div class="card fcwhat"><b>🎯 What you will make:</b> Gemini's answer to your Super Prompt (for example, your speed training plan) <b>is your first AI creation</b>. You will make it better, check it, then keep it on your own card.</div>
   <div class="card" id="fcPrompt"></div>
   <div class="fcsteps">
     <div class="card"><span class="tag">Step 1 · Ask Gemini</span>
-      <p class="lead" style="margin:6px 0 10px">Copy your Super Prompt, paste it in Gemini, and read the answer.</p>
-      <div class="row" id="fcAct1"></div></div>
+      <ol class="how">
+        <li>Click <b>📋 Copy my Super Prompt</b>.</li>
+        <li>Click <b>↗ Open Gemini</b>. It opens in a new tab.</li>
+        <li>In Gemini, click the box at the bottom (<b>“Ask Gemini”</b>), press <b>Ctrl+V</b> to paste, then press <b>Enter</b>.</li>
+        <li>Read Gemini's answer. <b>Keep the Gemini tab open:</b> you will use the same chat in Step 2.</li>
+        <li>Come back to this tab (click it at the top of your browser).</li>
+      </ol>
+      <div class="row" id="fcAct1"></div>
+      <svg class="gsk" viewBox="0 0 640 300" role="img" aria-label="Where to paste in Gemini and where to copy the answer">
+        <rect x="2" y="2" width="636" height="296" rx="16" class="gw"/><rect x="2" y="2" width="636" height="38" rx="16" class="gt"/><rect x="2" y="26" width="636" height="14" class="gt"/>
+        <text x="22" y="27" class="gx b">Gemini</text>
+        <rect x="300" y="56" width="320" height="34" rx="17" class="gu"/><text x="316" y="78" class="gx s">Act as a football coach. Create a …</text>
+        <rect x="24" y="104" width="380" height="10" rx="5" class="gl"/><rect x="24" y="122" width="430" height="10" rx="5" class="gl"/><rect x="24" y="140" width="350" height="10" rx="5" class="gl"/><rect x="24" y="158" width="400" height="10" rx="5" class="gl"/>
+        <text x="470" y="140" class="gx n">② Gemini's answer</text>
+        <g class="gi"><rect x="24" y="182" width="16" height="16" rx="3"/><rect x="50" y="182" width="16" height="16" rx="3"/><rect x="76" y="182" width="16" height="16" rx="3"/></g>
+        <rect x="102" y="178" width="26" height="24" rx="6" class="gc"/><rect x="108" y="184" width="10" height="12" rx="2" class="gcp"/><rect x="112" y="181" width="10" height="12" rx="2" class="gcp"/>
+        <text x="140" y="197" class="gx n">③ Copy the answer (Step 4)</text>
+        <rect x="24" y="232" width="592" height="46" rx="23" class="gin"/><text x="48" y="261" class="gx m">Ask Gemini</text>
+        <text x="200" y="261" class="gx n">① Click here, Ctrl+V, then Enter</text>
+      </svg></div>
     <div class="card"><span class="tag">Step 2 · Improve it twice 🔁</span>
-      <p class="lead" style="margin:6px 0 10px">Not perfect? Don't start again: write a follow-up in the <b>same chat</b>. Do it 2 times.</p>
+      <p class="lead" style="margin:6px 0 6px">Look at Gemini's answer. What would make it better <b>for you</b>? Too long? Hard words? Something missing?</p>
+      <ol class="how">
+        <li>Pick a follow-up below, or write your own.</li>
+        <li>Click <b>📋 Copy follow-up</b>.</li>
+        <li>Go to the <b>same Gemini chat</b> (don't open a new one), paste it in the box at the bottom (<b>Ctrl+V</b>), press <b>Enter</b>.</li>
+        <li>See how the answer changes. Then do follow-up 2 the same way.</li>
+      </ol>
       <div class="fcfu" id="fcFu"></div></div>
     <div class="card"><span class="tag">Step 3 · Check it ⚠️</span>
       <p class="lead" style="margin:6px 0 10px">AI can make mistakes, even with a Super Prompt. Before you keep it:</p>
       <div class="fcchk" id="fcChk"></div></div>
     <div class="card"><span class="tag">Step 4 · Keep it</span>
       <label class="ff"><b>Give your creation a title</b><input id="fcTitle" type="text" maxlength="60" placeholder="e.g. My 1-week speed training plan"></label>
-      <label class="ff"><b>Paste the final answer from Gemini</b><textarea id="fcFinal" rows="6" placeholder="Paste Gemini's last answer here (you can shorten it)."></textarea></label>
+      <div class="ff"><b>Paste Gemini's final answer</b><ol class="how" style="margin:4px 0 6px">
+        <li>In Gemini, go to the <b>last</b> answer (the one after follow-up 2).</li>
+        <li>Click Gemini's <b>Copy</b> button under the answer (see ③ in the picture), or select the answer with your mouse and press <b>Ctrl+C</b>.</li>
+        <li>Come back here, click in the box, press <b>Ctrl+V</b>.</li>
+      </ol></div><label class="ff"><textarea id="fcFinal" rows="6" placeholder="Paste Gemini's last answer here (Ctrl+V). You can delete parts to make it shorter."></textarea></label>
       <label class="ff"><b>Your first name</b><input id="fcName" type="text" maxlength="30" placeholder="Your first name"></label>
       <p class="fb" id="fcMsg" style="font-weight:700;margin:8px 0 0"></p>
     </div>
@@ -924,7 +959,8 @@ function drawCard(){
   const label = (t, yy) => { g.fillStyle = "#5B3FD1"; g.font = "700 20px Arial, sans-serif"; g.fillText(t, 50, yy); };
   label("MY SUPER PROMPT", 220); y = 255; wrap(spText(), 50, W - 100, 32, "24px 'Courier New', monospace", "#13221C", 400);
   label("I IMPROVED IT TWICE", y + 25); y += 60; wrap("1. " + FC.fu[0].trim() + "   2. " + FC.fu[1].trim(), 50, W - 100, 32, "24px Arial, sans-serif", "#13221C", y + 70);
-  label("THE RESULT", y + 25); y += 60; wrap(FC.final.trim(), 50, W - 100, 34, "25px Georgia, serif", "#13221C", H - 170);
+  const clean = FC.final.split(/\n/).filter(l => !/^\s*\|?\s*:?-{2,}/.test(l)).map(l => l.replace(/\t+/g, " · ").replace(/^\s*\|\s*|\s*\|\s*$/g, "").replace(/\s*\|\s*/g, " · ").replace(/\*\*|__|^#+\s*|`/g, "").replace(/^\s*[*-]\s+/, "• ")).filter(l => l.trim()).join("\n");
+  label("THE RESULT", y + 25); y += 60; wrap(clean, 50, W - 100, 34, "25px Georgia, serif", "#13221C", H - 170);
   g.fillStyle = "#E3F1E9"; g.fillRect(40, H - 130, W - 80, 70); g.fillStyle = "#1E7A55"; g.font = "700 22px Arial, sans-serif"; g.fillText("✅ Made with AI (Gemini) · improved and checked by " + FC.name.trim(), 60, H - 87);
   g.fillStyle = "#56665E"; g.font = "18px Arial, sans-serif"; g.fillText(new Date().toLocaleDateString("en-GB", {day:"numeric", month:"long", year:"numeric"}), 50, H - 25);
   try { $("#fcDl").href = c.toDataURL("image/png"); } catch(e){}
