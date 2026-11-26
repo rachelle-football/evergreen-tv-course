@@ -621,7 +621,7 @@ function slotBox(box, s, onDone){
 function plan(){
   const kinds = ["big"], K = window.PICKINDS || {};
   return kinds.map(k => ({slot:k, label:k === "big" ? "My AI picture" : (K[k] && K[k].label) || k, ch:11, accept:"image/*"})).concat([
-    {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
+    {slot:"license", label:"My AI Driving License", ch:13, accept:"image/png"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
 }
 function folder(box, now){
   async function draw(){

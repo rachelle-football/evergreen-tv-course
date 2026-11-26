@@ -13,6 +13,8 @@
        steps:["Learn the 3 steps: examples, training, testing", "Teach the AI 3 new things by drawing", "Test it with 10 new drawings and count its score", "Trick it with wrong examples, then fix it"],
        done:"Your AI's exam score is filled in, and your team and part are checked (part 08).",
        missions:{3:"Train your AI, give it the exam, then let a friend test it. Your output: its scores.", 7:"Your output: your AI Trainer certificate 🏅"}},
+    13:{goal:"Stay safe with AI, sign your AI Charter, and earn your AI Driving License.", make:[], steps:[], done:"",
+       missions:{5:"Your output: your signed AI Safety Charter.", 6:"Your output: your AI Driving License 🪪"}},
     3:{goal:"Become a prompt engineer: give AI clear, smart instructions.", make:[], steps:[], done:"",
        missions:{4:"Your output: a pro prompt (6 of 6), tested in Gemini.", 5:"Your output: 3 prompts, 3 answers, and your stars for each."}},
     11:{goal:"Make AI pictures with strong prompts, then your own 30-second AI video.", make:[], steps:[], done:"",

@@ -1,6 +1,30 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}.cwrap{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:20px;display:grid;gap:16px}
+.chead{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.chead h3{margin:4px 0;font-size:28px}.chead p{margin:0;color:var(--muted);font-size:17px}
+.ccount{background:var(--green-soft);border-radius:16px;padding:10px 16px;text-align:center}.ccount span{display:block;font-size:13px;font-weight:700;color:var(--muted)}.ccount b{font-size:32px;color:var(--green)}
+.clist{display:grid;gap:10px}
+.citem{border:2px solid var(--line);border-radius:16px;background:var(--paper);overflow:hidden}
+.citem.ok{border-color:var(--green);background:var(--green-soft)}
+.chd{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:48px 1fr 36px;gap:12px;align-items:center;padding:14px 16px;cursor:pointer}
+.chd:focus-visible{outline:3px solid var(--green)}
+.cic{font-size:30px}.ctx b{display:block;font-size:19px}.ctx span{font-size:16px;color:var(--muted)}.cst{font-size:22px;text-align:center}
+.cbody{padding:0 16px 16px;display:grid;gap:10px}
+.csit{margin:0;font-size:17px;background:var(--gold-soft);border-radius:12px;padding:10px 12px}
+.cfb{margin:0;font-weight:700}.btn.bad{background:var(--onair);border-color:var(--onair);color:#fff}
+.cbody textarea{width:100%;font:inherit;font-size:17px;padding:10px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink)}
+.cbody textarea:disabled{opacity:.5}
+.csign{display:grid;gap:12px;border-top:2px dashed var(--line);padding-top:16px}
+.csign .sl{font-size:16px}#sigPad{display:block;width:100%;max-width:600px;height:auto;border:2px solid var(--line);border-radius:12px;background:#fff linear-gradient(#cfd6d2,#cfd6d2) no-repeat 20px 78%/calc(100% - 40px) 2px;touch-action:none;margin:6px 0;cursor:crosshair}
+.btn.big{font-size:19px;padding:14px 22px;justify-self:start}
+.signed canvas,.licbox canvas{width:100%;max-width:560px;height:auto;display:block;margin:10px 0;border-radius:14px}
+.licbox canvas{box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.certlist{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:6px;font-size:18px}.certlist li.ok{color:var(--green);font-weight:700}
+.ftest{display:grid;gap:14px;margin-top:8px}
+.licprint{display:none}
+@media print{body.printlic *{visibility:hidden!important}body.printlic .licprint{display:block!important;visibility:visible!important;position:fixed;left:0;top:0;width:90mm;height:auto}}
+</style>
 </head><body>
 <title>Safe and Responsible AI</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -491,25 +515,44 @@ img.fprev{background:var(--paper)}
 </section>
 
 <!-- 5 create -->
-<section class="seg" id="seg-5" data-min="20" data-title="Mission: your AI Safety Charter" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: My AI Safety Charter</h2><p>20 minutes · 5 rules, 5 examples, 1 poster</p></div></div>
-  <div class="mission">
-    <div>
-      <p class="lead" style="margin:0 0 10px">Write 5 rules that keep you safe, fair and honest with AI. Add one example for each rule. Need help? Tap an idea to start a rule.</p>
-      <div class="chips" id="ruleIdeas" style="margin-bottom:12px"></div>
-      <div class="forms" id="rules"></div>
+<section class="seg" id="seg-5" data-min="22" data-title="Mission: my AI Charter" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>Mission: My AI Safety Charter</h2><p>22 minutes · choose, prove it, explain it, sign it</p></div></div>
+  <p class="big">A charter is a promise. Before you sign it, prove you understand each commitment.</p>
+  <div class="cwrap">
+    <div class="chead"><div><span class="tag">Mission 05 · Responsible AI</span><h3>My AI Safety Charter</h3><p>Choose your commitments and explain how you will follow them in real life.</p></div><div class="ccount"><span>My commitments</span><b id="cCount">0/5</b></div></div>
+    <div class="clist" id="cList"></div>
+    <div class="csign" id="cSign">
+      <label class="ff"><b>My first name</b><input id="chName" type="text" maxlength="30" placeholder="Your first name"></label>
+      <div><b class="sl">My signature</b> <span class="muted" style="font-size:14px">(draw it with your mouse or finger)</span>
+        <canvas id="sigPad" width="600" height="160" aria-label="Signature pad"></canvas>
+        <button class="btn sm alt" id="sigClear" type="button">Clear</button></div>
+      <button class="btn big" id="signBtn" type="button" disabled>✍️ Sign my AI Charter</button>
+      <p class="fb" id="signMsg" style="font-weight:700;margin:6px 0 0"></p>
     </div>
-    <aside class="card side posterwrap"><span class="tag">Your poster</span><label class="ff"><b>Your first name on the poster</b><input id="chName" type="text" maxlength="30"></label><canvas id="charter" width="1000" height="1400" aria-label="Your AI Safety Charter poster"></canvas><a class="btn" id="charterDl" download="My-AI-Safety-Charter.png" href="#">⬇ Download my charter</a></aside>
   </div>
-  <div id="rBadge"></div>
+  <div class="card signed" id="signedBox" hidden>
+    <span class="tag">✅ Signed</span>
+    <p class="lead" style="margin:6px 0 10px" id="signedTxt"></p>
+    <canvas id="charter" width="1000" height="1400" aria-label="Your signed AI Safety Charter"></canvas>
+    <div class="row"><a class="btn" id="charterDl" download="My-AI-Safety-Charter.png" href="#">⬇ Download my charter</a><a class="btn alt" href="#seg-6">Next: my AI Driving License →</a></div>
+  </div>
 </section>
 
-<!-- 6 reflect -->
-<section class="seg" id="seg-6" data-min="5" data-title="Reflect" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>Quiz and reflect</h2><p>5 minutes</p></div></div>
-  <div class="qz" id="quiz"></div>
-  <div class="card reflect" style="margin-top:14px"><span class="tag">Exit ticket</span><label class="ttl" for="exit" style="display:block">Which rule of your charter is the most important for you? Why?</label><textarea id="exit" placeholder="The most important rule is…"></textarea></div>
-  <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Show your charter to your parents. Together, agree on one family rule for using AI apps at home.</p></div>
+<!-- 6 license -->
+<section class="seg" id="seg-6" data-min="8" data-title="My AI Driving License" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>Your AI Driving License</h2><p>8 minutes · final safety test, then your license</p></div></div>
+  <p class="big">To drive a car, you need a license. To use AI, you need one too. Pass the final safety test to get yours.</p>
+  <div class="card lcheck"><span class="tag">To get your license</span><ul class="certlist" id="licList"></ul></div>
+  <div class="card" style="margin-top:14px"><span class="tag">Final safety test · 5 questions · you need 4 to pass</span><div id="ftest" class="ftest"></div><p class="fb" id="ftScore" style="font-weight:700;font-size:18px;margin:10px 0 0"></p></div>
+  <div class="card licbox" id="licBox" hidden>
+    <span class="tag">🪪 License granted</span>
+    <canvas id="license" width="1000" height="630" aria-label="Your AI Driving License"></canvas>
+    <img id="licImg" alt="Your AI Driving License" class="licprint">
+    <div class="row"><a class="btn" id="licDl" download="My-AI-Driving-License.png" href="#">⬇ Download</a><button class="btn alt" id="licPrint" type="button">🖨 Print</button><button class="btn alt" id="licSave" type="button">💾 Save to my profile</button></div>
+    <p class="fb" id="licMsg" style="font-weight:700;margin:8px 0 0"></p>
+  </div>
+  <div class="card reflect" style="margin-top:14px"><span class="tag">Exit ticket</span><label class="ttl" for="exit" style="display:block">Which commitment will be the hardest for you to keep? Why?</label><textarea id="exit" placeholder="The hardest one is…"></textarea></div>
+  <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Show your charter and your license to your parents. Together, agree on one family rule for using AI apps at home.</p></div>
   <p class="note">Next week: How AI Learns. You train your own AI.</p>
 </section>
 
@@ -669,7 +712,7 @@ function slotBox(box, s, onDone){
 function plan(){
   const kinds = ["big"], K = window.PICKINDS || {};
   return kinds.map(k => ({slot:k, label:k === "big" ? "My AI picture" : (K[k] && K[k].label) || k, ch:11, accept:"image/*"})).concat([
-    {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
+    {slot:"license", label:"My AI Driving License", ch:13, accept:"image/png"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
 }
 function folder(box, now){
   async function draw(){
@@ -900,7 +943,7 @@ function drawChat(){
   const log = [];
   CHAT.slice(0, ci + 1).forEach(([q], k) => { log.push(el("div", {class:"bub bot"}, el("b", null, "🤖 SuperBot"), q)); if (k < ci && CHAT[k].pick != null){ const [a, ok, why] = CHAT[k][1][CHAT[k].pick]; log.push(el("div", {class:"bub me " + (ok ? "ok" : "no")}, a), el("p", {class:"fb " + (ok ? "good" : "bad")}, (ok ? "✓ " : "✗ ") + why)); } });
   if (ci < CHAT.length) log.push(el("div", {class:"row", style:"justify-content:flex-end"}, ...CHAT[ci][1].map(([a, ok], j) => el("button", {class:"btn sm alt", type:"button", onclick:() => { CHAT[ci].pick = j; if (ok) cok++; ci++; drawChat(); }}, a))));
-  else { log.push(el("p", {class:"big", style:"margin:10px 0 0"}, "You made " + cok + " safe choices out of 4. " + (cok === 4 ? "🛡️ You are a safe explorer!" : "Look at the ✗ answers: why were they not safe?")), el("button", {class:"btn sm alt", type:"button", onclick:() => { ci = 0; cok = 0; CHAT.forEach(c => c.pick = null); drawChat(); }}, "↺ Try again")); $("#l1").hidden = false; }
+  else { store.set("chat", cok || 0.5); log.push(el("p", {class:"big", style:"margin:10px 0 0"}, "You made " + cok + " safe choices out of 4. " + (cok === 4 ? "🛡️ You are a safe explorer!" : "Look at the ✗ answers: why were they not safe?")), el("button", {class:"btn sm alt", type:"button", onclick:() => { ci = 0; cok = 0; CHAT.forEach(c => c.pick = null); drawChat(); }}, "↺ Try again")); $("#l1").hidden = false; }
   $("#chat").replaceChildren(...log);
 }
 drawChat();
@@ -949,30 +992,130 @@ function drawFair(){ $("#fair").replaceChildren(...FAIR.map(([t, ok], i) => el("
   const good = FAIR.every(([, ok], i) => ok === fsel.has(i)); $("#fairA").textContent = fsel.size ? (good ? "✓ Perfect! These questions help find and fix bias." : "Almost: choose every question that checks fairness, and none that keeps it unfair.") : ""; $("#fairA").style.color = good ? "var(--green)" : "var(--gold)"; }
 drawFair();
 
-/* 5 charter */
-const IDEAS = ["I never share my password, address or school with AI.", "A chatbot is not a friend: I keep no secrets from my parents.", "I check if a photo, voice or video could be fake.", "I ask before using someone's photo or voice.", "I use AI to learn, not to copy.", "I say when AI helped me.", "I look for bias and ask for variety."];
-const F = [1, 2, 3, 4, 5].flatMap(i => [["r" + i, "Rule " + i, "e.g. " + IDEAS[i - 1]], ["e" + i, "Example for rule " + i, "e.g. I don't type my address in a chatbot.", 2]]);
-let C = {};
-function drawPoster(){
-  const name = $("#chName").value.trim();
-  X.poster($("#charter"), $("#charterDl"), {kicker:"AI Explorers · EB7 · Evergreen School", title:"My AI Safety Charter", color:"#1F4E79",
-    sections:[1, 2, 3, 4, 5].map(i => ["Rule " + i, (C["r" + i] || "") + (C["e" + i] ? "  (e.g. " + C["e" + i] + ")" : "")]), footer:(name ? "By " + name + " · " : "") + new Date().toLocaleDateString("en-GB")});
-  const ok = [1, 2, 3, 4, 5].every(i => (C["r" + i] || "").trim() && (C["e" + i] || "").trim());
-  if (ok){ X.badge($("#rBadge"), "🛡️", "Safe Explorer", "Your charter is saved in your portfolio. Download the poster!"); done(2); } else $("#rBadge").replaceChildren();
+/* 5 charter: choose → prove you understand (a quick situation) → explain in your own words → sign */
+const COM = [
+  ["privacy", "🔒", "Privacy", "I protect my personal information.", "A game says: “Type your home address to win a prize!”", [["I type it: it's a prize", false], ["I don't type it, and I tell an adult", true]], "e.g. When an app asks for my address or school, I close it."],
+  ["think", "🧠", "Independent Thinking", "I use AI to learn, not to cheat.", "Your homework: write a paragraph about your summer.", [["AI writes it, I copy it", false], ["AI gives me ideas, then I write it myself", true]], "e.g. I ask AI to explain, then I do the exercise alone."],
+  ["check", "🔎", "Fact Checking", "I check information before trusting AI.", "An AI says: “Lebanon has three seas.”", [["I check it in a trusted source", true], ["I believe it: AI knows everything", false]], "e.g. I check AI's facts in my school book or a trusted website."],
+  ["respect", "🙋", "Respect", "I ask permission before using someone's photo or voice.", "You want to make a funny AI video with your friend's voice.", [["I just do it, it's a joke", false], ["I ask my friend first, and respect a no", true]], "e.g. I ask my sister before I put her photo in an AI app."],
+  ["safety", "🛡️", "Personal Safety", "I tell a trusted adult if AI makes me uncomfortable.", "A chatbot says something strange and asks you to keep it secret.", [["I stop, and tell a parent or teacher", true], ["I keep the secret", false]], "e.g. If a chatbot asks for secrets, I tell my mum right away."]
+];
+const CH = Object.assign({c:{}, name:"", sig:null, signed:null}, store.get("contract") || {});
+const saveCH = () => store.set("contract", CH);
+const comOK = k => { const x = CH.c[k] || {}; return x.ok === true && X.words(x.how) >= 5; };
+const nOK = () => COM.filter(([k]) => comOK(k)).length;
+function drawCom(){
+  $("#cCount").textContent = nOK() + "/5";
+  $("#cList").replaceChildren(...COM.map(([k, ic, title, line, sit, opts, ph]) => {
+    const x = CH.c[k] = CH.c[k] || {}, open = !!x.open, ok = comOK(k), signed = !!CH.signed;
+    const head = el("button", {class:"chd", type:"button", "aria-expanded":String(open), disabled:signed ? "" : null, onclick:() => { x.open = !x.open; saveCH(); drawCom(); }},
+      el("span", {class:"cic"}, ic), el("span", {class:"ctx"}, el("b", null, title), el("span", null, line)), el("span", {class:"cst"}, ok ? "✅" : open ? "▾" : "＋"));
+    const card = el("div", {class:"citem" + (ok ? " ok" : "") + (open ? " open" : "")}, head);
+    if (open && !signed){
+      const fb = el("p", {class:"cfb"});
+      if (x.ok === true) fb.textContent = "✓ Right. Now explain how YOU will do it.";
+      else if (x.ok === false) fb.textContent = "✗ Not safe. Think again: what would keep you (and others) safe?";
+      const how = el("textarea", {rows:"2", placeholder:ph, disabled:x.ok === true ? null : ""}); how.value = x.how || "";
+      const left = el("span", {class:"muted", style:"font-size:14px"});
+      const upd = () => { const n = X.words(how.value); left.textContent = x.ok !== true ? "Answer the situation first." : n >= 5 ? "✓ Committed!" : "Write at least 5 words (" + n + " now)."; };
+      how.oninput = () => { x.how = how.value; saveCH(); upd(); $("#cCount").textContent = nOK() + "/5"; card.classList.toggle("ok", comOK(k)); head.querySelector(".cst").textContent = comOK(k) ? "✅" : "▾"; drawSignState(); };
+      upd();
+      card.append(el("div", {class:"cbody"},
+        el("p", {class:"csit"}, el("b", null, "Prove it · "), sit),
+        el("div", {class:"row"}, ...opts.map(([t, good], j) => el("button", {class:"btn sm" + (x.pick === j ? (good ? "" : " bad") : " alt"), type:"button", onclick:() => { x.pick = j; x.ok = good; saveCH(); drawCom(); }}, t))),
+        fb, el("label", {class:"ff"}, el("b", null, "How will I do it in real life?"), how), left));
+    }
+    return card;
+  }));
+  drawSignState();
 }
-C = X.form($("#rules"), "charter", F, S => { C = S; if ($("#chName")) drawPoster(); });
-X.keep($("#chName"), "chName", drawPoster);
-$("#ruleIdeas").replaceChildren(...IDEAS.map(t => el("button", {class:"chip", type:"button", onclick:() => { const ins = [...$("#rules").querySelectorAll("input")]; const empty = ins.find(x => !x.value.trim()); if (!empty){ K.toast("All 5 rules are written."); return; } empty.value = t; empty.dispatchEvent(new Event("input")); }}, t)));
-drawPoster();
+/* signature pad */
+const pad = $("#sigPad"), pg = pad.getContext("2d"); let drawing = false, strokes = 0;
+function padReset(){ pg.clearRect(0, 0, pad.width, pad.height); pg.strokeStyle = "#13221C"; pg.lineWidth = 4; pg.lineCap = "round"; pg.lineJoin = "round"; }
+padReset();
+if (CH.sig && !CH.signed){ const im = new Image(); im.onload = () => { pg.drawImage(im, 0, 0); strokes = 1; drawSignState(); }; im.src = CH.sig; }
+const pos = e => { const r = pad.getBoundingClientRect(), t = e.touches ? e.touches[0] : e; return [(t.clientX - r.left) * pad.width / r.width, (t.clientY - r.top) * pad.height / r.height]; };
+const down = e => { if (CH.signed) return; drawing = true; const [x, y] = pos(e); pg.beginPath(); pg.moveTo(x, y); e.preventDefault(); };
+const move = e => { if (!drawing) return; const [x, y] = pos(e); pg.lineTo(x, y); pg.stroke(); e.preventDefault(); };
+const up = () => { if (!drawing) return; drawing = false; strokes++; CH.sig = pad.toDataURL("image/png"); saveCH(); drawSignState(); };
+pad.addEventListener("mousedown", down); pad.addEventListener("mousemove", move); addEventListener("mouseup", up);
+pad.addEventListener("touchstart", down, {passive:false}); pad.addEventListener("touchmove", move, {passive:false}); pad.addEventListener("touchend", up);
+$("#sigClear").onclick = () => { if (CH.signed) return; padReset(); strokes = 0; CH.sig = null; saveCH(); drawSignState(); };
+$("#chName").value = CH.name || "";
+$("#chName").addEventListener("input", () => { CH.name = $("#chName").value; saveCH(); drawSignState(); });
+function drawSignState(){
+  const need = 5 - nOK(), nm = (CH.name || "").trim(), ready = need === 0 && nm && strokes > 0;
+  $("#signBtn").disabled = !ready || !!CH.signed;
+  $("#signMsg").textContent = CH.signed ? "" : need ? "Complete all 5 commitments first (" + need + " left)." : !nm ? "Write your first name." : !strokes ? "Draw your signature." : "Ready! Press “Sign my AI Charter”.";
+  $("#signMsg").style.color = ready ? "var(--green)" : "var(--muted)";
+}
+$("#signBtn").onclick = () => { if ($("#signBtn").disabled) return; CH.signed = new Date().toISOString(); saveCH(); done(2); showSigned(); drawCom(); drawLic(); };
+function showSigned(){
+  const box = $("#signedBox"); box.hidden = !CH.signed; $("#cSign").hidden = !!CH.signed; if (!CH.signed) return;
+  const d = new Date(CH.signed).toLocaleDateString("en-GB", {day:"numeric", month:"long", year:"numeric"});
+  $("#signedTxt").textContent = "Signed by " + CH.name.trim() + " on " + d + ". This is your promise. Next: get your AI Driving License.";
+  X.poster($("#charter"), $("#charterDl"), {kicker:"AI Creators · EB7 · Evergreen School", title:"My AI Safety Charter", color:"#1F4E79",
+    sections:COM.map(([k, ic, title, line]) => [title, line + " → " + ((CH.c[k] || {}).how || "").trim()]), footer:"Signed by " + CH.name.trim() + " · " + d});
+  if (CH.sig){ const im = new Image(); im.onload = () => { const g = $("#charter").getContext("2d"); g.drawImage(im, 640, 1250, 300, 80); try { $("#charterDl").href = $("#charter").toDataURL("image/png"); } catch(e){} }; im.src = CH.sig; }
+}
+drawCom(); showSigned();
 
-/* 6 */
-X.quiz($("#quiz"), [
-  ["Which information should NEVER be shared with an AI tool?", ["Passwords, address and school", "A general science question", "A made-up character's name"], 0, "Keep private details to yourself."],
+/* 6 final test + license */
+const FT = [
+  ["Which information should you NEVER type into an AI app?", ["Your password and your home address", "A maths question", "A made-up character's name"], 0, "Private information stays private."],
   ["A chatbot asks you to keep a secret from your parents. What do you do?", ["Keep the secret", "Close the app and tell a trusted adult", "Ask it why"], 1, "A safe app never asks for secrets. Tell an adult."],
-  ["What is a deepfake?", ["A fake photo, voice or video made by AI", "A very deep swimming pool", "A type of password"], 0, "Deepfakes look real. Check the source."],
-  ["What is bias?", ["When results are unfair or one-sided", "A type of computer", "A copyright symbol"], 0, "Bias = unfair, one-sided results, often from one-sided examples."],
-  ["What is a responsible way to use AI for homework?", ["Copy its answer without checking", "Use it to learn, check the facts, and say how it helped", "Hide that you used it"], 1, "Learn, check, and be honest."]
-], () => done(3));
+  ["A video shows your principal saying “No school tomorrow!”. What do you do?", ["Share it fast", "Check the school's official message first", "Believe it, it's a video"], 1, "Videos can be deepfakes. Check the real source."],
+  ["You want to put your friend's photo in an AI app.", ["Do it, it's just for fun", "Ask your friend first, and respect a no", "Do it, then tell them"], 1, "Ask first. No means no."],
+  ["What is a responsible way to use AI for homework?", ["Copy its answer", "Use it to understand, check the facts, and say how it helped", "Hide that you used it"], 1, "Learn, check, and be honest."]
+];
+const FTS = Object.assign({a:{}}, store.get("ftest") || {});
+function drawTest(){
+  const n = Object.keys(FTS.a).length, ok = FT.filter((q, i) => FTS.a[i] === q[2]).length;
+  $("#ftest").replaceChildren(...FT.map(([q, opts, a, why], i) => { const pick = FTS.a[i], answered = pick != null;
+    return el("div", {class:"qq"}, el("h4", null, (i + 1) + ". " + q), el("div", {class:"opts2"}, ...opts.map((o, j) => el("button", {class:"opt2" + (answered && j === a ? " right" : "") + (answered && j === pick && j !== a ? " wrong" : ""), type:"button", disabled:answered ? "" : null, onclick:() => { FTS.a[i] = j; store.set("ftest", FTS); drawTest(); drawLic(); }}, o))),
+      answered ? el("p", {class:"why2"}, (pick === a ? "✓ " : "✗ ") + why) : ""); }));
+  $("#ftScore").replaceChildren(document.createTextNode(n < FT.length ? "" : ok >= 4 ? "✅ You passed: " + ok + " of 5!" : "❌ " + ok + " of 5. You need 4. Read the explanations, then try again. "),
+    ...(n === FT.length && ok < 4 ? [el("button", {class:"btn sm", type:"button", onclick:() => { FTS.a = {}; store.set("ftest", FTS); drawTest(); drawLic(); }}, "↺ Try again")] : []));
+  $("#ftScore").style.color = ok >= 4 ? "var(--green)" : "var(--onair)";
+  if (n === FT.length && ok >= 4) done(3);
+}
+const passed = () => Object.keys(FTS.a).length === FT.length && FT.filter((q, i) => FTS.a[i] === q[2]).length >= 4;
+function licNo(){ const t = (CH.name || "x").toLowerCase() + (CH.signed || ""); let h = 7; for (const c of t) h = (h * 31 + c.charCodeAt(0)) % 1000000; return "EB7-" + String(h).padStart(6, "0"); }
+function drawLic(){
+  const steps = [["The SuperBot chat (step 1)", (store.get("chat") || 0) > 0], ["Safe or not? (step 3)", !!(store.get("prog") || [])[0]], ["What would you do? (step 4)", !!(store.get("prog") || [])[1]], ["Sign your AI Charter (step 5)", !!CH.signed], ["Pass the final safety test (below)", passed()]];
+  $("#licList").replaceChildren(...steps.map(([t, ok]) => el("li", {class:ok ? "ok" : ""}, (ok ? "✅ " : "⬜ ") + t)));
+  const ready = steps.every(x => x[1]); $("#licBox").hidden = !ready; if (!ready) return;
+  const c = $("#license"), g = c.getContext("2d"), W = c.width, H = c.height, d = new Date(CH.signed);
+  const rr = (x, y, w, h, r) => { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); };
+  g.clearRect(0, 0, W, H); rr(0, 0, W, H, 36); const bg = g.createLinearGradient(0, 0, W, H); bg.addColorStop(0, "#0F3D2E"); bg.addColorStop(1, "#1E7A55"); g.fillStyle = bg; g.fill();
+  g.save(); rr(0, 0, W, H, 36); g.clip(); g.globalAlpha = .08; g.fillStyle = "#fff"; for (let i = 0; i < 9; i++){ g.beginPath(); g.arc(860, 120, 60 + i * 55, 0, 7); g.lineWidth = 3; g.strokeStyle = "#fff"; g.stroke(); } g.restore();
+  g.fillStyle = "#CFE9DC"; g.font = "700 22px Arial, sans-serif"; g.textAlign = "left"; g.fillText("AI CREATORS · EB7 · EVERGREEN SCHOOL", 50, 62);
+  g.fillStyle = "#fff"; g.font = "800 54px Georgia, serif"; g.fillText("AI DRIVING LICENSE", 50, 128);
+  // badge
+  g.fillStyle = "#F4C542"; g.beginPath(); g.arc(860, 150, 78, 0, 7); g.fill(); g.fillStyle = "#0F3D2E"; g.font = "64px Arial"; g.textAlign = "center"; g.fillText("🛡️", 860, 172);
+  // white panel
+  rr(40, 200, W - 80, 330, 22); g.fillStyle = "#FBF7EE"; g.fill(); g.textAlign = "left";
+  g.fillStyle = "#56665E"; g.font = "700 18px Arial, sans-serif"; g.fillText("LICENSE HOLDER", 80, 250);
+  g.fillStyle = "#13221C"; g.font = "800 50px Georgia, serif"; g.fillText(CH.name.trim(), 80, 305);
+  g.fillStyle = "#1E7A55"; g.font = "700 26px Arial, sans-serif"; g.fillText("Responsible AI User", 80, 350);
+  g.fillStyle = "#13221C"; g.font = "22px Arial, sans-serif"; g.fillText("✓ Safety assessment passed", 80, 392); g.fillText("✓ AI Safety Charter signed", 80, 426);
+  g.fillStyle = "#56665E"; g.font = "700 16px Arial, sans-serif"; g.fillText("LICENSE NO.", 80, 478); g.fillText("ISSUED", 330, 478);
+  g.fillStyle = "#13221C"; g.font = "700 22px 'Courier New', monospace"; g.fillText(licNo(), 80, 506); g.font = "700 20px Arial, sans-serif"; g.fillText(d.toLocaleDateString("en-GB", {day:"numeric", month:"short", year:"numeric"}), 330, 506);
+  g.fillStyle = "#56665E"; g.font = "700 16px Arial, sans-serif"; g.fillText("SIGNATURE", 620, 250);
+  g.strokeStyle = "#cfd6d2"; g.lineWidth = 2; g.beginPath(); g.moveTo(620, 345); g.lineTo(920, 345); g.stroke();
+  // bottom band
+  g.fillStyle = "#F4C542"; g.font = "800 24px Arial, sans-serif"; g.fillText("LEVEL 01 · AI SAFETY", 50, 585);
+  g.textAlign = "right"; g.fillStyle = "#fff"; g.fillText("LICENSE GRANTED ✓", W - 50, 585); g.textAlign = "left";
+  const fin = () => { try { const u = c.toDataURL("image/png"); $("#licDl").href = u; $("#licImg").src = u; } catch(e){} store.set("license", {name:CH.name.trim(), no:licNo(), date:CH.signed, level:1}); };
+  if (CH.sig){ const im = new Image(); im.onload = () => { g.drawImage(im, 620, 262, 300, 80); fin(); }; im.src = CH.sig; } else fin();
+}
+$("#licPrint").onclick = () => { document.body.classList.add("printlic"); window.print(); setTimeout(() => document.body.classList.remove("printlic"), 500); };
+$("#licSave").onclick = async () => {
+  const m = $("#licMsg"); if (!window.F || !F.on() ){ m.textContent = "Log in to save it in your profile. You can always download it."; return; }
+  try { m.textContent = "Saving…"; const blob = await new Promise(r => $("#license").toBlob(r, "image/png")); await F.upload(new File([blob], "license.png", {type:"image/png"}), "license", "My AI Driving License"); m.textContent = "✅ Saved in your profile (My folder)."; }
+  catch(e){ m.textContent = e && e.code === "offline" ? "Log in to save it in your profile. You can always download it." : "Couldn't save it now. Download it instead, and try again later."; }
+};
+drawTest(); drawLic();
 X.keep($("#exit"), "exit");
 K.start();
 })();
