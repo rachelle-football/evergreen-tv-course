@@ -276,7 +276,8 @@ function renderLogin(){
   setTimeout(() => u.focus(), 50);
 }
 async function logout(){
-  try { await rpc("ailab_course_save", {p_token:ACC.token, p_data:localData()}); } catch(e) {}
+  try { await rpc("ailab_course_save", {p_token:ACC.token, p_data:localData()}); }
+  catch(e){ if (!confirm("Your work could not be saved: check the internet and try again.\n\nPress Cancel to stay logged in (your work stays on this computer).\nPress OK only if you accept to lose the work that is not saved yet.")) { toast("You are still logged in. Your work is safe on this computer."); return; } }
   rpc("ailab_logout", {p_token:ACC.token}).catch(() => {});
   clearLocal(); try { localStorage.removeItem(SESS); localStorage.removeItem("ai-lab-v1:" + ACC.username); } catch(e) {}
   ACC = null; top(); route();

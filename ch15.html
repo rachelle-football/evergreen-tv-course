@@ -441,6 +441,7 @@ img.fprev{background:var(--paper)}
 .flimit{margin:4px 0 6px;padding:10px 12px;border-radius:10px;background:var(--gold-soft);font-weight:700;font-size:15px}
 .stat2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}.st2{border:2px solid var(--line);border-radius:12px;background:var(--panel);padding:10px 12px;text-align:left;font:inherit;color:var(--ink);display:grid;gap:2px;cursor:pointer}.st2 b{font-size:17px}.st2 span{font-size:14px;color:var(--muted)}.st2[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
 @media (max-width:600px){.stat2{grid-template-columns:1fr}}
+.impb{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:0 0 12px;padding:10px 12px;border-radius:12px;background:var(--gold-soft);font-weight:700;font-size:15px}
 /* ---- Chapter 9 · build your solution ---- */
 .def.sm p{font-size:19px;line-height:1.45;font-weight:600}
 ol.how{margin:8px 0 4px;padding-left:24px;display:grid;gap:6px;font-size:17px;line-height:1.45}
@@ -1002,9 +1003,18 @@ const PF = [["name", "Project name", "e.g. Evergreen Lost & Found"], ["problem",
   ["solution", "My solution", "e.g. A digital lost-and-found app."], ["f1", "Feature 1 of 3", "e.g. Report a found item"], ["f2", "Feature 2 of 3", "e.g. Search by colour or place"], ["f3", "Feature 3 of 3 (the last one!)", "e.g. Mark an item as returned"], ["success", "Success criteria", "e.g. A student finds a lost item in under 2 minutes."]];
 const br = raw("ch14-brief") || {};
 if (!store.get("proj")){ const p = {}; PF.forEach(([k]) => p[k] = (br[k] || (k === "problem" ? br.stmt : "") || "").trim()); store.set("proj", p); }
-const PJ = X.form($("#proj"), "proj", PF, () => { drawPrompt(); drawSucc(); });
-$("#proj").prepend(el("span", {class:"tag"}, "Your project"), el("p", {class:"muted", style:"margin:4px 0 10px;font-size:15px"}, br.problem || br.stmt ? "From your School Innovation Brief (Chapter 8). You can improve it here." : "No brief from Chapter 8 on this computer: write your project here."));
-{ const fl = $("#proj").querySelectorAll("label.ff")[5]; if (fl) fl.before(el("p", {class:"flimit"}, "✋ Maximum 3 features. A small app that works is better than a big app that doesn't. More ideas? Keep them for Version 3.")); }
+let PJ = X.form($("#proj"), "proj", PF, () => { drawPrompt(); drawSucc(); });
+function projHead(){
+  const b = raw("ch14-brief") || {}, cur = store.get("proj") || {}, diff = PF.some(([k]) => ((b[k] || (k === "problem" ? b.stmt : "") || "").trim()) && (b[k] || (k === "problem" ? b.stmt : "") || "").trim() !== (cur[k] || "").trim());
+  const head = el("div", {class:"projh"}, el("span", {class:"tag"}, "Your project"), el("p", {class:"muted", style:"margin:4px 0 10px;font-size:15px"}, b.problem || b.stmt ? "From your School Innovation Brief (Chapter 8). You can improve it here." : "No brief from Chapter 8 on this computer: write your project here."),
+    diff ? el("div", {class:"impb"}, el("span", null, "📥 Your Chapter 8 brief has changes that are not here."), el("button", {class:"btn sm", type:"button", onclick:() => {
+      const n = {}; PF.forEach(([k]) => n[k] = ((b[k] || (k === "problem" ? b.stmt : "") || "").trim()) || (cur[k] || "")); store.set("proj", n);
+      PJ = X.form($("#proj"), "proj", PF, () => { drawPrompt(); drawSucc(); }); projHead(); drawPrompt(); drawSucc(); K.toast("Your latest brief is here. Your code was not touched."); }}, "Import latest Chapter 8 brief")) : null);
+  $("#proj").querySelector(".projh")?.remove(); $("#proj").prepend(head);
+  const fl = $("#proj").querySelectorAll("label.ff")[5]; if (fl && !$("#proj").querySelector(".flimit")) fl.before(el("p", {class:"flimit"}, "✋ Maximum 3 features. A small app that works is better than a big app that doesn't. More ideas? Keep them for Version 3."));
+}
+projHead();
+
 
 /* 2 UI and UX */
 const MOCK = {view:"home"};
@@ -1040,7 +1050,9 @@ function buildPrompt(){ const P = store.get("proj") || {};
 function drawPrompt(){ if (!READY) return; $("#bPrompt").textContent = "“" + buildPrompt() + "”"; drawIPrompt(); }
 $("#bCopy").onclick = () => { const P = store.get("proj") || {}; if (nw(P.problem) < 2 || nw(P.solution) < 2){ K.toast("First write your problem and your solution (Section 1)."); return; } copy(buildPrompt(), $("#bPrompt"), "Gemini"); };
 const AP = Object.assign({code:"", v1:"", ran:false, finds:{}, change:"", code2:"", v2:"", better:"", v2ok:false, v1at:"", v2at:""}, store.get("app") || {});
-const saveAP = () => { store.set("app", AP); };
+/* the same HTML is stored only once: a copy equal to Version 1 or 2 is saved as "=v1" / "=v2" */
+if (AP.code === "=v1") AP.code = AP.v1; if (AP.code2 === "=v2") AP.code2 = AP.v2;
+const saveAP = () => { const o = Object.assign({}, AP); if (o.v1 && o.code === o.v1) o.code = "=v1"; if (o.v2 && o.code2 === o.v2) o.code2 = "=v2"; store.set("app", o); };
 $("#codeIn").value = AP.code;
 function codeInfo(){ const c = clean(AP.code); $("#codeInfo").textContent = !c ? "" : isHtml(c) ? (n => n + (n === 1 ? " line" : " lines") + " of code")(c.split("\n").length) : "⚠️ This doesn't look like HTML code. In Gemini, click Copy code."; }
 codeInfo();
@@ -1143,7 +1155,7 @@ F.slotBox($("#slotV2"), {slot:"page", label:"My school app (Version 2)", accept:
 READY = true; drawPrompt(); drawSucc();
 
 /* when a section opens, show the newest work */
-const ON_SHOW = {"seg-3":drawPrompt, "seg-4":chMsg, "seg-5":drawQA, "seg-6":drawIPrompt, "seg-7":drawSucc};
+const ON_SHOW = {"seg-1":projHead, "seg-3":drawPrompt, "seg-4":chMsg, "seg-5":drawQA, "seg-6":drawIPrompt, "seg-7":drawSucc};
 const mo = new MutationObserver(ms => ms.forEach(m => { if (!m.target.hidden && ON_SHOW[m.target.id]) ON_SHOW[m.target.id](); }));
 document.querySelectorAll("section.seg").forEach(sec => mo.observe(sec, {attributes:true, attributeFilter:["hidden"]}));
 

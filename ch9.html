@@ -674,6 +674,8 @@ K.init("ch9");
 const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 11:6, 12:7, 14:8, 15:9, 16:10, 9:11})[n] || n;
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const nw = t => (String(t || "").trim().match(/\S+/g) || []).length;
+const toNum = x => { let t = String(x == null ? "" : x).trim().replace(/\s+/g, ""); if (!t) return NaN;
+  if (/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(t)) t = t.replace(/,/g, ""); else if (/^\d+,\d+$/.test(t)) t = t.replace(",", "."); return /^\d+(\.\d+)?$/.test(t) ? parseFloat(t) : NaN; };   /* "3,200" = 3200, "12,5" = 12.5, letters = not a number */
 const strip = t => String(t || "").trim().replace(/[.!]+$/, "");
 
 /* 1 the awards */
@@ -690,20 +692,22 @@ function items(){
   const lic = file("license"), con = raw("ch13-contract") || {};
   const lab = raw("ch2-lab") || {}, nm = (lab.names || []).filter(x => (x || "").trim());
   const fc = raw("ch3-creation") || {};
-  const inv = raw("ch11-inv") || {}, poster = file("big"), video = file("video");
+  const inv = raw("ch11-inv") || {}, poster = file("big"), video = file("video"), vo = raw("ch11-voice") || {}, sb = raw("ch11-board") || {};
+  const sbS = Array.isArray(sb.s) ? sb.s : [], sbOk = sbS.length === 4 && sbS.every(x => nw(x.see) >= 3 && nw(x.say) >= 3) && sbS.reduce((a, x) => a + (+x.sec || 0), 0) === 30;
+  const VS = {energetic:"energetic", professional:"professional", friendly:"friendly"}, voOk = nw(vo.script) >= 10 && !!vo.pick;
   const sc = raw("ch12-sc") || {}, smart = file("smart");
   const br = raw("ch14-brief") || {}, app = file("page"), app1 = file("app1"), ap = raw("ch15-app") || {}, su = raw("ch15-succ") || {};
   const pl = raw("ch16-pl") || {}, rep = raw("ch16-rep") || {};
-  const plOk = pl.m && Array.isArray(pl.d) && pl.d.every(x => isFinite(parseFloat(x)));
-  const plTot = plOk ? pl.d.reduce((a, x) => a + parseFloat(x), 0) : 0, PU = {water:"L", energy:"kWh", food:"kg", air:"cars"}[pl.m] || "";
+  const plOk = !!pl.m && Array.isArray(pl.d) && pl.d.length === 5 && pl.d.every(x => toNum(x) >= 0);
+  const plTot = plOk ? pl.d.reduce((a, x) => a + toNum(x), 0) : 0, plPct = pl.pct == null || pl.pct === "" || !Number.isFinite(+pl.pct) ? 30 : +pl.pct, PU = {water:"L", energy:"kWh", food:"kg", air:"cars"}[pl.m] || "";
   return [
     ["license", "🪪", "AI Driving License", 13, !!lic || !!con.signed, lic ? "Saved in my folder." : con.signed ? "Charter signed. Save the license in Chapter 2." : "", lic],
     ["model", "🧠", "My Trained AI Model", 2, !!lab.done, lab.done ? "It recognises: " + nm.join(", ") + (lab.pct !== undefined && lab.pct !== "" ? " · test: " + lab.pct + "%" : "") + "." : "", null],
     ["plan", "💬", "My AI-Generated Plan", 3, !!(fc.title && (fc.top || []).some(x => (x || "").trim())), fc.title ? "“" + fc.title + "”" + ((fc.top || []).filter(Boolean).length ? ": " + (fc.top || []).filter(Boolean).join(" · ") : "") : "", null],
-    ["ad", "🎬", "My AI Commercial", 11, !!video || !!poster, (inv.name ? inv.name + (inv.slogan ? ": “" + inv.slogan + "”" : "") + ". " : "") + (video ? "Video saved." : poster ? "Poster saved, video missing." : ""), video || poster],
+    ["ad", "🎬", "My AI Commercial", 11, !!video, (inv.name ? inv.name + (inv.slogan ? ": “" + inv.slogan + "”" : "") + ". " : "") + [poster ? "✓ poster" : "⬜ poster", voOk ? "✓ voice-over (" + VS[vo.pick] + ")" : "⬜ voice-over", sbOk ? "✓ storyboard: " + sbS.map(x => x.sec + "s").join(" + ") : "⬜ storyboard", video ? "✓ video" : "⬜ video"].join(" · "), video, poster],
     ["smart", "🏫", "My Smart System", 12, !!smart, smart ? "My smart classroom program, built with Gemini." : "", smart],
     ["app", "🚀", "My School Application", 15, !!app, (br.problem ? "Problem: " + strip(br.problem) + ". " : "") + (app ? "Version 2 saved" + (app1 ? ", Version 1 too." : ".") : ap.v1 ? "Version 1 only." : "") + (su.status ? " Status: " + (su.status === "demo" ? "working demo." : "prototype.") : ""), app],
-    ["planet", "🌍", "My Planet Dashboard and Report", 16, !!(plOk && nw(rep.sol) >= 4), plOk ? "Weekly total: " + Math.round(plTot * 10) / 10 + " " + PU + ", target −" + (pl.pct || 30) + "%" + (rep.sol ? ". Solution: " + strip(rep.sol) : "") + "." : "", null]
+    ["planet", "🌍", "My Planet Dashboard and Report", 16, !!(plOk && nw(rep.sol) >= 4), plOk ? "Weekly total: " + Math.round(plTot * 10) / 10 + " " + PU + ", target −" + plPct + "%" + (rep.sol ? ". Solution: " + strip(rep.sol) : "") + "." : "", null]
   ];
 }
 function preview(f){ if (!f) return null; const u = F.url(f.path);
@@ -714,9 +718,9 @@ function drawPF(){
   const nm = sessName() || ME.name.trim();
   $("#nameBox").hidden = !!sessName(); $("#pfWho").textContent = (nm || "Your name") + " · Grade 7";
   const L = items(), n = L.filter(x => x[4]).length;
-  $("#pfg").replaceChildren(...L.map(([k, ic, t, ch, ok, sum, f]) => el("div", {class:"pfc" + (ok ? " ok" : "") + (ME.proud === k ? " star" : "")},
+  $("#pfg").replaceChildren(...L.map(([k, ic, t, ch, ok, sum, f, f2]) => el("div", {class:"pfc" + (ok ? " ok" : "") + (ME.proud === k ? " star" : "")},
     el("div", {class:"pft"}, el("span", null, ic), el("div", null, el("b", null, t), el("small", null, k === "app" ? "Chapters 8–9" : "Chapter " + DN(ch))), el("i", null, ok ? "✓" : "⬜")),
-    sum ? el("p", null, sum) : el("p", {class:"muted"}, "Not found yet."), ok ? preview(f) : el("a", {class:"btn sm alt", href:"ch" + ch + ".html"}, "Open Chapter " + DN(ch) + " →"), ME.proud === k ? el("em", {class:"proudtag"}, "⭐ Most proud") : null)));
+    sum ? el("p", null, sum) : el("p", {class:"muted"}, "Not found yet."), f2 ? preview(f2) : null, ok ? preview(f) : el("a", {class:"btn sm alt", href:"ch" + ch + ".html"}, "Open Chapter " + DN(ch) + " →"), ME.proud === k ? el("em", {class:"proudtag"}, "⭐ Most proud") : null)));
   $("#pff").textContent = (n + " of 7 creations") + (ME.learned.trim() ? " · “" + ME.learned.trim() + "”" : "");
   $("#proud").replaceChildren(...L.map(([k, ic, t]) => el("button", {class:"chip", type:"button", "aria-pressed":String(ME.proud === k), onclick:() => { ME.proud = k; saveMe(); drawPF(); }}, ic + " " + t)));
 }

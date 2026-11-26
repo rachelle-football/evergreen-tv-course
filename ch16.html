@@ -960,7 +960,9 @@ const MIS = {
 const PL = Object.assign({m:"", src:"", d:["", "", "", "", ""], an:{}, ai:{}, cause:"", pct:30, weeks:36, real:"", sols:[{}, {}, {}], pick:-1}, store.get("pl") || {});
 const saveP = () => store.set("pl", PL);
 const M = () => MIS[PL.m] || null;
-const vals = () => PL.d.map(x => parseFloat(String(x).replace(",", ".")));
+const toNum = x => { let t = String(x == null ? "" : x).trim().replace(/\s+/g, ""); if (!t) return NaN;
+  if (/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(t)) t = t.replace(/,/g, ""); else if (/^\d+,\d+$/.test(t)) t = t.replace(",", "."); return /^\d+(\.\d+)?$/.test(t) ? parseFloat(t) : NaN; };   /* "3,200" = 3200, "12,5" = 12.5, letters = not a number */
+const vals = () => PL.d.map(toNum);
 const dataOk = () => vals().every(x => isFinite(x) && x >= 0);
 const total = () => vals().reduce((a, b) => a + b, 0);
 const avg = () => total() / 5;
@@ -1005,7 +1007,7 @@ function drawAnalysis(){
   chart($("#chart2"));
   if (!ok){ $("#anq").replaceChildren(el("p", {class:"muted"}, "👆 First fill in your data (Section 2).")); $("#anMsg").textContent = ""; drawAPrompt(); drawChkAI(); return; }
   const num = (k, label, ans, tol) => { const i = el("input", {type:"text", inputmode:"decimal", placeholder:m.u, value:PL.an[k] || ""}), f = el("small", {class:"fit"});
-    const chk = () => { const x = parseFloat(String(i.value).replace(",", ".")); if (!i.value.trim()){ f.textContent = ""; f.className = "fit"; return; } const good = Math.abs(x - ans) <= tol; f.textContent = good ? "✓ Correct" : "✗ Not yet. Check your calculation."; f.className = "fit " + (good ? "ok" : "no"); };
+    const chk = () => { const x = toNum(i.value); if (!i.value.trim()){ f.textContent = ""; f.className = "fit"; return; } const good = Math.abs(x - ans) <= tol; f.textContent = good ? "✓ Correct" : "✗ Not yet. Check your calculation."; f.className = "fit " + (good ? "ok" : "no"); };
     i.oninput = () => { PL.an[k] = i.value; saveP(); chk(); anMsg(); }; chk(); return el("label", {class:"ff"}, el("b", null, label), i, f); };
   const days = el("div", {class:"chips"}, ...DAYS.map((d, i) => el("button", {class:"chip", type:"button", "aria-pressed":String(PL.an.worst === i), onclick:() => { PL.an.worst = i; saveP(); drawAnalysis(); }}, d.slice(0, 3))));
   const wf = PL.an.worst == null ? "" : PL.an.worst === worst() ? "✓ Correct: the highest bar." : "✗ Look at the chart: which bar is the highest?";
@@ -1013,7 +1015,7 @@ function drawAnalysis(){
     num("tot", "2 · The weekly total (add the 5 days)", total(), 0.05), num("avg", "3 · The daily average (total ÷ 5)", avg(), 0.15));
   anMsg(); drawAPrompt(); drawChkAI();
 }
-const anOk = () => !!M() && dataOk() && PL.an.worst === worst() && Math.abs(parseFloat(String(PL.an.tot).replace(",", ".")) - total()) <= 0.05 && Math.abs(parseFloat(String(PL.an.avg).replace(",", ".")) - avg()) <= 0.15;
+const anOk = () => !!M() && dataOk() && PL.an.worst === worst() && Math.abs(toNum(PL.an.tot) - total()) <= 0.05 && Math.abs(toNum(PL.an.avg) - avg()) <= 0.15;
 function anMsg(){ $("#anMsg").textContent = anOk() ? "✓ You analysed the data yourself. Now see what the AI says." : "Answer the 3 questions. Use the chart and a calculator if you need."; $("#anMsg").style.color = anOk() ? "var(--green)" : "var(--muted)"; analysisDone(); }
 const dataLine = () => DAYS.map((d, i) => d + " " + fmt(vals()[i]) + " " + M().u).join(", ");
 const aPrompt = () => "Act as a data analyst for a Grade 7 student. Here is my data about " + M().what + " at my school, for one week: " + dataLine() + ". Find the worst day, the weekly total and the daily average. Make a simple bar chart. Explain in simple English what the data shows, and what could cause the worst day. Do not invent any numbers.";

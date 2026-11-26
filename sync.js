@@ -13,11 +13,11 @@
   var clock = wrap.querySelector(".clock"); if (clock) clock.insertBefore(save, clock.firstChild); else wrap.appendChild(save);
   function setSave(t, warn){ save.textContent = t; save.className = "evg-save" + (warn ? " warn" : ""); }
   if (!on){ setSave("Saved on this computer"); return; }
-  setSave((acc.name || acc.username) + " · ☁ Saved");
+  setSave((acc.name || acc.username) + " · ☁ Checking…");
   function snap(){ var o = {}; for (var i = 0; i < localStorage.length; i++){ var k = localStorage.key(i); if (RX.test(k)) o[k] = localStorage.getItem(k); } return o; }
-  var last = JSON.stringify(snap()), busy = false;
+  var last = "", busy = false;   /* "" = push once on every page load, so work a previous page could not save is sent again */
   function push(keepalive){
-    var s = snap(), j = JSON.stringify(s); if (j === last || busy) return; busy = true; setSave("Saving…");
+    var s = snap(), j = JSON.stringify(s); if (j === last || busy) return; busy = true; if (last) setSave("Saving…");
     fetch(C.url.replace(/\/+$/, "") + "/rest/v1/rpc/ailab_course_save", {method:"POST", keepalive: !!keepalive && j.length < 60000,
       headers: Object.assign({"apikey": C.key, "Content-Type": "application/json"}, /^eyJ/.test(C.key) ? {"Authorization": "Bearer " + C.key} : {}),
       body: JSON.stringify({p_token: acc.token, p_data: s})})
