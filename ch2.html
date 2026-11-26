@@ -50,6 +50,7 @@
 .adc .r b{font-size:18px}.adc .r.ok{border-color:var(--green);background:var(--green-soft)}.adc .r.no{border-color:var(--onair);background:var(--onair-soft)}
 @media (max-width:520px){.adc .r{grid-template-columns:1fr 1fr}.adc .r b{grid-column:1/-1}}
 .howg{display:grid;gap:10px;margin-top:8px}.howg>div{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:start}.howg span{font-size:30px;line-height:1}.howg p{margin:0;font-size:17px}
+.certlist{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:6px;font-size:18px}.certlist li.ok{color:var(--green);font-weight:700}
 </style>
 </head><body>
 <title>How AI Learns</title>
@@ -474,8 +475,14 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
     <p class="lead" style="margin:0 0 6px"><b>Key words.</b> Tap each one.</p>
   <div class="kw3" id="kw3"></div>
   <div class="card" style="margin:16px 0"><span class="tag">Check yourself · 4 questions</span><div id="q3" class="q3"></div><p id="q3s" class="q3s"></p></div>
-  <p class="big">You trained a real AI, tested it, and made it better. Here is your certificate.</p>
-  <div class="card certbox">
+  <p class="big">Your certificate shows YOUR results from the mission (step 3): the 3 things your AI learned, its exam score, and the friend test before and after.</p>
+  <div class="card certlock" id="certLock" hidden>
+    <span class="tag">🔒 Your certificate is locked</span>
+    <p class="lead" style="margin:6px 0 10px">Finish the mission in step 3 to unlock it:</p>
+    <ul class="certlist" id="certList"></ul>
+    <button class="btn" type="button" id="goMission">✏️ Go to the mission (step 3)</button>
+  </div>
+  <div class="card certbox" id="certBox">
     <label class="labname">Your name on the certificate<input id="certName" type="text" maxlength="30" autocomplete="off" placeholder="Your first name"></label>
     <p class="muted" id="certNote" style="margin:0;font-size:15px"></p>
     <canvas id="cert" width="1200" height="850" aria-label="Your AI Trainer certificate"></canvas>
@@ -1049,7 +1056,11 @@ stageLab($("#lab1"), {
   $("#certName").value = store.get("certName") || who;
   function draw(){
     d = store.get("cert") || {};
-    $("#certNote").textContent = d.words && d.exam ? "Your AI's results are on it. Check your name, then download." : "Finish the mission in step 3 (teach your AI and give it the exam) and your results appear here.";
+    const steps = [["Teach your AI 3 things", !!(d.words && d.words.length >= 3)], ["The exam: 10 drawings", !!d.exam], ["Friend test", !!d.f1], ["Friend test again", !!d.f2]];
+    const ready = steps.every(x => x[1]);
+    $("#certLock").hidden = ready; $("#certBox").hidden = !ready;
+    $("#certList").replaceChildren(...steps.map(([t, ok]) => { const li = document.createElement("li"); li.textContent = (ok ? "✅ " : "⬜ ") + t; if (ok) li.className = "ok"; return li; }));
+    $("#certNote").textContent = "These are your AI's real results. Check your name, then download.";
     const W = 1200, H = 850, name = $("#certName").value.trim() || "AI Trainer";
     g.fillStyle = "#FBF7EE"; g.fillRect(0, 0, W, H);
     g.strokeStyle = "#1E7A55"; g.lineWidth = 14; g.strokeRect(30, 30, W - 60, H - 60);
@@ -1062,16 +1073,17 @@ stageLab($("#lab1"), {
     g.font = "28px Arial, sans-serif"; g.fillStyle = "#13221C";
     g.fillText("trained a real AI to recognise: " + (d.words && d.words.length ? d.words.join(", ") : "…"), W / 2, 450);
     const sc = x => x ? x.r + "/" + (x.r + x.w) : "…";
-    const boxes = [["🤖 Exam score", sc(d.exam)], ["👫 Friend test", d.f1 ? sc(d.f1) + "  →  " + sc(d.f2) : "…"]];
-    boxes.forEach(([t, v], i) => { const x = 250 + i * 400, y = 495; g.fillStyle = "#E3F1E9"; g.fillRect(x, y, 300, 140); g.strokeStyle = "#1E7A55"; g.lineWidth = 3; g.strokeRect(x, y, 300, 140);
-      g.fillStyle = "#56665E"; g.font = "24px Arial, sans-serif"; g.fillText(t, x + 150, y + 45); g.fillStyle = "#13221C"; g.font = "700 46px Arial, sans-serif"; g.fillText(v, x + 150, y + 108); });
+    const boxes = [["🤖 Exam score", sc(d.exam), "right answers with your drawings"], ["👫 Friend test", d.f1 ? sc(d.f1) + "  →  " + sc(d.f2) : "…", "before → after your friend taught it"]];
+    boxes.forEach(([t, v, cap], i) => { const x = 220 + i * 420, y = 490; g.fillStyle = "#E3F1E9"; g.fillRect(x, y, 340, 170); g.strokeStyle = "#1E7A55"; g.lineWidth = 3; g.strokeRect(x, y, 340, 170);
+      g.fillStyle = "#56665E"; g.font = "24px Arial, sans-serif"; g.fillText(t, x + 170, y + 45); g.fillStyle = "#13221C"; g.font = "700 46px Arial, sans-serif"; g.fillText(v, x + 170, y + 108); g.fillStyle = "#56665E"; g.font = "19px Arial, sans-serif"; g.fillText(cap, x + 170, y + 145); });
     g.font = "24px Arial, sans-serif"; g.fillStyle = "#56665E";
-    g.fillText("Evergreen School  ·  " + new Date().toLocaleDateString("en-GB", {day:"numeric", month:"long", year:"numeric"}), W / 2, 720);
+    g.fillText("Evergreen School  ·  " + new Date().toLocaleDateString("en-GB", {day:"numeric", month:"long", year:"numeric"}), W / 2, 722);
     g.font = "italic 22px Georgia, serif"; g.fillText("“An AI is only as good as the examples you give it.”", W / 2, 765);
     try { $("#certDl").href = c.toDataURL("image/png"); } catch(e) {}
   }
   $("#certName").addEventListener("input", () => { store.set("certName", $("#certName").value); draw(); });
   addEventListener("hashchange", draw); window.EVG_CERT = draw;
+  $("#goMission").onclick = () => { location.hash = "#seg-3"; };
   draw();
 })();
 
