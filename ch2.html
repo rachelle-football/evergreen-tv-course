@@ -337,8 +337,7 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
     <h3>Same building, 2 colours. You decide: which colour is a house, which is a castle?</h3>
     <p class="step-t">Step 1 · Teach the AI: give each building a colour, then tell it: house or castle?</p>
     <div class="houses" id="taught"></div>
-    <p id="needBox" class="need">👆 First tap a <b>colour</b> for Building 1 and a colour for Building 2. Then Step 2 opens here.</p>
-    <div id="newBox" hidden>
+    <div id="newBox">
       <p class="step-t">Step 2 · Make a NEW colour the AI has never seen, and ask it</p>
       <div class="teach">
         <div class="hcard new" id="newCard"></div>
@@ -1172,9 +1171,6 @@ function bcard(n){
 function drawSw(){
   $("#taught").replaceChildren(bcard(1), bcard(2));
   const ready = cH && cC && labA;
-  $("#newBox").hidden = !ready;
-  const nb = $("#needBox"); nb.hidden = !!ready;
-  nb.innerHTML = !cH && !cC ? "👆 First tap a <b>colour</b> for Building 1 and a colour for Building 2. Then Step 2 opens here." : !cH ? "👆 Now tap a <b>colour</b> for Building 1." : !cC ? "👆 Now tap a <b>colour</b> for Building 2." : "👆 Now choose: is Building 1 a house or a castle?";
   newColour();
 }
 const hex2 = h => [1, 3, 5].map(i => parseInt(h.substr(i, 2), 16));
@@ -1185,6 +1181,7 @@ let cur2 = null;
 function newColour(){ cur2 = hsl(+$("#hue").value, 85, +$("#lig").value); $("#newCard").innerHTML = house(toHex(cur2), false); $("#newCard").append(el("b", null, "❓ House or castle?")); }
 $("#hue").oninput = $("#lig").oninput = () => { newColour(); $("#b2").textContent = "A new colour! Ask me."; };
 $("#ask2").onclick = () => {
+  if (!cH || !cC || !labA){ $("#b2").textContent = !cH || !cC ? "I can't answer yet! 🤷 In Step 1, give each building a colour, so I learn which colour is a house and which is a castle." : "I can't answer yet! 🤷 In Step 1, tell me: which building is the house?"; return; }
   const d1 = dist(cur2, hex2(cH)), d2 = dist(cur2, hex2(cC)), is1 = d1 <= d2, nameOf = c => SW.find(x => x[1] === c)[0];
   const close = Math.abs(d1 - d2) < .12 * Math.max(d1, d2), lab = is1 ? labA : other(labA);
   $("#b2").textContent = (close ? "Hmm, this one is hard… I think: " : "I think: ") + lab.toUpperCase() + " " + ICON[lab] + ". You never taught me this colour, but it is closer to the " + nameOf(is1 ? cH : cC) + " one, and you told me that one is a " + lab.toLowerCase() + ".";
