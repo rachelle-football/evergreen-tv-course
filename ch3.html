@@ -30,9 +30,9 @@
 ol.how{margin:8px 0 12px;padding-left:24px;display:grid;gap:6px;font-size:17px;line-height:1.45}
 .gcap{margin:16px 0 0;font-size:16px;color:var(--muted)}.gsk{display:block;width:100%;max-width:640px;height:auto;margin:6px 0 2px;user-select:none;-webkit-user-select:none;pointer-events:none;opacity:.92;filter:grayscale(.15)}.gsk .gw{fill:var(--panel);stroke:var(--line);stroke-width:2}.gsk .gt{fill:var(--paper)}
 .gsk .gu{fill:var(--paper);stroke:var(--line)}.gsk .gl{fill:var(--line)}.gsk .gi rect{fill:none;stroke:var(--muted);stroke-width:1.5}
-.gsk .gc{fill:#FFE9A8;stroke:#E0A100;stroke-width:2}.gsk .gcp{fill:#fff;stroke:#7a5a00;stroke-width:1.5}.gsk .gin{fill:var(--paper);stroke:#E0A100;stroke-width:3}
+.gsk .gin{fill:var(--paper);stroke:#E0A100;stroke-width:3}
 .gsk .gx{font-family:Arial,sans-serif;fill:var(--ink)}.gsk .b{font-weight:700;font-size:17px}.gsk .s{font-size:14px}.gsk .m{font-size:16px;fill:var(--muted)}.gsk .n{font-size:16px;font-weight:700;fill:#B26B00}
-.fccard{margin-top:14px}.fccard canvas{width:100%;max-width:520px;height:auto;display:block;margin:10px 0;border-radius:12px;border:1px solid var(--line)}
+.fcsteps .ff{display:grid;gap:6px;margin:10px 0}.fccard{margin-top:14px}.fccard canvas{width:100%;max-width:520px;height:auto;display:block;margin:10px 0;border-radius:12px;border:1px solid var(--line)}
 </style>
 </head><body>
 <title>Become a Prompt Engineer</title>
@@ -467,7 +467,7 @@ button.seg2{display:inline;text-align:left;line-height:1.5;-webkit-box-decoratio
 <section class="seg" id="seg-4" data-min="15" data-title="My First AI Creation" hidden>
   <div class="lower"><div class="no">04</div><div class="name"><h2>My First AI Creation</h2><p>15 minutes · use it, improve it, check it, keep it</p></div></div>
   <p class="big">Now use your Super Prompt for real. Make something with AI, make it better, check it, and keep it.</p>
-  <div class="card fcwhat"><b>🎯 What you will make:</b> Gemini's answer to your Super Prompt (for example, your speed training plan) <b>is your first AI creation</b>. You will make it better, check it, then keep it on your own card.</div>
+  <div class="card fcwhat"><b>🎯 What you will make:</b> Gemini's answer to your Super Prompt (for example, your speed training plan) <b>is your first AI creation</b>. You will make it better, check it, then keep the best of it <b>in your own words</b> on your card.</div>
   <div class="card" id="fcPrompt"></div>
   <div class="fcsteps">
     <div class="card"><span class="tag">Step 1 · Ask Gemini</span>
@@ -480,15 +480,13 @@ button.seg2{display:inline;text-align:left;line-height:1.5;-webkit-box-decoratio
       </ol>
       <div class="row" id="fcAct1"></div>
       <p class="gcap">🖼️ <b>This is only a picture</b> of the Gemini tab, to show you where to click. You can't type in it: do it in the <b>real Gemini tab</b>.</p>
-      <svg class="gsk" viewBox="0 0 640 300" role="img" aria-label="Where to paste in Gemini and where to copy the answer">
+      <svg class="gsk" viewBox="0 0 640 300" role="img" aria-label="Where to paste in Gemini and where the answer appears">
         <rect x="2" y="2" width="636" height="296" rx="16" class="gw"/><rect x="2" y="2" width="636" height="38" rx="16" class="gt"/><rect x="2" y="26" width="636" height="14" class="gt"/>
         <text x="22" y="27" class="gx b">Gemini</text>
         <rect x="300" y="56" width="320" height="34" rx="17" class="gu"/><text x="316" y="78" class="gx s">Act as a football coach. Create a …</text>
         <rect x="24" y="104" width="380" height="10" rx="5" class="gl"/><rect x="24" y="122" width="430" height="10" rx="5" class="gl"/><rect x="24" y="140" width="350" height="10" rx="5" class="gl"/><rect x="24" y="158" width="400" height="10" rx="5" class="gl"/>
         <text x="470" y="140" class="gx n">② Gemini's answer</text>
         <g class="gi"><rect x="24" y="182" width="16" height="16" rx="3"/><rect x="50" y="182" width="16" height="16" rx="3"/><rect x="76" y="182" width="16" height="16" rx="3"/></g>
-        <rect x="102" y="178" width="26" height="24" rx="6" class="gc"/><rect x="108" y="184" width="10" height="12" rx="2" class="gcp"/><rect x="112" y="181" width="10" height="12" rx="2" class="gcp"/>
-        <text x="140" y="197" class="gx n">③ Copy the answer (Step 4)</text>
         <rect x="24" y="232" width="592" height="46" rx="23" class="gin"/><text x="48" y="261" class="gx m">Ask Gemini</text>
         <text x="200" y="261" class="gx n">① Click here, Ctrl+V, then Enter</text>
       </svg></div>
@@ -504,20 +502,21 @@ button.seg2{display:inline;text-align:left;line-height:1.5;-webkit-box-decoratio
     <div class="card"><span class="tag">Step 3 · Check it ⚠️</span>
       <p class="lead" style="margin:6px 0 10px">AI can make mistakes, even with a Super Prompt. Before you keep it:</p>
       <div class="fcchk" id="fcChk"></div></div>
-    <div class="card"><span class="tag">Step 4 · Keep it</span>
-      <label class="ff"><b>Give your creation a title</b><input id="fcTitle" type="text" maxlength="60" placeholder="e.g. My 1-week speed training plan"></label>
-      <div class="ff"><b>Paste Gemini's final answer</b><ol class="how" style="margin:4px 0 6px">
-        <li>In Gemini, go to the <b>last</b> answer (the new one, after your follow-up).</li>
-        <li>Click Gemini's <b>Copy</b> button under the answer (see ③ in the picture in Step 1), or select the answer with your mouse and press <b>Ctrl+C</b>.</li>
-        <li>Come back here, click in the box, press <b>Ctrl+V</b>.</li>
-      </ol></div><label class="ff"><textarea id="fcFinal" rows="6" placeholder="Paste Gemini's last answer here (Ctrl+V). You can delete parts to make it shorter."></textarea></label>
+    <div class="card"><span class="tag">Step 4 · Make it yours ✍️</span>
+      <p class="lead" style="margin:6px 0 10px">Don't copy-paste. Show that you <b>understood</b> Gemini's answer: keep the best of it, in your own words.</p>
+      <label class="ff"><b>Give your creation a title</b><input id="fcTitle" type="text" maxlength="60" placeholder="A short title, e.g. My speed training plan"></label>
+      <div class="ff"><b>My top 3 from Gemini's answer</b><span class="muted" style="font-size:16px">Read Gemini's last answer. Pick the 3 most useful things for you and write each one in your own words.</span>
+        <input class="fctop" type="text" maxlength="90" placeholder="1. The most useful thing, in my own words">
+        <input class="fctop" type="text" maxlength="90" placeholder="2. The second one, in my own words">
+        <input class="fctop" type="text" maxlength="90" placeholder="3. The third one, in my own words"></div>
+      <label class="ff"><b>What did my follow-up change?</b><input id="fcChg" type="text" maxlength="110" placeholder="e.g. The words got simpler and the plan got shorter."></label>
       <label class="ff"><b>Your first name</b><input id="fcName" type="text" maxlength="30" placeholder="Your first name"></label>
       <p class="fb" id="fcMsg" style="font-weight:700;margin:8px 0 0"></p>
     </div>
   </div>
   <div class="card fccard" id="fcCard" hidden>
     <span class="tag">🏆 Your output</span>
-    <canvas id="fcCanvas" width="1000" height="1400" aria-label="My First AI Creation card"></canvas>
+    <canvas id="fcCanvas" width="1000" height="1150" aria-label="My First AI Creation card"></canvas>
     <div class="row"><a class="btn" id="fcDl" download="My-First-AI-Creation.png" href="#">⬇ Download my AI creation</a></div>
   </div>
 </section>
@@ -923,7 +922,9 @@ function drawSP(){
 drawTopics(); drawSP();
 
 /* ---------- 5 my first AI creation ---------- */
-const FC = Object.assign({fu:["", ""], ch:{}, title:"", final:"", name:"", asked:false}, store.get("creation") || {});
+const FC = Object.assign({fu:["", ""], ch:{}, title:"", top:["", "", ""], chg:"", name:"", asked:false}, store.get("creation") || {});
+if (!Array.isArray(FC.top)) FC.top = ["", "", ""];
+const nw = t => (t || "").trim().split(/\s+/).filter(Boolean).length;
 const saveFC = () => { store.set("creation", FC); drawFC(); };
 const FUIDEAS = ["Make it shorter.", "Add one example.", "Use simpler words.", "Make it more fun, with emojis.", "Put it in a table.", "Add one more idea."];
 function drawFCPrompt(){
@@ -941,13 +942,13 @@ function drawFu(){
 }
 const CHK = [["read", "I read the whole answer, slowly."], ["fact", "I checked one fact in a trusted source (a book, my teacher, a trusted website)."], ["ok", "Nothing strange or wrong, or I fixed it."]];
 function drawChk(){ $("#fcChk").replaceChildren(...CHK.map(([k, t]) => { const cb = el("input", {type:"checkbox"}); cb.checked = !!FC.ch[k]; cb.onchange = () => { FC.ch[k] = cb.checked; store.set("creation", FC); drawMsg(); }; return el("label", {class:"cbx"}, cb, el("span", null, t)); })); }
-function ready(){ return SPARTS.every(([k]) => okPart(k)) && FC.fu[0].trim().split(/\s+/).filter(Boolean).length >= 2 && CHK.every(([k]) => FC.ch[k]) && FC.title.trim() && FC.final.trim().split(/\s+/).length >= 10 && FC.name.trim(); }
+function ready(){ return SPARTS.every(([k]) => okPart(k)) && FC.fu[0].trim().split(/\s+/).filter(Boolean).length >= 2 && CHK.every(([k]) => FC.ch[k]) && FC.title.trim() && FC.top.every(t => nw(t) >= 3) && nw(FC.chg) >= 4 && FC.name.trim(); }
 function drawMsg(){
   const miss = [];
   if (!SPARTS.every(([k]) => okPart(k))) miss.push("your Super Prompt (step 3)");
   if (FC.fu[0].trim().split(/\s+/).filter(Boolean).length < 2) miss.push("your follow-up");
   if (!CHK.every(([k]) => FC.ch[k])) miss.push("the 3 checks");
-  if (!FC.title.trim()) miss.push("a title"); if (FC.final.trim().split(/\s+/).filter(Boolean).length < 10) miss.push("the final answer"); if (!FC.name.trim()) miss.push("your first name");
+  if (!FC.title.trim()) miss.push("a title"); if (!FC.top.every(t => nw(t) >= 3)) miss.push("your top 3 (at least 3 words each)"); if (nw(FC.chg) < 4) miss.push("what your follow-up changed"); if (!FC.name.trim()) miss.push("your first name");
   $("#fcMsg").textContent = miss.length ? "Still to do: " + miss.join(", ") + "." : "✅ Done! Here is your first AI creation."; $("#fcMsg").style.color = miss.length ? "var(--muted)" : "var(--green)";
   $("#fcCard").hidden = !!miss.length; if (!miss.length){ drawCard(); done(3); }
 }
@@ -959,16 +960,21 @@ function drawCard(){
   y = 125; wrap(T[0] + " " + FC.title.trim(), 50, W - 100, 50, "800 42px Georgia, serif", "#fff", 150);
   const label = (t, yy) => { g.fillStyle = "#5B3FD1"; g.font = "700 20px Arial, sans-serif"; g.fillText(t, 50, yy); };
   label("MY SUPER PROMPT", 220); y = 255; wrap(spText(), 50, W - 100, 32, "24px 'Courier New', monospace", "#13221C", 400);
-  label("I IMPROVED IT WITH A FOLLOW-UP", y + 25); y += 60; wrap("“" + FC.fu[0].trim() + "”", 50, W - 100, 32, "24px Arial, sans-serif", "#13221C", y + 70);
-  const clean = FC.final.split(/\n/).filter(l => !/^\s*\|?\s*:?-{2,}/.test(l)).map(l => l.replace(/\t+/g, " · ").replace(/^\s*\|\s*|\s*\|\s*$/g, "").replace(/\s*\|\s*/g, " · ").replace(/\*\*|__|^#+\s*|`/g, "").replace(/^\s*[*-]\s+/, "• ")).filter(l => l.trim()).join("\n");
-  label("THE RESULT", y + 25); y += 60; wrap(clean, 50, W - 100, 34, "25px Georgia, serif", "#13221C", H - 170);
-  g.fillStyle = "#E3F1E9"; g.fillRect(40, H - 130, W - 80, 70); g.fillStyle = "#1E7A55"; g.font = "700 22px Arial, sans-serif"; g.fillText("✅ Made with AI (Gemini) · improved and checked by " + FC.name.trim(), 60, H - 87);
+  label("I IMPROVED IT WITH A FOLLOW-UP", y + 25); y += 60; wrap("“" + FC.fu[0].trim() + "”", 50, W - 100, 32, "italic 24px Arial, sans-serif", "#13221C", y + 70);
+  wrap("→ " + FC.chg.trim(), 50, W - 100, 32, "24px Arial, sans-serif", "#13221C", y + 70);
+  label("MY TOP 3, IN MY OWN WORDS", y + 25); y += 70;
+  FC.top.forEach((t, i) => { g.fillStyle = "#5B3FD1"; g.beginPath(); g.arc(70, y - 9, 20, 0, 7); g.fill(); g.fillStyle = "#fff"; g.font = "800 22px Arial, sans-serif"; g.textAlign = "center"; g.fillText(String(i + 1), 70, y - 1); g.textAlign = "left";
+    wrap(t.trim(), 110, W - 160, 36, "27px Georgia, serif", "#13221C", H - 180); y += 22; });
+  g.fillStyle = "#E3F1E9"; g.fillRect(40, H - 130, W - 80, 70); g.fillStyle = "#1E7A55"; g.font = "700 22px Arial, sans-serif"; g.fillText("✅ Made with AI (Gemini) · checked and written by " + FC.name.trim(), 60, H - 87);
   g.fillStyle = "#56665E"; g.font = "18px Arial, sans-serif"; g.fillText(new Date().toLocaleDateString("en-GB", {day:"numeric", month:"long", year:"numeric"}), 50, H - 25);
   try { $("#fcDl").href = c.toDataURL("image/png"); } catch(e){}
 }
 function drawFC(){ drawFCPrompt(); drawMsg(); }
-$("#fcTitle").value = FC.title; $("#fcFinal").value = FC.final; $("#fcName").value = FC.name;
-[["fcTitle", "title"], ["fcFinal", "final"], ["fcName", "name"]].forEach(([id, k]) => $("#" + id).addEventListener("input", () => { FC[k] = $("#" + id).value; store.set("creation", FC); drawMsg(); }));
+$("#fcTitle").value = FC.title; $("#fcChg").value = FC.chg; $("#fcName").value = FC.name;
+const noPaste = inp => inp.addEventListener("paste", e => { e.preventDefault(); K.toast("Write it in your own words 🙂"); });
+document.querySelectorAll(".fctop").forEach((inp, i) => { inp.value = FC.top[i]; noPaste(inp); inp.addEventListener("input", () => { FC.top[i] = inp.value; store.set("creation", FC); drawMsg(); }); });
+noPaste($("#fcChg"));
+[["fcTitle", "title"], ["fcChg", "chg"], ["fcName", "name"]].forEach(([id, k]) => $("#" + id).addEventListener("input", () => { FC[k] = $("#" + id).value; store.set("creation", FC); drawMsg(); }));
 drawFu(); drawChk(); drawFC();
 addEventListener("hashchange", drawFC);
 K.start();
