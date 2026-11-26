@@ -442,6 +442,60 @@ img.fprev{background:var(--paper)}
 .step[aria-current="step"]{border-top-color:var(--onair);color:var(--ink);font-weight:700}
 @media (max-width:700px){.bug small{display:none}.step .t{display:none}.clock .lbl{display:none}body{font-size:17px}.lead{font-size:18px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---- Chapter 6 · AI Media Studio ---- */
+.def.sm p{font-size:19px;line-height:1.45;font-weight:600}
+ol.how{margin:8px 0 12px;padding-left:24px;display:grid;gap:6px;font-size:17px;line-height:1.45}
+.mono{font-family:var(--mono);letter-spacing:.06em}
+.studio{padding:18px}.skick{font:700 12px/1 var(--mono);letter-spacing:.14em;color:var(--muted);margin-bottom:12px}
+.sgrid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:820px){.sgrid{grid-template-columns:1fr}}
+.sout{position:sticky;top:12px;display:grid;gap:8px}
+.sh{margin:14px 0 8px;font-size:17px}.sh span{font:700 13px var(--mono);color:var(--muted)}.sctl .sh:first-child{margin-top:0}
+.sprev{width:100%;height:auto;aspect-ratio:16/10;border-radius:14px;border:1.5px solid var(--line);display:block;background:var(--paper)}
+.scap{margin:0;font-size:14px;color:var(--muted)}
+.sprompt{margin:0;font-size:18px;line-height:1.45;background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+.sfixed{margin:0;font-size:17px;background:var(--paper);border-radius:12px;padding:10px 12px}
+.stycards{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.stycard,.expc{border:2px solid var(--line);border-radius:12px;background:var(--panel);padding:4px 4px 6px;display:grid;gap:4px;text-align:center;font:inherit;font-size:14px;font-weight:700;color:var(--ink);cursor:pointer}
+.stycard canvas,.expc canvas{width:100%;height:auto;border-radius:8px;display:block}
+.stycard[aria-pressed="true"]{border-color:var(--green);box-shadow:0 0 0 2px var(--green)}
+.expg{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}.expc.ok{border-color:var(--green);background:var(--green-soft)}
+.admock{background:#111A22;color:#fff;border-radius:16px;padding:16px;display:grid;gap:6px;margin-top:6px}
+.admock .ak{font:700 11px var(--mono);letter-spacing:.14em;color:#C9D3DC}.admock .an{font-size:26px;line-height:1.1}.admock .as{color:#F6A945;font-size:16px}
+.admock .ai{aspect-ratio:16/10;border-radius:12px;background:linear-gradient(160deg,#2A3A48,#18232D);display:grid;place-items:center;align-content:center;gap:2px}.admock .ai span{font-size:56px}.admock .ai small{color:#9FB0BF;font-size:12px}
+.admock .af{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center;font-size:13px}.admock .af span{border-top:2px solid #F6A945;padding-top:6px}
+.admock .ax{color:#9FB0BF;font-size:12px}
+.vsh{margin:4px 0 12px;font-size:24px}
+.vsstat{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 0;font-size:16px;color:var(--muted)}
+.vstyles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.vst{border:2px solid var(--line);border-radius:14px;background:var(--panel);padding:10px 12px;text-align:left;font:inherit;color:var(--ink);display:grid;gap:2px;cursor:pointer}
+.vst b{font-size:17px}.vst span{font-size:14px;color:var(--muted)}.vst i{font-style:normal;font-size:13px;color:var(--green);font-weight:700}
+.vst[aria-pressed="true"]{border-color:var(--green);background:var(--green-soft)}
+.tlhead{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 10px}.tlhead b{font-size:18px}.tlhead .mono{color:var(--muted)}
+.exboard{display:grid;gap:0}.exrow{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:center;padding:10px 0;border-bottom:1.5px solid var(--line)}
+.exrow small{color:var(--muted)}.exrow b{display:block;font-size:18px;margin:2px 0}.exrow p{margin:0;font-size:17px}
+.exth{display:grid;place-items:center;height:64px;border-radius:12px;background:var(--paper);font-size:36px}
+.tl{margin-top:12px}.tlbar{display:flex;gap:3px;height:46px}.tlbar span{background:var(--green-soft);border:1.5px solid var(--green);border-radius:8px;display:grid;place-items:center;align-content:center;min-width:0;overflow:hidden;text-align:center;line-height:1.1}
+.tlbar b{font-size:15px}.tlbar small{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.tlticks{display:flex;justify-content:space-between;font:12px var(--mono);color:var(--muted);margin-top:4px}
+.words5{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}.w5{border:1.5px solid var(--line);border-radius:14px;background:var(--panel);padding:10px 12px;display:grid;gap:2px}.w5 span{font-size:24px}.w5 b{font-size:16px}.w5 small{font-size:14px;color:var(--muted)}
+.myscenes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px}
+.myscene{border:2px solid var(--line);border-radius:16px;background:var(--panel);padding:14px;display:grid;gap:8px;align-content:start}
+.msh{display:grid;grid-template-columns:56px 1fr;gap:10px;align-items:center}.msh small{color:var(--muted);font-size:12px;letter-spacing:0;white-space:nowrap}.msh .exth{height:56px;font-size:30px}.msh b{display:block;font-size:17px}
+.myscene textarea,.myscene select{font:inherit;font-size:16px;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box}
+.myscene select{width:auto}.trsel{font-size:14px;color:var(--muted);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.fit{font-size:13px;font-weight:700}.fit.ok{color:var(--green)}.fit.no{color:var(--onair)}
+.pipe{display:grid;gap:12px}.pst{border:2px solid var(--line);border-radius:16px;background:var(--panel);padding:14px 16px}.pst.ok{border-color:var(--green)}
+.psh{display:grid;grid-template-columns:40px 1fr auto;gap:12px;align-items:center}.psh b{font-size:18px;display:block}.psh small{color:var(--muted);font-size:14px}
+.pno{width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-weight:800}.pst.ok .pno{background:var(--green)}
+.pdone{font-weight:700;display:flex;gap:6px;align-items:center;white-space:nowrap}.pdone input{width:20px;height:20px}
+.pbody{margin-top:8px;font-size:16px}.pbody p{margin:6px 0}
+.dhead{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px}.dhead b{font-size:18px}.dpct{font-size:28px!important;color:var(--green)}
+.dbar{height:12px;border-radius:99px;background:var(--paper);border:1.5px solid var(--line);overflow:hidden;margin:8px 0 12px}.dbar i{display:block;height:100%;width:0;background:var(--green);transition:width .4s}
+.dlist,.chk{list-style:none;margin:0;padding:0;display:grid;gap:6px}.dlist li{display:flex;gap:10px;align-items:baseline;font-size:17px}.dlist li b{width:20px;color:var(--muted)}.dlist li.ok b{color:var(--green)}.dlist small{color:var(--muted);margin-left:auto}
+.chk label{display:flex;gap:10px;align-items:flex-start;font-size:16px}.chk input{width:20px;height:20px;margin-top:2px;flex:none}
+.tools{width:100%;border-collapse:collapse;margin-top:8px;font-size:16px}.tools th,.tools td{text-align:left;padding:8px 10px;border-bottom:1.5px solid var(--line)}.tools th{font:700 12px var(--mono);letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
 </style>
 <header class="top">
   <div class="wrap">
@@ -464,14 +518,17 @@ img.fprev{background:var(--paper)}
     <p class="muted" style="font-size:14px;margin:8px 0 0">Made with Adobe Express by our teacher, 10 November 2026.</p>
   </div>
   <div class="row" style="margin-top:14px"><button class="btn" id="spotBtn" type="button">Show what it decided</button></div>
-  <div class="grid g2" id="spot" hidden style="margin-top:14px">
-    <div class="card bad"><span class="tag">Choice 1 · the ball</span><p class="lead" style="margin:6px 0 0">The ball is oval: an <b>American</b> football. Most of the pictures it learned from come from America, where "football" means that game.</p></div>
-    <div class="card bad"><span class="tag">Choice 2 · the presenter</span><p class="lead" style="margin:6px 0 0">We never asked for a person. It added one anyway, and chose <b>a boy, four times out of four</b>.</p></div>
+  <div id="spot" hidden>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card bad"><span class="tag">Choice 1 · the ball</span><p class="lead" style="margin:6px 0 0">We wrote “football”. In Lebanon that means soccer, but in America it means a game with an <b>oval</b> ball. Our word was unclear, so the AI picked one meaning.</p></div>
+      <div class="card bad"><span class="tag">Choice 2 · the presenter</span><p class="lead" style="margin:6px 0 0">We never asked for a person. The AI added one anyway, and chose <b>a boy, four times out of four</b>.</p></div>
+    </div>
+    <div class="def sm" style="margin-top:14px"><span class="tag">Remember</span><p>AI sometimes makes <b>assumptions</b> when our instructions are unclear. The word “football” can have different meanings. AI may also add details that we never asked for. When it makes the same choice every time (a boy, 4 out of 4), that can be unfair: we call it <b>bias</b>. Always check what the AI decided.</p></div>
   </div>
 </section>
 
-<section class="seg" id="seg-2" data-min="8" data-title="How image AI works" data-period="1" hidden>
-  <div class="lower"><div class="no">02</div><div class="name"><h2>How an AI makes a picture</h2><p>Period 1 · 8 minutes · the lesson</p></div></div>
+<section class="seg" id="seg-2" data-min="6" data-title="How image AI works" data-period="1" hidden>
+  <div class="lower"><div class="no">02</div><div class="name"><h2>How AI generates images</h2><p>Period 1 · 6 minutes · the lesson</p></div></div>
   <div class="grid g2" style="align-items:start">
     <div class="card">
       <span class="tag">Watch: from noise to picture</span>
@@ -480,141 +537,146 @@ img.fprev{background:var(--paper)}
     </div>
     <div>
       <ol class="how-list">
-        <li><b>It studied millions of pictures with captions</b>, like "a red apple on a table".</li>
-        <li><b>It starts every new picture as random dots</b>, like TV snow.</li>
-        <li><b>Step by step, it cleans the dots</b> into something that matches your words.</li>
-        <li><b>Where your words are vague, it guesses</b> from what it saw most often. That is why it drew an American football and a boy.</li>
+        <li><b>It studied millions of pictures with captions</b>, like “a red apple on a table”.</li>
+        <li><b>It starts a new picture as random dots</b>, like TV snow.</li>
+        <li><b>Step by step, it cleans the dots</b> into a picture that matches your words.</li>
+        <li><b>Where your words are unclear, it guesses.</b> That is why it chose the oval ball and a boy.</li>
       </ol>
+      <p class="muted" style="font-size:15px;margin:10px 0 0">Many image AI tools work like this, but not all of them.</p>
     </div>
   </div>
-  <p class="lead" style="margin-top:16px">So your prompt must leave less to guess. A strong picture prompt has 5 ingredients:</p>
-  <div class="grid g5">
-    <div class="card part"><b>Subject</b><span>What is in it: "a round black and white soccer ball"</span></div>
-    <div class="card part"><b>Setting</b><span>Where: "a classroom full of plants"</span></div>
-    <div class="card part"><b>Style</b><span>Cartoon, 3D, watercolour, pixel art</span></div>
-    <div class="card part"><b>Light</b><span>Bright, sunset, neon, night</span></div>
-    <div class="card part"><b>Camera</b><span>Close-up, wide shot, from above</span></div>
-  </div>
+  <div class="card" style="margin-top:16px;background:var(--gold-soft);border-color:transparent"><span class="tag">Your job today</span><p class="lead" style="margin:6px 0 0">You already know how to write a strong prompt (Chapter 4). Today you learn the words of pictures, voices and videos, and you make your own commercial.</p></div>
 </section>
 
-<section class="seg" id="seg-3" data-min="25" data-title="Picture challenge" data-period="1" hidden>
-  <div class="lower"><div class="no">03</div><div class="name"><h2>Picture challenge: vague or precise?</h2><p>Period 1 · 25 minutes · you write the prompt</p></div></div>
-  <p class="big">Same idea, two prompts. Which picture will be closer to what YOU imagine?</p>
-  <div class="card">
-    <span class="tag">1 · The vague prompt</span>
-    <p class="quote" style="font-size:22px">"a robot at school"</p>
-    <p style="margin:0;font-size:17px">Close your eyes 5 seconds: what does YOUR robot look like? Where is it? With this prompt, the AI has to guess all of that.</p>
+<section class="seg" id="seg-3" data-min="14" data-title="Image Lab" data-period="1" hidden>
+  <div class="lower"><div class="no">03</div><div class="name"><h2>Become an AI Art Director</h2><p>Period 1 · 14 minutes · AI Media Studio · Image Lab</p></div></div>
+  <p class="big">Choose 5 ingredients and watch the sketch change. Then the real AI makes the picture.</p>
+  <div id="studio1"></div>
+  <p class="ttl" style="margin-top:22px">The Visual Experiment: same idea, ONE change</p>
+  <p class="lead" style="margin:0 0 10px">In Adobe Express, make the same picture again, but change <b>only one thing</b>. Watch how different it looks.</p>
+  <div class="grid g2" style="align-items:start">
+    <div class="card"><span class="tag">Experiment A · Change the style</span><p style="margin:6px 0 10px;font-size:16px">Copy, paste in Adobe Express, generate. Then do it again with another style. Make at least 2.</p><div class="expg" id="expA"></div><p class="fb" id="expAn" style="font-weight:700;margin:8px 0 0"></p></div>
+    <div class="card"><span class="tag">Experiment B · Change the camera angle</span><p style="margin:6px 0 10px;font-size:16px">Same idea, same style. Change only the camera. Make at least 2.</p><div class="expg" id="expB"></div><p class="fb" id="expBn" style="font-weight:700;margin:8px 0 0"></p></div>
   </div>
-  <div class="card" style="margin-top:14px">
-    <span class="tag">2 · Your precise prompt: write the 5 ingredients yourself</span>
-    <div class="ingr" id="ingr"></div>
-    <div class="power" id="pcPower" style="margin-top:12px"></div>
-    <span class="tag" style="display:block;margin-top:12px">Your prompt</span>
-    <pre class="prompt small" id="pcOut"></pre>
+  <div class="def sm" id="expWin" hidden style="margin-top:14px"><span class="tag">What did you discover?</span><p>One word in your prompt changed the whole picture, but the idea stayed the same. <b>You</b>, the art director, decide how it looks: style, light and camera.</p></div>
+</section>
+
+<section class="seg" id="seg-4" data-min="20" data-title="My product advert" data-period="1" hidden>
+  <div class="lower"><div class="no">04</div><div class="name"><h2>My Product Advertisement</h2><p>Period 1 · 20 minutes · Deliverable 1: my advertisement poster</p></div></div>
+  <p class="big">Invent a product, design its picture with AI, and make a poster to sell it.</p>
+  <div class="card"><span class="tag">Step 1 · Invent your product</span>
+    <p class="lead" id="invFor" style="margin:6px 0 8px"></p>
+    <div class="chips" id="invIdeas"></div>
+    <div id="invForm" style="margin-top:12px"></div>
+    <p class="fb" id="invMsg" style="font-weight:700;margin:8px 0 0"></p>
   </div>
-  <div class="card" style="margin-top:14px">
-    <span class="tag">3 · Make both pictures</span>
-    <ol class="lead" style="margin:6px 0 10px;padding-left:22px">
-      <li><a class="btn sm" href="https://new.express.adobe.com/" target="adobe" rel="noopener">🎨 Open Adobe Express</a> and sign in with your school account.</li>
-      <li>Choose <b>Generate image</b> (text to image). Paste the vague prompt, then your prompt.</li>
-    </ol>
-    <div class="row"><button class="btn sm alt" id="copyVague" type="button">📋 Copy the vague prompt</button><button class="btn sm" id="copyMine" type="button">📋 Copy my prompt</button></div>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 2 · Design your product picture</span>
+    <p class="card" id="st2Wait" style="font-weight:700;margin:8px 0 0">👆 Finish Step 1 first.</p>
+    <div id="studio2"></div>
   </div>
-  <div class="card" style="margin-top:14px">
-    <span class="tag">4 · Compare</span>
-    <p class="lead" style="margin:6px 0">Which picture is closer to what you imagined?</p>
-    <div class="row" id="cmp1"></div>
-    <p class="lead" style="margin:14px 0 6px">In the VAGUE picture, what did the AI decide by itself? Choose all you see.</p>
-    <div class="chips" id="cmp2"></div>
-    <p class="fb" id="cmpA" style="font-weight:700;margin:10px 0 0"></p>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 3 · Design your poster in Adobe Express</span>
+    <label class="ff" style="margin-top:8px"><b>Your slogan</b><span class="muted" style="font-size:15px">Short and catchy, e.g. “Never forget a book again.”</span><input id="slogan" type="text" maxlength="60" placeholder="Your slogan"></label>
+    <div class="grid g2" style="align-items:start;margin-top:12px">
+      <div><span class="tag">Your poster plan</span><div class="admock" id="adMock"></div></div>
+      <div><ol class="how" id="adHow">
+        <li>In Adobe Express, start a new design (for example an <b>Instagram post</b> or a <b>Flyer</b>) and add your best product picture.</li>
+        <li>Add a <b>text</b>: the label on top, your <b>product name</b> in big letters, and your <b>slogan</b>.</li>
+        <li>Add your <b>3 features</b>, each with a small icon (search <b>Icons</b>).</li>
+        <li>Add the small line: <b>Fictional product concept · Designed by an AI Creator</b>.</li>
+        <li>Download it as a <b>PNG</b>.</li>
+      </ol>
+      <p class="muted" style="font-size:15px;margin:0 0 6px">Click a text to copy it, then paste it in Adobe Express.</p><div class="chips" id="adCopy"></div></div>
+    </div>
   </div>
-  <div class="card" style="margin-top:14px">
-    <span class="tag">5 · Save your best picture</span>
-    <p style="margin:6px 0 10px;font-size:17px">Download your best picture from Adobe Express, then save it here, in your folder.</p>
+  <div class="card" style="margin-top:14px"><span class="tag">Step 4 · Save your poster</span>
+    <p style="margin:6px 0 10px;font-size:17px">Save the PNG you downloaded here, in your folder.</p>
     <div id="slotBox"></div>
   </div>
 </section>
 
-<section class="seg" id="seg-4" data-min="7" data-title="Bias check" data-period="1" hidden>
-  <div class="lower"><div class="no">04</div><div class="name"><h2>Bias check and share</h2><p>Period 1 · 7 minutes · the whole class</p></div></div>
-  <p class="big">Did the AI add people you did not ask for? Count them as a class.</p>
-  <div class="grid g3" id="countBox"></div>
-  <p class="lead" id="countMsg" style="margin-top:14px"></p>
-  <div class="card" style="margin-top:14px;background:var(--gold-soft);border-color:transparent">
-    <span class="tag">Remember</span>
-    <p class="lead" style="margin:6px 0 0">The AI fills every gap in your words with what it saw most often. Be precise, check what it decided, and fix it with your prompt. Next period: AI voices, and your own 30-second video.</p>
-  </div>
-</section>
-
-<section class="seg" id="seg-5" data-min="10" data-title="AI voices" data-period="2" hidden>
-  <div class="lower"><div class="no">05</div><div class="name"><h2>Who is speaking?</h2><p>Period 2 · 10 minutes · AI voices</p></div></div>
+<section class="seg" id="seg-5" data-min="15" data-title="AI Voice Director" data-period="2" hidden>
+  <div class="lower"><div class="no">05</div><div class="name"><h2>AI Voice Director</h2><p>Period 2 · 15 minutes · Deliverable 2: my advertising voice-over</p></div></div>
   <p class="big">Press play. Listen carefully. Who is talking?</p>
   <div class="card">
-    <p class="prompt">“Hello Grade 7! Today you will plan your own 30-second video.”</p>
+    <p class="prompt">“Hello Grade 7! Today you will give your invention a voice.”</p>
     <div class="row"><button class="btn" id="hookPlay" type="button">▶ Play</button></div>
     <div class="row" id="hookQ" style="margin-top:12px" hidden></div>
     <p class="fb" id="hookA" style="font-weight:700;font-size:18px;margin:10px 0 0"></p>
   </div>
-  <div class="def" id="l1" hidden><span class="tag">Remember</span><p>A computer can turn written words into a voice. That voice is synthetic: made by a machine.</p></div>
-  <div class="lesson">
-    <div class="card"><span class="tag">🔊 Text-to-speech</span><p class="big2" style="font-size:26px">Text → voice</p><p style="margin:0">You type words, the computer reads them aloud. Used in GPS, audiobooks, and to help people who can't read a screen.</p></div>
-    <div class="card"><span class="tag">📝 Speech-to-text</span><p class="big2" style="font-size:26px">Voice → text</p><p style="margin:0">You speak, the computer writes. Used for subtitles, voice messages and dictation on your phone.</p></div>
-    <div class="card"><span class="tag">🎬 Video planning</span><p class="big2" style="font-size:26px">Message → storyboard</p><p style="margin:0">Every good video starts with a clear message and a plan of its scenes, before anyone films anything.</p></div>
+  <div class="def" id="l1" hidden><span class="tag">Text-to-speech</span><p>A computer can turn written words into a voice. That voice is <b>synthetic</b>: made by a machine, not recorded from a person.</p></div>
+  <div class="card vstudio" style="margin-top:16px">
+    <span class="tag">AI Voice Studio</span>
+    <h3 class="vsh">Give your invention a voice</h3>
+    <p class="card" id="vsWait" style="font-weight:700" hidden>👆 First invent your product in Section 4.</p>
+    <label class="ff"><b>Your advertising script</b><span class="muted" style="font-size:15px">We started it from your product. Change it into your own words.</span><textarea id="vsScript" rows="3"></textarea></label>
+    <p class="vsstat" id="vsStat"></p>
+    <b style="display:block;margin:10px 0 6px">Voice style</b>
+    <div class="vstyles" id="vsStyles"></div>
+    <label class="kv" style="margin-top:10px">Speaking speed <input type="range" id="vsRate" min="0.7" max="1.4" step="0.1" value="1"> <b id="vsRateV">1.0x</b></label>
+    <div class="row" style="margin-top:10px"><button class="btn" id="vsPlay" type="button">🔊 Play</button><button class="btn alt" id="vsStop" type="button">⏹ Stop</button><button class="btn alt" id="vsCopy" type="button">📋 Copy my voice-over script</button></div>
+    <p class="fb" id="vsTried" style="font-weight:700;margin:10px 0 0"></p>
+    <div id="vsPickBox" hidden style="margin-top:10px"><b>Which voice fits your product best?</b><div class="row" id="vsPick" style="margin-top:6px"></div></div>
+    <p class="muted" style="margin:10px 0 0;font-size:15px">Nothing is recorded: the voice comes from your computer. Voices sound different on each computer.</p>
   </div>
-  <div class="card" style="margin-top:16px">
-    <span class="tag">Try text-to-speech</span>
-    <textarea id="ttsText" rows="2" style="width:100%;font:inherit;font-size:18px;padding:10px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);margin-top:8px">Saving water is easy. Turn off the tap while you brush your teeth.</textarea>
-    <div class="row" style="margin-top:10px;align-items:center">
-      <label class="kv">Speed <input type="range" id="ttsRate" min="0.6" max="1.6" step="0.1" value="1"></label>
-      <label class="kv">Tone <input type="range" id="ttsPitch" min="0.5" max="1.8" step="0.1" value="1"></label>
-      <button class="btn sm" id="ttsGo" type="button">🔊 Read it aloud</button><button class="btn sm alt" id="ttsStop" type="button">⏹ Stop</button>
-    </div>
-    <p class="muted" style="margin:8px 0 0;font-size:15px">Change the speed and tone. Same words, different feeling. Nothing is recorded: the voice comes from your computer.</p>
-  </div>
-  <div class="card bad" style="margin-top:16px"><span class="tag">⚠️ Voices can be copied</span><p class="lead" style="margin:6px 0 0">AI can copy a real person's voice from a short recording, and make it "say" anything. Never copy or use someone's voice without their permission. Remember the fake voice message from “Mum” in Chapter 2?</p></div>
+  <div class="def sm" id="vsWin" hidden style="margin-top:14px"><span class="tag">✓ Deliverable 2 · My advertising voice-over</span><p>A voice is not only words. It has <b>emotion</b>, <b>speed</b> and <b>tone</b>. In Period 3 you turn your script into a real voice file for your video.</p></div>
+  <div class="card bad" style="margin-top:16px"><span class="tag">⚠️ Voices can be copied</span><p class="lead" style="margin:6px 0 0">AI can copy a real person's voice from a short recording, and make it “say” anything. Never copy or use someone's voice without their permission. Use only computer voices in your work.</p></div>
 </section>
 
-<section class="seg" id="seg-6" data-min="7" data-title="Watch a storyboard" data-period="2" hidden>
-  <div class="lower"><div class="no">06</div><div class="name"><h2>Watch a storyboard come alive</h2><p>Period 2 · 7 minutes · “One Small Way to Save Water”</p></div></div>
-  <p class="big">A video = pictures + voice + subtitles, in the right order. First you plan it (storyboard). Then each part is made, often by AI, and put together.</p>
-  <p class="ttl">1 · The plan (storyboard)</p>
-  <div class="sboard" id="demoBoard"></div>
-  <p class="ttl" style="margin-top:18px">2 · Send the plan to the AI tools</p>
-  <p class="lead" style="margin:0 0 10px">Each AI tool makes one part of the video. Then a video editor puts everything together.</p>
-  <div class="factory" id="factory"></div>
-  <div class="row" style="margin-top:12px"><button class="btn" id="sendAI" type="button">🤖 Send the storyboard to the AI</button></div>
-  <p class="ttl" style="margin-top:18px">3 · The video is ready</p>
-  <div class="vplayer" id="demoStage"><div class="vbg" style="background:#1d2b36"></div><span class="vart big2x" style="left:50%;top:42%">⏳</span><p class="vsub">First send the storyboard to the AI (step 2)</p></div>
-  <div class="row" style="margin-top:12px"><button class="btn" id="demoPlay" type="button" disabled>▶ Play the video</button></div>
-  <div class="card" style="margin-top:14px"><span class="tag">The idea</span><p style="margin:6px 0 0;font-size:18px">Before making a video, you <b>plan</b> it on paper: a storyboard. For each scene you write 2 things: <b>👁 what we see</b> and <b>🎙 what the narrator says</b>. 4 short scenes, about 70 words: that's 30 seconds. In your mission, you plan your own.</p></div>
-</section>
-
-<section class="seg" id="seg-7" data-min="23" data-title="Mission: your 30-second video" data-period="2" hidden>
-  <div class="lower"><div class="no">07</div><div class="name"><h2>Mission: your 30-second video</h2><p>Period 2 · 23 minutes · storyboard + script, then the AI makes it</p></div></div>
-  <div class="card">
-    <span class="tag">Step 1 · Your message</span>
-    <div class="chips" id="vTopics" style="margin-top:8px"></div>
+<section class="seg" id="seg-6" data-min="30" data-title="Storyboard" data-period="2" hidden>
+  <div class="lower"><div class="no">06</div><div class="name"><h2>From Storyboard to Video</h2><p>Period 2 · 30 minutes · you are the video director</p></div></div>
+  <p class="big">Before making a video, a director plans every scene: what we see, what we hear, and for how long.</p>
+  <div class="card"><span class="tag">Example · SmartBag 2050 commercial</span>
+    <div class="tlhead"><b>Storyboard</b><span class="mono">00:30</span></div>
+    <div class="exboard" id="exBoard"></div>
+    <div class="tl" id="exTl"></div>
+    <div class="row" style="margin-top:12px"><button class="btn sm alt" id="exPlay" type="button">▶ Preview the example</button></div>
+    <div class="vplayer" id="exStage" hidden style="margin-top:12px"></div>
   </div>
-  <p class="ttl" style="margin-top:18px">Step 2 · Plan your 4 scenes</p>
-  <p class="muted" id="myHow" style="margin:0 0 10px">For each scene: <b>1)</b> choose a picture, <b>2)</b> write what we see, <b>3)</b> write what the narrator says. The grey text is an example to help you: write your own words. Tip: “what we see” is like a picture prompt, so be precise!</p>
-  <p class="card" id="myWait" style="font-weight:700">👆 Choose your message in Step 1 first.</p>
-  <div class="sboard edit" id="myBoard"></div>
+  <div class="words5" id="words5" style="margin-top:14px"></div>
+  <p class="ttl" style="margin-top:22px">Your commercial: 4 scenes, 30 seconds</p>
+  <p class="card" id="sbWait" style="font-weight:700" hidden>👆 First invent your product in Section 4.</p>
+  <div class="myscenes" id="myBoard"></div>
   <div class="card" style="margin-top:14px">
-    <div class="kv"><span class="tag">Your script</span><b id="wc" class="pill">0 words</b><span class="muted" id="wcHint">Aim for 60 to 75 words (about 30 seconds).</span></div>
-    <div class="factory sm" id="myFactory" hidden style="margin-top:12px"></div>
+    <div class="tlhead"><b>My timeline</b><span class="mono" id="myTotal">00:00</span></div>
+    <div class="tl" id="myTl"></div>
+    <p class="fb" id="sbMsg" style="font-weight:700;margin:10px 0 0"></p>
+    <div class="row" style="margin-top:10px"><button class="btn" id="myPlay" type="button">▶ Preview my storyboard</button><button class="btn alt" id="myCopy" type="button">📋 Copy my storyboard</button></div>
     <div class="vplayer" id="myStage" hidden style="margin-top:12px"></div>
-    <div class="row" style="margin-top:10px"><button class="btn" id="myPlay" type="button">🤖 Make my video with AI</button><button class="btn alt" id="myCopy" type="button">📋 Copy my storyboard</button></div>
   </div>
-  <div id="vBadge"></div>
 </section>
 
-<section class="seg" id="seg-8" data-min="5" data-title="Quiz and reflect" data-period="2" hidden>
-  <div class="lower"><div class="no">08</div><div class="name"><h2>Quiz and reflect</h2><p>Period 2 · 5 minutes</p></div></div>
+<section class="seg" id="seg-7" data-min="32" data-title="Make a real video" data-period="3" hidden>
+  <div class="lower"><div class="no">07</div><div class="name"><h2>Make a Real Video</h2><p>Period 3 · 32 minutes · Adobe Express</p></div></div>
+  <p class="big">“Preview my storyboard” was only a preview. A real video is not one button: it is made in 5 stages.</p>
+  <p class="card" id="pipeWait" style="font-weight:700" hidden>👆 First finish your storyboard in Section 6.</p>
+  <div class="pipe" id="pipe"></div>
+</section>
+
+<section class="seg" id="seg-8" data-min="6" data-title="Final mission" data-period="3" hidden>
+  <div class="lower"><div class="no">08</div><div class="name"><h2>My First AI Commercial</h2><p>Period 3 · 6 minutes · Chapter 6 final mission</p></div></div>
+  <div class="card dash"><span class="tag">Production dashboard</span>
+    <div class="dhead"><b>Production progress</b><b class="dpct" id="dPct">0%</b></div>
+    <div class="dbar"><i id="dBar"></i></div>
+    <ul class="dlist" id="dList"></ul>
+  </div>
+  <div class="card" style="margin-top:14px"><span class="tag">Privacy and content review</span><p style="margin:6px 0 8px;font-size:16px">Check your video before you share it. Tick each one when it is true.</p><ul class="chk" id="review"></ul></div>
+  <div class="card" style="margin-top:14px"><span class="tag">The tools you used</span>
+    <table class="tools"><thead><tr><th>Tool</th><th>What it did</th></tr></thead><tbody>
+      <tr><td>This app</td><td>Image prompt studio, voice preview, storyboard</td></tr>
+      <tr><td>Adobe Express</td><td>Made your pictures with AI</td></tr>
+      <tr><td>Adobe Express</td><td>Voice-over, video editing and MP4 export</td></tr>
+    </tbody></table>
+  </div>
+  <div id="finalBadge" style="margin-top:14px"></div>
+</section>
+
+<section class="seg" id="seg-9" data-min="7" data-title="Quiz and reflect" data-period="3" hidden>
+  <div class="lower"><div class="no">09</div><div class="name"><h2>Quiz and reflect</h2><p>Period 3 · 7 minutes</p></div></div>
   <p class="lead" style="margin:0 0 6px"><b>Key words.</b> Tap each one.</p>
   <div class="vocab" id="vocab"></div>
   <div class="qz" id="quiz" style="margin-top:16px"></div>
   <div class="card reflect" style="margin-top:14px"><span class="tag">Exit ticket</span><label class="ttl" for="exit" style="display:block">Why must you ask before using someone's voice or face?</label><textarea id="exit" placeholder="Because…"></textarea></div>
-  <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Make one AI picture at home with a vague prompt, then with your 5 ingredients. Show both to your family: can they guess which prompt made which picture?</p></div>
+  <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Show your commercial to your family. Ask them: what is the product, and would you buy it? Then tell them which parts the AI made, and which parts YOU decided.</p></div>
   <p class="note">Next week: Algorithms and Coding.</p>
 </section>
 
@@ -773,8 +835,8 @@ function slotBox(box, s, onDone){
 /* the kid's whole folder: what should be in it, and what is saved */
 function plan(){
   const kinds = ["big"], K = window.PICKINDS || {};
-  return kinds.map(k => ({slot:k, label:k === "big" ? "My AI picture" : (K[k] && K[k].label) || k, ch:11, accept:"image/*"})).concat([
-    {slot:"license", label:"My AI Driving License", ch:13, accept:"image/png"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
+  return kinds.map(k => ({slot:k, label:k === "big" ? "My Advertisement Poster" : (K[k] && K[k].label) || k, ch:11, accept:"image/*"})).concat([
+    {slot:"license", label:"My AI Driving License", ch:13, accept:"image/png"}, {slot:"video", label:"My AI Commercial", ch:11, accept:"video/*"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
 }
 function folder(box, now){
   async function draw(){
@@ -870,7 +932,7 @@ return {make, power, meter, join, missing, guard, show, lock};
 
 window.K = (function(){
 const $ = s => document.querySelector(s);
-const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => e.append(c)); return e; };
+const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => { if (c != null && c !== false) e.append(c); }); return e; };
 let PFX = "k";
 const store = { get(k){ try { return JSON.parse(localStorage.getItem(PFX + "-" + k)); } catch(e){ return null; } }, set(k, v){ try { localStorage.setItem(PFX + "-" + k, JSON.stringify(v)); } catch(e){} }, raw(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } } };
 let segs = [], cur = 0, stepBtns = [], left = 0, tick = null, tt;
@@ -888,7 +950,7 @@ function go(i){
 function init(prefix, p2){
   PFX = prefix; segs = [...document.querySelectorAll(".seg")];
   const box = $("#steps");
-  segs.forEach((s, i) => { if (p2 && i === p2) box.append(el("span", {class:"pdiv", "aria-hidden":"true"}, "P2")); box.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))); });
+  segs.forEach((s, i) => { if (i && s.dataset.period !== segs[i - 1].dataset.period) box.append(el("span", {class:"pdiv", "aria-hidden":"true"}, "P" + s.dataset.period)); box.append(el("button", {class:"step", type:"button", onclick:() => go(i)}, el("b", null, String(i+1).padStart(2,"0")), el("span", {class:"t"}, s.dataset.title))); });
   stepBtns = [...box.querySelectorAll(".step")];
   $("#prev").onclick = () => go(cur - 1); $("#next").onclick = () => go(cur + 1);
   addEventListener("keydown", e => { if (e.target.matches("textarea,input,select")) return; if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); });
@@ -991,11 +1053,11 @@ window.X = (function(){
 (function(){
 const {$, el, store, copy} = K;
 K.init("ch11"); X.setup();
-const done = X.prog(4);
+const done = X.prog(6);
 const say = (t, o) => { if (!X.speak(t, o)) K.toast("Your browser can't read aloud here. Ask your teacher to show it on the board."); };
 
 
-/* ---------- PERIOD 1: pictures ---------- */
+/* ---------- PERIOD 1: AI Image Studio ---------- */
 /* 1 spot the AI's choices */
 $("#spotBtn").onclick = () => { $("#spot").hidden = false; };
 /* 2 noise to picture */
@@ -1012,79 +1074,252 @@ $("#spotBtn").onclick = () => { $("#spot").hidden = false; };
   $("#denoise").onclick = () => { if (running) return; running = true; let k = 0; const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const go2 = () => { k++; frame(k); if (k < 30) setTimeout(go2, reduce ? 0 : 120); else { running = false; $("#denoise").textContent = "Again"; } }; go2(); };
 })();
-/* 3 picture challenge: the kid writes the 5 ingredients; the page only puts them together and checks them */
-const ING = [
-  ["subject", "🤖 Subject", "WHAT is in the picture? Describe your robot.", "e.g. a small round robot with blue lights and a red backpack", null],
-  ["setting", "📍 Setting", "WHERE is it, and what is it doing?", "e.g. helping kids plant seeds in a sunny classroom full of plants", null],
-  ["style", "🎨 Style", "What kind of picture?", "e.g. colourful 3D cartoon", ["colourful 3D cartoon", "watercolour painting", "pixel art", "realistic photo", "anime drawing", "clay animation"]],
-  ["light", "💡 Light", "What light?", "e.g. bright morning light", ["bright morning light", "golden sunset", "night with neon lights", "soft light after the rain"]],
-  ["camera", "🎥 Camera", "From where do we look?", "e.g. wide view", ["wide view", "close-up", "seen from above", "from a student's eyes"]]
-];
-const PC = Object.assign({subject:"", setting:"", style:"", light:"", camera:""}, store.get("pc") || {});
-const words2 = t => (String(t || "").trim().match(/\S+/g) || []).length;
-const okIng = k => words2(PC[k]) >= (k === "subject" || k === "setting" ? 4 : 1);
-const myPrompt = () => [PC.subject, PC.setting].map(x => x.trim()).filter(Boolean).join(", ") + (PC.style.trim() ? ", " + PC.style.trim() : "") + (PC.light.trim() ? ", " + PC.light.trim() : "") + (PC.camera.trim() ? ", " + PC.camera.trim() : "");
-function drawPC(){
-  const n = ING.filter(([k]) => okIng(k)).length, miss = ING.filter(([k]) => !okIng(k)).map(([, l]) => l.replace(/^\S+ /, ""));
-  $("#pcPower").replaceChildren(el("span", {class:"tag"}, "Prompt power"), el("b", null, "★".repeat(n) + "☆".repeat(5 - n)),
-    el("span", {class:"muted"}, n === 5 ? "5 of 5! Your prompt leaves the AI almost nothing to guess." : "Missing or too short: " + miss.join(", ") + ". Subject and setting need at least 4 words."));
-  $("#pcOut").textContent = myPrompt() || "Write your ingredients above: your prompt appears here.";
-  $("#copyMine").disabled = n < 5; $("#copyMine").title = n < 5 ? "Write all 5 ingredients first" : "";
-}
-$("#ingr").replaceChildren(...ING.map(([k, label, q, ph, chips]) => {
-  const inp = el("input", {type:"text", placeholder:ph, "aria-label":label, maxlength:"140"}); inp.value = PC[k];
-  inp.addEventListener("input", () => { PC[k] = inp.value; store.set("pc", PC); drawPC(); });
-  return el("label", {class:"ing2"}, el("b", null, label), el("span", {class:"q"}, q), inp,
-    ...(chips ? [el("div", {class:"chips sm"}, ...chips.map(c => el("button", {class:"chip", type:"button", onclick:() => { inp.value = c; PC[k] = c; store.set("pc", PC); drawPC(); }}, c)))] : []));
-}));
-drawPC();
-$("#copyVague").onclick = () => copy("a robot at school", null, "Adobe Express");
-$("#copyMine").onclick = () => { if (ING.some(([k]) => !okIng(k))){ K.toast("Write all 5 ingredients first."); return; } copy(myPrompt(), $("#pcOut"), "Adobe Express"); done(0); };
-const CMP = store.get("cmp") || {pick:"", seen:[]};
-function drawCmp(){
-  $("#cmp1").replaceChildren(...[["vague", "The vague one"], ["mine", "My precise one"]].map(([k, l]) => el("button", {class:"btn sm" + (CMP.pick === k ? "" : " alt"), type:"button", onclick:() => { CMP.pick = k; store.set("cmp", CMP); drawCmp(); }}, l)));
-  $("#cmp2").replaceChildren(...["the robot's colour", "the robot's shape", "the kind of school", "people I didn't ask for", "the style", "the light"].map(t => el("button", {class:"chip", type:"button", "aria-pressed":String(CMP.seen.includes(t)), onclick:() => { CMP.seen = CMP.seen.includes(t) ? CMP.seen.filter(x => x !== t) : CMP.seen.concat(t); store.set("cmp", CMP); drawCmp(); }}, t)));
-  $("#cmpA").textContent = !CMP.pick ? "" : (CMP.pick === "mine" ? "✓ Your 5 ingredients won. " : "Interesting! Look again: was it really what you imagined? ") + (CMP.seen.length ? "In the vague picture, the AI decided " + CMP.seen.length + " thing" + (CMP.seen.length > 1 ? "s" : "") + " by itself. Your ingredients take those decisions back." : "Now choose what the AI decided by itself in the vague picture.");
-}
-drawCmp();
-F.slotBox($("#slotBox"), {slot:"big", label:"My AI picture", accept:"image/*"}, () => done(0));
-/* 4 class count */
-const CNT = store.get("count") || {boys:0, girls:0, none:0};
-function drawCount(){ const total = CNT.boys + CNT.girls;
-  $("#countBox").replaceChildren(...[["boys", "Pictures with a boy or man"], ["girls", "Pictures with a girl or woman"], ["none", "Pictures with no people"]].map(([k, l]) =>
-    el("div", {class:"card stat"}, el("span", {class:"tag"}, l), el("b", null, String(CNT[k])), el("div", {class:"row"}, el("button", {class:"btn sm", type:"button", onclick:() => { CNT[k]++; store.set("count", CNT); drawCount(); done(1); }}, "+1"), el("button", {class:"btn sm alt", type:"button", onclick:() => { CNT[k] = Math.max(0, CNT[k] - 1); store.set("count", CNT); drawCount(); }}, "−1")))));
-  $("#countMsg").textContent = total < 3 ? "Ask each student: in your VAGUE picture, did the AI add a person? Press +1 for each picture." : CNT.boys > CNT.girls * 2 ? "The AI drew far more boys than girls. Nobody asked for that: it came from the pictures it learned from. That is bias." : CNT.girls > CNT.boys * 2 ? "The AI drew far more girls than boys. Nobody asked for that: it came from its examples. That is bias too." : "Fairly balanced this time. Did the AI add people that nobody asked for?"; }
-drawCount();
 
-/* ---------- PERIOD 2: voice and video ---------- */
+/* ---------- the art director studio: a live sketch that shows each choice ---------- */
+const STY = [["3d", "3D Cartoon", "3D cartoon style"], ["real", "Realistic", "realistic photo style"], ["water", "Watercolour", "watercolour painting style"], ["pixel", "Pixel Art", "pixel art style"], ["pencil", "Pencil Sketch", "pencil sketch style"]];
+const LIT = [["day", "☀️ Daylight", "bright daylight"], ["sunset", "🌅 Sunset", "golden sunset light"], ["neon", "🌃 Neon", "neon lights at night"]];
+const CAM = [["close", "Close-up", "close-up"], ["wide", "Wide shot", "wide shot"], ["above", "From above", "seen from above"]];
+const SET1 = [["playground", "🛝 School playground", "in a school playground"], ["classroom", "🏫 Classroom", "in a classroom"], ["library", "📚 Library", "in a library"], ["space", "🚀 Space", "in outer space"]];
+const SET2 = [["studio", "✨ Product studio", "on a stand in a bright product studio"], ["classroom", "🏫 On a school desk", "on a desk in a classroom"], ["playground", "🌳 Outdoors", "outdoors in a school playground"], ["space", "🚀 Space", "floating in outer space"]];
+const SUBJ = [["helper", "🤖 Friendly school robot", "a friendly school robot", "#3B82F6"], ["future", "🤖 Futuristic school robot", "a futuristic silver school robot", "#AEB8C6"], ["garden", "🤖 Garden helper robot", "a small garden helper robot", "#22A06B"]];
+const find = (list, k) => list.find(x => x[0] === k) || list[0];
+const lc = t => { t = String(t || "").trim().replace(/[.!]+$/, ""); return /^[A-Z](?:[a-z]|\s)/.test(t) ? t[0].toLowerCase() + t.slice(1) : t; };
+const hasFilter = (() => { try { return "filter" in document.createElement("canvas").getContext("2d"); } catch(e){ return false; } })();
+let seedR = 11; const rr = () => (seedR = (seedR * 16807) % 2147483647) / 2147483647;
+const grain = (() => { const c = document.createElement("canvas"); c.width = c.height = 128; const g = c.getContext("2d"), d = g.createImageData(128, 128); for (let i = 0; i < d.data.length; i += 4){ const v = rr() * 255; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 26; } g.putImageData(d, 0, 0); return c; })();
+const STARS = Array.from({length:70}, () => [rr() * 640, rr() * 400, rr() * 1.6 + .4]);
+function rrect(g, x, y, w, h, r){ g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+function shade(hex, f){ const n = parseInt(hex.slice(1), 16); let r = n >> 16, gg = (n >> 8) & 255, b = n & 255; const m = v => Math.max(0, Math.min(255, Math.round(f > 0 ? v + (255 - v) * f : v * (1 + f)))); return "rgb(" + m(r) + "," + m(gg) + "," + m(b) + ")"; }
+function ground(g, set){
+  const lin = (y0, y1, a, b) => { const gr = g.createLinearGradient(0, y0, 0, y1); gr.addColorStop(0, a); gr.addColorStop(1, b); return gr; };
+  if (set === "playground"){ g.fillStyle = lin(0, 270, "#8FD3FF", "#E6F6FF"); g.fillRect(0, 0, 640, 270); g.fillStyle = "#FFCF3F"; g.beginPath(); g.arc(520, 70, 30, 0, 7); g.fill();
+    g.fillStyle = lin(260, 400, "#7CCB72", "#4E9E4A"); g.fillRect(0, 260, 640, 140);
+    g.strokeStyle = "#D6453D"; g.lineWidth = 6; g.beginPath(); g.moveTo(70, 300); g.lineTo(90, 160); g.moveTo(110, 300); g.lineTo(128, 160); g.stroke(); for (let y = 180; y < 300; y += 24){ g.beginPath(); g.moveTo(78 + (300 - y) * .1, y); g.lineTo(116 + (300 - y) * .1, y); g.stroke(); }
+    g.fillStyle = "#F5B82E"; g.beginPath(); g.moveTo(128, 160); g.lineTo(146, 160); g.lineTo(230, 300); g.lineTo(200, 300); g.fill();
+    g.fillStyle = "#7A4B2A"; g.fillRect(552, 190, 16, 90); g.fillStyle = "#3F8F3A"; [[560, 170, 46], [530, 196, 32], [590, 196, 32]].forEach(([x, y, r]) => { g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); }); }
+  else if (set === "classroom"){ g.fillStyle = "#F2E2C4"; g.fillRect(0, 0, 640, 300); g.fillStyle = "#8A5A35"; g.fillRect(172, 52, 296, 126); g.fillStyle = "#2F5D50"; g.fillRect(180, 60, 280, 110);
+    g.strokeStyle = "rgba(255,255,255,.6)"; g.lineWidth = 3; g.beginPath(); g.moveTo(200, 90); g.lineTo(300, 90); g.moveTo(200, 115); g.lineTo(270, 115); g.stroke();
+    g.fillStyle = "#BFE4F7"; g.fillRect(520, 60, 90, 110); g.strokeStyle = "#fff"; g.lineWidth = 5; g.strokeRect(520, 60, 90, 110); g.beginPath(); g.moveTo(565, 60); g.lineTo(565, 170); g.stroke();
+    g.fillStyle = lin(300, 400, "#C9A27A", "#A97F57"); g.fillRect(0, 300, 640, 100); g.fillStyle = "#B07A4F"; g.fillRect(30, 272, 130, 14); g.fillRect(40, 286, 8, 50); g.fillRect(142, 286, 8, 50); g.fillRect(480, 272, 130, 14); g.fillRect(490, 286, 8, 50); g.fillRect(592, 286, 8, 50); }
+  else if (set === "library"){ g.fillStyle = "#EAD9C2"; g.fillRect(0, 0, 640, 300); const BK = ["#D6453D", "#2F6FD1", "#F5B82E", "#3F8F3A", "#7B4FC9", "#E07A2F"];
+    [[20, 180], [450, 180]].forEach(([x0, w]) => { g.fillStyle = "#7A4B2A"; g.fillRect(x0 - 6, 40, w + 12, 262); for (let r = 0; r < 3; r++){ const y = 60 + r * 80; g.fillStyle = "#F4E7D3"; g.fillRect(x0, y, w, 64); let x = x0 + 4, k = r * 3; while (x < x0 + w - 14){ const bw = 12 + ((k * 7) % 9); g.fillStyle = BK[k % 6]; g.fillRect(x, y + 10 + (k % 3) * 4, bw, 54 - (k % 3) * 4); x += bw + 3; k++; } } });
+    g.fillStyle = lin(300, 400, "#A8714A", "#8A5A35"); g.fillRect(0, 300, 640, 100); }
+  else if (set === "space"){ g.fillStyle = lin(0, 400, "#0B1030", "#24306B"); g.fillRect(0, 0, 640, 400); g.fillStyle = "#fff"; STARS.forEach(([x, y, r]) => { g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); });
+    g.fillStyle = "#E07A5F"; g.beginPath(); g.arc(520, 90, 44, 0, 7); g.fill(); g.strokeStyle = "#F7C59F"; g.lineWidth = 6; g.beginPath(); g.ellipse(520, 90, 78, 16, -.3, 0, 7); g.stroke();
+    g.fillStyle = "#5A6488"; g.beginPath(); g.ellipse(320, 345, 230, 40, 0, 0, 7); g.fill(); g.fillStyle = "#7781A6"; g.beginPath(); g.ellipse(320, 338, 230, 34, 0, 0, 7); g.fill(); }
+  else { const gr = g.createRadialGradient(320, 170, 40, 320, 200, 420); gr.addColorStop(0, "#FFFFFF"); gr.addColorStop(1, "#C9D1DE"); g.fillStyle = gr; g.fillRect(0, 0, 640, 400);
+    g.fillStyle = "#B9C1CF"; g.fillRect(200, 322, 240, 52); g.fillStyle = "#E9EDF3"; g.beginPath(); g.ellipse(320, 322, 120, 22, 0, 0, 7); g.fill(); g.fillStyle = "#A9B2C2"; g.beginPath(); g.ellipse(320, 374, 120, 22, 0, 0, Math.PI); g.fill(); }
+}
+function robot(g, c){
+  g.fillStyle = "rgba(0,0,0,.18)"; g.beginPath(); g.ellipse(320, 332, 74, 11, 0, 0, 7); g.fill();
+  const body = (x, y, w, h, r) => { const gr = g.createLinearGradient(x, y, x + w, y + h); gr.addColorStop(0, shade(c, .45)); gr.addColorStop(1, shade(c, -.25)); g.fillStyle = gr; rrect(g, x, y, w, h, r); g.fill(); };
+  body(290, 286, 24, 44, 8); body(326, 286, 24, 44, 8); body(238, 214, 24, 64, 11); body(378, 214, 24, 64, 11); body(265, 200, 110, 96, 24);
+  g.fillStyle = shade(c, .7); g.beginPath(); g.arc(320, 246, 14, 0, 7); g.fill(); g.fillStyle = "#FFD166"; g.beginPath(); g.arc(320, 246, 7, 0, 7); g.fill();
+  body(268, 126, 104, 80, 28); g.fillStyle = "#142033"; rrect(g, 283, 142, 74, 48, 17); g.fill();
+  g.fillStyle = "#6EE7F9"; g.beginPath(); g.arc(305, 164, 7, 0, 7); g.arc(335, 164, 7, 0, 7); g.fill(); g.strokeStyle = "#6EE7F9"; g.lineWidth = 3; g.beginPath(); g.arc(320, 172, 11, .25 * Math.PI, .75 * Math.PI); g.stroke();
+  g.strokeStyle = shade(c, -.3); g.lineWidth = 4; g.beginPath(); g.moveTo(320, 126); g.lineTo(320, 106); g.stroke(); g.fillStyle = "#FF6B6B"; g.beginPath(); g.arc(320, 102, 7, 0, 7); g.fill();
+}
+function product(g, emo, y){ g.fillStyle = "rgba(0,0,0,.2)"; g.beginPath(); g.ellipse(320, y + 4, 80, 12, 0, 0, 7); g.fill(); g.font = "150px 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif"; g.textAlign = "center"; g.textBaseline = "alphabetic"; g.fillText(emo, 320, y - 6); }
+function topView(g, set, subj){
+  const F = {playground:["#6DBE66", "#67B860"], classroom:["#D9BE96", "#D3B78E"], library:["#B07D55", "#A97650"], space:["#151B44", "#181F4B"], studio:["#E3E8EF", "#DEE4EC"]}[set] || ["#ddd", "#ccc"];
+  g.fillStyle = F[0]; g.fillRect(0, 0, 640, 400); g.fillStyle = F[1]; if (set !== "space") for (let x = 0; x < 640; x += 64) for (let y = (x / 64) % 2 ? 0 : 64; y < 400; y += 128) g.fillRect(x, y, 64, 64);
+  if (set === "space"){ g.fillStyle = "#fff"; STARS.forEach(([x, y, r]) => { g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); }); }
+  if (set === "classroom"){ g.fillStyle = "#B07A4F"; [[40, 40], [40, 300], [520, 40], [520, 300]].forEach(([x, y]) => g.fillRect(x, y, 90, 50)); }
+  if (set === "library"){ g.fillStyle = "#7A4B2A"; g.fillRect(0, 0, 640, 40); g.fillRect(0, 360, 640, 40); }
+  if (set === "playground"){ g.fillStyle = "#3F8F3A"; g.beginPath(); g.arc(560, 80, 52, 0, 7); g.fill(); g.fillStyle = "#F5B82E"; g.fillRect(60, 280, 120, 30); }
+  if (set === "studio"){ g.fillStyle = "#F6F8FB"; g.beginPath(); g.arc(320, 200, 130, 0, 7); g.fill(); g.strokeStyle = "#B9C1CF"; g.lineWidth = 4; g.stroke(); }
+  g.fillStyle = "rgba(0,0,0,.22)"; g.beginPath(); g.ellipse(334, 214, 88, 70, 0, 0, 7); g.fill();
+  if (subj.emo){ g.font = "130px 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(subj.emo, 320, 205); g.textBaseline = "alphabetic"; return; }
+  const c = subj.color; g.fillStyle = shade(c, -.1); rrect(g, 248, 168, 144, 64, 30); g.fill(); g.fillStyle = shade(c, -.2); g.beginPath(); g.arc(246, 200, 16, 0, 7); g.arc(394, 200, 16, 0, 7); g.fill();
+  const gr = g.createRadialGradient(306, 186, 6, 320, 200, 46); gr.addColorStop(0, shade(c, .55)); gr.addColorStop(1, shade(c, -.2)); g.fillStyle = gr; g.beginPath(); g.arc(320, 200, 44, 0, 7); g.fill();
+  g.fillStyle = "#FF6B6B"; g.beginPath(); g.arc(320, 200, 9, 0, 7); g.fill();
+}
+function light(g, L){
+  if (L === "day"){ g.fillStyle = "rgba(255,250,225,.12)"; g.fillRect(0, 0, 640, 400); return; }
+  g.save(); g.globalCompositeOperation = "multiply";
+  const gr = g.createLinearGradient(0, 0, 0, 400);
+  if (L === "sunset"){ gr.addColorStop(0, "#FFB070"); gr.addColorStop(1, "#D9839A"); g.fillStyle = gr; g.fillRect(0, 0, 640, 400); g.globalCompositeOperation = "screen"; const s = g.createRadialGradient(560, 300, 10, 560, 300, 360); s.addColorStop(0, "rgba(255,170,70,.55)"); s.addColorStop(1, "rgba(255,170,70,0)"); g.fillStyle = s; g.fillRect(0, 0, 640, 400); }
+  else { gr.addColorStop(0, "#6E72C4"); gr.addColorStop(1, "#7A66B0"); g.fillStyle = gr; g.fillRect(0, 0, 640, 400); g.globalCompositeOperation = "screen";
+    [[90, 90, "255,60,200"], [570, 320, "40,220,255"], [320, 210, "120,90,255"]].forEach(([x, y, c]) => { const s = g.createRadialGradient(x, y, 10, x, y, 300); s.addColorStop(0, "rgba(" + c + ",.6)"); s.addColorStop(1, "rgba(" + c + ",0)"); g.fillStyle = s; g.fillRect(0, 0, 640, 400); }); }
+  g.restore();
+}
+const base = document.createElement("canvas"); base.width = 640; base.height = 400;
+const tiny = document.createElement("canvas"); tiny.width = 80; tiny.height = 50;
+const full = document.createElement("canvas"); full.width = 640; full.height = 400;
+/* draw the whole scene for these choices into "full" (640 x 400) */
+function paint(S, subj){
+  const g = base.getContext("2d"); g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, 640, 400);
+  if (S.camera === "above") topView(g, S.setting, subj);
+  else { g.save(); if (S.camera === "close"){ const fy = subj.emo ? 250 : 170; g.translate(320, 200); g.scale(2.5, 2.5); g.translate(-320, -fy); }
+    ground(g, S.setting); if (subj.emo) product(g, subj.emo, S.setting === "studio" ? 330 : 335); else robot(g, subj.color); g.restore(); }
+  light(g, S.light);
+  const o = full.getContext("2d"); o.setTransform(1, 0, 0, 1, 0, 0); o.globalAlpha = 1; o.globalCompositeOperation = "source-over"; o.filter = "none"; o.imageSmoothingEnabled = true; o.clearRect(0, 0, 640, 400);
+  const st = S.style;
+  if (st === "pixel"){ const t = tiny.getContext("2d"); t.imageSmoothingEnabled = true; t.clearRect(0, 0, 80, 50); t.drawImage(base, 0, 0, 80, 50); o.imageSmoothingEnabled = false; o.drawImage(tiny, 0, 0, 640, 400); }
+  else if (st === "water"){ o.fillStyle = "#FBF7EC"; o.fillRect(0, 0, 640, 400); if (hasFilter) o.filter = "blur(2px) saturate(.7) brightness(1.1)"; o.globalAlpha = .9; o.drawImage(base, 0, 0); if (hasFilter) o.filter = "blur(7px) saturate(.8)"; o.globalAlpha = .35; o.drawImage(base, 0, 0); o.globalAlpha = 1; o.filter = "none"; o.fillStyle = o.createPattern(grain, "repeat"); o.fillRect(0, 0, 640, 400); }
+  else if (st === "pencil"){ o.fillStyle = "#fff"; o.fillRect(0, 0, 640, 400); if (hasFilter) o.filter = "grayscale(1) contrast(1.5) brightness(1.02)"; o.drawImage(base, 0, 0); o.filter = "none"; o.globalCompositeOperation = "multiply"; o.strokeStyle = "rgba(0,0,0,.07)"; o.lineWidth = 1; o.beginPath(); for (let x = -400; x < 640; x += 6){ o.moveTo(x, 400); o.lineTo(x + 400, 0); } o.stroke(); o.globalCompositeOperation = "source-over"; }
+  else if (st === "real"){ if (hasFilter) o.filter = "contrast(1.15) saturate(1.15) blur(.5px)"; o.drawImage(base, 0, 0); o.filter = "none"; const v = o.createRadialGradient(320, 200, 160, 320, 200, 420); v.addColorStop(0, "rgba(0,0,0,0)"); v.addColorStop(1, "rgba(0,0,0,.5)"); o.fillStyle = v; o.fillRect(0, 0, 640, 400); o.fillStyle = o.createPattern(grain, "repeat"); o.fillRect(0, 0, 640, 400); }
+  else { o.drawImage(base, 0, 0); const sh = o.createLinearGradient(0, 0, 640, 400); sh.addColorStop(0, "rgba(255,255,255,.10)"); sh.addColorStop(1, "rgba(0,0,0,.06)"); o.fillStyle = sh; o.fillRect(0, 0, 640, 400); }
+  return full;
+}
+function drawTo(cv, S, subj){ const src = paint(S, subj), g = cv.getContext("2d"); g.imageSmoothingEnabled = true; g.clearRect(0, 0, cv.width, cv.height); g.drawImage(src, 0, 0, cv.width, cv.height); }
+
+/* one studio: cfg = {key, settings, subjects?, product:() => {looks, emo} | null, start, onCopy} */
+function studio(box, cfg){
+  const S = Object.assign({subject:(cfg.subjects || [[""]])[0][0], setting:cfg.settings[0][0], style:"3d", light:"day", camera:"wide"}, store.get(cfg.key) || {});
+  const save = () => store.set(cfg.key, S);
+  const subj = () => { if (cfg.product){ const p = cfg.product(); return {emo:p.emo, text:lc(p.looks)}; } const s = find(cfg.subjects, S.subject); return {color:s[3], text:s[2]}; };
+  const prompt = (o) => { const x = Object.assign({}, S, o || {}); return cfg.start + " " + subj().text + ", " + find(cfg.settings, x.setting)[2] + ", " + find(STY, x.style)[2] + ", " + find(LIT, x.light)[2] + ", " + find(CAM, x.camera)[2] + "."; };
+  const big = el("canvas", {width:"640", height:"400", class:"sprev", "aria-label":"Preview sketch of your choices"});
+  const pre = el("p", {class:"sprompt"});
+  const thumbs = {};
+  const chipRow = (list, k) => el("div", {class:"chips"}, ...list.map(([v, l]) => el("button", {class:"chip", type:"button", "aria-pressed":String(S[k] === v), "data-k":k, "data-v":v, onclick:() => { S[k] = v; save(); draw(); }}, l)));
+  const styleRow = el("div", {class:"stycards"}, ...STY.map(([v, l]) => { const c = el("canvas", {width:"160", height:"100"}); thumbs[v] = c;
+    return el("button", {class:"stycard", type:"button", "aria-pressed":String(S.style === v), "data-k":"style", "data-v":v, onclick:() => { S.style = v; save(); draw(); }}, c, el("span", null, l)); }));
+  const head = (n, t) => el("h4", {class:"sh"}, el("span", null, n + " — "), t);
+  const subjBox = el("div");
+  box.replaceChildren(el("div", {class:"card studio"},
+    el("div", {class:"skick"}, "AI MEDIA STUDIO · IMAGE LAB"),
+    el("div", {class:"sgrid"},
+      el("div", {class:"sctl"}, head("01", "Subject"), subjBox, head("02", "Setting"), chipRow(cfg.settings, "setting"), head("03", "Style"), styleRow, head("04", "Lighting"), chipRow(LIT, "light"), head("05", "Camera angle"), chipRow(CAM, "camera")),
+      el("div", {class:"sout"}, big, el("p", {class:"scap"}, "✏️ Preview sketch: it shows your choices. The real picture is made by the AI."),
+        el("b", null, "Your image prompt"), pre,
+        el("div", {class:"row"}, el("button", {class:"btn", type:"button", onclick:() => { copy(prompt(), pre, "Adobe Express"); if (cfg.onCopy) cfg.onCopy(S); }}, "📋 Copy image prompt"),
+          el("a", {class:"btn alt", href:"https://new.express.adobe.com/", target:"adobe", rel:"noopener"}, "↗ Open Adobe Express")),
+        el("p", {class:"muted", style:"font-size:15px;margin:8px 0 0"}, "In Adobe Express: sign in with your school account, choose ", el("b", null, "Generate image"), ", paste (Ctrl+V), then Generate.")))));
+  function draw(){
+    if (cfg.product){ const p = cfg.product(); subjBox.replaceChildren(el("p", {class:"sfixed"}, "Your product: ", el("b", null, lc(p.looks) || "…"), el("span", {class:"muted"}, " (from Step 1)"))); }
+    else subjBox.replaceChildren(chipRow(cfg.subjects, "subject"));
+    box.querySelectorAll("[data-k]").forEach(b => b.setAttribute("aria-pressed", String(S[b.dataset.k] === b.dataset.v)));
+    const sj = subj(); drawTo(big, S, sj); STY.forEach(([v]) => drawTo(thumbs[v], Object.assign({}, S, {style:v}), sj));
+    pre.textContent = prompt();
+    if (cfg.onDraw) cfg.onDraw(S, sj);
+  }
+  draw();
+  return {S, draw, prompt, subj};
+}
+
+/* 3 Image Lab: the robot studio + the visual experiment */
+const EXP = Object.assign({style:[], camera:[]}, store.get("exp") || {});
+let st1;
+function drawExp(){
+  if (!st1) return;
+  const sj = st1.subj();
+  const cell = (k, list, v, l) => { const c = el("canvas", {width:"160", height:"100"}); drawTo(c, Object.assign({}, st1.S, {[k]:v}), sj); const done2 = EXP[k].includes(v);
+    return el("button", {class:"expc" + (done2 ? " ok" : ""), type:"button", onclick:() => { copy(st1.prompt({[k]:v}), null, "Adobe Express"); if (!EXP[k].includes(v)){ EXP[k].push(v); store.set("exp", EXP); } drawExp(); }}, c, el("span", null, (done2 ? "✓ " : "📋 ") + l)); };
+  $("#expA").replaceChildren(...STY.map(([v, l]) => cell("style", STY, v, l)));
+  $("#expB").replaceChildren(...CAM.map(([v, l]) => cell("camera", CAM, v, l)));
+  const a = EXP.style.length, b = EXP.camera.length;
+  $("#expAn").textContent = a >= 2 ? "✓ " + a + " styles tried. Compare them in Adobe Express!" : "Styles tried: " + a + " of 2";
+  $("#expBn").textContent = b >= 2 ? "✓ " + b + " camera angles tried. Compare them!" : "Camera angles tried: " + b + " of 2";
+  $("#expWin").hidden = !(a >= 2 && b >= 2); if (a >= 2 && b >= 2) done(0);
+}
+st1 = studio($("#studio1"), {key:"st1", settings:SET1, subjects:SUBJ, start:"Create an image of", onDraw:() => drawExp()});
+drawExp();
+
+/* 4 invent a product, design its picture, plan the poster */
+const TOPN = {football:["⚽", "Football"], games:["🎮", "Video games"], art:["🎨", "Drawing"], science:["🔬", "Science"], music:["🎵", "Music"], cooking:["🍳", "Cooking"], animals:["🐶", "Animals"], travel:["🌍", "Travel"]};
+const IDEAS = {
+  football:[["⚽", "Smart football", "GoalPulse", "Players can't see how hard and how straight they kick.", "a white football with glowing blue lines", ["Measures kick speed", "Shows your best shot", "Glows for night games"]],
+    ["👟", "Intelligent football shoes", "SpeedBoots", "Young players don't know how to run faster.", "black football boots with orange light strips", ["Counts your sprints", "Gives tips while you run", "Charges while you walk"]]],
+  music:[["🎧", "AI headphones", "TuneTutor", "Learning a new song alone is hard.", "white headphones with soft purple lights", ["Teaches a song step by step", "Slows the music down", "Scores your singing"]],
+    ["🎹", "Smart musical instrument", "PianoPal", "Beginners don't know which key to press.", "a small keyboard whose keys light up in colours", ["Keys light up to guide you", "Plays the song slowly first", "Tracks your progress"]]],
+  games:[["🎮", "Smart gaming controller", "FocusPad", "Gamers forget to take breaks.", "a blue game controller with a small round screen", ["Reminds you to take a break", "Glows when you play well", "Vibrates with secret tips"]],
+    ["🪑", "Interactive gaming chair", "PlayThrone", "Sitting badly while gaming hurts your back.", "a black and green gaming chair with lights on the arms", ["Fixes how you sit", "Speakers in the headrest", "Keeps you cool"]]],
+  art:[["✏️", "Digital smart pencil", "SketchMate", "You can't undo a mistake on paper.", "a silver pencil with a rainbow light at the tip", ["Undo button on the pencil", "Any colour in one click", "Saves every drawing"]],
+    ["🖼️", "Intelligent painting canvas", "MagicCanvas", "Beginners don't know how to mix colours.", "a white canvas on a stand with a glowing frame", ["Shows how to mix colours", "Lights up where to paint", "Turns your painting into a cartoon"]]],
+  science:[["🔬", "Smart microscope", "MicroView", "Tiny things are hard to see and share.", "a white microscope with a big round screen", ["Zooms 1000 times", "Names what you see", "Shows it on the class screen"]],
+    ["🧪", "Pocket science lab", "LabCube", "Experiments need a lot of material.", "a small glowing cube with a screen on each side", ["20 safe experiments", "Explains each result", "Shares results with your class"]]],
+  cooking:[["🥄", "Smart chef spoon", "TasteSpoon", "Young cooks don't know when food is ready.", "a silver spoon with a small light on the handle", ["Checks if it's too salty", "Measures the temperature", "Tells you the next step"]],
+    ["🤖", "Kitchen helper robot", "ChefBuddy", "Following a recipe alone is hard.", "a small round kitchen robot with a smiling screen", ["Reads recipes aloud", "Measures ingredients", "Sets the timers"]]],
+  animals:[["🐶", "Smart pet collar", "PawTalk", "Owners don't know how their pet feels.", "a red pet collar with a small glowing heart", ["Shows if your pet is happy", "Finds a lost pet", "Reminds you to feed it"]],
+    ["🐦", "Bird-watching box", "BirdSpot", "Birds fly away before we can see them.", "a small green wooden box that hangs on a tree", ["Names each bird", "Takes photos of birds", "Counts visits every day"]]],
+  travel:[["🧳", "Smart suitcase", "RollMate", "Suitcases are heavy and get lost.", "a blue suitcase with wheels and a small screen", ["Follows you by itself", "Tells you where it is", "Weighs itself"]],
+    ["🎧", "Translator earbuds", "TalkBuds", "Travellers can't understand other languages.", "tiny white earbuds with a blue light", ["Translates 40 languages", "Works without internet", "Battery lasts all day"]]],
+  environment:[["🗑️", "Smart recycling bin", "SortBot", "People put rubbish in the wrong bin.", "a green bin with a screen and three coloured doors", ["Sorts rubbish by itself", "Says thank you", "Counts what you recycled"]],
+    ["🎒", "Solar-powered backpack", "SunPack", "Tablets run out of battery at school.", "a backpack with small solar panels on the front", ["Charges your tablet", "Light for dark streets", "Keeps your water cool"]]],
+  school:[["🎒", "Smart schoolbag", "SmartBag 2050", "Students forget their books at home.", "a black backpack with glowing orange lines", ["Smart detection of missing books", "Daily reminders", "Solar charging"]],
+    ["💡", "Intelligent homework assistant", "HomeHelp", "Students get stuck on homework at night.", "a desk lamp with a friendly face and a small screen", ["Explains, never gives answers", "Plans your homework time", "Quizzes you before a test"]]]
+};
+const myTopic = () => { try { const s = JSON.parse(localStorage.getItem("ch3-super") || "null"); return s && TOPN[s.topic] ? s.topic : ""; } catch(e){ return ""; } };
+const INV = Object.assign({idea:"", name:"", problem:"", looks:"", f:["", "", ""], slogan:""}, store.get("inv") || {});
+if (!Array.isArray(INV.f)) INV.f = ["", "", ""];
+const saveInv = () => store.set("inv", INV);
+const nw = t => (String(t || "").trim().match(/\S+/g) || []).length;
+const allIdeas = () => Object.values(IDEAS).flat();
+const ideaOf = () => allIdeas().find(x => x[1] === INV.idea) || null;
+const invEmo = () => (ideaOf() || ["💡"])[0];
+const invOk = () => nw(INV.name) >= 1 && nw(INV.problem) >= 4 && nw(INV.looks) >= 4 && INV.f.every(x => nw(x) >= 2);
+const kicker = () => { const t = myTopic(); return "THE FUTURE OF " + (t ? TOPN[t][1] : "SCHOOL").toUpperCase(); };
+function drawIdeas(){
+  const t = myTopic(), list = (t ? IDEAS[t] : []).concat(IDEAS.school, IDEAS.environment);
+  $("#invFor").textContent = t ? "Ideas for your Chapter 4 topic (" + TOPN[t][0] + " " + TOPN[t][1] + "), and more. Pick one, or create your own." : "Pick an idea, or create your own.";
+  $("#invIdeas").replaceChildren(...list.map(x => el("button", {class:"chip", type:"button", "aria-pressed":String(INV.idea === x[1]), onclick:() => { INV.idea = x[1]; saveInv(); drawIdeas(); drawInvForm(); }}, x[0] + " " + x[1])),
+    el("button", {class:"chip", type:"button", "aria-pressed":String(INV.idea === "own"), onclick:() => { INV.idea = "own"; saveInv(); drawIdeas(); drawInvForm(); }}, "✏️ Create my own invention"));
+}
+function drawInvForm(){
+  const I = ideaOf(), ex = I ? {name:I[2], problem:I[3], looks:I[4], f:I[5]} : {name:"A short, catchy name", problem:"Which problem does it solve?", looks:"Colour, shape, material, lights…", f:["Feature 1", "Feature 2", "Feature 3"]};
+  if (!INV.idea){ $("#invForm").replaceChildren(); invMsg(); return; }
+  const fld = (k, label, hint, ph) => { const i = el("input", {type:"text", maxlength:"90", placeholder:"e.g. " + ph}); i.value = INV[k]; i.addEventListener("input", () => { INV[k] = i.value; saveInv(); invMsg(); });
+    return el("label", {class:"ff"}, el("b", null, label), hint ? el("span", {class:"muted", style:"font-size:15px"}, hint) : null, i); };
+  $("#invForm").replaceChildren(fld("name", "Product name", null, ex.name), fld("problem", "What problem does it solve?", null, ex.problem), fld("looks", "What does it look like?", "This becomes your picture prompt: say the colour, shape and details.", ex.looks),
+    el("div", {class:"ff"}, el("b", null, "Three main features"), ...[0, 1, 2].map(i => { const x = el("input", {type:"text", maxlength:"50", placeholder:"e.g. " + ex.f[i]}); x.value = INV.f[i]; x.addEventListener("input", () => { INV.f[i] = x.value; saveInv(); invMsg(); }); return x; })));
+  invMsg();
+}
+function invMsg(){
+  const m = []; if (!INV.idea) m.push("choose an idea"); else { if (!nw(INV.name)) m.push("a name"); if (nw(INV.problem) < 4) m.push("the problem (4+ words)"); if (nw(INV.looks) < 4) m.push("what it looks like (4+ words)"); if (!INV.f.every(x => nw(x) >= 2)) m.push("3 features (2+ words each)"); }
+  $("#invMsg").textContent = m.length ? "Still to do: " + m.join(", ") + "." : "✓ Your invention is ready. Now design its picture.";
+  $("#invMsg").style.color = m.length ? "var(--muted)" : "var(--green)";
+  $("#st2Wait").hidden = invOk(); $("#studio2").hidden = !invOk();
+  if (st2) st2.draw(); drawAd();
+}
+let st2 = null;
+drawIdeas(); drawInvForm();
+st2 = studio($("#studio2"), {key:"st2", settings:SET2, product:() => ({looks:INV.looks, emo:invEmo()}), start:"Create an advertisement image of"});
+invMsg();
+const sl = $("#slogan"); sl.value = INV.slogan; sl.addEventListener("input", () => { INV.slogan = sl.value; saveInv(); drawAd(); });
+function drawAd(){
+  const name = INV.name.trim() || "Product name", sg = INV.slogan.trim() || "Your slogan", fs = INV.f.map((x, i) => x.trim() || "Feature " + (i + 1));
+  $("#adMock").replaceChildren(el("span", {class:"ak"}, kicker()), el("b", {class:"an"}, name), el("span", {class:"as"}, sg),
+    el("div", {class:"ai"}, el("span", null, invEmo()), el("small", null, "your AI picture")), el("div", {class:"af"}, ...fs.map(f => el("span", null, f))), el("small", {class:"ax"}, "Fictional product concept · Designed by an AI Creator"));
+  $("#adCopy").replaceChildren(...[kicker(), name, sg, ...fs, "Fictional product concept · Designed by an AI Creator"].map(t => el("button", {class:"chip", type:"button", onclick:() => copy(t, null, "Adobe Express")}, "📋 " + t)));
+}
+drawAd();
+F.slotBox($("#slotBox"), {slot:"big", label:"My Advertisement Poster", accept:"image/*"}, () => { done(1); drawDash(); });
+
+/* ---------- PERIOD 2: voice and storyboard ---------- */
 /* 5 hook */
-$("#hookPlay").onclick = () => { say("Hello Grade 7! Today you will plan your own 30-second video."); $("#hookQ").hidden = false; };
-$("#hookQ").replaceChildren(...[["A real teacher, recorded", false], ["A computer voice, made from text", true], ["A famous actor", false]].map(([t, ok]) => el("button", {class:"btn sm alt", type:"button", onclick:() => { $("#hookA").textContent = ok ? "✓ Yes! The computer read the text. No person recorded it." : "✗ No: nobody recorded it. The computer made the voice from the written text."; $("#l1").hidden = false; }}, t)));
-
-/* 2 learn */
-$("#ttsGo").onclick = () => say($("#ttsText").value, {rate:+$("#ttsRate").value, pitch:+$("#ttsPitch").value});
-$("#ttsStop").onclick = () => { try { speechSynthesis.cancel(); } catch(e){} };
-X.vocab($("#vocab"), [["Prompt ingredients", "Subject, setting, style, light, camera: the 5 parts of a strong picture prompt."], ["Bias", "When the AI fills the gaps with what it saw most often, and is unfair."], ["Text-to-speech", "The computer reads written text aloud."], ["Speech-to-text", "The computer writes down what someone says."], ["Narration", "The voice that tells the story in a video."], ["Storyboard", "A plan of the video, scene by scene, with pictures and words."], ["Synthetic media", "Voices, pictures or videos made by a computer."], ["Consent", "Asking for permission, and getting a clear yes."]]);
-
-/* 3 demo storyboard */
-const DEMO = [["🚿", "The problem", "A tap left running. Water pours away.", "Every day, we waste clean water without even noticing. Water is precious, and it can run out."], ["🪥", "Idea 1", "A student turns off the tap while brushing.", "Idea one: turn off the tap while you brush your teeth. It is easy, and it saves a lot of water."], ["🪣", "Idea 2", "A bucket under the shower collects cold water.", "Idea two: catch the cold water before your shower in a bucket, and use it to water the plants."], ["🌍", "Call to action", "Smiling class in front of a blue globe.", "One small action, every day, by every student. Together, we can save our water. Start today!"]];
-function board(box, scenes, edit){
-  box.replaceChildren(...scenes.map(([ic, name, see, say2], i) => el("div", {class:"scene", "data-i":String(i)}, el("div", {class:"sic"}, ic), el("span", {class:"tag"}, "Scene " + (i + 1) + " · " + name),
-    el("p", {class:"see"}, "👁 " + see), el("p", {class:"nar"}, "🎙 “" + say2 + "”"))));
+$("#hookPlay").onclick = () => { say("Hello Grade 7! Today you will give your invention a voice."); $("#hookQ").hidden = false; };
+$("#hookQ").replaceChildren(...[["A real teacher, recorded", false], ["A computer voice, made from text", true], ["A famous actor", false]].map(([t, ok]) => el("button", {class:"btn sm alt", type:"button", onclick:() => { $("#hookA").textContent = ok ? "✓ Yes! A computer read the text aloud." : "✗ Listen again: it was a computer voice, made from text."; $("#hookA").style.color = ok ? "var(--green)" : "var(--onair)"; $("#l1").hidden = false; }}, t)));
+/* the voice studio */
+const VST = [["energetic", "⚡ Energetic", "Fast, excited, full of energy", {rate:1.2, pitch:1.35}], ["professional", "🎙 Professional", "Calm, clear, serious", {rate:.92, pitch:.85}], ["friendly", "😊 Friendly", "Warm, smiling, relaxed", {rate:1, pitch:1.15}]];
+const VO = Object.assign({script:"", style:"energetic", rate:1, tried:[], pick:""}, store.get("voice") || {});
+const saveVO = () => store.set("voice", VO);
+const draftScript = () => { const n = INV.name.trim(), cap = t => { t = t.trim().replace(/[.!]+$/, ""); return t ? t[0].toUpperCase() + t.slice(1) + "." : ""; };
+  return n ? ["Meet " + n + ".", ...INV.f.map(cap), INV.slogan.trim() ? cap(INV.slogan) : ""].filter(Boolean).join(" ") : ""; };
+function drawVoice(){
+  if (!VO.script.trim() && invOk()){ VO.script = draftScript(); saveVO(); }
+  $("#vsWait").hidden = invOk() || !!VO.script.trim();
+  if ($("#vsScript").value !== VO.script) $("#vsScript").value = VO.script;
+  const st = find(VST, VO.style), w = nw(VO.script), secs = Math.max(1, Math.round(w / (2.5 * st[3].rate * VO.rate)));
+  $("#vsStat").replaceChildren(el("span", null, "Words: ", el("b", null, String(w))), el("span", null, "Estimated duration: ", el("b", null, secs + " sec")));
+  $("#vsStyles").replaceChildren(...VST.map(([k, l, d]) => el("button", {class:"vst", type:"button", "aria-pressed":String(VO.style === k), onclick:() => { VO.style = k; saveVO(); drawVoice(); }}, el("b", null, l), el("span", null, d), VO.tried.includes(k) ? el("i", null, "✓ tried") : null)));
+  $("#vsRate").value = VO.rate; $("#vsRateV").textContent = (+VO.rate).toFixed(1) + "x";
+  const n = VO.tried.length;
+  $("#vsTried").textContent = n < 3 ? "Play the same script in all 3 styles: " + n + " of 3 tried." : "✓ All 3 styles tried. Same words, 3 different feelings!";
+  $("#vsPickBox").hidden = n < 3;
+  $("#vsPick").replaceChildren(...VST.map(([k, l]) => el("button", {class:"btn sm" + (VO.pick === k ? "" : " alt"), type:"button", onclick:() => { VO.pick = k; VO.style = k; saveVO(); drawVoice(); }}, l)));
+  const ok = voiceOk(); $("#vsWin").hidden = !ok; if (ok) done(2);
 }
-board($("#demoBoard"), DEMO);
-/* play the scenes one by one; the same button becomes ⏹ Stop while it plays */
-let playing = null;
-function stopAll(){ try { speechSynthesis.cancel(); } catch(e){} if (playing){ playing.cards.forEach(c => c.classList.remove("live")); playing.btn.textContent = playing.label; playing = null; } }
-function playScenes(box, scenes, btn){
-  if (playing && playing.btn === btn){ stopAll(); return; }
-  stopAll();
-  const cards = [...box.querySelectorAll(".scene")]; let i = 0;
-  playing = {cards, btn, label:btn.textContent}; btn.textContent = "⏹ Stop"; const me = playing;
-  const next = () => { if (playing !== me) return; cards.forEach(c => c.classList.remove("live")); if (i >= scenes.length){ stopAll(); return; } cards[i].classList.add("live"); const t = scenes[i][3]; i++; if (!X.speak(t, {onend:next})){ K.toast("Your browser can't read aloud here."); stopAll(); } };
-  next();
-}
-addEventListener("hashchange", stopAll);
+const voiceOk = () => nw(VO.script) >= 10 && VO.tried.length >= 3 && !!VO.pick;
+$("#vsScript").addEventListener("input", () => { VO.script = $("#vsScript").value; saveVO(); drawVoice(); });
+$("#vsRate").addEventListener("input", () => { VO.rate = +$("#vsRate").value; saveVO(); drawVoice(); });
+$("#vsPlay").onclick = () => { if (!VO.script.trim()){ K.toast("Write your script first."); return; } const st = find(VST, VO.style)[3];
+  say(VO.script, {rate:st.rate * VO.rate, pitch:st.pitch}); if (!VO.tried.includes(VO.style)){ VO.tried.push(VO.style); saveVO(); } drawVoice(); };
+$("#vsStop").onclick = () => { try { speechSynthesis.cancel(); } catch(e){} };
+$("#vsCopy").onclick = () => copy(VO.script, $("#vsScript"), "Adobe Express");
+drawVoice();
+
 /* ---------- a tiny video player. Each scene has "beats": one sentence + its own pictures.
    Every sentence is spoken on its own, and its pictures appear exactly when the voice starts it,
    so the pictures, the subtitles and the voice always match. ---------- */
@@ -1120,78 +1355,6 @@ function videoPlay(stage, scenes, btn, opt){
 addEventListener("hashchange", vStop);
 /* split a narration into sentences (one beat each) */
 const sentences = t => (String(t || "").match(/[^.!?]+[.!?]*/g) || []).map(x => x.trim()).filter(Boolean);
-
-
-const DEMOV = [
-  {ic:"🚿", title:"The problem", beats:[
-    {t:"Every day, we waste clean water without even noticing.", art:[["🚿", "big2x", "left:42%;top:24%"], ["💧", "drop", "left:39%;top:40%"], ["💧", "drop", "left:43%;top:40%;animation-delay:.4s"], ["💧", "drop", "left:46%;top:40%;animation-delay:.8s"], ["🧒", "big2x", "left:72%;top:52%"], ["📱", "wig", "left:80%;top:56%"]]},
-    {t:"Water is precious, and it can run out.", art:[["🏜️", "big3x", "left:50%;top:44%"], ["💧", "shrink", "left:50%;top:22%"]]}]},
-  {ic:"🪥", title:"Idea 1", beats:[
-    {t:"Idea one: turn off the tap while you brush your teeth.", art:[["🧒", "big2x", "left:28%;top:48%"], ["🪥", "wig", "left:42%;top:46%"], ["🚰", "big2x", "left:68%;top:34%"], ["💧", "drop", "left:66%;top:50%"], ["✋", "pop", "left:78%;top:30%;animation-delay:1.4s"]]},
-    {t:"It is easy, and it saves a lot of water.", art:[["🚰", "big2x", "left:40%;top:40%"], ["✅", "pop big2x", "left:62%;top:40%"], ["💧", "pop", "left:30%;top:68%;animation-delay:.3s"], ["💧", "pop", "left:40%;top:70%;animation-delay:.5s"], ["💧", "pop", "left:50%;top:68%;animation-delay:.7s"]]}]},
-  {ic:"🪣", title:"Idea 2", beats:[
-    {t:"Idea two: catch the cold water before your shower in a bucket,", art:[["🚿", "big2x", "left:46%;top:22%"], ["💧", "drop", "left:44%;top:36%"], ["💧", "drop", "left:48%;top:36%;animation-delay:.5s"], ["🪣", "big2x", "left:46%;top:62%"]]},
-    {t:"and use it to water the plants.", art:[["🪣", "big2x", "left:30%;top:50%"], ["💧", "drop", "left:52%;top:40%"], ["🪴", "grow big3x", "left:68%;top:50%"]]}]},
-  {ic:"🌍", title:"Call to action", beats:[
-    {t:"One small action, every day, by every student.", art:[["👧", "bob big2x", "left:22%;top:52%"], ["🧒", "bob big2x", "left:40%;top:54%;animation-delay:.2s"], ["👦", "bob big2x", "left:60%;top:54%;animation-delay:.4s"], ["👩", "bob big2x", "left:78%;top:52%;animation-delay:.6s"]]},
-    {t:"Together, we can save our water. Start today!", art:[["🌍", "spin big3x", "left:50%;top:46%"], ["Start today!", "pop txt", "left:50%;top:14%;animation-delay:.6s"]]}]}
-];
-/* the "AI factory": the storyboard goes to 3 AI tools, then a video editor puts the parts together */
-function factory(box, scenes, speed){
-  const pics = scenes.map(sc => sc.ic || (sc.beats[0].art[0] || ["🎬"])[0]).join(" ");
-  const nSent = scenes.reduce((n, sc) => n + sc.beats.length, 0), secs = Math.round(scenes.reduce((s2, sc) => s2 + sc.beats.reduce((t, b) => t + est(b.t) + .35, 0), 0));
-  const ST = [["📝", "Your storyboard", "goes in", scenes.length + " scenes, " + nSent + " sentences"],
-    ["🖼️", "Image AI", "draws the pictures from “what we see”", pics],
-    ["🔊", "Voice AI", "reads the narration aloud", "🔊 ▁▃▆▃▅▂▆▄ " + secs + " s of voice"],
-    ["💬", "Subtitle AI", "writes the words on screen", nSent + " subtitles"],
-    ["🎬", "Video editor", "puts pictures + voice + subtitles together", "✓ video ready!"]];
-  box.replaceChildren(...ST.flatMap(([ic, n, d], i) => [el("div", {class:"fst", "data-i":String(i)}, el("span", {class:"fic"}, ic), el("b", null, n), el("small", null, d), el("span", {class:"fout"}, "waiting…")), ...(i < ST.length - 1 ? [el("span", {class:"farr", "aria-hidden":"true"}, "→")] : [])]));
-  const cards = [...box.querySelectorAll(".fst")];
-  return new Promise(res => { let i = 0; const step = () => { if (i > 0){ cards[i - 1].classList.remove("work"); cards[i - 1].classList.add("done"); cards[i - 1].querySelector(".fout").textContent = ST[i - 1][3]; }
-    if (i >= cards.length){ res(); return; } cards[i].classList.add("work"); cards[i].querySelector(".fout").textContent = "working…"; i++; setTimeout(step, speed); }; step(); });
-}
-const factoryIdle = () => factory($("#factory"), DEMOV, 0).then(() => [...$("#factory").querySelectorAll(".fst")].forEach(c => { c.classList.remove("done"); c.querySelector(".fout").textContent = "waiting…"; }));
-factoryIdle();
-$("#sendAI").onclick = () => { vStop(); $("#sendAI").disabled = true; $("#demoPlay").disabled = true;
-  factory($("#factory"), DEMOV, 1100).then(() => { $("#sendAI").disabled = false; $("#sendAI").textContent = "🤖 Send it again"; $("#demoPlay").disabled = false; videoPlay($("#demoStage"), DEMOV, $("#demoPlay")); done(0); }); };
-$("#demoPlay").onclick = () => videoPlay($("#demoStage"), DEMOV, $("#demoPlay"));
-
-
-
-/* 5 create */
-const TOP = ["Save water", "Say no to plastic", "Be kind at school", "Sleep well", "Walk more, drive less"];
-const V = Object.assign({topic:"", s:[{}, {}, {}, {}]}, store.get("video") || {});
-const saveV = () => store.set("video", V);
-const NAMES = [["🎯", "The problem", "Show the problem."], ["💡", "Solution 1", "Give your first solution."], ["💡", "Solution 2", "Give your second solution."], ["📣", "Call to action", "Tell people what to do now."]];
-/* each scene: [what we see example, narrator example, 3 pictures that fit THIS scene] */
-const TX = {
-  "Save water": [["a tap left running", "Every day, we waste a lot of water at home and at school.", [["🚰", "Tap left running"], ["💧", "Wasted water"], ["🏜️", "Dry land"]]],
-    ["a student turns off the tap while brushing", "Turn off the tap while you brush your teeth.", [["🪥", "Tap off while brushing"], ["🚰", "Close the tap"], ["🔧", "Fix the leak"]]],
-    ["a bucket under the shower", "Catch the cold shower water and use it for plants.", [["🪣", "Bucket in the shower"], ["🌱", "Water the plants"], ["🚿", "Short shower"]]],
-    ["the whole class smiling", "Every drop counts. Start saving water today!", [["💧", "Every drop counts"], ["😊", "Happy class"], ["🌍", "Save our planet"]]]],
-  "Say no to plastic": [["plastic bags on the beach", "Plastic bags and bottles end up in our sea.", [["🛍️", "Plastic bags"], ["🌊", "Dirty sea"], ["🐢", "Turtle in danger"]]],
-    ["a student with a cloth bag", "Use a cloth bag when you go shopping.", [["👜", "Cloth bag"], ["🧺", "Basket"], ["🎒", "Your own backpack"]]],
-    ["a student fills their own bottle", "Bring your own bottle to school.", [["🚰", "Refill your bottle"], ["🍴", "Your own fork and spoon"], ["♻️", "Recycle"]]],
-    ["a clean beach", "Say no to plastic. Start today!", [["🏖️", "Clean beach"], ["🌍", "Save our planet"], ["😊", "Happy friends"]]]],
-  "Be kind at school": [["a student sitting alone at break", "Some students feel alone at school.", [["😔", "Student alone"], ["😢", "Sad face"], ["💬", "Mean words"]]],
-    ["a student invites them to play", "Invite someone new to play with you.", [["🤝", "Invite to play"], ["⚽", "Play together"], ["👋", "Say hello"]]],
-    ["a student helps with homework", "Help a classmate who is stuck.", [["📚", "Help with homework"], ["✏️", "Share a pencil"], ["💬", "Kind words"]]],
-    ["friends laughing together", "A small kind act can change a day. Be kind!", [["❤️", "Be kind"], ["😊", "Happy friends"], ["🌟", "A kind school"]]]],
-  "Sleep well": [["a tired student yawning in class", "Many students are tired in class.", [["🥱", "Tired in class"], ["😴", "Falling asleep"], ["📱", "Phone late at night"]]],
-    ["a phone put away at night", "Put your phone away one hour before bed.", [["📵", "Phone away"], ["📖", "Read a book"], ["🌙", "Quiet night"]]],
-    ["a clock showing 9 pm", "Go to bed at the same time every night.", [["⏰", "Same bedtime"], ["🛏️", "Go to bed early"], ["🕘", "9 pm"]]],
-    ["a happy student waking up", "Sleep well, learn better. Start tonight!", [["☀️", "Fresh morning"], ["😊", "Happy student"], ["💪", "Full of energy"]]]],
-  "Walk more, drive less": [["traffic and smoke in the street", "Too many cars make our air dirty.", [["🚗", "Too many cars"], ["💨", "Smoke"], ["🚦", "Traffic"]]],
-    ["friends walking to school", "If school is close, walk with a friend.", [["🚶", "Walk to school"], ["🚲", "Ride a bike"], ["👫", "Walk with a friend"]]],
-    ["a school bus", "Take the bus or share a car.", [["🚌", "School bus"], ["🚙", "Share a car"], ["🛴", "Scooter"]]],
-    ["a clean green street", "Walk more, drive less. Our air will thank you!", [["🌳", "Green street"], ["🌍", "Clean air"], ["😊", "Healthy kids"]]]]
-};
-const OWN = [["what the problem looks like", "Say the problem in one sentence.", [["😟", "A problem"], ["⚠️", "Danger"], ["😢", "Sad"]]],
-  ["someone doing your first solution", "Say your first solution.", [["💡", "An idea"], ["🛠️", "Fix it"], ["🤝", "Help"]]],
-  ["someone doing your second solution", "Say your second solution.", [["✅", "Do it"], ["🌱", "A small step"], ["💡", "Another idea"]]],
-  ["people happy at the end", "Tell people what to do, starting today!", [["📣", "Tell everyone"], ["😊", "Happy people"], ["🌍", "A better world"]]]];
-const T = () => TX[V.topic] || OWN;
-/* the "AI" reads "What we see" and finds things it can draw */
 const SEEW = {kid:"🧒", kids:"🧒", child:"🧒", children:"🧒", boy:"👦", girl:"👧", student:"🧑‍🎓", pupil:"🧑‍🎓", teacher:"🧑‍🏫", mom:"👩", mother:"👩", dad:"👨", father:"👨", friend:"👫", friends:"👫", family:"👨‍👩‍👧", baby:"👶", grandma:"👵", teta:"👵", grandpa:"👴",
   class:"🏫", classroom:"🏫", school:"🏫", home:"🏠", house:"🏠", room:"🛏️", kitchen:"🍳",
   phone:"📱", mobile:"📱", screen:"📱", tablet:"📱", bed:"🛏️", sleep:"😴", sleeping:"😴", asleep:"😴", tired:"🥱", yawning:"🥱", yawn:"🥱", clock:"⏰", alarm:"⏰", pm:"🕘", night:"🌙", moon:"🌙", sun:"☀️", morning:"☀️", book:"📖", read:"📖", reading:"📖", homework:"📚", pencil:"✏️",
@@ -1200,50 +1363,115 @@ const SEEW = {kid:"🧒", kids:"🧒", child:"🧒", children:"🧒", boy:"👦"
   plastic:"🛍️", bag:"🛍️", bags:"🛍️", bottle:"🧴", bottles:"🧴", cup:"🥤", straw:"🥤", sea:"🌊", ocean:"🌊", beach:"🏖️", turtle:"🐢", fish:"🐟", recycle:"♻️", recycling:"♻️", trash:"🗑️", rubbish:"🗑️", garbage:"🗑️", bin:"🗑️", basket:"🧺",
   car:"🚗", cars:"🚗", bus:"🚌", bike:"🚲", bicycle:"🚲", walk:"🚶", walking:"🚶", walks:"🚶", traffic:"🚦", smoke:"💨", air:"💨", street:"🛣️", road:"🛣️", earth:"🌍", planet:"🌍", world:"🌍", city:"🏙️", dog:"🐕", cat:"🐈", food:"🍎", apple:"🍎", eat:"🍎", eating:"🍎", strong:"💪", energy:"💪", star:"⭐", rain:"🌧️", money:"💰"};
 function seeIcons(t){ const out = []; String(t || "").toLowerCase().split(/[^a-z]+/).forEach(w => { const e = SEEW[w] || (w.endsWith("s") && SEEW[w.slice(0, -1)]); if (e && !out.some(o => o[0] === e) && out.length < 3) out.push([e, w]); }); return out; }
-function drawBoard(){
-  const has = !!(V.topic || "").trim();
-  $("#myWait").hidden = has; $("#myBoard").hidden = !has; $("#myHow").hidden = !has;
-  if (!has){ $("#myBoard").replaceChildren(); return; }
-  const t = T();
-  $("#myBoard").replaceChildren(...NAMES.map(([ic, name, job], i) => {
-    const [ex1, ex2, pics] = t[i];
-    const see = el("textarea", {rows:"2", placeholder:"Example: " + ex1}), nar = el("textarea", {rows:"3", placeholder:"Example: " + ex2});
-    see.value = V.s[i].see || ""; nar.value = V.s[i].say || "";
-    const cur = pics.some(x => x[0] === V.s[i].ic) ? V.s[i].ic : "";
-    const big = el("div", {class:"sic"}), aiSees = el("p", {class:"aisees"});
-    const paint = () => { const main = V.s[i].ic && pics.some(x => x[0] === V.s[i].ic) ? V.s[i].ic : ic, ex = seeIcons(see.value);
-      big.replaceChildren(el("span", null, main), ...ex.map(([e]) => el("span", {class:"sx"}, e)));
-      aiSees.textContent = ex.length ? "🤖 The AI will draw: " + ex.map(([e, w]) => e + " " + w).join(" · ") : (see.value.trim() ? "🤖 The AI can't find a thing to draw. Try words like kid, phone, bed, tree, car…" : "🤖 Write what we see, and the AI will draw it."); };
-    const pick = el("div", {class:"icpick lab"}, ...pics.map(([c, l]) => el("button", {type:"button", class:cur === c ? "on" : "", "data-ic":c, onclick:() => { V.s[i].ic = c; saveV(); [...pick.children].forEach(b => b.classList.toggle("on", b.dataset.ic === c)); paint(); }}, el("span", {class:"e"}, c), el("span", null, l))));
-    see.oninput = () => { V.s[i].see = see.value; saveV(); count(); paint(); }; paint(); nar.oninput = () => { V.s[i].say = nar.value; saveV(); count(); };
-    return el("div", {class:"scene"}, big, el("span", {class:"tag"}, "Scene " + (i + 1) + " · " + name), el("b", {style:"font-size:15px"}, job),
-      el("span", {class:"muted", style:"font-size:13px;font-weight:700"}, "1 · Choose a picture for this scene:"), pick,
-      el("label", {class:"ff"}, el("b", null, "2 · 👁 What we see"), see), aiSees, el("label", {class:"ff"}, el("b", null, "3 · 🎙 What the narrator says"), nar)); }));
-}
-function drawTopics(){ $("#vTopics").replaceChildren(...TOP.map(t => el("button", {class:"chip" + (V.topic === t ? " on" : ""), type:"button", "aria-pressed":String(V.topic === t), onclick:() => { V.topic = t; saveV(); drawTopics(); drawBoard(); }}, t)), el("input", {type:"text", placeholder:"or your own message", value:TOP.includes(V.topic) ? "" : V.topic, style:"font:inherit;padding:7px 12px;border:1.5px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink)", onchange:e => { V.topic = e.target.value; saveV(); drawTopics(); drawBoard(); }})); }
-drawTopics();
-const script = () => V.s.map(x => (x.say || "").trim()).filter(Boolean).join(" ");
-function count(){ const n = X.words(script()); $("#wc").textContent = n + " words"; $("#wc").style.borderColor = n >= 60 && n <= 75 ? "var(--green)" : "var(--gold)"; $("#wcHint").textContent = n < 60 ? "Aim for 60 to 75 words (about 30 seconds). " + (60 - n) + " more." : n <= 75 ? "Perfect length: about 30 seconds! 🎬" : "A bit long: cut " + (n - 75) + " words.";
-  const full = V.topic && V.s.every(x => (x.see || "").trim() && (x.say || "").trim()) && n >= 50;
-  if (full){ X.badge($("#vBadge"), "🎬", "Creative Director", "Your storyboard and script are saved in your portfolio."); done(2); } else $("#vBadge").replaceChildren(); }
-drawBoard();
-count();
-$("#myPlay").onclick = () => { if (!script()){ K.toast("Write the narration first."); return; }
-  if (vp && vp.btn === $("#myPlay")){ vStop(); return; }
-  const ANIM = ["bob", "pop", "grow", "spin"];
-  const scenes = V.s.map((x, i) => ({ic:x.ic || NAMES[i][0], title:NAMES[i][1], cap:x.see || "", beats:(sentences(x.say).length ? sentences(x.say) : ["…"]).map((t, k) => ({t, art:[[x.ic || NAMES[i][0], ANIM[(i + k) % 4] + " big3x", "left:50%;top:44%"], ...seeIcons(x.see).map(([e], j) => [e, "pop big2x", ["left:16%;top:42%", "left:84%;top:42%", "left:84%;top:68%"][j]])]}))}));
-  $("#myFactory").hidden = false; $("#myPlay").disabled = true;
-  factory($("#myFactory"), scenes, 600).then(() => { $("#myPlay").disabled = false; $("#myStage").hidden = false; videoPlay($("#myStage"), scenes, $("#myPlay")); }); };
-$("#myCopy").onclick = () => copy("30-second explainer: " + V.topic + "\n\n" + V.s.map((x, i) => "Scene " + (i + 1) + " (" + NAMES[i][1] + ")\nWe see: " + (x.see || "") + "\nNarrator: " + (x.say || "")).join("\n\n"), null, "your document");
 
-/* 6 reflect */
+/* 6 storyboard: the example, then the kid's own */
+const SC = [["😟", "The Problem"], ["💡", "The Solution"], ["⚙️", "How It Works"], ["📣", "The Slogan"]];
+const EX = [{ic:"😩", title:"The Problem", sec:6, see:"A student in a hurry at home, schoolbooks left on the table", say:"Forgot your schoolbooks again?", art:[["🧑‍🎓", "bob big3x", "left:38%;top:46%"], ["📚", "pop big2x", "left:66%;top:56%"], ["❓", "pop", "left:56%;top:24%"]]},
+  {ic:"🎒", title:"The Solution", sec:7, see:"The SmartBag glowing with orange lights", say:"Meet SmartBag 2050, your intelligent school assistant.", art:[["🎒", "grow big3x", "left:50%;top:44%"], ["✨", "pop", "left:66%;top:26%"], ["✨", "pop", "left:34%;top:60%;animation-delay:.3s"]]},
+  {ic:"📅", title:"How It Works", sec:11, see:"The bag's screen shows the timetable and a missing book", say:"It checks your schedule, detects missing books and reminds you before you leave.", art:[["🎒", "big3x", "left:34%;top:46%"], ["📅", "pop big2x", "left:64%;top:32%"], ["🔔", "spin big2x", "left:68%;top:62%;animation-delay:.4s"]]},
+  {ic:"🌟", title:"The Slogan", sec:6, see:"The bag on a stand, the name and slogan on screen", say:"SmartBag 2050. Never forget a book again.", art:[["🎒", "big3x", "left:50%;top:42%"], ["SmartBag 2050", "pop txt", "left:50%;top:14%;animation-delay:.3s"]]}];
+const tlBar = (box, secs, names) => { const tot = secs.reduce((a, b) => a + b, 0) || 1; let t = 0;
+  box.replaceChildren(el("div", {class:"tlbar"}, ...secs.map((s, i) => el("span", {style:"flex:" + s + " 1 0"}, el("b", null, s + "s"), el("small", null, names[i])))),
+    el("div", {class:"tlticks"}, el("span", null, "00:00"), el("span", null, "00:" + String(Math.round(tot / 2)).padStart(2, "0")), el("span", null, "00:" + String(tot).padStart(2, "0")))); };
+const span = (a, s) => a + "–" + (a + s) + " sec";
+(function(){ let t = 0; $("#exBoard").replaceChildren(...EX.map((x, i) => { const r = el("div", {class:"exrow"}, el("div", {class:"exth"}, x.ic), el("div", null, el("small", {class:"mono"}, "SCENE 0" + (i + 1) + " · " + span(t, x.sec)), el("b", null, x.title), el("p", null, "“" + x.say + "”"))); t += x.sec; return r; })); })();
+tlBar($("#exTl"), EX.map(x => x.sec), EX.map(x => x.title));
+$("#exPlay").onclick = () => { $("#exStage").hidden = false; videoPlay($("#exStage"), EX.map(x => ({ic:x.ic, title:x.title, cap:x.see, beats:[{t:x.say, art:x.art}]})), $("#exPlay")); };
+$("#words5").replaceChildren(...[["🗂️", "Storyboard", "The plan of your video, scene by scene."], ["🎬", "Scene", "One part of the video, in one place."], ["🎙️", "Narration", "What the voice says."], ["⏱️", "Timeline", "When each scene starts and how long it lasts."], ["🔀", "Transition", "How one scene changes into the next: cut, fade or slide."]].map(([i, w, d]) => el("div", {class:"w5"}, el("span", null, i), el("b", null, w), el("small", null, d))));
+const SB = Object.assign({s:[{}, {}, {}, {}]}, store.get("board") || {});
+SB.s = [0, 1, 2, 3].map(i => Object.assign({see:"", say:"", sec:[6, 7, 11, 6][i], tr:"Fade"}, SB.s[i] || {}));
+const saveSB = () => store.set("board", SB);
+const total = () => SB.s.reduce((a, x) => a + (+x.sec || 0), 0);
+const maxW = s => Math.round(s * 2.5);
+const sbOk = () => SB.s.every(x => nw(x.see) >= 3 && nw(x.say) >= 3 && nw(x.say) <= maxW(x.sec)) && total() === 30;
+function drawBoard(){
+  const has = invOk(); $("#sbWait").hidden = has;
+  const n = INV.name.trim() || "my product", lk = lc(INV.looks) || "my product";
+  const PH = [["a student with the problem: " + (INV.problem.trim() || "…"), "Ask a question about the problem."], [lk, "Meet " + n + ", …"], [lk + ", showing how it works", "Say how it works: " + INV.f.filter(Boolean).join(", ")], [lk + " with the name on screen", n + ". " + (INV.slogan.trim() || "Your slogan.")]];
+  let t = 0;
+  $("#myBoard").replaceChildren(...SC.map(([ic, name], i) => { const x = SB.s[i];
+    const see = el("textarea", {rows:"2", placeholder:"e.g. " + PH[i][0]}), nar = el("textarea", {rows:"2", placeholder:"e.g. " + PH[i][1]}), fit = el("small", {class:"fit"});
+    see.value = x.see; nar.value = x.say;
+    const sec = el("select", {"aria-label":"Seconds"}, ...[3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(v => el("option", {value:String(v)}, v + " sec"))); sec.value = String(x.sec);
+    const tr = i < 3 ? el("label", {class:"trsel"}, "Transition to the next scene ", el("select", null, ...["Cut", "Fade", "Slide"].map(v => el("option", {value:v}, v)))) : null;
+    if (tr){ const s2 = tr.querySelector("select"); s2.value = x.tr; s2.onchange = () => { x.tr = s2.value; saveSB(); }; }
+    const fitT = () => { const w = nw(x.say), m = maxW(x.sec); fit.textContent = !w ? "Max " + m + " words for " + x.sec + " sec" : w + " words · " + (w <= m ? "fits " + x.sec + " sec ✓" : "too long for " + x.sec + " sec: max " + m + " words"); fit.className = "fit " + (!w ? "" : w <= m ? "ok" : "no"); };
+    see.oninput = () => { x.see = see.value; saveSB(); sbMsg(); }; nar.oninput = () => { x.say = nar.value; saveSB(); fitT(); sbMsg(); };
+    sec.onchange = () => { x.sec = +sec.value; saveSB(); drawBoard(); };
+    fitT(); const head = el("small", {class:"mono"}, "SCENE 0" + (i + 1) + " · " + span(t, x.sec)); t += x.sec;
+    return el("div", {class:"myscene"}, el("div", {class:"msh"}, el("span", {class:"exth"}, ic), el("div", null, head, el("b", null, name))),
+      el("label", {class:"ff"}, el("b", null, "👁 What we see"), see), el("label", {class:"ff"}, el("b", null, "🎙 Narration"), nar, fit), el("div", {class:"row"}, el("label", {class:"trsel"}, "Length ", sec), tr)); }));
+  tlBar($("#myTl"), SB.s.map(x => x.sec), SC.map(x => x[1]));
+  $("#myTotal").textContent = "00:" + String(total()).padStart(2, "0");
+  sbMsg();
+}
+function sbMsg(){
+  const tt = total(), m = [];
+  if (tt !== 30) m.push(tt < 30 ? "add " + (30 - tt) + " seconds" : "remove " + (tt - 30) + " seconds");
+  SB.s.forEach((x, i) => { if (nw(x.see) < 3) m.push("scene " + (i + 1) + ": what we see"); if (nw(x.say) < 3) m.push("scene " + (i + 1) + ": narration"); else if (nw(x.say) > maxW(x.sec)) m.push("scene " + (i + 1) + ": shorter narration"); });
+  $("#sbMsg").textContent = m.length ? "Still to do: " + m.join(", ") + "." : "✓ Your storyboard is ready: 4 scenes, 30 seconds.";
+  $("#sbMsg").style.color = m.length ? "var(--muted)" : "var(--green)";
+  if (sbOk()) done(3);
+}
+$("#myPlay").onclick = () => { if (!SB.s.some(x => x.say.trim())){ K.toast("Write the narration first."); return; }
+  const ANIM = ["bob", "pop", "grow", "spin"];
+  const scenes = SB.s.map((x, i) => ({ic:i ? invEmo() : SC[0][0], title:SC[i][1], cap:x.see, beats:(sentences(x.say).length ? sentences(x.say) : ["…"]).map((t, k) => ({t, art:[[i ? invEmo() : SC[0][0], ANIM[(i + k) % 4] + " big3x", "left:50%;top:44%"], ...seeIcons(x.see).map(([e], j) => [e, "pop big2x", ["left:16%;top:42%", "left:84%;top:42%", "left:84%;top:68%"][j]])]}))}));
+  $("#myStage").hidden = false; videoPlay($("#myStage"), scenes, $("#myPlay")); };
+const boardText = () => "My commercial: " + (INV.name || "") + "\n\n" + SB.s.map((x, i) => { let t = 0; for (let k = 0; k < i; k++) t += SB.s[k].sec; return "Scene " + (i + 1) + " · " + SC[i][1] + " (" + span(t, x.sec) + ")\nWe see: " + x.see + "\nNarration: " + x.say + (i < 3 ? "\nTransition: " + x.tr : ""); }).join("\n\n");
+$("#myCopy").onclick = () => copy(boardText(), null, "your document");
+
+/* ---------- PERIOD 3: make the real video ---------- */
+const PIPE = Object.assign({d:[false, false, false, false, false]}, store.get("pipe") || {});
+const savePipe = () => store.set("pipe", PIPE);
+const scenePrompt = i => { const S = st2 ? st2.S : {style:"3d", light:"day"}; return "Create an image of " + lc(SB.s[i].see) + ", " + find(STY, S.style)[2] + ", " + find(LIT, S.light)[2] + ", wide shot, 16:9."; };
+const videoBox = el("div");
+F.slotBox(videoBox, {slot:"video", label:"My AI Commercial", accept:"video/*"}, () => { PIPE.d[4] = true; savePipe(); drawPipe(); drawDash(); });
+function drawPipe(){
+  if (!$("#pipe")) return;
+  const ready2 = sbOk(); $("#pipeWait").hidden = ready2;
+  const cb = i => { const c = el("input", {type:"checkbox"}); c.checked = PIPE.d[i]; c.onchange = () => { PIPE.d[i] = c.checked; savePipe(); drawPipe(); drawDash(); }; return el("label", {class:"pdone"}, c, " Done"); };
+  const cp = (l, t) => el("button", {class:"chip", type:"button", onclick:() => copy(t, null, "Adobe Express")}, "📋 " + l);
+  let t = 0; const times = SB.s.map(x => { const a = t; t += x.sec; return span(a, x.sec); });
+  const ST = [
+    ["🖼️", "Generate images", "Adobe Express · 4 scene images", [el("p", null, "Make one picture for each scene. Use the same style and light in all 4, so your video looks like one film."), el("div", {class:"chips"}, ...SB.s.map((x, i) => cp("Scene " + (i + 1) + " prompt", scenePrompt(i)))), el("p", {class:"muted"}, "Download each picture. Name them scene1, scene2, scene3, scene4.")]],
+    ["🔊", "Generate narration", "Adobe Express · Voiceover (text to speech)", [el("p", null, "In your video, add a ", el("b", null, "Voiceover"), ": paste the narration of each scene and choose a voice that fits your style (" + find(VST, VO.pick || VO.style)[1] + ")."), el("div", {class:"chips"}, ...SB.s.map((x, i) => cp("Scene " + (i + 1) + " narration", x.say))), el("p", {class:"muted"}, "No Voiceover on your account? Skip it: your subtitles will carry the words, and you add music instead. Never record a real person's voice.")]],
+    ["🎬", "Assemble your video", "Adobe Express video editor · scenes, voice, transitions", [el("ol", {class:"how"}, el("li", null, "Create a new ", el("b", null, "video"), " (16:9)."), el("li", null, "Add your 4 pictures, in order."), el("li", null, "Set each scene's length: " + SB.s.map((x, i) => "scene " + (i + 1) + " = " + x.sec + " sec").join(", ") + "."), el("li", null, "Add the transitions you chose: " + SB.s.slice(0, 3).map(x => x.tr).join(", ") + "."), el("li", null, "Put each voice clip under its scene."))]],
+    ["💬", "Add subtitles", "Check spelling and timing", [el("p", null, "Add the narration as text on each scene. Check every word, and check it appears while the voice says it."), el("div", {class:"chips"}, ...SB.s.map((x, i) => cp("Scene " + (i + 1) + " subtitle", x.say)))]],
+    ["📦", "Export your creation", "Save the final MP4", [el("p", null, "Download your video as ", el("b", null, "MP4"), ". Watch it once from start to end. Then save it here, in your folder."), videoBox]]];
+  $("#pipe").replaceChildren(...ST.map(([ic, n, sub, body], i) => el("div", {class:"pst" + (PIPE.d[i] ? " ok" : "")}, el("div", {class:"psh"}, el("span", {class:"pno"}, PIPE.d[i] ? "✓" : String(i + 1)), el("div", null, el("b", null, ic + " " + n), el("small", null, sub)), cb(i)), el("div", {class:"pbody"}, ...body))));
+}
+drawBoard(); drawPipe();
+
+/* 8 the production dashboard */
+const REV = [["No real faces", "No photos or videos of me, my classmates or anyone real."], ["No real voices", "Only computer voices, no copied or recorded voices."], ["Marked as fictional", "My poster and video say it is a fictional product."], ["No brands I don't own", "No logos or names of real companies."], ["Free-to-use music", "Only music from the Adobe Express library."]];
+const RV = store.get("review") || [];
+$("#review").replaceChildren(...REV.map(([b, d], i) => { const c = el("input", {type:"checkbox"}); c.checked = !!RV[i]; c.onchange = () => { RV[i] = c.checked; store.set("review", RV); drawDash(); }; return el("li", null, el("label", null, c, el("span", null, el("b", null, b), " · ", d))); }));
+let FILES = [];
+async function drawDash(){
+  try { FILES = await F.list(true); } catch(e){}
+  const has = s => FILES.some(f => f.slot === s), online = F.on() && !!(JSON.parse(localStorage.getItem("ai-lab-session") || "null") || {}).token;
+  const items = [["Product advertisement image", online ? has("big") : invOk() && nw(INV.slogan) >= 2, "Section 4"], ["Advertising script", nw(VO.script) >= 10, "Section 5"], ["AI voice-over", voiceOk(), "Section 5"], ["4-scene storyboard", sbOk(), "Section 6"], ["Final 30-second video", online ? has("video") : PIPE.d[4], "Section 7"], ["Privacy and content review", REV.every((x, i) => RV[i]), "below"]];
+  const n = items.filter(x => x[1]).length, p = Math.round(n / items.length * 100);
+  $("#dPct").textContent = p + "%"; $("#dBar").style.width = p + "%";
+  $("#dList").replaceChildren(...items.map(([l, ok, w]) => el("li", {class:ok ? "ok" : ""}, el("b", null, ok ? "✓" : "○"), el("span", null, l), ok ? null : el("small", null, w))));
+  if (p === 100){ X.badge($("#finalBadge"), "🎬", "AI Commercial Director", "Poster, voice-over, storyboard and a real 30-second video. Show it to your family!"); done(4); } else $("#finalBadge").replaceChildren();
+}
+drawDash();
+/* when a section opens, show the newest work from the other sections */
+const ON_SHOW = {"seg-4":() => { drawIdeas(); drawInvForm(); st2.draw(); }, "seg-5":drawVoice, "seg-6":drawBoard, "seg-7":drawPipe, "seg-8":drawDash};
+const mo = new MutationObserver(ms => ms.forEach(m => { if (!m.target.hidden && ON_SHOW[m.target.id]) ON_SHOW[m.target.id](); }));
+document.querySelectorAll("section.seg").forEach(sec => mo.observe(sec, {attributes:true, attributeFilter:["hidden"]}));
+
+/* 9 quiz and reflect */
+X.vocab($("#vocab"), [["Assumption", "When the AI guesses something you did not say, like the oval ball."], ["Bias", "When the AI makes the same unfair choice again and again, like always a boy."], ["Art director", "The person who decides style, light and camera. Today: you."], ["Text-to-speech", "The computer turns written text into a voice."], ["Storyboard", "The plan of a video, scene by scene."], ["Narration", "What the voice says in the video."], ["Timeline", "When each scene starts and how long it lasts."], ["Transition", "How one scene changes into the next: cut, fade or slide."], ["Consent", "Saying yes. Always ask before using someone's face or voice."]]);
 X.quiz($("#quiz"), [
-  ["Why did the AI draw an American football and a boy?", ["It guessed from the pictures it saw most often", "It knows we like American football", "It chose at random"], 0, "Where your words are vague, the AI fills the gaps with what it saw most."],
-  ["Which prompt leaves the AI LESS to guess?", ["a robot at school", "a small round robot with blue lights, helping kids in a sunny classroom, 3D cartoon, bright light, wide view"], 1, "5 ingredients: subject, setting, style, light, camera."],
-  ["What does speech-to-text do?", ["Turns spoken words into written text", "Turns text into a picture", "Makes a video"], 0, "Speech → text: like subtitles or dictation."],
-  ["What comes first in a good video?", ["Filming everything", "A clear message and a storyboard", "Music"], 1, "Plan first: message, then scenes."],
-  ["Your friend says no to being in your video. What do you do?", ["Use their face anyway", "Respect it and use someone or something else", "Blur them a little"], 1, "No means no. Consent matters."]
-], () => done(3));
+  ["We asked for a “football” and the AI drew an oval ball. Why?", ["Our word was unclear, so it picked one meaning", "It knows we love American football", "It made a spelling mistake"], 0, "“Football” has different meanings. Unclear words make the AI guess."],
+  ["In the experiment, you changed only the style. What happened?", ["The whole look of the picture changed", "Nothing changed", "The AI refused"], 0, "One word can change the whole picture: that's the art director's power."],
+  ["What is text-to-speech?", ["The computer turns written words into a voice", "A person records their voice", "The computer writes down what you say"], 0, "Text → voice. The voice is synthetic: made by a machine."],
+  ["Your scenes last 6, 7, 11 and 6 seconds. How long is the video?", ["30 seconds", "24 seconds", "4 minutes"], 0, "6 + 7 + 11 + 6 = 30. That's your timeline."],
+  ["What is a transition?", ["How one scene changes into the next", "The words on the screen", "The voice of the narrator"], 0, "Cut, fade or slide: the moment between two scenes."],
+  ["Your friend says no to being in your video. What do you do?", ["Use their face anyway", "Respect it and use something else", "Blur them a little"], 1, "No means no. Consent matters."]
+], () => done(5));
 X.keep($("#exit"), "exit");
 K.start();
 })();

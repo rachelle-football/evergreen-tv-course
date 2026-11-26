@@ -5,7 +5,7 @@
   const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 11:6, 12:7, 14:8, 15:9, 16:10, 8:11, 9:12})[n] || n; /* file number → chapter number (AI Explorers, 12 chapters) */
   /* after:n = a student cannot go past segment n until "need" is done */
   const RULES = {
-    11:[{after:3, need:["pics"]}],
+    11:[{after:4, need:["pics"]}],
     8:[{after:3, need:["page"]}],
     9:[{after:1, need:["page"]}]
   }[CH];
@@ -15,7 +15,7 @@
   const filesOn = () => !!(window.F && window.F.on && window.F.on());
   const words = t => (t || "").trim().split(/\s+/).filter(Boolean).length;
   const PICK = () => ["big"];
-  const LABEL = k => k === "big" ? "My AI picture" : (window.PICKINDS && window.PICKINDS[k] && window.PICKINDS[k].label) || k;
+  const LABEL = k => k === "big" ? "My Advertisement Poster" : (window.PICKINDS && window.PICKINDS[k] && window.PICKINDS[k].label) || k;
   async function missing(need){
     const out = [];
     if (need.includes("card")){ const c = raw("ch3-card") || {}; const m = [!c.name && "a name", !(c.i1 && c.i2 && c.i3) && "3 big ideas", !(c.day || "").trim() && "a day in it", !(c.mine || "").trim() && "your own idea"].filter(Boolean);
@@ -26,7 +26,7 @@
     if (fileNeed.length && filesOn()){
       let fs = []; try { fs = await window.F.list(true); } catch(e){ return out; }
       const has = s => fs.some(f => f.slot === s);
-      if (fileNeed.includes("pics")){ const m = PICK().filter(k => !has(k)); if (m.length) out.push({kind:"file", ch:11, text:"Picture not saved yet (Chapter " + DN(11) + "): " + m.map(LABEL).join(", ") + "."}); }
+      if (fileNeed.includes("pics")){ const m = PICK().filter(k => !has(k)); if (m.length) out.push({kind:"file", ch:11, text:"Poster not saved yet (Chapter " + DN(11) + "): " + m.map(LABEL).join(", ") + "."}); }
       if (fileNeed.includes("page") && !has("page")) out.push({kind:"file", ch:8, text:CH === 8 ? "Your website is not published yet. Press 🌐 Publish my website first." : "Your website is not published yet (Chapter " + DN(8) + ")."});
     }
     return out;

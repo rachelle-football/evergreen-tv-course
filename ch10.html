@@ -528,7 +528,7 @@ img.fprev{background:var(--paper)}
     <textarea id="exit" placeholder="AI cannot guarantee that…"></textarea>
   </div>
   <div class="home" style="margin-top:14px"><b>🏠 Home challenge (optional)</b><p style="margin:6px 0 0">Find one surprising claim in an AI answer and check it with a trusted source. Bring the claim and the evidence to class (no personal data).</p></div>
-  <p class="note">Next week: AI Media Studio. You make AI pictures, then your own 30-second AI video.</p>
+  <p class="note">Next week: AI Media Studio. You invent a product and make its first AI commercial.</p>
 </section>
 
 </main>
@@ -686,8 +686,8 @@ function slotBox(box, s, onDone){
 /* the kid's whole folder: what should be in it, and what is saved */
 function plan(){
   const kinds = ["big"], K = window.PICKINDS || {};
-  return kinds.map(k => ({slot:k, label:k === "big" ? "My AI picture" : (K[k] && K[k].label) || k, ch:11, accept:"image/*"})).concat([
-    {slot:"license", label:"My AI Driving License", ch:13, accept:"image/png"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
+  return kinds.map(k => ({slot:k, label:k === "big" ? "My Advertisement Poster" : (K[k] && K[k].label) || k, ch:11, accept:"image/*"})).concat([
+    {slot:"license", label:"My AI Driving License", ch:13, accept:"image/png"}, {slot:"video", label:"My AI Commercial", ch:11, accept:"video/*"}, {slot:"page", label:"My web page", ch:8, accept:".html,text/html"}]);
 }
 function folder(box, now){
   async function draw(){
