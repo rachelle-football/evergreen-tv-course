@@ -28,7 +28,7 @@
 .fcchk{display:grid;gap:8px}.cbx{display:flex;gap:10px;align-items:flex-start;font-size:17px}.cbx input{width:22px;height:22px;margin-top:2px}
 .fcwhat{margin:10px 0 0;font-size:18px;line-height:1.5;border-left:6px solid var(--green)}
 ol.how{margin:8px 0 12px;padding-left:24px;display:grid;gap:6px;font-size:17px;line-height:1.45}
-.gsk{display:block;width:100%;max-width:640px;height:auto;margin:14px 0 2px}.gsk .gw{fill:var(--panel);stroke:var(--line);stroke-width:2}.gsk .gt{fill:var(--paper)}
+.gcap{margin:16px 0 0;font-size:16px;color:var(--muted)}.gsk{display:block;width:100%;max-width:640px;height:auto;margin:6px 0 2px;user-select:none;-webkit-user-select:none;pointer-events:none;opacity:.92;filter:grayscale(.15)}.gsk .gw{fill:var(--panel);stroke:var(--line);stroke-width:2}.gsk .gt{fill:var(--paper)}
 .gsk .gu{fill:var(--paper);stroke:var(--line)}.gsk .gl{fill:var(--line)}.gsk .gi rect{fill:none;stroke:var(--muted);stroke-width:1.5}
 .gsk .gc{fill:#FFE9A8;stroke:#E0A100;stroke-width:2}.gsk .gcp{fill:#fff;stroke:#7a5a00;stroke-width:1.5}.gsk .gin{fill:var(--paper);stroke:#E0A100;stroke-width:3}
 .gsk .gx{font-family:Arial,sans-serif;fill:var(--ink)}.gsk .b{font-weight:700;font-size:17px}.gsk .s{font-size:14px}.gsk .m{font-size:16px;fill:var(--muted)}.gsk .n{font-size:16px;font-weight:700;fill:#B26B00}
@@ -479,6 +479,7 @@ button.seg2{display:inline;text-align:left;line-height:1.5;-webkit-box-decoratio
         <li>Come back to this tab (click it at the top of your browser).</li>
       </ol>
       <div class="row" id="fcAct1"></div>
+      <p class="gcap">🖼️ <b>This is only a picture</b> of the Gemini tab, to show you where to click. You can't type in it: do it in the <b>real Gemini tab</b>.</p>
       <svg class="gsk" viewBox="0 0 640 300" role="img" aria-label="Where to paste in Gemini and where to copy the answer">
         <rect x="2" y="2" width="636" height="296" rx="16" class="gw"/><rect x="2" y="2" width="636" height="38" rx="16" class="gt"/><rect x="2" y="26" width="636" height="14" class="gt"/>
         <text x="22" y="27" class="gx b">Gemini</text>
@@ -507,7 +508,7 @@ button.seg2{display:inline;text-align:left;line-height:1.5;-webkit-box-decoratio
       <label class="ff"><b>Give your creation a title</b><input id="fcTitle" type="text" maxlength="60" placeholder="e.g. My 1-week speed training plan"></label>
       <div class="ff"><b>Paste Gemini's final answer</b><ol class="how" style="margin:4px 0 6px">
         <li>In Gemini, go to the <b>last</b> answer (the one after follow-up 2).</li>
-        <li>Click Gemini's <b>Copy</b> button under the answer (see ③ in the picture), or select the answer with your mouse and press <b>Ctrl+C</b>.</li>
+        <li>Click Gemini's <b>Copy</b> button under the answer (see ③ in the picture in Step 1), or select the answer with your mouse and press <b>Ctrl+C</b>.</li>
         <li>Come back here, click in the box, press <b>Ctrl+V</b>.</li>
       </ol></div><label class="ff"><textarea id="fcFinal" rows="6" placeholder="Paste Gemini's last answer here (Ctrl+V). You can delete parts to make it shorter."></textarea></label>
       <label class="ff"><b>Your first name</b><input id="fcName" type="text" maxlength="30" placeholder="Your first name"></label>
