@@ -21,7 +21,7 @@
 .sppart b{font-size:18px}.sppart textarea{resize:vertical;font:inherit;font-size:17px;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink)}
 .spres{margin-top:14px}.spout{display:grid;gap:4px;font-size:19px;margin:8px 0;font-family:var(--mono, monospace)}
 .spout .seg2{display:block;border-radius:8px;padding:4px 10px}
-.spmeter{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--gold-soft);border-radius:12px;padding:8px 12px;margin:6px 0 10px}.spmeter b{color:var(--gold);font-size:24px;letter-spacing:2px}
+.spmeter .tips{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:16px}.spmeter{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--gold-soft);border-radius:12px;padding:8px 12px;margin:6px 0 10px}.spmeter b{color:var(--gold);font-size:24px;letter-spacing:2px}
 .btn.off{opacity:.5}.spafter{margin-top:14px;border-top:2px dashed var(--line);padding-top:12px}.spcheck{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px;font-size:17px}
 .fcsteps{display:grid;gap:14px;margin-top:14px}.fcfu{display:grid;gap:12px}.fu1{display:grid;gap:6px;border:2px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--paper)}
 .fu1 textarea,.fcsteps input[type=text],.fcsteps textarea{width:100%;font:inherit;font-size:17px;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink)}
@@ -851,7 +851,10 @@ const dot = t => { t = (t || "").trim(); return !t ? "" : /[.!?]$/.test(t) ? t :
 const article = t => /^(a|an|the|my)\s/i.test(t) || /^[A-Z]/.test(t) ? t : (/^[aeiou]/i.test(t) ? "an " : "a ") + t;
 const lines = () => [SP.role.trim() ? ["role", "Act as " + article(SP.role.trim().replace(/^act as\s+/i, "").replace(/[.]$/, "")) + "."] : null, SP.task.trim() ? ["task", dot(SP.task)] : null, SP.ctx.trim() ? ["ctx", dot(SP.ctx)] : null, SP.out.trim() ? ["out", "Present the result as " + SP.out.trim().replace(/^present the result as\s+/i, "").replace(/[.]$/, "") + "."] : null].filter(Boolean);
 const spText = () => lines().map(l => l[1]).join("\n");
-const okPart = k => (SP[k] || "").trim().split(/\s+/).filter(Boolean).length >= (k === "task" ? 4 : 2);
+const NEED = {role:2, task:4, ctx:3, out:3};
+const wc = k => (SP[k] || "").trim().split(/\s+/).filter(Boolean).length;
+const okPart = k => wc(k) >= NEED[k];
+const TIP = {role:["Role", "What kind? e.g. “a football coach”, not just “coach”."], task:["Task", "Be exact: what, and for what? e.g. “Create a training plan to improve my speed”."], ctx:["Context", "Say who it's for: e.g. “I am 12, a beginner, I train twice a week”."], out:["Output", "Say how it should look, and how many: e.g. “a table with 5 exercises”."]};
 let gem4 = false;
 function drawTopics(){ $("#topics").replaceChildren(...Object.entries(TOP).map(([k, [ic, nm]]) => el("button", {class:"topic" + (SP.topic === k ? " on" : ""), type:"button", "aria-pressed":String(SP.topic === k), onclick:() => { if (SP.topic !== k){ SP.topic = k; SP.role = SP.task = SP.ctx = SP.out = ""; store.set("super", SP); } drawTopics(); drawSP(); }}, el("span", null, ic), nm))); }
 function drawSP(){
@@ -862,7 +865,8 @@ function drawSP(){
     const L = lines(), n = SPARTS.filter(([k]) => okPart(k)).length;
     out.replaceChildren(...(L.length ? L.map(([k, t]) => el("span", {class:"seg2 on " + k}, t)) : [el("span", {class:"muted"}, "Your prompt appears here, part by part.")]));
     if (n === 4) done(1);
-    meter.replaceChildren(el("b", null, "★".repeat(n) + "☆".repeat(4 - n)), el("span", null, n === 4 ? "Super Prompt! Every part is there." : "Missing: " + SPARTS.filter(([k]) => !okPart(k)).map(([, l]) => l.split("— ")[1]).join(", ")));
+    meter.replaceChildren(el("b", null, "★".repeat(n) + "☆".repeat(4 - n)), n === 4 ? el("span", null, "Super Prompt! Every part is clear.") :
+      el("ul", {class:"tips"}, ...SPARTS.filter(([k]) => !okPart(k)).map(([k]) => el("li", null, el("b", null, (wc(k) ? "✏️ " : "⬜ ") + TIP[k][0] + (wc(k) ? ": too short. " : ": empty. ")), TIP[k][1]))));
     acts.replaceChildren(el("button", {class:"btn", type:"button", disabled:n < 4 ? "" : null, onclick:() => copy(spText(), out, "Gemini")}, "📋 Copy my prompt"),
       el("a", {class:"btn alt" + (n < 4 ? " off" : ""), href:GEM, target:"_blank", rel:"noopener", style:"text-decoration:none", onclick:e => { if (n < 4){ e.preventDefault(); K.toast("Fill the 4 parts first."); return; } gem4 = true; done(2); after.hidden = false; }}, "↗ Open Gemini"));
     after.hidden = !gem4;
