@@ -45,6 +45,10 @@
 .ex3 .exrow b{text-align:right}.extot{margin:10px 0 0;font-size:18px}
 .helper .trust{display:block;margin-top:6px;font-weight:700;color:var(--green);font-size:14px}
 @media (max-width:520px){.ex3 .exrow{grid-template-columns:1fr auto;}.ex3 .exrow b{grid-column:1/-1;text-align:left}}
+.ad-steps li{margin-bottom:6px}.ad-steps .btn{margin-right:6px}
+.adc{display:grid;gap:8px}.adc .r{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:8px 12px;border:2px solid var(--line);border-radius:12px;background:var(--panel)}
+.adc .r b{font-size:18px}.adc .r.ok{border-color:var(--green);background:var(--green-soft)}.adc .r.no{border-color:var(--onair);background:var(--onair-soft)}
+@media (max-width:520px){.adc .r{grid-template-columns:1fr 1fr}.adc .r b{grid-column:1/-1}}
 </style>
 </head><body>
 <title>How AI Learns</title>
@@ -438,11 +442,12 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
   <p class="big">Your AI learned from you and a friend. Google's AI learned the same way, from millions of people.</p>
   <div class="grid g2">
     <div class="card">
-      <span class="tag">Try it (free, no account)</span>
-      <ol class="lead" style="margin:8px 0 12px;padding-left:22px">
-        <li>Open <a href="https://www.autodraw.com/" target="_blank" rel="noopener">AutoDraw</a> and press <b>Start Drawing</b>.</li>
-        <li>Scribble something quickly: a cat, a house, a bike…</li>
-        <li>Look at the top bar: the AI guesses your drawing and offers clean pictures. Click one!</li>
+      <span class="tag">How to use it (free, no account)</span>
+      <ol class="lead ad-steps" style="margin:8px 0 12px;padding-left:22px">
+        <li><a class="btn sm" href="https://www.autodraw.com/" target="autodraw" rel="noopener">✏️ Open AutoDraw</a> It opens in a new tab.</li>
+        <li>On the left, the black pen with stars ✨ is already chosen. <b>Draw</b> in the big white space with your mouse.</li>
+        <li>Look at the <b>top of the page</b>: a row of clean pictures appears (“Do you mean…”). That's the AI guessing!</li>
+        <li>Click a picture: your scribble becomes a clean drawing. Then come back to this tab.</li>
       </ol>
       <p class="muted" style="margin:0;font-size:15px">It learned from the drawings of people who played Quick, Draw!. Millions of people drew for it.</p>
     </div>
@@ -456,6 +461,12 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
       </table>
       <p class="lead" style="margin:12px 0 0">Same idea, more examples, from more people. That's the secret of a strong AI.</p>
     </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <span class="tag">Challenge · Can Google's AI guess your drawings?</span>
+    <p class="lead" style="margin:6px 0 10px">Draw each thing in AutoDraw (to clean the page between drawings: ☰ menu at the top left → “Start over”). Did the AI show the right picture at the top?</p>
+    <div class="adc" id="adc"></div>
+    <p class="lead" id="adcScore" style="margin:12px 0 0;font-weight:700"></p>
   </div>
 </section>
 
@@ -1220,6 +1231,22 @@ drawSw();
   let n = 0;
   D.forEach(([e, a, l]) => { const b = document.createElement("button"); b.type = "button"; b.innerHTML = '<span class="e">' + e + '</span><span class="a"></span><span class="l">❓ Tap: what does the AI learn?</span>'; b.querySelector(".a").textContent = a;
     b.onclick = () => { if (b.classList.contains("open")) return; b.classList.add("open"); b.querySelector(".l").textContent = "🤖 " + l; if (++n === D.length) document.querySelector("#dailyEnd").hidden = false; }; box.append(b); });
+})();
+</script>
+<script>
+(function(){
+  const box = document.querySelector("#adc"); if (!box) return;
+  const ITEMS = ["🐱 A cat", "🚲 A bike", "🌳 A tree", "🎸 A guitar", "🏠 A house", "🦄 Something strange: a unicorn"];
+  const res = {};
+  function draw(){
+    box.replaceChildren(...ITEMS.map((t, i) => { const r = document.createElement("div"); r.className = "r" + (res[i] === true ? " ok" : res[i] === false ? " no" : "");
+      const b = document.createElement("b"); b.textContent = t; r.append(b);
+      [["✓ It guessed", true], ["✗ It didn't", false]].map(([l, v]) => { const x = document.createElement("button"); x.type = "button"; x.className = "btn sm" + (res[i] === v ? "" : " alt"); x.textContent = l; x.onclick = () => { res[i] = v; draw(); }; r.append(x); });
+      return r; }));
+    const n = Object.keys(res).length, ok = Object.values(res).filter(Boolean).length;
+    document.querySelector("#adcScore").textContent = n < ITEMS.length ? (n ? "So far: " + ok + " of " + n + " guessed." : "") : "Google's AI guessed " + ok + " of " + ITEMS.length + ". Which one was the hardest? Why? (Hint: did millions of people draw it?)";
+  }
+  draw();
 })();
 </script>
 <script src="config.js"></script>
