@@ -492,13 +492,13 @@ button.seg2{display:inline;text-align:left;line-height:1.5;-webkit-box-decoratio
         <rect x="24" y="232" width="592" height="46" rx="23" class="gin"/><text x="48" y="261" class="gx m">Ask Gemini</text>
         <text x="200" y="261" class="gx n">① Click here, Ctrl+V, then Enter</text>
       </svg></div>
-    <div class="card"><span class="tag">Step 2 · Improve it twice 🔁</span>
+    <div class="card"><span class="tag">Step 2 · Improve it once 🔁</span>
       <p class="lead" style="margin:6px 0 6px">Look at Gemini's answer. What would make it better <b>for you</b>? Too long? Hard words? Something missing?</p>
       <ol class="how">
-        <li>Pick a follow-up below, or write your own.</li>
-        <li>Click <b>📋 Copy follow-up</b>.</li>
+        <li>Pick one follow-up below, or write your own.</li>
+        <li>Click <b>📋 Copy my follow-up</b>.</li>
         <li>Go to the <b>same Gemini chat</b> (don't open a new one), paste it in the box at the bottom (<b>Ctrl+V</b>), press <b>Enter</b>.</li>
-        <li>See how the answer changes. Then do follow-up 2 the same way.</li>
+        <li>See how the answer changes.</li>
       </ol>
       <div class="fcfu" id="fcFu"></div></div>
     <div class="card"><span class="tag">Step 3 · Check it ⚠️</span>
@@ -507,7 +507,7 @@ button.seg2{display:inline;text-align:left;line-height:1.5;-webkit-box-decoratio
     <div class="card"><span class="tag">Step 4 · Keep it</span>
       <label class="ff"><b>Give your creation a title</b><input id="fcTitle" type="text" maxlength="60" placeholder="e.g. My 1-week speed training plan"></label>
       <div class="ff"><b>Paste Gemini's final answer</b><ol class="how" style="margin:4px 0 6px">
-        <li>In Gemini, go to the <b>last</b> answer (the one after follow-up 2).</li>
+        <li>In Gemini, go to the <b>last</b> answer (the new one, after your follow-up).</li>
         <li>Click Gemini's <b>Copy</b> button under the answer (see ③ in the picture in Step 1), or select the answer with your mouse and press <b>Ctrl+C</b>.</li>
         <li>Come back here, click in the box, press <b>Ctrl+V</b>.</li>
       </ol></div><label class="ff"><textarea id="fcFinal" rows="6" placeholder="Paste Gemini's last answer here (Ctrl+V). You can delete parts to make it shorter."></textarea></label>
@@ -934,18 +934,18 @@ function drawFCPrompt(){
     el("a", {class:"btn alt" + (full ? "" : " off"), href:GEM, target:"_blank", rel:"noopener", style:"text-decoration:none", onclick:e => { if (!full){ e.preventDefault(); return; } FC.asked = true; saveFC(); }}, "↗ Open Gemini"));
 }
 function drawFu(){
-  $("#fcFu").replaceChildren(...[0, 1].map(i => { const ta = el("textarea", {rows:"2", placeholder:"Follow-up " + (i + 1) + ": e.g. " + FUIDEAS[i * 2]}); ta.value = FC.fu[i];
+  $("#fcFu").replaceChildren(...[0].map(i => { const ta = el("textarea", {rows:"2", placeholder:"My follow-up: e.g. " + FUIDEAS[0]}); ta.value = FC.fu[i];
     ta.addEventListener("input", () => { FC.fu[i] = ta.value; store.set("creation", FC); drawMsg(); });
-    return el("div", {class:"fu1"}, el("b", null, "Follow-up " + (i + 1)), ta, el("div", {class:"chips sm"}, ...FUIDEAS.map(x => el("button", {class:"chip", type:"button", onclick:() => { ta.value = x; FC.fu[i] = x; store.set("creation", FC); drawMsg(); }}, x))),
-      el("button", {class:"btn sm alt", type:"button", onclick:() => { if (!FC.fu[i].trim()){ K.toast("Write your follow-up first."); return; } copy(FC.fu[i].trim(), null, "the SAME Gemini chat"); }}, "📋 Copy follow-up " + (i + 1))); }));
+    return el("div", {class:"fu1"}, el("b", null, "My follow-up"), ta, el("div", {class:"chips sm"}, ...FUIDEAS.map(x => el("button", {class:"chip", type:"button", onclick:() => { ta.value = x; FC.fu[i] = x; store.set("creation", FC); drawMsg(); }}, x))),
+      el("button", {class:"btn sm alt", type:"button", onclick:() => { if (!FC.fu[i].trim()){ K.toast("Write your follow-up first."); return; } copy(FC.fu[i].trim(), null, "the SAME Gemini chat"); }}, "📋 Copy my follow-up")); }));
 }
 const CHK = [["read", "I read the whole answer, slowly."], ["fact", "I checked one fact in a trusted source (a book, my teacher, a trusted website)."], ["ok", "Nothing strange or wrong, or I fixed it."]];
 function drawChk(){ $("#fcChk").replaceChildren(...CHK.map(([k, t]) => { const cb = el("input", {type:"checkbox"}); cb.checked = !!FC.ch[k]; cb.onchange = () => { FC.ch[k] = cb.checked; store.set("creation", FC); drawMsg(); }; return el("label", {class:"cbx"}, cb, el("span", null, t)); })); }
-function ready(){ return SPARTS.every(([k]) => okPart(k)) && FC.fu.every(x => x.trim().split(/\s+/).filter(Boolean).length >= 2) && CHK.every(([k]) => FC.ch[k]) && FC.title.trim() && FC.final.trim().split(/\s+/).length >= 10 && FC.name.trim(); }
+function ready(){ return SPARTS.every(([k]) => okPart(k)) && FC.fu[0].trim().split(/\s+/).filter(Boolean).length >= 2 && CHK.every(([k]) => FC.ch[k]) && FC.title.trim() && FC.final.trim().split(/\s+/).length >= 10 && FC.name.trim(); }
 function drawMsg(){
   const miss = [];
   if (!SPARTS.every(([k]) => okPart(k))) miss.push("your Super Prompt (step 3)");
-  if (!FC.fu.every(x => x.trim().split(/\s+/).filter(Boolean).length >= 2)) miss.push("2 follow-ups");
+  if (FC.fu[0].trim().split(/\s+/).filter(Boolean).length < 2) miss.push("your follow-up");
   if (!CHK.every(([k]) => FC.ch[k])) miss.push("the 3 checks");
   if (!FC.title.trim()) miss.push("a title"); if (FC.final.trim().split(/\s+/).filter(Boolean).length < 10) miss.push("the final answer"); if (!FC.name.trim()) miss.push("your first name");
   $("#fcMsg").textContent = miss.length ? "Still to do: " + miss.join(", ") + "." : "✅ Done! Here is your first AI creation."; $("#fcMsg").style.color = miss.length ? "var(--muted)" : "var(--green)";
@@ -959,7 +959,7 @@ function drawCard(){
   y = 125; wrap(T[0] + " " + FC.title.trim(), 50, W - 100, 50, "800 42px Georgia, serif", "#fff", 150);
   const label = (t, yy) => { g.fillStyle = "#5B3FD1"; g.font = "700 20px Arial, sans-serif"; g.fillText(t, 50, yy); };
   label("MY SUPER PROMPT", 220); y = 255; wrap(spText(), 50, W - 100, 32, "24px 'Courier New', monospace", "#13221C", 400);
-  label("I IMPROVED IT TWICE", y + 25); y += 60; wrap("1. " + FC.fu[0].trim() + "   2. " + FC.fu[1].trim(), 50, W - 100, 32, "24px Arial, sans-serif", "#13221C", y + 70);
+  label("I IMPROVED IT WITH A FOLLOW-UP", y + 25); y += 60; wrap("“" + FC.fu[0].trim() + "”", 50, W - 100, 32, "24px Arial, sans-serif", "#13221C", y + 70);
   const clean = FC.final.split(/\n/).filter(l => !/^\s*\|?\s*:?-{2,}/.test(l)).map(l => l.replace(/\t+/g, " · ").replace(/^\s*\|\s*|\s*\|\s*$/g, "").replace(/\s*\|\s*/g, " · ").replace(/\*\*|__|^#+\s*|`/g, "").replace(/^\s*[*-]\s+/, "• ")).filter(l => l.trim()).join("\n");
   label("THE RESULT", y + 25); y += 60; wrap(clean, 50, W - 100, 34, "25px Georgia, serif", "#13221C", H - 170);
   g.fillStyle = "#E3F1E9"; g.fillRect(40, H - 130, W - 80, 70); g.fillStyle = "#1E7A55"; g.font = "700 22px Arial, sans-serif"; g.fillText("✅ Made with AI (Gemini) · improved and checked by " + FC.name.trim(), 60, H - 87);
