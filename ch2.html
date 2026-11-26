@@ -67,6 +67,8 @@
 .tricks{display:grid;gap:8px}.trick{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--paper);font-size:17px}
 .trick.fooled{border-color:var(--onair)}.trick.right{border-color:var(--green)}
 #labLearn{width:100%;font:inherit;font-size:17px;padding:10px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink)}
+.camchk{margin-top:0}.ways{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));margin-top:12px}
+.ways>div{background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:12px}.ways b{font-size:18px}.ways p{margin:4px 0 8px;font-size:16px}
 </style>
 </head><body>
 <title>How AI Learns</title>
@@ -457,7 +459,15 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
 
 <section class="seg" id="seg-6" data-min="25" data-title="Creation Lab" data-period="2" hidden>
   <div class="lower"><div class="no">06</div><div class="name"><h2>Creation Lab: train a REAL AI</h2><p>Period 2 · 25 minutes · Google Teachable Machine · no code</p></div></div>
-  <p class="big">Now leave the app. With a camera and 3 objects from your bag, you train a real AI, the same way engineers do.</p>
+  <p class="big">Now leave the app and train a REAL AI, the same way engineers do: with photos of 3 school objects.</p>
+  <div class="card camchk"><span class="tag">First: how will you give it photos?</span>
+    <div class="row" style="margin-top:8px;align-items:center"><button class="btn" id="camBtn" type="button">🔍 Does this computer have a camera?</button><span class="muted" style="font-size:14px">(the camera does NOT turn on)</span></div>
+    <p class="lead" id="camRes" style="margin:10px 0 0;font-weight:700"></p>
+    <div class="ways"><div><b>📷 With a camera</b><p>Put your pencil, notebook and eraser on the table, and film them (never faces).</p></div>
+    <div><b>📁 Without a camera</b><p>Use the photo pack: 90 training photos and 8 test photos, made for you.</p>
+      <div class="row"><button class="btn sm" id="packTrain" type="button">⬇ Training photos (90)</button><button class="btn sm alt" id="packTest" type="button">⬇ Test photos (8)</button></div>
+      <p class="muted" id="packMsg" style="font-size:14px;margin:6px 0 0">Open the downloaded file: Windows → right-click → “Extract all”.</p></div></div>
+  </div>
   <div class="card labsafe"><span class="tag">🛡️ Lab rules</span>
     <ul class="lead" style="margin:6px 0 0;padding-left:22px"><li>The camera films <b>only objects</b> on the table. Never faces, never people.</li><li>Your teacher is with you during the lab.</li><li>Don't press “Save project to Drive”: it saves your photos online.</li></ul></div>
   <div class="card" style="margin-top:14px"><span class="tag">Example · Teach AI to recognise school objects</span>
@@ -470,10 +480,11 @@ button.thumbx:hover .thumb{border-color:var(--onair);opacity:.6}
     <div class="card"><span class="tag">Step 1 · Collect data</span>
       <ol class="lead" style="margin:6px 0 10px;padding-left:22px"><li><a class="btn sm" href="https://teachablemachine.withgoogle.com/train/image" target="tm" rel="noopener">🧪 Open Teachable Machine</a> Choose <b>Standard image model</b>.</li>
         <li>Rename <b>Class 1</b>, <b>Class 2</b>, and press <b>Add a class</b> for the 3rd. Write the names of your 3 objects.</li>
-        <li>For each class: press <b>Webcam</b>, then <b>Hold to Record</b>. Turn the object slowly: different sides, close and far. About 30 images each.</li></ol>
-      <div class="labf" id="lab1"></div></div>
+        <li><b>📷 With a camera:</b> in each class press <b>Webcam</b>, then <b>Hold to Record</b>. Turn the object slowly: different sides, close and far. About 30 images each.</li>
+        <li><b>📁 Without a camera:</b> in each class press <b>Upload</b>, then <b>Choose images from your files</b>, open the right folder (pencil, notebook or eraser) and select all its photos (Ctrl + A).</li></ol>
+      <div class="labf" id="tmLab1"></div></div>
     <div class="card"><span class="tag">Step 2 · Train the AI</span><p class="lead" style="margin:6px 0">Press <b>Train Model</b> and wait. Don't change tab while it learns! The AI is looking for the patterns in your photos.</p></div>
-    <div class="card"><span class="tag">Step 3 · Test the AI</span><p class="lead" style="margin:6px 0 10px">Show the camera a <b>new</b> object it never saw (another pencil from a friend). Look at the bars in <b>Preview</b>.</p><div class="labf" id="lab3"></div></div>
+    <div class="card"><span class="tag">Step 3 · Test the AI</span><p class="lead" style="margin:6px 0 10px">Give it something <b>new</b> it never saw. <b>📷</b> Show the camera a friend's pencil. <b>📁</b> In <b>Preview</b>, change <b>Webcam</b> to <b>File</b> and drop a test photo (test-1, test-2 or test-3). Look at the bars.</p><div class="labf" id="tmLab3"></div></div>
     <div class="card"><span class="tag">Step 4 · Try to trick your AI! 😈</span><p class="lead" style="margin:6px 0 10px">Can you fool it? Try each trick, then say what happened.</p><div class="tricks" id="tricks"></div><p class="fb" id="trickMsg" style="font-weight:700;margin:10px 0 0"></p></div>
     <div class="card"><span class="tag">Step 5 · Save your first AI model</span>
       <ol class="lead" style="margin:6px 0 10px;padding-left:22px"><li>Take a screenshot of your best test (the bars in Preview).</li><li>Optional: <b>Export Model</b> → <b>Download</b> to keep your model.</li></ol>
@@ -1278,7 +1289,7 @@ drawSw();
 </script>
 <script>
 (function(){
-  const $ = q => document.querySelector(q); if (!$("#lab1")) return;
+  const $ = q => document.querySelector(q); if (!$("#tmLab1")) return;
   const KEY = (window.K && K.store) ? null : null;
   const get = () => { try { return JSON.parse(localStorage.getItem("ch2-lab")) || {}; } catch(e){ return {}; } };
   const L = Object.assign({names:["", "", ""], n:["", "", ""], testObj:"", pred:"", pct:"", tr:{}, learn:"", done:false}, get());
@@ -1286,15 +1297,15 @@ drawSw();
   const mk = (t, a, ...k) => { const e = document.createElement(t); for (const x in (a || {})){ if (x.startsWith("on")) e.addEventListener(x.slice(2), a[x]); else if (a[x] != null) e.setAttribute(x, a[x]); } k.flat().forEach(c => { if (c != null) e.append(c); }); return e; };
   const PH = ["pencil", "notebook", "eraser"], EM = ["✏️", "📓", "🧽"];
   const tot = mk("p", {class:"labtot"});
-  $("#lab1").replaceChildren(...[0, 1, 2].map(i => { const nm = mk("input", {type:"text", maxlength:"24", placeholder:"e.g. " + PH[i], "aria-label":"Class " + (i + 1) + " name"}), nn = mk("input", {type:"number", min:"0", max:"500", placeholder:"30", "aria-label":"Number of images"});
+  $("#tmLab1").replaceChildren(...[0, 1, 2].map(i => { const nm = mk("input", {type:"text", maxlength:"24", placeholder:"e.g. " + PH[i], "aria-label":"Class " + (i + 1) + " name"}), nn = mk("input", {type:"number", min:"0", max:"500", placeholder:"30", "aria-label":"Number of images"});
     nm.value = L.names[i]; nn.value = L.n[i]; nm.oninput = () => { L.names[i] = nm.value; save(); drawPred(); }; nn.oninput = () => { L.n[i] = nn.value; save(); };
     return mk("div", {class:"labrow"}, mk("b", null, EM[i] + " Class " + (i + 1)), nm, mk("span", null, "images:"), nn); }), tot);
   const pred = mk("select", {"aria-label":"Prediction"}), pct = mk("input", {type:"number", min:"0", max:"100", placeholder:"96", "aria-label":"Percent"}), obj = mk("input", {type:"text", maxlength:"40", placeholder:"e.g. my friend's green pencil"});
   function drawPred(){ const cur = L.pred; pred.replaceChildren(mk("option", {value:""}, "— choose —"), ...L.names.map(x => x.trim()).filter(Boolean).map(x => { const o = mk("option", {value:x}, x); if (x === cur) o.selected = true; return o; })); }
   drawPred(); obj.value = L.testObj; pct.value = L.pct;
   obj.oninput = () => { L.testObj = obj.value; save(); }; pred.onchange = () => { L.pred = pred.value; save(); }; pct.oninput = () => { L.pct = pct.value; save(); };
-  $("#lab3").replaceChildren(mk("label", {class:"ff"}, mk("b", null, "The new object I showed"), obj), mk("div", {class:"labrow"}, mk("b", null, "AI prediction"), pred, mk("b", null, "with"), pct, mk("span", null, "%")));
-  const TR = ["Show a pencil of a different colour", "Show a broken pencil", "Show a book instead of the notebook", "Show an object you never trained it on", "Add more photos to one class and train again"];
+  $("#tmLab3").replaceChildren(mk("label", {class:"ff"}, mk("b", null, "The new object I showed"), obj), mk("div", {class:"labrow"}, mk("b", null, "AI prediction"), pred, mk("b", null, "with"), pct, mk("span", null, "%")));
+  const TR = ["A pencil of a different colour (📁 trick-purple-pencil)", "A broken pencil (📁 trick-broken-pencil)", "A book instead of the notebook (📁 trick-book)", "Something you never trained it on (📁 trick-apple)", "A tiny pencil, far away (📁 trick-tiny-pencil)"];
   function drawTricks(){
     $("#tricks").replaceChildren(...TR.map((t, i) => mk("div", {class:"trick" + (L.tr[i] ? " " + L.tr[i] : "")}, mk("span", null, (i + 1) + ". " + t),
       mk("div", {class:"row"}, ...[["fooled", "😈 I fooled it"], ["right", "🤖 It was right"]].map(([k, l]) => mk("button", {class:"btn sm" + (L.tr[i] === k ? "" : " alt"), type:"button", onclick:() => { L.tr[i] = k; save(); drawTricks(); }}, l))))));
@@ -1316,6 +1327,59 @@ drawSw();
     $("#labDone").style.color = L.done ? "var(--green)" : "var(--muted)";
   }
   check();
+})();
+</script>
+<script>
+(function(){
+  const $ = q => document.querySelector(q); if (!$("#camBtn")) return;
+  /* camera check: lists devices, never turns the camera on */
+  $("#camBtn").onclick = async () => { const r = $("#camRes");
+    try { const d = await navigator.mediaDevices.enumerateDevices(); const has = d.some(x => x.kind === "videoinput");
+      r.textContent = has ? "📷 Yes! This computer has a camera. You can film your objects (never faces)." : "📁 No camera on this computer. Use the photo pack below.";
+      r.style.color = has ? "var(--green)" : "var(--gold)"; }
+    catch(e){ r.textContent = "📁 I can't check here. Use the photo pack below."; } };
+  /* photo pack: pictures drawn by the computer, all different (colour, size, angle, background) */
+  let seed = 1; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647, pick = a => a[Math.floor(rnd() * a.length)], rr = (a, b) => a + rnd() * (b - a);
+  const BG = ["#F5F1E8", "#E8F0F5", "#F2F2F2", "#EAF4E6", "#F7EDE4", "#E9E7F3", "#FFFFFF", "#DCE3E8"];
+  function base(){ const c = document.createElement("canvas"); c.width = c.height = 224; const g = c.getContext("2d"); g.fillStyle = pick(BG); g.fillRect(0, 0, 224, 224);
+    g.fillStyle = "rgba(0,0,0,.05)"; for (let i = 0; i < 40; i++) g.fillRect(rr(0, 224), rr(0, 224), 2, 2); return [c, g]; }
+  function place(g, sc){ g.translate(112 + rr(-25, 25), 112 + rr(-25, 25)); g.rotate(rr(-Math.PI, Math.PI)); g.scale(sc, sc); }
+  function pencilShape(g, col, len, broken){
+    const w = 20, L = len / 2;
+    const seg = (x0, x1) => { g.fillStyle = col; g.fillRect(x0, -w / 2, x1 - x0, w); g.fillStyle = "rgba(0,0,0,.18)"; g.fillRect(x0, -w / 2, x1 - x0, 5); g.fillStyle = "rgba(255,255,255,.25)"; g.fillRect(x0, 2, x1 - x0, 3); };
+    if (broken){ seg(-L + 30, -6); g.save(); g.translate(14, 10); g.rotate(.35); seg(0, L - 30); g.restore(); }
+    else seg(-L + 30, L - 30);
+    g.fillStyle = "#E9C79A"; g.beginPath(); g.moveTo(-L + 30, -w / 2); g.lineTo(-L, 0); g.lineTo(-L + 30, w / 2); g.fill();
+    g.fillStyle = "#333"; g.beginPath(); g.moveTo(-L + 10, -3.5); g.lineTo(-L, 0); g.lineTo(-L + 10, 3.5); g.fill();
+    if (!broken){ g.fillStyle = "#B8BCC0"; g.fillRect(L - 30, -w / 2, 12, w); g.fillStyle = "#F29BB0"; g.fillRect(L - 18, -w / 2, 18, w); }
+  }
+  function pencil(o){ const [c, g] = base(); g.save(); place(g, o && o.tiny ? .35 : rr(.8, 1.05)); pencilShape(g, (o && o.col) || pick(["#F6C318", "#F6C318", "#F6C318", "#E2483D", "#2F7FD8", "#3BA55C", "#222"]), rr(170, 200), o && o.broken); g.restore(); return c; }
+  function notebook(){ const [c, g] = base(); g.save(); g.translate(112 + rr(-15, 15), 112 + rr(-15, 15)); g.rotate(rr(-.5, .5)); const s = rr(.8, 1.05); g.scale(s, s);
+    const w = 120, h = 160, col = pick(["#2F7FD8", "#E2483D", "#3BA55C", "#7B4BC4", "#F29B38", "#1F2D3D", "#E35D9C"]);
+    g.fillStyle = "rgba(0,0,0,.12)"; g.fillRect(-w / 2 + 5, -h / 2 + 5, w, h); g.fillStyle = col; g.fillRect(-w / 2, -h / 2, w, h);
+    g.fillStyle = "#fff"; g.fillRect(-25, -45, 60, 26); g.strokeStyle = "#999"; g.lineWidth = 1.5; for (let i = 0; i < 2; i++){ g.beginPath(); g.moveTo(-20, -37 + i * 10); g.lineTo(30, -37 + i * 10); g.stroke(); }
+    g.strokeStyle = "#C9CED3"; g.lineWidth = 3; for (let y = -h / 2 + 10; y < h / 2 - 5; y += 14){ g.beginPath(); g.arc(-w / 2, y, 6, -1.2, 1.2); g.stroke(); }
+    g.restore(); return c; }
+  function eraser(){ const [c, g] = base(); g.save(); place(g, rr(.9, 1.15)); const w = 100, h = 50, body = pick(["#F7A8BC", "#FFFFFF", "#F4F1EA", "#8FD3F4", "#F7A8BC"]);
+    g.fillStyle = "rgba(0,0,0,.12)"; g.fillRect(-w / 2 + 4, -h / 2 + 4, w, h); g.fillStyle = body; g.beginPath(); g.roundRect(-w / 2, -h / 2, w, h, 10); g.fill(); g.strokeStyle = "rgba(0,0,0,.15)"; g.stroke();
+    g.fillStyle = pick(["#2F7FD8", "#1F2D3D", "#3BA55C", "#E2483D"]); g.fillRect(-w / 2 + 35, -h / 2, w - 35, h); g.fillStyle = "#fff"; g.font = "700 12px Arial"; g.fillText("ERASER", -w / 2 + 44, 4);
+    g.restore(); return c; }
+  function book(){ const [c, g] = base(); g.save(); g.translate(112, 112); g.rotate(rr(-.4, .4)); g.fillStyle = "#F4EEDC"; g.fillRect(-55, -75, 120, 160); g.fillStyle = "#8B2E2E"; g.fillRect(-65, -80, 115, 160); g.fillStyle = "#D9B44A"; g.fillRect(-50, -40, 85, 6); g.fillRect(-50, -28, 60, 4); g.restore(); return c; }
+  function apple(){ const [c, g] = base(); g.fillStyle = "#D7322E"; g.beginPath(); g.arc(98, 120, 48, 0, 7); g.arc(128, 120, 48, 0, 7); g.fill(); g.fillStyle = "#6B4226"; g.fillRect(110, 52, 6, 22); g.fillStyle = "#3BA55C"; g.beginPath(); g.ellipse(132, 60, 18, 8, -.5, 0, 7); g.fill(); return c; }
+  const png = c => new Promise(r => c.toBlob(r, "image/png"));
+  function loadZip(){ return window.JSZip ? Promise.resolve() : new Promise((res, rej) => { const s = document.createElement("script"); s.src = "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"; s.onload = res; s.onerror = rej; document.head.append(s); }); }
+  async function make(kind){
+    const msg = $("#packMsg"); msg.textContent = "Making the photos…";
+    try { await loadZip(); const z = new JSZip();
+      if (kind === "train"){ seed = 11; for (const [n, f] of [["pencil", pencil], ["notebook", notebook], ["eraser", eraser]]){ const d = z.folder(n); for (let i = 1; i <= 30; i++) d.file(n + "-" + String(i).padStart(2, "0") + ".png", await png(f())); } }
+      else { seed = 977; const T = [["test-1-pencil", () => pencil()], ["test-2-notebook", notebook], ["test-3-eraser", eraser], ["trick-purple-pencil", () => pencil({col:"#9B59D0"})], ["trick-broken-pencil", () => pencil({broken:true})], ["trick-book", book], ["trick-apple", apple], ["trick-tiny-pencil", () => pencil({tiny:true})]];
+        for (const [n, f] of T) z.file(n + ".png", await png(f())); }
+      const blob = await z.generateAsync({type:"blob"}), a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = kind === "train" ? "training-photos.zip" : "test-photos.zip"; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+      msg.textContent = "✅ Downloaded. Open the file: Windows → right-click → “Extract all”.";
+    } catch(e){ msg.textContent = "Couldn't make the photos here (no internet?). Ask your teacher."; }
+  }
+  $("#packTrain").onclick = () => make("train"); $("#packTest").onclick = () => make("test");
+  window.__labPack = {pencil, notebook, eraser, book, apple};
 })();
 </script>
 <script src="config.js"></script>
