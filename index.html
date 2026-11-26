@@ -237,15 +237,14 @@ const CH = [
   {n:3, t:"How AI Learns", s:"3", f:"ch2.html", learn:"Teach a tiny AI, train a real one, test it, get your AI Trainer certificate", lists:[["ch2-list1",6]]},
   {n:4, t:"Become a Prompt Engineer", s:"4", f:"ch3.html", learn:"Give AI smart instructions: role, task, context, output", lists:[["ch3-prog",4]]},
   {n:5, t:"AI Can Be Wrong", s:"5", f:"ch10.html", learn:"Fact-check AI answers like a detective", lists:[["ch10-prog",4]]},
-  {n:6, t:"AI Storytelling", s:"6", f:"ch4.html", learn:"A story from the future, with your own character", lists:[["ch4-list1",5],["ch4-hunt",5]]},
-  {n:7, t:"AI Images", s:"7", f:"ch5.html", learn:"3 to 5 pictures you choose, saved in your folder", lists:[["ch5-list1",8]]},
-  {n:8, t:"Voice, Audio and Video", s:"8", f:"ch11.html", learn:"Plan a 30-second explainer: storyboard and script", lists:[["ch11-prog",4]]},
-  {n:9, t:"Algorithms and Coding", s:"9", f:"ch12.html", learn:"Steps, if/else, and code your own quiz", lists:[["ch12-prog",4]]},
-  {n:10, t:"Reinvent the School: the Problem", s:"10", f:"ch14.html", learn:"Find a real school problem: your innovation brief", lists:[["ch14-prog",4]]},
-  {n:11, t:"Reinvent the School: the Prototype", s:"11", f:"ch15.html", learn:"Build it, test it, improve it", lists:[["ch15-prog",4]]},
-  {n:12, t:"The Future of Our Planet", s:"12", f:"ch16.html", learn:"AI for good: your planet project", lists:[["ch16-prog",4]]},
-  {n:13, t:"Website Building", s:"13", f:"ch8.html", learn:"Your own website: about you, your dream job or your football team", lists:[["ch8-list1",6],["ch8-better",3],["ch8-launch",7]]},
-  {n:14, t:"Final Showcase", s:"14", f:"ch9.html", learn:"Present your project and explain how you used AI", lists:[["ch9-rehearse",4]], extra: d => (pj(d["ch9-pitch"]) && Object.values(pj(d["ch9-pitch"])).filter(v => (v || "").trim()).length >= 3 ? 1 : 0) + (d["ch9-job"] ? 1 : 0), of:2}
+  {n:6, t:"AI Images", s:"6", f:"ch5.html", learn:"3 to 5 pictures you choose, saved in your folder", lists:[["ch5-list1",8]]},
+  {n:7, t:"Voice, Audio and Video", s:"7", f:"ch11.html", learn:"Plan a 30-second explainer: storyboard and script", lists:[["ch11-prog",4]]},
+  {n:8, t:"Algorithms and Coding", s:"8", f:"ch12.html", learn:"Steps, if/else, and code your own quiz", lists:[["ch12-prog",4]]},
+  {n:9, t:"Reinvent the School: the Problem", s:"9", f:"ch14.html", learn:"Find a real school problem: your innovation brief", lists:[["ch14-prog",4]]},
+  {n:10, t:"Reinvent the School: the Prototype", s:"10", f:"ch15.html", learn:"Build it, test it, improve it", lists:[["ch15-prog",4]]},
+  {n:11, t:"The Future of Our Planet", s:"11", f:"ch16.html", learn:"AI for good: your planet project", lists:[["ch16-prog",4]]},
+  {n:12, t:"Website Building", s:"12", f:"ch8.html", learn:"Your own website: about you, your dream job or your football team", lists:[["ch8-list1",6],["ch8-better",3],["ch8-launch",7]]},
+  {n:13, t:"Final Showcase", s:"13", f:"ch9.html", learn:"Present your project and explain how you used AI", lists:[["ch9-rehearse",4]], extra: d => (pj(d["ch9-pitch"]) && Object.values(pj(d["ch9-pitch"])).filter(v => (v || "").trim()).length >= 3 ? 1 : 0) + (d["ch9-job"] ? 1 : 0), of:2}
 ];
 function pj(v){ if (v == null) return null; if (typeof v !== "string") return v; try { return JSON.parse(v); } catch(e){ return v; } }
 function progress(d){ return CH.map(c => { let done = 0, total = c.of || 0; c.lists.forEach(([k, n]) => { total += n; const a = pj(d[k]); if (Array.isArray(a)) done += a.filter(Boolean).length; }); if (c.extra) done += c.extra(d); return total ? Math.min(100, Math.round(done / total * 100)) : 0; }); }
@@ -291,8 +290,8 @@ function renderHome(){
   const lastI = pr.reduce((a, v, i) => v > 0 ? i : a, -1), next = lastI < 0 ? CH[0] : pr[lastI] < 100 ? CH[lastI] : CH[Math.min(lastI + 1, CH.length - 1)];
   $("#app").replaceChildren(
     el("section", {class:"welcome"},
-      el("div", null, el("span", {class:"tag"}, "14 weeks · 14 chapters"), el("h1", null, ACC ? "Hi " + ACC.name + "!" : "AI Creators"),
-        el("p", {class:"lead"}, seg ? "Your project: " + seg + ". Every chapter adds one piece to your page of the team website." : "14 chapters to understand, use and question AI, and to build something real.")),
+      el("div", null, el("span", {class:"tag"}, "13 weeks · 13 chapters"), el("h1", null, ACC ? "Hi " + ACC.name + "!" : "AI Creators"),
+        el("p", {class:"lead"}, seg ? "Your project: " + seg + ". Every chapter adds one piece to your page of the team website." : "13 chapters to understand, use and question AI, and to build something real.")),
       el("div", {class:"card total"}, el("span", {class:"tag"}, "Your course"), el("b", null, all + "%"), el("div", {class:"bar"}, el("i", {style:"width:" + all + "%"})),
         el("a", {class:"btn", href:next.f}, (all === 100 ? "All done! Review Chapter " : all ? "Continue: Chapter " : "Start: Chapter ") + next.n))),
     el("div", {class:"chapters"}, ...CH.map((c, i) => el("a", {class:"ch" + (pr[i] === 100 ? " done" : ""), href:c.f},

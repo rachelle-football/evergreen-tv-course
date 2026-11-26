@@ -230,7 +230,7 @@ img.fprev{background:var(--paper)}
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 7: AI Images</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 6: AI Images</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -400,7 +400,7 @@ window.PICKINDS = {
   inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
 };
 window.F = (function(){
-const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 4:6, 5:7, 11:8, 12:9, 14:10, 15:11, 16:12, 8:13, 9:14})[n] || n; /* file number → chapter number (AI Explorers, 14 chapters) */
+const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 5:6, 11:7, 12:8, 14:9, 15:10, 16:11, 8:12, 9:13})[n] || n; /* file number → chapter number (AI Explorers, 13 chapters) */
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
@@ -649,7 +649,7 @@ function draw(){
   const sec = (title, body, extra) => el("div", {class:"bsec"}, el("h4", null, title, extra ? el("small", null, extra) : ""), body);
   const parts = [];
   parts.push(sec("1 · Where is it?", el("div", {class:"chips"}, ...pl.map(p => chip(p, S.place === p, () => { S.place = S.place === p ? "" : p; save(); }))), (partKit() ? partKit().icon + " " + partKit().name + " first, then " : "") + (t === "planet" ? "Planet 2050" : "School 2040")));
-  if (PICS(pic).who){ const inp = el("input", {placeholder:"e.g. a curious girl with a robot backpack", value:S.who}); inp.addEventListener("input", () => { S.who = inp.value; store.set("scene-" + pic, S); drawOut(); }); parts.push(sec("Your character", inp, "from your Chapter 4 story")); }
+  if (PICS(pic).who){ const inp = el("input", {placeholder:"e.g. a curious girl with a robot backpack", value:S.who}); inp.addEventListener("input", () => { S.who = inp.value; store.set("scene-" + pic, S); drawOut(); }); parts.push(sec("Your character", inp, "invent your hero: who they are and how they look")); }
   parts.push(el("h4", {class:"bhead"}, "2 · What's in it? ", el("small", null, PICS(pic).def.camera === "close-up" ? "pick only 1 or 2 things for a close-up" : "pick as many as you like")));
   parts.push(el("div", {class:"cats"}, ...cl.map(c => { const k = (S.pick[c.id] = (S.pick[c.id] || []).filter(x => c.kinds.includes(x))), on = k.length > 0;
     return el("div", {class:"cat" + (on ? " on" : "") + (c.mine ? " mine" : "")}, el("b", null, c.icon + " " + c.title),

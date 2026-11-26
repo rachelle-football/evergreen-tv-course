@@ -258,7 +258,7 @@ img.fprev{background:var(--paper)}
 </style>
 <header class="top">
   <div class="wrap">
-    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 14: The Final Showcase</small></span></div>
+    <div class="bug"><span class="live"><i></i>LIVE</span><span>AI Creators <small>· EB7 · Chapter 13: The Final Showcase</small></span></div>
     <div class="clock" aria-live="off">
       <span class="lbl muted">Segment time</span><b id="clock">05:00</b>
       <button class="ghost" id="clockBtn" type="button">Start</button>
@@ -285,7 +285,7 @@ img.fprev{background:var(--paper)}
     <div class="pitchform">
       <label class="ing"><span class="tag">1 · My part</span><input id="p1" placeholder="e.g. I designed the library of School 2040: the Story Cave."></label>
       <label class="ing"><span class="tag">2 · What the AI did</span><input id="p2" placeholder="e.g. Gemini helped me with ideas and wrote the code, Adobe drew my pictures."></label>
-      <label class="ing"><span class="tag">3 · What I did</span><input id="p3" placeholder="e.g. I chose the ideas, wrote my story, built my page and fixed the AI's mistakes."></label>
+      <label class="ing"><span class="tag">3 · What I did</span><input id="p3" placeholder="e.g. I chose the ideas, made my pictures, built my page and fixed the AI's mistakes."></label>
       <label class="ing"><span class="tag">4 · What surprised me</span><input id="p4" placeholder="e.g. The AI drew only boys in my library until I changed my prompt."></label>
       <label class="ing"><span class="tag">5 · Try it!</span><input id="p5" placeholder="e.g. Take my quiz, or find my own idea on my page."></label>
     </div>
@@ -425,7 +425,7 @@ window.PICKINDS = {
   inside:{label:"Inside view", help:"Step inside your design and look around.", camera:"from inside, looking out of a window", extra:"seen from inside, with lots of detail"}
 };
 window.F = (function(){
-const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 4:6, 5:7, 11:8, 12:9, 14:10, 15:11, 16:12, 8:13, 9:14})[n] || n; /* file number → chapter number (AI Explorers, 14 chapters) */
+const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 5:6, 11:7, 12:8, 14:9, 15:10, 16:11, 8:12, 9:13})[n] || n; /* file number → chapter number (AI Explorers, 13 chapters) */
 const el = (t, a, ...k) => { const e = document.createElement(t); if (a) for (const n in a){ if (n.startsWith("on")) e.addEventListener(n.slice(2), a[n]); else if (n === "class") e.className = a[n]; else if (a[n] != null) e.setAttribute(n, a[n]); } k.flat().forEach(c => c != null && c !== false && e.append(c)); return e; };
 const raw = k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } };
 const ready = () => new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", () => r(), {once:true}));
@@ -656,10 +656,10 @@ drawPitch();
 const J = window.B.join, card = K.store.raw("ch3-card") || {}, ME = K.me(), TS = ME.T || K.TEAMS.school;
 const PSPEC = [
   {id:"open", icon:"👋", title:"How do you start?", one:true, opts:["a question to the visitor","a surprising fact","\"Imagine…\"","a clap and a big welcome"]},
-  {id:"ai", icon:"🤖", title:"What did the AI do?", max:3, opts:["gave me ideas","drew my pictures","wrote a first story","wrote my quiz questions","wrote the code of my page"]},
+  {id:"ai", icon:"🤖", title:"What did the AI do?", max:3, opts:["gave me ideas","drew my pictures","helped with my video script","wrote my quiz questions","wrote the code of my page"]},
   {id:"me", icon:"🧑", title:"What did YOU do?", max:3, opts:["chose the best ideas","added my own crazy idea","built my web page step by step","fixed the AI's mistakes","checked the facts","made it fair for boys and girls"]},
   {id:"wow", icon:"😮", title:"What surprised you?", one:true, opts:["the AI drew only boys at first","the AI invented a fact","the AI made strange hands","the AI did not know my idea until I explained it","the AI was fast, but my ideas were better"]},
-  {id:"try", icon:"👉", title:"What should visitors try?", one:true, opts:["explore my page","take my quiz","read my story","guess which picture is made by AI"]}
+  {id:"try", icon:"👉", title:"What should visitors try?", one:true, opts:["explore my page","take my quiz","see my video plan","guess which picture is made by AI"]}
 ];
 const PB = Object.assign({open:"", ai:[], me:[], wow:"", try:""}, store.get("pitchB") || {});
 let pbUI;
@@ -684,7 +684,7 @@ checklist("rehearse", [
   ["Says who did what", "You say clearly what the AI did and what you did."]
 ]);
 /* jobs */
-const JOBS = [["Host","Opens the exhibition with the host script and launches the two websites."],["Tech crew","Opens both team websites on the big screens and keeps them running."],["Guide","Walks visitors through the School 2040 zone and the Planet 2050 zone."],["Live demo","Builds a page live from a visitor's idea with Gemini Canvas."],["AI challenge booth","Parents draw waste for the recycling robot (Chapter 3) and play Fake or Real."],["Greeter","Welcomes guests at the door and gives them the website link."]];
+const JOBS = [["Host","Opens the exhibition with the host script and launches the two websites."],["Tech crew","Opens both team websites on the big screens and keeps them running."],["Guide","Walks visitors through the School 2040 zone and the Planet 2050 zone."],["Live demo","Builds a page live from a visitor's idea with Gemini Canvas."],["AI challenge booth","Parents teach a drawing AI (Chapter 3) and play Fake or Real."],["Greeter","Welcomes guests at the door and gives them the website link."]];
 let job = store.get("job");
 function drawJobs(){ $("#jobs").replaceChildren(...JOBS.map(([n, d]) => el("button", {class:"segcard", type:"button", "aria-pressed": String(job === n), onclick:() => { job = n; store.set("job", n); drawJobs(); }}, el("strong", null, n), el("span", null, d)))); $("#jobMsg").textContent = job ? "Your job: " + job + ". Tell your teacher." : "Two or three students per job. Everyone also stands by their own page."; }
 drawJobs();

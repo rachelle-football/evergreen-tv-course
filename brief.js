@@ -2,7 +2,7 @@
    a reminder at the top of every mission, and the project strip (what you have, what you make today). */
 (function(){
   const CH = +((location.pathname.match(/ch(\d+)\.html/) || [])[1] || 0);
-  const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 4:6, 5:7, 11:8, 12:9, 14:10, 15:11, 16:12, 8:13, 9:14})[n] || n; /* file number → chapter number (AI Explorers, 14 chapters) */
+  const DN = n => ({1:1, 13:2, 2:3, 3:4, 10:5, 5:6, 11:7, 12:8, 14:9, 15:10, 16:11, 8:12, 9:13})[n] || n; /* file number → chapter number (AI Explorers, 13 chapters) */
   const B = {
     1:{goal:"Discover what AI really is, and choose your part of the project.",
        make:[["🧭", "Your team and your part"], ["💡", "Your first idea for it"]],
@@ -15,11 +15,6 @@
        missions:{3:"Train your AI, give it the exam, then let a friend test it. Your output: its scores.", 7:"Your output: your AI Trainer certificate 🏅"}},
     3:{goal:"Become a prompt engineer: give AI clear, smart instructions.", make:[], steps:[], done:"",
        missions:{4:"Your output: a pro prompt (6 of 6), tested in Gemini.", 5:"Your output: 3 prompts, 3 answers, and your stars for each."}},
-    4:{goal:"Invent a hero, and write your own story from the future with AI.",
-       make:[["🦸", "Your character card"], ["📖", "Your story (about 150 words) with a title"]],
-       steps:["Learn the 4 parts of a story", "Invent your character, Gemini adds details", "Click to build your story prompt, Gemini writes it", "Paste it, give it a title, change 3 sentences into your own words", "Read it to the class"],
-       done:"Your story has a title and at least 40 words. You cannot go on before that.",
-       missions:{2:"Your output: your character card. Your hero appears in your story and your pictures.", 3:"Your output: your story page (your hero + your story), downloaded."}},
     5:{goal:"Make 3 to 5 AI pictures of your design, and save them in your folder.",
        make:[["🖼️", "3 to 5 pictures you choose (big picture, close-up, character…)"]],
        steps:["Spot what the AI decides by itself", "Learn the 5 ingredients of a picture prompt", "Choose which pictures you will make", "For each picture: click, copy, make it in Adobe Express, download", "Save each picture with ⬆ Upload"],
@@ -53,7 +48,7 @@
   document.head.append(css);
   const el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.textContent = h; return e; };
   /* the 7 pieces of every student's project */
-  const PIECES = [["card", "📝", "Design card", 3], ["story", "📖", "Story", 4], ["pics", "🖼️", "Pictures", 5], ["page", "🌐", "Website", 8], ["pitch", "🎤", "Pitch", 9]];
+  const PIECES = [["card", "📝", "Design card", 3], ["pics", "🖼️", "Pictures", 5], ["page", "🌐", "Website", 8], ["pitch", "🎤", "Pitch", 9]];
   async function have(){
     const c = raw("ch3-card") || {}, s = raw("ch4-story") || {}, p = raw("ch9-pitch") || {};
     const h = {card:!!(c.name && c.i1 && c.i2 && c.i3), story:!!((s.title || "").trim() && words(s.text) >= 40), pitch:["p1", "p2", "p3", "p4", "p5"].filter(k => (p[k] || "").trim()).length >= 4};
